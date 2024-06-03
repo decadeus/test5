@@ -4,7 +4,7 @@ import Front from "./front/page";
 function page({ params }) {
   return (
     <div>
-      <div>
+     <div className="bg-blue-300">
         <Front />
       </div>
       pagr {params.residence}
