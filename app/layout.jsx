@@ -13,9 +13,13 @@ export const metadata = {
   description: "The fastest way to build apps with Next.js and Supabase",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }) {
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground">
