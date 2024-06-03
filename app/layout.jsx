@@ -2,6 +2,7 @@ import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import {Providers} from "./providers";
 import MainNavBar from "@/app/navbar/mainNavBar"
+import { createClient } from '@/utils/supabase/server'
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -16,6 +17,8 @@ export const metadata = {
 export default async function RootLayout({
   children,
 }) {
+
+  const supabase = createClient()
 
   const {
     data: { user },
