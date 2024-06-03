@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/client"; // Ensure the correct pa
 import Link from "next/link";
 import Image from "next/image";
 import b from "@/components/b.png";
-import ModalUser from "./modaluser";
+
 
 export default async function MainNavBar({ user }) {
   const supabase = createClient();
@@ -88,10 +88,7 @@ export default async function MainNavBar({ user }) {
               <div>{profile.username}</div>
               <div>{user.email}</div>
             </div>
-            <div className="">
-              
-              <ModalUser imgSrc={profile.pic_profil} title="User Details" user={user} />
-            </div>
+         
           </div>
         ) : (
           <p>No user data</p>
