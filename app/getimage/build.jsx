@@ -3,14 +3,14 @@ import React, { useEffect, useState } from "react";
 import Image from "next/legacy/image";
 import { createClient } from "@/utils/supabase/client";
 
-export default function Avatar({ url, width, height, classn, style }) {
+export default function Avatar({ url, width, height }) {
   const supabase = createClient();
   const [pic, setPic] = useState(null);
 
   useEffect(() => {
     async function downloadImage(path) {
       try {
-        const { data, error } = await supabase.storage.from('avatars').download(path)
+        const { data, error } = await supabase.storage.from('build').download(path)
         if (error) {
           throw error
         }
@@ -26,16 +26,15 @@ export default function Avatar({ url, width, height, classn, style }) {
   }, [url, supabase])
 
   return (
-    <div className="relative h-full m-h-[100px]">
+    <div>
       {pic ? (
         <Image
-         
+          width={width}
+          height={height}
           src={pic}
           alt="Avatar"
-          className={classn}
-          layout="fill"
-          objectFit="cover"
-        
+          className="rounded-2xl"
+          style={{ objectFit: "cover" }}
         />
       ) : (
         <div

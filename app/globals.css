@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.embla {
+  overflow: hidden;
+  
+}
+.embla__container {
+  display: flex;
+  position: relative;
+ 
+
+
+}
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 200px;
+}
+
+
 @layer base {
   :root {
     --background: 200 20% 98%;
@@ -19,6 +38,8 @@
     }
   }
 }
+
+
 
 @layer base {
   * {
@@ -40,3 +61,4 @@
     transform: translateY(0);
   }
 }
+
