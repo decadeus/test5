@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import Link from "next/link";
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 
-import { Button } from "@nextui-org/react";
 
 export default function TodoList() {
   const supabase = createClient();
@@ -13,7 +12,7 @@ export default function TodoList() {
 
   useEffect(() => {
     async function fetchTodos() {
-      const { data, error } = await supabase.from("Todo").select("*");
+      const { data, error } = await supabase.from("residence").select("*");
 
 
       if (error) console.log('error', error);
