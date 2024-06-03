@@ -1,11 +1,11 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from '@/utils/supabase/client'
 import { Button } from "@nextui-org/react";
 import Avatar from "./avatar";
 
 export default function AccountForm({ user }) {
-  const supabase = createClientComponentClient();
+    const supabase = createClient()
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
 
