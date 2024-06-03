@@ -1,7 +1,7 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import {Providers} from "./providers";
-import MainNavBar from "@/app/navBar/mainNavBar"
+import MainNavBar from "@/app/navbar/mainNavBar"
 import { createClient } from '@/utils/supabase/server'
 
 
