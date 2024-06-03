@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Button } from "@nextui-org/react";
 
 export default function TodoList() {
+  const supabase = createClient();
+  const [todos, setTodos] = useState([]);
 
   useEffect(() => {
     async function fetchTodos() {
