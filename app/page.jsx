@@ -1,10 +1,9 @@
-'use client';
+"use client";
 import React from "react";
 import { createClient } from "./../utils/supabase/client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
-
 
 export default function TodoList() {
   const supabase = createClient();
@@ -14,8 +13,7 @@ export default function TodoList() {
     async function fetchTodos() {
       const { data, error } = await supabase.from("residence").select("*");
 
-
-      if (error) console.log('error', error);
+      if (error) console.log("error", error);
       else setTodos(data);
     }
 
@@ -24,7 +22,7 @@ export default function TodoList() {
 
   return (
     <>
-     <ul className="flex gap-8">
+      <ul className="flex gap-8">
         {todos.map((todo) => (
           <li key={todo.id} className=" ">
             <Link href={`/${todo.Description.replace(/\s+/g, "_")}`}>
@@ -45,12 +43,10 @@ export default function TodoList() {
                   />
                 </CardBody>
               </Card>
-
             </Link>
           </li>
         ))}
       </ul>
     </>
-
   );
 }

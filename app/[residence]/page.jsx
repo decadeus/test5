@@ -21,7 +21,7 @@ export default async function page({ params }) {
   return (
     <div>
       <div className="flex flex-col justify-center items-center">
-        <h1 className="text-4xl font-bold">{data && data.residence}</h1>
+        <h1 className="text-4xl font-bold">{data && data.Description}</h1>
         {data && data.city}
       </div>
 
