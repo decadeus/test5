@@ -1,12 +1,35 @@
-import React from 'react'
-import Link from 'next/link'
+'use client';
+import React from "react";
+import { createClient } from "./../utils/supabase/client";
+import { useState, useEffect } from 'react';
+import Link from "next/link";
+import { Button } from "@nextui-org/react";
 
+export default function TodoList() {
 
-export default function page() {
+  useEffect(() => {
+    async function fetchTodos() {
+      const { data, error } = await supabase
+        .from('Todo')
+        .select('*');
 
-  return (<>
-  <Link rel="stylesheet" href="/test">link</Link>
-    <div className='bg-red-300'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo eaque iste modi officiis in similique sint impedit aliquid id harum, ducimus, earum esse voluptatem labore saepe culpa deleniti aliquam quia!</div>
-    </>
-  )
+      if (error) console.log('error', error);
+      else setTodos(data);
+    }
+
+    fetchTodos();
+  }, []);
+
+  return (
+    <>
+    <ul>
+      {todos.map((todo) => (
+        <li key={todo.id}>
+        <Link href={`/${todo.Description.replace(/\s+/g, '_')}`}>{todo.Description}</Link>
+        </li>
+      ))}
+    </ul>
+
+      </>
+  );
 }
