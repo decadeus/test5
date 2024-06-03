@@ -1,103 +1,118 @@
-"use client";
-import { useCallback, useEffect, useState } from "react";
+'use client'
+import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
-import { Button } from "@nextui-org/react";
-import Avatar from "./avatar";
 
 export default function AccountForm({ user }) {
-    const supabase = createClient()
-  const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState(null);
-
-  const [pic_profil, setAvatarUrl] = useState(null);
+  const supabase = createClient()
+  const [loading, setLoading] = useState(true)
+  const [fullname, setFullname] = useState(null)
+  const [username, setUsername] = useState(null)
+  const [website, setWebsite] = useState(null)
+  const [avatar_url, setAvatarUrl] = useState(null)
 
   const getProfile = useCallback(async () => {
     try {
-      setLoading(true);
+      setLoading(true)
 
       const { data, error, status } = await supabase
-        .from("profiles")
-        .select(`username, website, pic_profil`)
-        .eq("id", user?.id)
-        .single();
+        .from('profiles')
+        .select(`full_name, username, website, avatar_url`)
+        .eq('id', user?.id)
+        .single()
 
       if (error && status !== 406) {
-        throw error;
+        throw error
       }
 
       if (data) {
-        setUsername(data.username);
-
-        setAvatarUrl(data.pic_profil);
+        setFullname(data.full_name)
+        setUsername(data.username)
+        setWebsite(data.website)
+        setAvatarUrl(data.avatar_url)
       }
     } catch (error) {
-      alert("Error loading user data!");
+      alert('Error loading user data!')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [user, supabase]);
+  }, [user, supabase])
 
   useEffect(() => {
-    getProfile();
-  }, [user, getProfile]);
+    getProfile()
+  }, [user, getProfile])
 
-  async function updateProfile({ username, pic_profil }) {
+  async function updateProfile({ username, website, avatar_url }) {
     try {
-      setLoading(true);
+      setLoading(true)
 
-      const { error } = await supabase.from("profiles").upsert({
+      const { error } = await supabase.from('profiles').upsert({
         id: user?.id,
+        full_name: fullname,
         username,
-        pic_profil,
+        website,
+        avatar_url,
         updated_at: new Date().toISOString(),
-      });
-      if (error) throw error;
-      alert("Profile updated!");
+      })
+      if (error) throw error
+      alert('Profile updated!')
     } catch (error) {
-      alert("Error updating the data!");
+      alert('Error updating the data!')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
   return (
     <div className="form-widget">
-      <div className="flex flex-col w-full items-center justify-center  bg-gray-700">
-        <div className="pt-20">
-          <Avatar
-            uid={user?.id}
-            url={pic_profil}
-            size={150}
-            onUpload={(url) => {
-              setAvatarUrl(url);
-              updateProfile({ pic_profil: url });
-            }}
-          />
-        </div>
-      </div>
-      <div className="p-4 pt-20 flex flex-col justify-center items-center">
-        {user.email}
+      <div>
+        <label htmlFor="email">Email</label>
+        <input id="email" type="text" value={user?.email} disabled />
       </div>
       <div>
-        <label htmlFor="username">username</label>
+        <label htmlFor="fullName">Full Name</label>
+        <input
+          id="fullName"
+          type="text"
+          value={fullname || ''}
+          onChange={(e) => setFullname(e.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="username">Username</label>
         <input
           id="username"
           type="text"
-          value={username || ""}
+          value={username || ''}
           onChange={(e) => setUsername(e.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="website">Website</label>
+        <input
+          id="website"
+          type="url"
+          value={website || ''}
+          onChange={(e) => setWebsite(e.target.value)}
         />
       </div>
 
       <div>
-        <Button
-          color="primary"
+        <button
           className="button primary block"
-          onClick={() => updateProfile({ pseudo, pic_profil })}
+          onClick={() => updateProfile({ fullname, username, website, avatar_url })}
           disabled={loading}
         >
-          {loading ? "Loading ..." : "Update"}
-        </Button>
+          {loading ? 'Loading ...' : 'Update'}
+        </button>
+      </div>
+
+      <div>
+        <form action="/auth/signout" method="post">
+          <button className="button block" type="submit">
+            Sign out
+          </button>
+        </form>
       </div>
     </div>
-  );
+  )
 }
