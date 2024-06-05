@@ -43,7 +43,7 @@ export default function TodoList({value }) {
             </CardHeader>
             <CardBody className="overflow-visible py-2 w-[200px] h-[200px] ">
             <Avatar
-            url={todo.mainpic}
+            url={todo.mainpicUrl}
            
             
             width={270}
