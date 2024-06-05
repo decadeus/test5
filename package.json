@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.6",
     "@nextui-org/react": "^2.4.1",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "latest",
