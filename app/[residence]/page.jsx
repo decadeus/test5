@@ -32,7 +32,7 @@ export default async function Page({ params }) {
         <div className="flex flex-col items-center">
           <div className="w-full h-[600px]">
             <Avatar
-              url={data?.mainpic}
+              url={data?.mainpic_url}
               width={2000}
               height={600}
               className="rounded-lg"
@@ -48,7 +48,7 @@ export default async function Page({ params }) {
           </div>
           <div className="w-1/2 h-[400px]">
             <Avatar
-              url={data?.mainpic}
+              url={data?.secondpic_url}
               width={2000}
               height={600}
               className="rounded-lg"
@@ -58,7 +58,7 @@ export default async function Page({ params }) {
         <div className="flex gap-8">
           <div className="w-1/2 h-[400px]">
             <Avatar
-              url={data?.i1}
+              url={data?.threepic_url}
               width={2000}
               height={600}
               className="rounded-lg"
