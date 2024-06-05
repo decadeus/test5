@@ -30,7 +30,7 @@ export default function TodoList() {
               <Card className="py-4  border-2 border-black  hover:scale-105">
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                   <p className="text-tiny uppercase font-bold text-red-700">
-                    {todo.Description}
+                    {todo.mainTitle}
                   </p>
                   <small className="text-default-500">{todo.city}</small>
                   <h4 className="font-bold text-large">Frontend Radio</h4>
