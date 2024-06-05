@@ -36,7 +36,7 @@ export default function TodoList() {
                   <h4 className="font-bold text-large">Frontend Radio</h4>
                 </CardHeader>
                 <CardBody className="overflow-visible py-2 h-[100px]">
-                  <Avatar url={todo.mainpic}
+                  <Avatar url={todo.mainpic_url}
                    width={270} height={196} />
                 </CardBody>
               </Card>
