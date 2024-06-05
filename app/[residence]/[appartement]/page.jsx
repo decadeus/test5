@@ -35,10 +35,10 @@ export default async function Page({ params }) {
     <div className="flex flex-col w-full">
       <div className="flex flex-col xl:flex-row xl:w-full lg:flex-row md:flex-col sm:flex-col">
         <div className="w-full flex-row w:2/3 xl:w-2/3 lg:w-2/3 md:w-full sm:w-full bg-blue-100">
-          <Appart b1={b.title} b1i={b.mainpic} b2={b.b2} />
+          <Appart b1={b.title} b1i={b.mainpicUrl} b2={b.b2} t1={b.t1} d1={b.d1} m1={b.maintitle} />
         </div>
         <div className="w-full flex-row w:1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full bg-yellow-700">
-          <Res i1={a.Description} />
+          <Res i1={a.city} />
         </div>
       </div>
 
@@ -46,3 +46,4 @@ export default async function Page({ params }) {
     </div>
   );
 }
+
