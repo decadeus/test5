@@ -2,6 +2,29 @@ import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import Appart from "./appart";
 import Avatar from "@/app/getimage/getone";
+import { MdBalcony } from "react-icons/md";
+import { FaDog } from "react-icons/fa";
+import {
+  FaElevator,
+  FaSchoolCircleCheck,
+  FaBasketShopping,
+  FaBaby,
+  FaGasPump,
+  FaPlaneDeparture,
+  FaGraduationCap,
+  FaKey,
+  FaMasksTheater,
+  FaMugHot,
+  FaMountain,
+  FaNetworkWired,
+  FaUmbrellaBeach,
+  FaWheelchair,
+  FaWheelchairMove,
+} from "react-icons/fa6";
+import { GiParkBench } from "react-icons/gi";
+import { MdOutlinePool, MdFitnessCenter } from "react-icons/md";
+import { IoMdBicycle } from "react-icons/io";
+
 
 export default async function Page({ params }) {
   const supabase = createClient();
@@ -71,11 +94,109 @@ export default async function Page({ params }) {
           </div>
         </div>
       </div>
+      <div className="grid grid-cols-3 grid-rows-2 gap-4">
+      <div className="border p-4 flex flex-col justify-center items-center text-center gap-2">
+        <div className="flex justify-center"><IconeS specificValue={data?.aut1} size={30}/></div>
+        <p className="font-bold">{data?.taut1}</p>
+        <p>{data?.daut1}</p>
+        </div>
+        <div className="border p-4 flex flex-col justify-center items-center text-center gap-2">
+        <div className="flex justify-center"><IconeS specificValue={data?.aut2} size={30}/></div>
+        <p className="font-bold">{data?.taut2}</p>
+        <p>{data?.daut2}</p>
+        </div>
+        <div className="border p-4 flex flex-col justify-center items-center text-center gap-2">
+        <div className="flex justify-center"><IconeS specificValue={data?.aut3} size={30}/></div>
+        <p className="font-bold">{data?.taut3}</p>
+        <p>{data?.daut3}</p>
+        </div>
+        </div>
       <div className="border-2 flex justify-center items-center text-center">
         <Appart value={data?.id} />
       </div>
-     
     </div>
   );
 }
 
+function IconeS({ specificValue, size }) {
+  const iconComponents = [
+    {
+      value: 1,
+      icon: <MdBalcony size={size}  />,
+    },
+    {
+      value: 2,
+      icon: <FaElevator size={size} />,
+    },
+    {
+      value: 3,
+      icon: <FaDog size={size}  />,
+    },
+    {
+      value: 4,
+      icon: <FaSchoolCircleCheck size={size}  />,
+    },
+    {
+      value: 5,
+      icon: <GiParkBench size={size} />,
+    },
+    {
+      value: 6,
+      icon: <FaBasketShopping size={size}  />,
+    },
+    {
+      value: 7,
+      icon: <FaBaby size={size}  />,
+    },
+    {
+      value: 8,
+      icon: <MdOutlinePool size={size}  />,
+    },
+    {
+      value: 9,
+      icon: <FaGasPump size={size}  />,
+    },
+    {
+      value: 10,
+      icon: <FaPlaneDeparture size={size}  />,
+    },
+    {
+      value: 11,
+      icon: <MdFitnessCenter size={size}  />,
+    },
+    {
+      value: 12,
+      icon: <IoMdBicycle size={size}  />,
+    },
+    {
+      value: 13,
+      icon: <FaGraduationCap size={size}  />,
+    },
+    {
+      value: 14,
+      icon: <FaKey size={size}  />,
+    },
+    {
+      value: 15,
+      icon: <FaMasksTheater size={size} />,
+    },
+    {
+      value: 16,
+      icon: <FaWheelchairMove size={size}  />,
+    },
+  ];
+
+  const selectedIconComponent = iconComponents.find(component => component.value === specificValue);
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {selectedIconComponent ? (
+        <div key={selectedIconComponent.value} >
+          {selectedIconComponent.icon}
+        </div>
+      ) : (
+        <p>Icon not found</p>
+      )}
+    </div>
+  );
+}
