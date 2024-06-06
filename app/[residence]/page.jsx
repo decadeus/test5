@@ -25,11 +25,12 @@ import { GiParkBench } from "react-icons/gi";
 import { MdOutlinePool, MdFitnessCenter } from "react-icons/md";
 import { IoMdBicycle } from "react-icons/io";
 import GoogleMaps from "./googlemap";
+import Adresse from "./adresse";
 
 export default async function Page({ params }) {
   const supabase = createClient();
   const id = params.residence; // Extracting 'id' from params
-
+ const iconee ="flex flex-col text-center items-center px-4 gap-2"
   const { data, error } = await supabase
     .from("residence")
     .select("*")
@@ -95,57 +96,67 @@ export default async function Page({ params }) {
         </div>
       </div>
       <div className="justify-center flex flex-col gap-20">
-      <div className="p-8 ">
-        <h2 className="font-bold text-xl">Les points clés</h2>
-        <div className="grid grid-cols-2 grid-rows-3 gap-8">
-          <div className="flex flex-col justify-center items-center px-4 ">
-            <IconeS specificValue={data?.aut1} size={30} />
-            <div className="flex flex-col gap-2">
-              <p className="font-bold">{data?.tavan1}</p>
-              {data?.davan1}
-            </div>
-          </div>
-          <div className="col-start-1 row-start-2 flex flex-col justify-center items-center px-4">
-            <IconeS specificValue={data?.aut1} size={30} />
-            <div className="flex flex-col gap-2">
-              <p className="font-bold">{data?.tavan1}</p>
-              {data?.davan1}
-            </div>
-          </div>
-          <div className="col-start-1 row-start-3 px-4 ">
-            <IconeS specificValue={data?.aut1} size={30} />
-            <div className="flex flex-col gap-2 ">
-              <p className="font-bold">{data?.tavan1}</p>
-              {data?.davan1}
-            </div>
-          </div>
-
-          <div className="col-start-2 row-start-1 px-4 ">
-            <IconeS specificValue={data?.aut1} size={30} />
-            <div className="flex flex-col gap-2 justify-center items-center">
-              <p className="font-bold">{data?.tavan1}</p>
-              {data?.davan1}
-            </div>
-          </div>
-          <div className="col-start-2 row-start-2 justify-center items-center px-4">
-            <IconeS specificValue={data?.aut1} size={30} />
-            <div className="flex flex-col gap-2">
-              <p className="font-bold">{data?.tavan1}</p>
-              {data?.davan1}
-            </div>
-          </div>
-          <div className="row-start-3 px-4">
-            <IconeS specificValue={data?.aut1} size={30} />
-            <div className="flex flex-col gap-2">
-              <p className="font-bold">{data?.tavan1}</p>
-              {data?.davan1}
-            </div>
-          </div>
+  <div className=" bg-gray-200 mt-8 mb-8 p-8">
+    <h2 className="font-bold text-xl text-center  pb-8 pt-8">Les points clés</h2>
+    <div className="grid grid-cols-3 grid-rows-2 gap-8 ">
+    <div className={iconee}>
+        <IconeS specificValue={data?.aut1} size={30} />
+        <div className="flex flex-col gap-2">
+          <p className="font-bold">{data?.taut1}</p>
+          {data?.daut1}
         </div>
       </div>
+      <div className={iconee}>
+        <IconeS specificValue={data?.aut2} size={30} />
+        <div className="flex flex-col gap-2">
+          <p className="font-bold">{data?.taut2}</p>
+          {data?.daut2}
+        </div>
       </div>
-      <div>
-      <GoogleMaps lnga={data?.lng} lata={data?.lat} />
+      <div className={iconee}>
+        <IconeS specificValue={data?.aut3} size={30} />
+        <div className="flex flex-col gap-2">
+          <p className="font-bold">{data?.taut3}</p>
+          {data?.daut3}
+        </div>
+      </div>
+      <div className={iconee}>
+        <IconeS specificValue={data?.avan1} size={30} />
+        <div className="flex flex-col gap-2 items-center">
+          <p className="font-bold">{data?.tavan1}</p>
+          {data?.davan1}
+        </div>
+      </div>
+      <div className={iconee}>
+        <IconeS specificValue={data?.avan2} size={30} />
+        <div className="flex flex-col gap-2">
+          <p className="font-bold">{data?.tavan2}</p>
+          {data?.davan2}
+        </div>
+      </div>
+      <div className={iconee}>
+        <IconeS specificValue={data?.avan3} size={30} />
+        <div className="flex flex-col gap-2">
+          <p className="font-bold">{data?.tavan3}</p>
+          {data?.davan3}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <div className="w-full flex">
+        <div className="w-1/2">
+          <GoogleMaps lnga={data?.lng} lata={data?.lat} />
+        </div>
+        <div className="w-1/2 flex justify-center items-center text-center">
+          <Adresse
+            name={data?.mainTitle}
+            adresse={data?.adresse}
+            code_postal={data?.codepost}
+            city={data?.city}
+          />
+        </div>
       </div>
       <div className="border-2 flex justify-center items-center text-center">
         <Appart value={data?.id} />
@@ -227,7 +238,7 @@ function IconeS({ specificValue, size }) {
   );
 
   return (
-    <div className="">
+    <div className=" flex justify-center items-center rounded-full border p-2">
       {selectedIconComponent ? (
         <div key={selectedIconComponent.value}>
           {selectedIconComponent.icon}

@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 
-export default function GoogleMaps({ lata, lnga }) {
+export default function GoogleMaps({ lata, lnga, height }) {
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -38,5 +38,5 @@ export default function GoogleMaps({ lata, lnga }) {
     initializeMap();
   }, [lata, lnga]);
 
-  return <div className="h-[600px]" ref={mapRef} />;
+  return <div className={height} ref={mapRef} />;
 }
