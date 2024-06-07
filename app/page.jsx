@@ -3,7 +3,7 @@ import React from "react";
 import { createClient } from "./../utils/supabase/client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Card, CardHeader, CardBody} from "@nextui-org/react";
+import { Card, CardHeader, CardBody } from "@nextui-org/react";
 import Avatar from "./getimage/getone";
 
 export default function TodoList() {
@@ -23,27 +23,37 @@ export default function TodoList() {
 
   return (
     <>
-      <ul className="flex gap-8">
-        {todos.map((todo) => (
-          <li key={todo.id} className=" ">
-            <Link href={`/${todo.id}`}>
-              <Card className="py-4  border-2 border-black  hover:scale-105">
-                <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-                  <p className="text-tiny uppercase font-bold text-red-700">
+      <div className="w-full flex ">
+        <div className="w-2/3 px-8">
+          <ul className="flex gap-8">
+            {todos.map((todo) => (
+              <li key={todo.id} className="w-1/3 ">
+                <Link href={`/${todo.id}`}>
+                  <div className="aspect-square">
+                    <Avatar
+                      url={todo.mainpic_url}
+                      width={270}
+                      height={196}
+                      classn="rounded-2xl"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-0 pt-2">
+                  <p className="font-bold">
                     {todo.mainTitle}
                   </p>
-                  <small className="text-default-500">{todo.city}</small>
-                  <h4 className="font-bold text-large">Frontend Radio</h4>
-                </CardHeader>
-                <CardBody className="overflow-visible py-2 h-[100px]">
-                  <Avatar url={todo.mainpic_url}
-                   width={270} height={196} />
-                </CardBody>
-              </Card>
-            </Link>
-          </li>
-        ))}
-      </ul>
+                  <p className="">
+                    {todo.city}
+                  </p>
+                  <p className="text-sm">A vendre:</p>
+                  <p className="text-sm">A Louer:</p>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="bg-red-300">zed</div>
+      </div>
     </>
   );
 }

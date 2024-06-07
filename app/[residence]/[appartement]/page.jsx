@@ -81,7 +81,6 @@ export default async function Page({ params }) {
         </div>
       </div>
 
-      <BackLink>Back</BackLink>
     </div>
   );
 }

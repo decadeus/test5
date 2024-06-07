@@ -93,7 +93,7 @@ export default function Res({
       </div>
       <div className="flex justify-center pt-8">
         <button className="bg-green-400 w-full text-white py-2 px-4">
-      <BackLink >Back</BackLink>
+      <BackLink >En savoir plus sur la residence</BackLink>
       </button>
       </div>
     </div>
