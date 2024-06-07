@@ -1,5 +1,6 @@
 import React from "react";
 import GoogleMaps from "./../googlemap";
+import Adresse from "../adresse";
 import Avatar from "@/app/getimage/getone";
 import { MdBalcony } from "react-icons/md";
 import { FaDog } from "react-icons/fa";
@@ -23,50 +24,76 @@ import {
 import { GiParkBench } from "react-icons/gi";
 import { MdOutlinePool, MdFitnessCenter } from "react-icons/md";
 import { IoMdBicycle } from "react-icons/io";
-import { Button } from "@nextui-org/react";
 
-export default function Res({ mainTitle, mainpic, aut1, taut1, aut2, taut2, aut3, taut3, avan1, tavan1, avan2, tavan2, avan3, tavan3, lata, lnga }) {
-  const line = "flex flex-col border text-center items-center gap-4 p-2";
-  const text = ""
+
+export default function Res({
+  mainTitle,
+  mainpic,
+  aut1,
+  taut1,
+  aut2,
+  taut2,
+  aut3,
+  taut3,
+  avan1,
+  tavan1,
+  avan2,
+  tavan2,
+  avan3,
+  tavan3,
+  lata,
+  lnga,
+  adresse,
+  code_postal,
+  city,
+}) {
+  const line = "flex text-center items-center gap-4 p-2";
+  const text = "";
   return (
     <div className="w-full px-4 pt-4">
-      <div className="text-center font-bold text-xl pb-4">{mainTitle}</div>
+      <h2 className="text-center flex justify-center pb-4 font-bold text-2xl">La résidence</h2>
       <div className="h-[200px]">
         <Avatar url={mainpic} width={200} height={200} className="rounded-lg" />
       </div>
-      <div className="grid grid-cols-3 grid-rows-2 gap-4 pt-4">
+      <div className="flex flex-col gap-2 pt-4">
         <div className={line}>
-          <IconeS specificValue={aut1} size={30} />
+          <IconeS specificValue={aut1} size={20} />
           <p className={text}>{taut1}</p>
         </div>
         <div className={line}>
-          <IconeS specificValue={aut2} size={30} />
+          <IconeS specificValue={aut2} size={20} />
           <p className={text}>{taut2}</p>
         </div>
         <div className={line}>
-          <IconeS specificValue={aut3} size={30} />
+          <IconeS specificValue={aut3} size={20} />
           <p className={text}>{taut3}</p>
         </div>
         <div className={line}>
-          <IconeS specificValue={avan1} size={30} />
+          <IconeS specificValue={avan1} size={20} />
           <p className={text}>{tavan1}</p>
         </div>
         <div className={line}>
-          <IconeS specificValue={avan2} size={30} />
+          <IconeS specificValue={avan2} size={20} />
           <p className={text}>{tavan2}</p>
         </div>
         <div className={line}>
-          <IconeS specificValue={avan3} size={30} />
+          <IconeS specificValue={avan3} size={20} />
           <p className={text}>{tavan3}</p>
         </div>
       </div>
-      <div className="pt-4">
-      <div className="w-1/2">
+      <div className="pt-4 flex items-center">
+        <div className="w-1/2">
           <GoogleMaps lnga={lnga} lata={lata} height="h-48" />
+         
+        </div>
+        <div className="w-1/2">
+      <Adresse maintitle={mainTitle} adresse={adresse} code_postal={code_postal} city={city} />
         </div>
       </div>
       <div className="flex justify-center pt-4">
-      <Button color="primary" className="shadow-xl">En savoir plus sur la résidence</Button>
+        <button className="bg-green-500 py-2 px-4 shadow-xl text-white">
+          En savoir plus sur la résidence
+        </button>
       </div>
     </div>
   );

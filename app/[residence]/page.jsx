@@ -158,7 +158,7 @@ export default async function Page({ params }) {
           />
         </div>
       </div>
-      <div className="border-2 flex justify-center items-center text-center">
+      <div className="border-2 flex justify-center items-center text-center ">
         <Appart value={data?.id} />
       </div>
     </div>
