@@ -4,6 +4,7 @@ import Adresse from "../adresse";
 import Avatar from "@/app/getimage/getone";
 import { MdBalcony } from "react-icons/md";
 import { FaDog } from "react-icons/fa";
+import BackLink from "./usepath";
 import {
   FaElevator,
   FaSchoolCircleCheck,
@@ -50,7 +51,7 @@ export default function Res({
   const line = "flex text-center items-center gap-4 p-2";
   const text = "";
   return (
-    <div className="w-full px-4 pt-4">
+    <div className="w-full px-4 pt-4 border-l">
       <h2 className="text-center flex justify-center pb-4 font-bold text-2xl">La résidence</h2>
       <div className="h-[200px]">
         <Avatar url={mainpic} width={200} height={200} className="rounded-lg" />
@@ -90,10 +91,10 @@ export default function Res({
       <Adresse maintitle={mainTitle} adresse={adresse} code_postal={code_postal} city={city} />
         </div>
       </div>
-      <div className="flex justify-center pt-4">
-        <button className="bg-green-500 py-2 px-4 shadow-xl text-white">
-          En savoir plus sur la résidence
-        </button>
+      <div className="flex justify-center pt-8">
+        <button className="bg-green-400 w-full text-white py-2 px-4">
+      <BackLink >Back</BackLink>
+      </button>
       </div>
     </div>
   );

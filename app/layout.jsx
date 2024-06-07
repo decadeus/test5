@@ -25,7 +25,7 @@ export default async function RootLayout({
   } = await supabase.auth.getUser()
   return (
     <html lang="en" className={GeistSans.className}>
-      <body className="bg-background text-foreground">
+      <body className=" text-foreground">
       <Providers>
         <MainNavBar user={user}/>
         <main className="min-h-screen flex flex-col items-center">
