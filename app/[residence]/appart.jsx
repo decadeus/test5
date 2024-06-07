@@ -34,7 +34,7 @@ export default function TodoList({ value }) {
         {todos.map((todo) => (
           <li key={todo.id} className=" ">
             <Link href={`${pathname}/${todo.id}`}>
-              <Card className="py-4  border-2 border-black  hover:scale-105">
+              <Card className="py-4  border-2 border-black  hover:scale-105 shadow-2xl">
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
             
 

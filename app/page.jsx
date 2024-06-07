@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardHeader, CardBody } from "@nextui-org/react";
 import Avatar from "./getimage/getone";
-
+import GoogleMaps from "./[residence]/googlemap";
 export default function TodoList() {
   const supabase = createClient();
   const [todos, setTodos] = useState([]);
@@ -38,21 +38,24 @@ export default function TodoList() {
                     />
                   </div>
                   <div className="flex flex-col gap-0 pt-2">
-                  <p className="font-bold">
-                    {todo.mainTitle}
-                  </p>
-                  <p className="">
-                    {todo.city}
-                  </p>
-                  <p className="text-sm">A vendre:</p>
-                  <p className="text-sm">A Louer:</p>
+                    <p className="font-bold">{todo.mainTitle}</p>
+                    <p className="">{todo.city}</p>
+                    <p className="text-sm">A vendre:</p>
+                    <p className="text-sm">A Louer:</p>
                   </div>
                 </Link>
               </li>
             ))}
           </ul>
         </div>
-        <div className="bg-red-300">zed</div>
+        <div className="w-1/3">
+      
+          <GoogleMaps
+            lata="-9.069839810859907"
+            lnga="39.60128890889341"
+            height="h-full"
+          />
+        </div>
       </div>
     </>
   );

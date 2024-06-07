@@ -2,6 +2,8 @@ import { createClient } from "@/utils/supabase/client"; // Ensure the correct pa
 import Link from "next/link";
 import Image from "next/image";
 import b from "@/components/b.png";
+import { FaUser } from "react-icons/fa";
+import { IoMenu } from "react-icons/io5";
 
 export default async function MainNavBar({ user }) {
   const supabase = createClient();
@@ -10,7 +12,7 @@ export default async function MainNavBar({ user }) {
   const profile = user ? await fetchUserProfile(supabase, user.id) : null;
 
   return (
-    <div className="w-full bg-gray-100 px-10 py-4 flex justify-between items-center">
+    <div className="w-full px-10 py-4 flex justify-between items-center border-b mb-8">
       <div className="w-12 h-12">
         <Image src={b} width={50} height={50} alt="Logo" />
       </div>
@@ -32,7 +34,7 @@ export default async function MainNavBar({ user }) {
             ))}
           </ul>
         ) : (
-          <div>Rien</div>
+          <div></div>
         )}
       </div>
       <div>
@@ -44,7 +46,15 @@ export default async function MainNavBar({ user }) {
             </div>
           </div>
         ) : (
-          <p>No user data</p>
+          <div className="flex gap-8 items-center">
+            <div><p>Mettre sa résidence sur Hoomge</p></div>
+          <div className="flex gap-2 items-center border-1 rounded-3xl py-2 px-4">
+            
+            <IoMenu />
+          <FaUser size={25} color="white" className="rounded-full bg-gray-600 p-1" />
+         
+          </div>
+          </div>
         )}
       </div>
     </div>

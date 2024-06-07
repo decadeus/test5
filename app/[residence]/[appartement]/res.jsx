@@ -69,20 +69,9 @@ export default function Res({
           <IconeS specificValue={aut3} size={20} />
           <p className={text}>{taut3}</p>
         </div>
-        <div className={line}>
-          <IconeS specificValue={avan1} size={20} />
-          <p className={text}>{tavan1}</p>
-        </div>
-        <div className={line}>
-          <IconeS specificValue={avan2} size={20} />
-          <p className={text}>{tavan2}</p>
-        </div>
-        <div className={line}>
-          <IconeS specificValue={avan3} size={20} />
-          <p className={text}>{tavan3}</p>
-        </div>
+       
       </div>
-      <div className="pt-4 flex items-center">
+      <div className="pt-4 flex items-center w-full">
         <div className="w-1/2">
           <GoogleMaps lnga={lnga} lata={lata} height="h-48" />
          
