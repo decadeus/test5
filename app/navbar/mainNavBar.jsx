@@ -18,17 +18,17 @@ export default async function MainNavBar({ user }) {
         </Link>
       </div>
       <div className="flex text-center justify-center items-center">
-        {profile?.username === "user" ? (
-          <ul className="flex gap-4 font-bold">
-            {siteConfig.navMenuItems.map((item) => (
+        {profile?.rules === "Admin" ? (
+          <ul className="flex gap-8 ">
+            {siteConfig.navAdmin.map((item) => (
               <li key={item.href}>
                 <Link href={item.href}>{item.label}</Link>
               </li>
             ))}
           </ul>
-        ) : profile?.username === "test" ? (
+        ) : profile?.rules === "Proprio" ? (
           <ul className="hidden lg:flex gap-4 justify-start">
-            {siteConfig.navItems.map((item) => (
+            {siteConfig.navProprio.map((item) => (
               <li key={item.href}>
                 <Link href={item.href}>{item.label}</Link>
               </li>
@@ -61,7 +61,7 @@ export default async function MainNavBar({ user }) {
 async function fetchUserProfile(supabase, userId) {
   const { data: profile, error } = await supabase
     .from("profiles")
-    .select("pic_profil, website, username") // Adjust the fields as necessary
+    .select("pic_profil, website, username, rules") // Adjust the fields as necessary
     .eq("id", userId)
     .single();
 
@@ -74,25 +74,33 @@ async function fetchUserProfile(supabase, userId) {
 }
 
 const siteConfig = {
-  navItems: [
-    {
-      label: "La résidence",
-      href: "/",
-    },
+  navAdmin: [
     {
       label: "Dashboard",
       href: "/",
     },
     {
-      label: "Dashboarde",
+      label: "Residence",
       href: "/",
     },
     {
-      label: "Dashboardr",
+      label: "Utilisateurs",
+      href: "/",
+    },
+    {
+      label: "Actu residence",
+      href: "/",
+    },
+    {
+      label: "Sondage",
+      href: "/",
+    },
+    {
+      label: "News",
       href: "/",
     },
   ],
-  navMenuItems: [
+  navProprio: [
     {
       label: "Profile",
       href: "/profile",
