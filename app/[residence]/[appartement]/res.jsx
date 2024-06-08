@@ -48,15 +48,20 @@ export default function Res({
   code_postal,
   city,
 }) {
-  const line = "flex text-center items-center gap-4 p-2";
+  const line = "flex flex-col text-center items-center gap-4 p-2";
   const text = "";
   return (
-    <div className="w-full px-4 pt-4 border-l">
-      <h2 className="text-center flex justify-center pb-4 font-bold text-2xl">La résidence</h2>
-      <div className="h-[200px]">
+    <div className="w-full px-4 pt-4 border-l pb-8">
+       <h2 className="text-center flex justify-center pb-4 font-bold text-2xl">La résidence</h2>
+      <div className="flex">
+        <div className="w-1/2">
+     
+      <div className="h-[400px]">
         <Avatar url={mainpic} width={200} height={200} className="rounded-lg" />
       </div>
-      <div className="flex flex-col gap-2 pt-4">
+      </div>
+      <div className="flex flex-col px-16 justify-between">
+      <div className="grid grid-cols-3 gap-2 pt-4 divide-x divide-slate-600">
         <div className={line}>
           <IconeS specificValue={aut1} size={20} />
           <p className={text}>{taut1}</p>
@@ -71,20 +76,24 @@ export default function Res({
         </div>
        
       </div>
-      <div className="pt-4 flex items-center w-full">
+      <div className="pt-4 flex items-center w-full gap-4 ">
         <div className="w-1/2">
-          <GoogleMaps lnga={lnga} lata={lata} height="h-48" />
+          <GoogleMaps lnga={lnga} lata={lata} height="h-64" />
          
         </div>
         <div className="w-1/2">
       <Adresse maintitle={mainTitle} adresse={adresse} code_postal={code_postal} city={city} />
-        </div>
-      </div>
       <div className="flex justify-center pt-8">
-        <button className="bg-green-400 w-full text-white py-2 px-4">
+        <button className="bg-green-600 w-fit text-white py-2 px-4">
       <BackLink >En savoir plus sur la residence</BackLink>
       </button>
       </div>
+        </div>
+      </div>
+      </div>
+      </div>
+      
+     
     </div>
   );
 }

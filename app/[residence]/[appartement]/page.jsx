@@ -32,9 +32,9 @@ export default async function Page({ params }) {
   }
 
   return (
-    <div className="flex flex-col w-full px-20">
-      <div className="flex flex-col xl:flex-row xl:w-full lg:flex-row md:flex-col sm:flex-col">
-        <div className="w-full flex-row w:2/3 xl:w-2/3 lg:w-2/3 md:w-full sm:w-full ">
+    <div className="flex flex-col w-full px-20 text-black">
+      <div className="flex flex-col xl:flex-col xl:w-full lg:flex-row md:flex-col sm:flex-col">
+        <div className="w-full flex-row w:2/3 xl:w-3/3 lg:w-3/3 md:w-full sm:w-full ">
           <Appart
             
             b1i={b.mainpic_url}
@@ -52,7 +52,8 @@ export default async function Page({ params }) {
             surface={b.surface}
           />
         </div>
-        <div className="w-full flex-row w:1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full ">
+        <hr  className="b"/>
+        <div className="w-full flex-row w:1/3 xl:w-3/3 lg:w-3/3 md:w-full sm:w-full ">
           <Res
             mainTitle={a.mainTitle}
             mainpic={a.mainpic_url}

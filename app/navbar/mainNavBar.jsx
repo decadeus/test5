@@ -12,9 +12,11 @@ export default async function MainNavBar({ user }) {
   const profile = user ? await fetchUserProfile(supabase, user.id) : null;
 
   return (
-    <div className="w-full px-10 py-4 flex justify-between items-center border-b mb-8">
+    <div className="w-full px-10 py-4 flex justify-between items-center border-b mb-8 text-black">
       <div className="w-12 h-12">
+        <Link href="/">
         <Image src={b} width={50} height={50} alt="Logo" />
+        </Link>
       </div>
       <div className="flex text-center justify-center items-center">
         {profile?.username === "user" ? (
@@ -48,7 +50,7 @@ export default async function MainNavBar({ user }) {
         ) : (
           <div className="flex gap-8 items-center">
             <div><p>Mettre sa résidence sur Hoomge</p></div>
-          <div className="flex gap-2 items-center border-1 rounded-3xl py-2 px-4">
+          <div className="flex gap-2 items-center border-1 rounded-3xl py-2 px-4 border-black">
             
             <IoMenu />
           <FaUser size={25} color="white" className="rounded-full bg-gray-600 p-1" />

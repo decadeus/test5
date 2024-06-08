@@ -28,10 +28,11 @@ export default async function RootLayout({
       <body className=" text-foreground">
       <Providers>
         <MainNavBar user={user}/>
-        <main className="min-h-screen flex flex-col items-center">
+        <main className="min-h-screen flex flex-col items-center text-black">
         
           {children}
         </main>
+        <div className="flex w-full bg-slate-500 mt-16 h-16 justify-center items-center">FOOTER</div>
         </Providers>
       </body>
     </html>

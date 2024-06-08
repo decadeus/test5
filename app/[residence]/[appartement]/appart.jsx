@@ -75,7 +75,7 @@ function Appart({ b1i,b2i, b3i,b4i, b2, t1, d1, m1, price, desprix, bed, bath, s
             <p>{d1}</p>
           </div>
         </div>
-        <div className="w-1/3 px-4">
+        <div className="w-1/3 ">
           <Price price={price} desprix={desprix} />
         </div>
       </div>
@@ -89,9 +89,9 @@ export default Appart;
 function Price({ price, desprix }) {
   return (
     <div className="shadow-lg p-4 rounded-xl flex flex-col gap-4">
-      <div className="w-fit font-bold">{price} €/mois</div>
+      <div className="w-fit text-xl"><span className="font-bold">{price}</span> €/mois</div>
       <p>{desprix}</p>
-      <button className="bg-blue-500 text-white px-4 py-2 rounded-lg w-full">
+      <button className="bg-red-600 text-white px-4 py-2 rounded-lg w-full">
         contacter le proprietaire
       </button>
     </div>

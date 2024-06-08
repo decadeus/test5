@@ -47,11 +47,11 @@ export default async function Page({ params }) {
   }
 
   return (
-    <div className="w-full lg:px-20 md:px-10 sm:px-5">
+    <div className="w-full lg:px-20 md:px-10 sm:px-5 text-black">
       <div className="flex flex-col justify-center items-center w-full pb-4">
         <h1 className="text-4xl font-bold">{data?.mainTitle}</h1>
       </div>
-      <div className="flex flex-col gap-20 justify-center">
+      <div className="flex flex-col gap-36 justify-center">
         <div className="flex flex-col items-center">
           <div className="w-full h-[600px]">
             <Avatar
@@ -95,9 +95,9 @@ export default async function Page({ params }) {
           </div>
         </div>
       </div>
-      <div className="justify-center flex flex-col gap-20">
-        <div className=" bg-gray-200 mt-8 mb-8 p-8">
-          <h2 className="font-bold text-xl text-center  pb-8 pt-8">
+      <div className="justify-center flex flex-col gap-20 pt-32">
+        <div className=" bg-gray-200 mt-8 mb-8 py-8 px-8">
+          <h2 className="font-bold text-xl text-center  pb-8 pt-4">
             Les points clés
           </h2>
           <div className="grid grid-cols-3 grid-rows-1 gap-4">
@@ -129,6 +129,7 @@ export default async function Page({ params }) {
         <p>Appartement(s) disponible(s)</p>
         <Appart value={data?.id} />
       </div>
+      <hr className="mt-8" />
 
       <div className="w-full flex pt-8">
         <div className="w-1/2 bg-red-300">

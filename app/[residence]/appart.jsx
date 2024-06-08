@@ -32,13 +32,13 @@ export default function TodoList({ value }) {
       
       <ul className="flex gap-8 ">
         {todos.map((todo) => (
-          <li key={todo.id} className=" ">
+          <li key={todo.id} className="text-black ">
             <Link href={`${pathname}/${todo.id}`}>
-              <Card className="py-4  border-2 border-black  hover:scale-105 shadow-2xl">
+              <Card className="py-4  border-2 border-black  hover:scale-105 shadow-xl">
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
             
 
-                  <h4 className="font-bold text-large">{todo.type}</h4>
+                  <h4 className="font-bold text-large text-black">{todo.type}</h4>
                 </CardHeader>
                 <CardBody className="overflow-visible py-2 w-[200px] h-[200px] ">
                   <Avatar url={todo.mainpic_url} width={270} height={196} />
