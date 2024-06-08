@@ -13,7 +13,7 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import { FaInfo } from "react-icons/fa";
-import { createClient } from "./../../../utils/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 export default function Info({ user }) {
   const supabase = createClient();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -47,7 +47,7 @@ export default function Info({ user }) {
         radius="full"
         variant="light"
       >
-        <div className={user.alert ? "bg-red-500 rounded-full text-white p-1" : ""}>
+        <div className={user.alert ? "bg-red-500 flex justify-center items-center text-center rounded-full text-white p-1" : ""}>
       {/* Utilisation de la classe conditionnelle pour déterminer la couleur */}
       <FaInfo  />
     </div>

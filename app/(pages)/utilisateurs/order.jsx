@@ -21,7 +21,7 @@ import { VerticalDotsIcon } from "./components/icons/VerticalDotsIcon";
 import { SearchIcon } from "./components/icons/SearchIcon";
 import { ChevronDownIcon } from "./components/icons/ChevronDownIcon";
 import { capitalize } from "./components/utils";
-import { createClient } from "../../utils/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect } from "react";
 import Addnew from "./components/addnew";
 import moment from "moment";
@@ -46,23 +46,20 @@ const statusOptions = [
 const columns = [
   { name: "", uid: "avatar_url" },
   { name: "EMAIL", uid: "email", sortable: true },
-  { name: "PSEUDO", uid: "pseudo", sortable: true },
-
-  { name: "ROLE", uid: "status", sortable: true },
+  { name: "PSEUDO", uid: "username", sortable: true },
+  { name: "ROLE", uid: "rules", sortable: true },
   { name: "AJOUTE LE", uid: "created_at", sortable: true },
-  { name: "INFO", uid: "info"},
-
+  { name: "INFO", uid: "info" },
   { name: "SUPPRIMER", uid: "delete" },
 ];
 const INITIAL_VISIBLE_COLUMNS = [
-  "pseudo",
+  "username",
 
   "created_at",
-  "status",
+  "rules",
   "avatar_url",
   "info",
   "email",
-
   "delete",
 ];
 
@@ -90,8 +87,8 @@ export default function Order() {
     try {
       const { data, error } = await supabase.storage
         .from("avatars")
-        .download(path)
-        
+        .download(path);
+
       if (error) {
         throw error;
       }
@@ -115,7 +112,7 @@ export default function Order() {
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
   const [statusFilter, setStatusFilter] = React.useState("all");
-  const [rowsPerPage, setRowsPerPage] = React.useState(200);
+  const [rowsPerPage, setRowsPerPage] = React.useState("5");
   const [sortDescriptor, setSortDescriptor] = React.useState({
     column: "created_at",
     direction: "descending",
@@ -182,14 +179,7 @@ export default function Order() {
       case "info":
         return <Info user={user} />;
       case "avatar_url":
-        return (
-          <Avatar
-            size="md"
-            src={user.avatar_url}
-            alt="Avatar"
-           
-          />
-        );
+        return <Avatar size="md" src={user.avatar_url} alt="Avatar" />;
       case "role":
         return (
           <div className="flex flex-col">

@@ -10,7 +10,7 @@ import {
   TableCell,
   getKeyValue,
 } from "@nextui-org/react";
-import { createClient } from "../../utils/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 
 
 const supabase = createClient();

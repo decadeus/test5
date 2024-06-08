@@ -10,8 +10,8 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useState } from "react";
-import { createClient } from "./../../../utils/supabase/client"; // Assuming this path is correct
-import { PlusIcon } from "./../components/icons/PlusIcon";
+import { createClient } from "@/utils/supabase/client";
+import { PlusIcon } from "./icons/PlusIcon";
 import { Input } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/react";
 import { useRouter } from 'next/navigation';

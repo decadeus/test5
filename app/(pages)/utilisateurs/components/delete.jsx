@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createClient } from "./../../../utils/supabase/client"; 
+import { createClient } from "@/utils/supabase/client"; 
 import { FaRegTrashAlt } from "react-icons/fa";
 
 const supabase = createClient();
