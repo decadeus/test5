@@ -85,7 +85,7 @@ const siteConfig = {
     },
     {
       label: "Utilisateurs",
-      href: "/",
+      href: "/utilisateurs",
     },
     {
       label: "Actu residence",
