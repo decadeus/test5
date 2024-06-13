@@ -81,7 +81,7 @@ const siteConfig = {
     },
     {
       label: "Residence",
-      href: "/",
+      href: "/residences",
     },
     {
       label: "Utilisateurs",
