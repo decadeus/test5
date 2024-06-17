@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback } from "react";
-import Avatar from "@/app/getimage/getone";
+import Avatar from "@/app/getimage/getone_u";
 import useEmblaCarousel from "embla-carousel-react";
 import { MdOutlinePool, MdFitnessCenter } from "react-icons/md";
 

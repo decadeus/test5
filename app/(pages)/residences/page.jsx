@@ -1,6 +1,6 @@
-'use client';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { createClient } from '@/utils/supabase/client';
+"use client";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { createClient } from "@/utils/supabase/client";
 import {
   Modal,
   ModalContent,
@@ -9,13 +9,25 @@ import {
   Button,
   useDisclosure,
   Textarea,
-  RadioGroup, Radio
-} from '@nextui-org/react';
-import Avatar from '@/app/getimage/getone';
-
+  RadioGroup,
+  Radio,
+} from "@nextui-org/react";
+import Avatar from "@/app/getimage/getone";
 
 import { MdBalcony, MdOutlinePool, MdFitnessCenter } from "react-icons/md";
-import { FaElevator, FaDog, FaSchoolCircleCheck, FaBasketShopping, FaBaby, FaGasPump, FaPlaneDeparture, FaGraduationCap, FaKey, FaMasksTheater, FaWheelchairMove } from "react-icons/fa";
+import {
+  FaElevator,
+  FaDog,
+  FaSchoolCircleCheck,
+  FaBasketShopping,
+  FaBaby,
+  FaGasPump,
+  FaPlaneDeparture,
+  FaGraduationCap,
+  FaKey,
+  FaMasksTheater,
+  FaWheelchairMove,
+} from "react-icons/fa";
 import { GiParkBench } from "react-icons/gi";
 import { IoMdBicycle } from "react-icons/io";
 
@@ -38,12 +50,12 @@ export default function Page() {
         } = await supabase.auth.getUser();
         setUser(user);
 
-        if (!user) throw new Error('User not authenticated');
+        if (!user) throw new Error("User not authenticated");
 
         const { data, error } = await supabase
-          .from('residence')
-          .select('*')
-          .eq('ide', user.id)
+          .from("residence")
+          .select("*")
+          .eq("ide", user.id)
           .single();
         if (error) throw error;
 
@@ -53,7 +65,7 @@ export default function Page() {
         setSecondpicUrl(data.secondpic_url);
         setThreepicUrl(data.threepic_url);
       } catch (err) {
-        console.error('Error fetching data:', err);
+        console.error("Error fetching data:", err);
         setError(err.message);
       }
     }
@@ -67,17 +79,17 @@ export default function Page() {
         setLoading(true);
         const updatedData = { ...editedData, [field]: value };
         const { error } = await supabase
-          .from('residence')
+          .from("residence")
           .update(updatedData)
-          .eq('ide', user?.id)
+          .eq("ide", user?.id)
           .single();
         if (error) throw error;
 
-        alert('Profile updated!');
+        alert("Profile updated!");
         setProfile(updatedData);
         setEditedData(updatedData);
       } catch (error) {
-        alert('Error updating the data!');
+        alert("Error updating the data!");
       } finally {
         setLoading(false);
       }
@@ -86,9 +98,9 @@ export default function Page() {
   );
 
   const handleAvatarUpload = (field, url) => {
-    if (field === 'mainpic_url') setMainpicUrl(url);
-    if (field === 'secondpic_url') setSecondpicUrl(url);
-    if (field === 'threepic_url') setThreepicUrl(url);
+    if (field === "mainpic_url") setMainpicUrl(url);
+    if (field === "secondpic_url") setSecondpicUrl(url);
+    if (field === "threepic_url") setThreepicUrl(url);
     updateProfile(field, url);
   };
 
@@ -118,7 +130,9 @@ export default function Page() {
           <MainTitle
             main={profile.mainTitle}
             edited={editedData.mainTitle}
-            updateProfile={() => updateProfile('mainTitle', editedData.mainTitle)}
+            updateProfile={() =>
+              updateProfile("mainTitle", editedData.mainTitle)
+            }
             loading={loading}
             setEdited={(value) =>
               setEditedData({ ...editedData, mainTitle: value })
@@ -138,7 +152,7 @@ export default function Page() {
                 height={1000}
                 url={mainpicUrl || profile.mainpic_url}
                 size={150}
-                onUpload={(url) => handleAvatarUpload('mainpic_url', url)}
+                onUpload={(url) => handleAvatarUpload("mainpic_url", url)}
               />
             )}
           </div>
@@ -150,7 +164,7 @@ export default function Page() {
                 <MainTitle
                   main={profile.t1}
                   edited={editedData.t1}
-                  updateProfile={() => updateProfile('t1', editedData.t1)}
+                  updateProfile={() => updateProfile("t1", editedData.t1)}
                   loading={loading}
                   setEdited={(value) =>
                     setEditedData({ ...editedData, t1: value })
@@ -163,7 +177,7 @@ export default function Page() {
                 <MainTitle
                   main={profile.d1}
                   edited={editedData.d1}
-                  updateProfile={() => updateProfile('d1', editedData.d1)}
+                  updateProfile={() => updateProfile("d1", editedData.d1)}
                   loading={loading}
                   setEdited={(value) =>
                     setEditedData({ ...editedData, d1: value })
@@ -182,7 +196,7 @@ export default function Page() {
                 height={1000}
                 url={secondpicUrl || profile.secondpic_url}
                 size={150}
-                onUpload={(url) => handleAvatarUpload('secondpic_url', url)}
+                onUpload={(url) => handleAvatarUpload("secondpic_url", url)}
               />
             )}
           </div>
@@ -196,7 +210,7 @@ export default function Page() {
                 height={1000}
                 url={threepicUrl || profile.threepic_url}
                 size={150}
-                onUpload={(url) => handleAvatarUpload('threepic_url', url)}
+                onUpload={(url) => handleAvatarUpload("threepic_url", url)}
               />
             )}
           </div>
@@ -206,7 +220,7 @@ export default function Page() {
                 <MainTitle
                   main={profile.t2}
                   edited={editedData.t2}
-                  updateProfile={() => updateProfile('t2', editedData.t2)}
+                  updateProfile={() => updateProfile("t2", editedData.t2)}
                   loading={loading}
                   setEdited={(value) =>
                     setEditedData({ ...editedData, t2: value })
@@ -219,7 +233,7 @@ export default function Page() {
                 <MainTitle
                   main={profile.d2}
                   edited={editedData.d2}
-                  updateProfile={() => updateProfile('d2', editedData.d2)}
+                  updateProfile={() => updateProfile("d2", editedData.d2)}
                   loading={loading}
                   setEdited={(value) =>
                     setEditedData({ ...editedData, d2: value })
@@ -232,30 +246,127 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="row-start-3 px-4">
-        <IconeS
-          main={profile.aut3}
-          edited={editedData.aut3}
-          updateProfile={() => updateProfile('aut3', editedData.aut3)}
-          loading={loading}
-          setEdited={(value) =>
-            setEditedData((prevData) => ({ ...prevData, aut3: value }))
-          }
-          size={30}
-          maxLength={400}
-        />
-          <IconeS
-          main={profile.aut2}
-          edited={editedData.aut2}
-          updateProfile={() => updateProfile('aut2', editedData.aut2)}
-          loading={loading}
-          setEdited={(value) =>
-            setEditedData((prevData) => ({ ...prevData, aut2: value }))
-          }
-          size={30}
-          maxLength={400}
-        />
-        <FaBaby />
+      <div>
+     
+        <div className="grid grid-cols-3 grid-rows-1 gap-4 pt-16 ">
+          <div className="bg-gray-300 border-2 p-4">
+            <p className="text-xl font-bold text-center">
+              <IconeS
+                main={profile.aut1}
+                edited={editedData.aut1}
+                updateProfile={() => updateProfile("aut1", editedData.aut1)}
+                loading={loading}
+                setEdited={(value) =>
+                  setEditedData((prevData) => ({ ...prevData, aut1: value }))
+                }
+                size={30}
+                maxLength={400}
+              />
+            </p>
+            <p className="text-xl font-bold pb-4">
+              <MainTitle
+                main={profile.taut1}
+                edited={editedData.taut1}
+                updateProfile={() => updateProfile("d2", editedData.taut1)}
+                loading={loading}
+                setEdited={(value) =>
+                  setEditedData({ ...editedData, taut1: value })
+                }
+                size="text-lg"
+                maxLength={400}
+              />
+            </p>
+            <MainTitle
+              main={profile.daut1}
+              edited={editedData.daut1}
+              updateProfile={() => updateProfile("d1", editedData.daut1)}
+              loading={loading}
+              setEdited={(value) =>
+                setEditedData({ ...editedData, daut1: value })
+              }
+              size="text-lg"
+              maxLength={400}
+            />
+          </div>
+          <div className="bg-gray-300 border-2 p-4">
+            <p className="text-xl font-bold text-center">
+              <IconeS
+                main={profile.aut2}
+                edited={editedData.aut2}
+                updateProfile={() => updateProfile("aut2", editedData.aut2)}
+                loading={loading}
+                setEdited={(value) =>
+                  setEditedData((prevData) => ({ ...prevData, aut2: value }))
+                }
+                size={30}
+                maxLength={400}
+              />
+            </p>
+            <p className="text-xl font-bold pb-4">
+              <MainTitle
+                main={profile.taut2}
+                edited={editedData.taut2}
+                updateProfile={() => updateProfile("d2", editedData.taut2)}
+                loading={loading}
+                setEdited={(value) =>
+                  setEditedData({ ...editedData, taut2: value })
+                }
+                size="text-lg"
+                maxLength={400}
+              />
+            </p>
+            <MainTitle
+              main={profile.daut2}
+              edited={editedData.daut2}
+              updateProfile={() => updateProfile("d2", editedData.daut2)}
+              loading={loading}
+              setEdited={(value) =>
+                setEditedData({ ...editedData, daut2: value })
+              }
+              size="text-lg"
+              maxLength={400}
+            />
+          </div>
+          <div className="bg-gray-300 border-2 p-4">
+            <p className="text-xl font-bold text-center">
+              <IconeS
+                main={profile.aut3}
+                edited={editedData.aut3}
+                updateProfile={() => updateProfile("aut3", editedData.aut3)}
+                loading={loading}
+                setEdited={(value) =>
+                  setEditedData((prevData) => ({ ...prevData, aut3: value }))
+                }
+                size={30}
+                maxLength={400}
+              />
+            </p>
+            <p className="text-xl font-bold pb-4">
+              <MainTitle
+                main={profile.taut3}
+                edited={editedData.taut3}
+                updateProfile={() => updateProfile("d3", editedData.taut3)}
+                loading={loading}
+                setEdited={(value) =>
+                  setEditedData({ ...editedData, taut3: value })
+                }
+                size="text-lg"
+                maxLength={400}
+              />
+            </p>
+            <MainTitle
+              main={profile.daut3}
+              edited={editedData.daut3}
+              updateProfile={() => updateProfile("d2", editedData.daut3)}
+              loading={loading}
+              setEdited={(value) =>
+                setEditedData({ ...editedData, daut3: value })
+              }
+              size="text-lg"
+              maxLength={400}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -290,7 +401,7 @@ function MainTitle({
                     className="flex w-2xl"
                     id="maintitle"
                     type="text"
-                    value={edited || ''}
+                    value={edited || ""}
                     onChange={(e) => setEdited(e.target.value)}
                   />
                 </div>
@@ -307,7 +418,7 @@ function MainTitle({
                   }}
                   disabled={loading}
                 >
-                  {loading ? 'Loading ...' : 'Update'}
+                  {loading ? "Loading ..." : "Update"}
                 </Button>
               </ModalFooter>
             </>
@@ -317,7 +428,6 @@ function MainTitle({
     </>
   );
 }
-
 
 function IconeS({
   main,
@@ -332,19 +442,31 @@ function IconeS({
   const iconComponents = [
     { value: 1, icon: <MdBalcony size={size} /> },
     { value: 2, icon: <FaDog size={size} /> },
-  
+    { value: 3, icon: <FaBaby size={size} /> },
+    { value: 4, icon: <FaGasPump size={size} /> },
+    { value: 5, icon: <FaPlaneDeparture size={size} /> },
+    { value: 6, icon: <FaGraduationCap size={size} /> },
+    { value: 7, icon: <FaKey size={size} /> },
+ 
+ 
   ];
 
   const getIconByValue = (value) => {
-    const iconComponent = iconComponents.find((component) => component.value === value);
+    const iconComponent = iconComponents.find(
+      (component) => component.value === value
+    );
     return iconComponent ? iconComponent.icon : null;
   };
 
   return (
-    <div className='bg-red-300'>
-   
-      <button aria-label="open icon selection" className="text-start" onClick={onOpen}> {getIconByValue(main)}
-      
+    <div className="">
+      <button
+        aria-label="open icon selection"
+        className="text-start"
+        onClick={onOpen}
+      >
+        {" "}
+        {getIconByValue(main)}
       </button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
         <ModalContent>
