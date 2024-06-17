@@ -1,7 +1,7 @@
 import React from "react";
 import GoogleMaps from "./../googlemap";
 import Adresse from "../adresse";
-import Avatar from "@/app/getimage/getone";
+import Avatar from "@/app/getimage/getone_u";
 import { MdBalcony } from "react-icons/md";
 import { FaDog } from "react-icons/fa";
 import BackLink from "./usepath";

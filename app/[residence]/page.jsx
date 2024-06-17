@@ -1,7 +1,7 @@
 import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import Appart from "./appart";
-import Avatar from "@/app/getimage/getone";
+import Avatar from "@/app/getimage/getone_u";
 import { MdBalcony } from "react-icons/md";
 import { FaDog } from "react-icons/fa";
 import {

@@ -4,7 +4,7 @@ import { createClient } from "./../utils/supabase/client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardHeader, CardBody } from "@nextui-org/react";
-import Avatar from "./getimage/getone";
+import Avatar from "./getimage/getone_u";
 import GoogleMaps from "./[residence]/googlemap";
 export default function TodoList() {
   const supabase = createClient();

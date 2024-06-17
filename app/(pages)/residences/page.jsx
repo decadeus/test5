@@ -1,6 +1,6 @@
-"use client";
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { createClient } from "@/utils/supabase/client";
+'use client';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { createClient } from '@/utils/supabase/client';
 import {
   Modal,
   ModalContent,
@@ -9,8 +9,15 @@ import {
   Button,
   useDisclosure,
   Textarea,
-} from "@nextui-org/react";
-import Avatar from "@/app/getimage/getone";
+  RadioGroup, Radio
+} from '@nextui-org/react';
+import Avatar from '@/app/getimage/getone';
+
+
+import { MdBalcony, MdOutlinePool, MdFitnessCenter } from "react-icons/md";
+import { FaElevator, FaDog, FaSchoolCircleCheck, FaBasketShopping, FaBaby, FaGasPump, FaPlaneDeparture, FaGraduationCap, FaKey, FaMasksTheater, FaWheelchairMove } from "react-icons/fa";
+import { GiParkBench } from "react-icons/gi";
+import { IoMdBicycle } from "react-icons/io";
 
 export default function Page() {
   const supabase = useMemo(() => createClient(), []);
@@ -31,12 +38,12 @@ export default function Page() {
         } = await supabase.auth.getUser();
         setUser(user);
 
-        if (!user) throw new Error("User not authenticated");
+        if (!user) throw new Error('User not authenticated');
 
         const { data, error } = await supabase
-          .from("residence")
-          .select("*")
-          .eq("ide", user.id)
+          .from('residence')
+          .select('*')
+          .eq('ide', user.id)
           .single();
         if (error) throw error;
 
@@ -46,7 +53,7 @@ export default function Page() {
         setSecondpicUrl(data.secondpic_url);
         setThreepicUrl(data.threepic_url);
       } catch (err) {
-        console.error("Error fetching data:", err);
+        console.error('Error fetching data:', err);
         setError(err.message);
       }
     }
@@ -60,17 +67,17 @@ export default function Page() {
         setLoading(true);
         const updatedData = { ...editedData, [field]: value };
         const { error } = await supabase
-          .from("residence")
+          .from('residence')
           .update(updatedData)
-          .eq("ide", user?.id)
+          .eq('ide', user?.id)
           .single();
         if (error) throw error;
 
-        alert("Profile updated!");
+        alert('Profile updated!');
         setProfile(updatedData);
         setEditedData(updatedData);
       } catch (error) {
-        alert("Error updating the data!");
+        alert('Error updating the data!');
       } finally {
         setLoading(false);
       }
@@ -79,9 +86,9 @@ export default function Page() {
   );
 
   const handleAvatarUpload = (field, url) => {
-    if (field === "mainpic_url") setMainpicUrl(url);
-    if (field === "secondpic_url") setSecondpicUrl(url);
-    if (field === "threepic_url") setThreepicUrl(url);
+    if (field === 'mainpic_url') setMainpicUrl(url);
+    if (field === 'secondpic_url') setSecondpicUrl(url);
+    if (field === 'threepic_url') setThreepicUrl(url);
     updateProfile(field, url);
   };
 
@@ -102,6 +109,8 @@ export default function Page() {
     );
   }
 
+  console.log("Profile Data:", profile); // Check the profile data in the console
+
   return (
     <div className="w-full lg:px-20 md:px-10 sm:px-5 text-black">
       <div className="flex flex-col justify-center items-center w-full pb-4">
@@ -109,7 +118,7 @@ export default function Page() {
           <MainTitle
             main={profile.mainTitle}
             edited={editedData.mainTitle}
-            updateProfile={() => updateProfile("mainTitle", editedData.mainTitle)}
+            updateProfile={() => updateProfile('mainTitle', editedData.mainTitle)}
             loading={loading}
             setEdited={(value) =>
               setEditedData({ ...editedData, mainTitle: value })
@@ -129,7 +138,7 @@ export default function Page() {
                 height={1000}
                 url={mainpicUrl || profile.mainpic_url}
                 size={150}
-                onUpload={(url) => handleAvatarUpload("mainpic_url", url)}
+                onUpload={(url) => handleAvatarUpload('mainpic_url', url)}
               />
             )}
           </div>
@@ -141,7 +150,7 @@ export default function Page() {
                 <MainTitle
                   main={profile.t1}
                   edited={editedData.t1}
-                  updateProfile={() => updateProfile("t1", editedData.t1)}
+                  updateProfile={() => updateProfile('t1', editedData.t1)}
                   loading={loading}
                   setEdited={(value) =>
                     setEditedData({ ...editedData, t1: value })
@@ -154,7 +163,7 @@ export default function Page() {
                 <MainTitle
                   main={profile.d1}
                   edited={editedData.d1}
-                  updateProfile={() => updateProfile("d1", editedData.d1)}
+                  updateProfile={() => updateProfile('d1', editedData.d1)}
                   loading={loading}
                   setEdited={(value) =>
                     setEditedData({ ...editedData, d1: value })
@@ -173,7 +182,7 @@ export default function Page() {
                 height={1000}
                 url={secondpicUrl || profile.secondpic_url}
                 size={150}
-                onUpload={(url) => handleAvatarUpload("secondpic_url", url)}
+                onUpload={(url) => handleAvatarUpload('secondpic_url', url)}
               />
             )}
           </div>
@@ -187,7 +196,7 @@ export default function Page() {
                 height={1000}
                 url={threepicUrl || profile.threepic_url}
                 size={150}
-                onUpload={(url) => handleAvatarUpload("threepic_url", url)}
+                onUpload={(url) => handleAvatarUpload('threepic_url', url)}
               />
             )}
           </div>
@@ -197,7 +206,7 @@ export default function Page() {
                 <MainTitle
                   main={profile.t2}
                   edited={editedData.t2}
-                  updateProfile={() => updateProfile("t2", editedData.t2)}
+                  updateProfile={() => updateProfile('t2', editedData.t2)}
                   loading={loading}
                   setEdited={(value) =>
                     setEditedData({ ...editedData, t2: value })
@@ -210,7 +219,7 @@ export default function Page() {
                 <MainTitle
                   main={profile.d2}
                   edited={editedData.d2}
-                  updateProfile={() => updateProfile("d2", editedData.d2)}
+                  updateProfile={() => updateProfile('d2', editedData.d2)}
                   loading={loading}
                   setEdited={(value) =>
                     setEditedData({ ...editedData, d2: value })
@@ -222,6 +231,31 @@ export default function Page() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="row-start-3 px-4">
+        <IconeS
+          main={profile.aut3}
+          edited={editedData.aut3}
+          updateProfile={() => updateProfile('aut3', editedData.aut3)}
+          loading={loading}
+          setEdited={(value) =>
+            setEditedData((prevData) => ({ ...prevData, aut3: value }))
+          }
+          size={30}
+          maxLength={400}
+        />
+          <IconeS
+          main={profile.aut2}
+          edited={editedData.aut2}
+          updateProfile={() => updateProfile('aut2', editedData.aut2)}
+          loading={loading}
+          setEdited={(value) =>
+            setEditedData((prevData) => ({ ...prevData, aut2: value }))
+          }
+          size={30}
+          maxLength={400}
+        />
+        <FaBaby />
       </div>
     </div>
   );
@@ -256,9 +290,79 @@ function MainTitle({
                     className="flex w-2xl"
                     id="maintitle"
                     type="text"
-                    value={edited || ""}
+                    value={edited || ''}
                     onChange={(e) => setEdited(e.target.value)}
                   />
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    updateProfile();
+                    onClose();
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? 'Loading ...' : 'Update'}
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
+
+
+function IconeS({
+  main,
+  edited,
+  updateProfile,
+  loading,
+  setEdited,
+  size,
+  maxLength,
+}) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const iconComponents = [
+    { value: 1, icon: <MdBalcony size={size} /> },
+    { value: 2, icon: <FaDog size={size} /> },
+  
+  ];
+
+  const getIconByValue = (value) => {
+    const iconComponent = iconComponents.find((component) => component.value === value);
+    return iconComponent ? iconComponent.icon : null;
+  };
+
+  return (
+    <div className='bg-red-300'>
+   
+      <button aria-label="open icon selection" className="text-start" onClick={onOpen}> {getIconByValue(main)}
+      
+      </button>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody>
+                <div className="flex justify-center items-center p-8">
+                  <RadioGroup
+                    value={edited}
+                    onValueChange={setEdited}
+                    orientation="horizontal"
+                  >
+                    {iconComponents.map((component) => (
+                      <Radio key={component.value} value={component.value}>
+                        <p className="pr-8">{component.icon}</p>
+                      </Radio>
+                    ))}
+                  </RadioGroup>
                 </div>
               </ModalBody>
               <ModalFooter>
@@ -280,6 +384,6 @@ function MainTitle({
           )}
         </ModalContent>
       </Modal>
-    </>
+    </div>
   );
 }
