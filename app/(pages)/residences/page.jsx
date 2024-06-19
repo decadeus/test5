@@ -12,6 +12,7 @@ import {
   Textarea,
   RadioGroup,
   Radio,
+  Input,
 } from "@nextui-org/react";
 import Avatar from "@/app/getimage/getone";
 
@@ -31,7 +32,8 @@ import {
 } from "react-icons/fa";
 import { GiParkBench } from "react-icons/gi";
 import { IoMdBicycle } from "react-icons/io";
-
+import GoogleMaps from "@/app/[residence]/googlemap";
+import Adresse from "@/app/[residence]/adresse";
 
 export default function Page() {
   const supabase = useMemo(() => createClient(), []);
@@ -249,7 +251,6 @@ export default function Page() {
         </div>
       </div>
       <div>
-     
         <div className="grid grid-cols-3 grid-rows-1 gap-4 pt-16 ">
           <div className="bg-gray-300 border-2 p-4">
             <p className="text-xl font-bold text-center">
@@ -370,9 +371,50 @@ export default function Page() {
           </div>
         </div>
       </div>
+      <div className="w-full flex pt-16">
+        <div className="w-1/2 bg-red-300">
+          <GoogleMaps
+            lnga={profile.lng}
+            lata={profile.lat}
+            height="h-[300px]"
+          />
+        </div>
+        <div className="w-1/2 flex justify-center items-center text-center">
+          <FullAdress
+            mainres={profile.mainTitle}
+            main={profile.adresse1}
+            main2={profile.adresse2}
+            main3={profile.codepost}
+            main4={profile.city}
+            resedited={editedData.mainTitle}
+            edited={editedData.adresse1}
+            edited2={editedData.adresse2}
+            Cp={editedData.codepost}
+            City={editedData.city}
+            lng={editedData.lng}
+            lat={editedData.lat}
+            updateProfile={() => updateProfile("t2", editedData.t2)}
+            loading={loading}
+            setResedited={(value) =>
+              setEditedData({ ...editedData, mainTitle: value })
+            }
+            setEdited={(value) =>
+              setEditedData({ ...editedData, adresse1: value })
+            }
+            setEdited2={(value) =>
+              setEditedData({ ...editedData, adresse2: value })
+            }
+            setLng={(value) => setEditedData({ ...editedData, lng: value })}
+            setLat={(value) => setEditedData({ ...editedData, lat: value })}
+            setCp={(value) => setEditedData({ ...editedData, codepost: value })}
+            setCity={(value) => setEditedData({ ...editedData, city: value })}
+            size="text-lg"
+            maxLength={400}
+          />
+        </div>
+      </div>
       <div className="pt-16 flex justify-center items-center">
-      <Online online={profile.online} />
-    
+        <Online online={profile.online} />
       </div>
     </div>
   );
@@ -435,6 +477,153 @@ function MainTitle({
   );
 }
 
+function FullAdress({
+  mainres,
+  main,
+  main2,
+  main3,
+  main4,
+  resedited,
+  edited,
+  edited2,
+  lng,
+  lat,
+  Cp,
+  setCp,
+  City,
+  setCity,
+  updateProfile,
+  loading,
+  setResedited,
+  setEdited,
+  setEdited2,
+  setLng,
+  setLat,
+  size,
+  maxLength,
+}) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  return (
+    <>
+      <button className="text-start" variant="light" onClick={onOpen}>
+        <div className="text-xl font-normal border p-8">
+          <p className="font-bold text-2xl">{mainres}</p>
+          <p>{main}</p>
+          <p>{main2}</p>
+          <div>
+            <div className="flex gap-2"><p>{main3}</p><p>{main4}</p></div>
+           
+          </div>
+        </div>
+      </button>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody>
+                <div className="flex flex-col gap-8 p-8 text-wrap font-thin">
+                  <Input
+                    label="Nom de la résidence"
+                    placeholder=""
+                    labelPlacement="outside"
+                    className="font-bold"
+                    id="residencename"
+                    type="text"
+                    value={resedited || ""}
+                    onChange={(e) => setResedited(e.target.value)}
+                  />
+                  <Input
+                    label="Adresse"
+                    placeholder="Ligne 1"
+                    labelPlacement="outside"
+                    className="font-bold"
+                    id="maintitle"
+                    type="text"
+                    value={edited || ""}
+                    onChange={(e) => setEdited(e.target.value)}
+                  />
+                  <div className="">
+                    <Input
+                      label="Adresse"
+                      placeholder="Ligne 2"
+                      labelPlacement="outside"
+                      className="font-bold"
+                      id="maintitle2"
+                      type="text"
+                      value={edited2 || ""}
+                      onChange={(e) => setEdited2(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex gap-4 w-full">
+                    <Input
+                      label="Longitude"
+                      placeholder="ex: 75 000"
+                      labelPlacement="outside"
+                      className="font-bold"
+                      id="lng"
+                      type="text"
+                      value={Cp || ""}
+                      onChange={(e) => setCp(e.target.value)}
+                    />
+                    <Input
+                      label="Latitude"
+                      placeholder="ex: Paris"
+                      labelPlacement="outside"
+                      className="font-bold"
+                      id="lat"
+                      type="text"
+                      value={City || ""}
+                      onChange={(e) => setCity(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex gap-4 w-full">
+                    <Input
+                      label="Longitude"
+                      placeholder="ex: -22.289868787205"
+                      labelPlacement="outside"
+                      className="font-bold"
+                      id="lng"
+                      type="text"
+                      value={lng || ""}
+                      onChange={(e) => setLng(e.target.value)}
+                    />
+                    <Input
+                      label="Latitude"
+                      placeholder="ex: 30.909058057456"
+                      labelPlacement="outside"
+                      className="font-bold"
+                      id="lat"
+                      type="text"
+                      value={lat || ""}
+                      onChange={(e) => setLat(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    updateProfile();
+                    onClose();
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? "Loading ..." : "Update"}
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
+
 function IconeS({
   main,
   edited,
@@ -453,8 +642,6 @@ function IconeS({
     { value: 5, icon: <FaPlaneDeparture size={size} /> },
     { value: 6, icon: <FaGraduationCap size={size} /> },
     { value: 7, icon: <FaKey size={size} /> },
- 
- 
   ];
 
   const getIconByValue = (value) => {
@@ -516,33 +703,48 @@ function IconeS({
   );
 }
 
-function Online({online}){
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+function Online({ online }) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <div className="flex flex-col justify-center items-center border-2 w-fit p-4 border-black">
-      <Button onPress={onOpen} isIconOnly size="sm" className="bg-gray-300 rounded-full p-4 border-2 text-sm border-black font-bold">?</Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+      <Button
+        onPress={onOpen}
+        isIconOnly
+        size="sm"
+        className="bg-gray-300 rounded-full p-4 border-2 text-sm border-black font-bold"
+      >
+        ?
+      </Button>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        isDismissable={false}
+        isKeyboardDismissDisabled={true}
+      >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Modal Title
+              </ModalHeader>
               <ModalBody>
-                <p> 
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Nullam pulvinar risus non risus hendrerit venenatis.
                   Pellentesque sit amet hendrerit risus, sed porttitor quam.
                 </p>
                 <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
-                  dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. 
-                  Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod. 
-                  Et mollit incididunt nisi consectetur esse laborum eiusmod pariatur 
-                  proident Lorem eiusmod et. Culpa deserunt nostrud ad veniam.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam pulvinar risus non risus hendrerit venenatis.
+                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                </p>
+                <p>
+                  Magna exercitation reprehenderit magna aute tempor cupidatat
+                  consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
+                  incididunt cillum quis. Velit duis sit officia eiusmod Lorem
+                  aliqua enim laboris do dolor eiusmod. Et mollit incididunt
+                  nisi consectetur esse laborum eiusmod pariatur proident Lorem
+                  eiusmod et. Culpa deserunt nostrud ad veniam.
                 </p>
               </ModalBody>
               <ModalFooter>
@@ -557,13 +759,12 @@ function Online({online}){
           )}
         </ModalContent>
       </Modal>
-     
+
       <div className=" px-4 py-2 flex w-fit justify-center items-center text-center font-bold text-xl ">
-      <p className={online ? 'text-green-500' : 'text-red-500'}>
-      {online ? "votre page est en ligne" : "votre page est hors ligne"}
-      </p>
-     
+        <p className={online ? "text-green-500" : "text-red-500"}>
+          {online ? "votre page est en ligne" : "votre page est hors ligne"}
+        </p>
       </div>
     </div>
-  )
+  );
 }
