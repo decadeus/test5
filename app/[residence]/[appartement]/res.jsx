@@ -32,7 +32,7 @@ export default function Res({
       </h2>
       <div className="flex">
         <div className="w-1/2">
-          <div className="h-[400px]">
+          <div className="h-full">
             <Avatar
               url={mainpic}
               width={200}
