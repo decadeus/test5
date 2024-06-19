@@ -8,6 +8,8 @@ import IconeS from "@/app/components/Icone";
 export default function Res({
   mainTitle,
   mainpic,
+  adresse1,
+  adresse2,
   aut1,
   taut1,
   aut2,
@@ -63,7 +65,8 @@ export default function Res({
             <div className="w-1/2">
               <Adresse
                 maintitle={mainTitle}
-                adresse={adresse}
+                adresse1={adresse1}
+                adresse2={adresse2}
                 code_postal={code_postal}
                 city={city}
               />

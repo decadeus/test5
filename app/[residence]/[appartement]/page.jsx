@@ -71,7 +71,8 @@ export default async function Page({ params }) {
             tavan3={a.tavan3}
             lata={a.lat}
             lnga={a.lng}
-            adresse={a.adresse}
+            adresse1={a.adresse1}
+            adresse2={a.adresse2}
             code_postal={a.codepost}
             city={a.city}
             surface={a.surface}
