@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Adresse({ name, adresse1, adresse2, code_postal, city, maintitle }) {
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center border p-8">
       <p className="font-bold">{maintitle}</p>
       <p className="font-extrabold text-2xl">{name}</p>
       <p>{adresse1}</p>

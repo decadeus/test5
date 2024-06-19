@@ -35,7 +35,7 @@ export default async function MainNavBar({ user }) {
             ))}
           </ul>
         ) : (
-          <div>rien</div>
+          <div></div>
         )}
       </div>
       <div>

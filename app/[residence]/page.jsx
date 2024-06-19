@@ -120,6 +120,8 @@ export default async function Page({ params }) {
             adresse={data?.adresse}
             code_postal={data?.codepost}
             city={data?.city}
+            adresse1={data?.adresse1}
+            adresse2={data?.adresse2}
           />
         </div>
       </div>
