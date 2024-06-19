@@ -1,5 +1,5 @@
-'use client'
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -8,51 +8,50 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Input,
 } from "@nextui-org/react";
-import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { PlusIcon } from "./icons/PlusIcon";
-import { Input } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import { Select, SelectItem } from "@nextui-org/react";
-import { useRouter } from 'next/navigation';
 
 const supabase = createClient();
 
-export default function Addnew() {
-  const router = useRouter(); // Access the router
-
+export default function Addnew({ user }) {
+  const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [name1, setName1] = useState("");
-  const [name2, setName2] = useState("");
-  const [status, setStatus] = useState("");
   const [allowSelection, setAllowSelection] = useState(true);
+  const [rules, setStatus] = useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
   const SelStatus = [
-    { label: "active", value: "active" },
-    { label: "paused", value: "paused" },
-    { label: "vacation", value: "vacation" },
+    { label: "User", value: "User" },
+    { label: "Proprio", value: "Proprio" },
+    { label: "Admin", value: "Admin" },
   ];
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError("");
 
     try {
-      await supabase
-        .from("test")
-        .insert([{ name1, name2, status }]);
+      const { error } = await supabase
+        .from("users")
+        .insert({ email, ida: user?.id, rules }); // Pass the text state variable
 
-      setName1("");
-      setName2("");
+      if (error) throw error;
+
+      setEmail("");
       setStatus("");
-      router.push(router.asPath);
-      // Trigger page refresh after successful submission
-     
+      setEmail("");
+      onOpenChange(false);
     } catch (error) {
       console.error(error);
-      // Handle errors appropriately (display error messages, etc.)
+      console.log(error.message);
+      setError("Failed to add text. Please try again.");
     }
   };
-
   return (
     <>
       <Button color="primary" endContent={<PlusIcon />} onPress={onOpen}>
@@ -63,44 +62,34 @@ export default function Addnew() {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Modal Title
+                Add New Email
               </ModalHeader>
               <ModalBody>
                 <div>
                   <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                    {error && <div style={{ color: "red" }}>{error}</div>}
                     <Input
-                      type="text"
-                      value={name1}
-                      label="name 1"
+                      type="email"
+                      value={email}
+                      label="email"
                       variant="bordered"
-                      onChange={(event) => setName1(event.target.value)}
+                      onChange={(event) => setEmail(event.target.value)}
                     />
-
-                    <Input
-                      type="text"
-                      value={name2}
-                      label="name 2"
-                      variant="bordered"
-                      onChange={(event) => setName2(event.target.value)}
-                    />
-
                     {allowSelection && (
                       <Select
-                        label="Favorite Animal"
-                        placeholder="Select an animal"
-                        // Removed isDisabled
-                        defaultValue="vacation" // Set a default value
+                        label="Status" // Adjusted label
+                        placeholder="Select status"
+                        defaultValue="User" // Adjusted default value
                         className="max-w-xs"
                         onChange={(e) => setStatus(e.target.value)}
                       >
                         {SelStatus.map((animal) => (
                           <SelectItem key={animal.value} value={animal.value}>
-                            {animal.label}
+                            {animal.value}
                           </SelectItem>
                         ))}
                       </Select>
                     )}
-
                     <Button color="primary" type="submit">
                       Ajouter
                     </Button>
@@ -108,7 +97,7 @@ export default function Addnew() {
                 </div>
               </ModalBody>
               <ModalFooter>
-              <Button color="danger" variant="light" onPress={onClose}>
+                <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
               </ModalFooter>
@@ -118,4 +107,4 @@ export default function Addnew() {
       </Modal>
     </>
   );
-};
+}

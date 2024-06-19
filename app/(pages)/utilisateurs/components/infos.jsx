@@ -24,7 +24,7 @@ export default function Info({ user }) {
     event.preventDefault();
     try {
       const data = { id: user?.id, text, alert };
-      await supabase.from("profiles").upsert(data);
+      await supabase.from("users").upsert(data);
       console.log("Data successfully sent to the database:", data);
       setText("");
       setAlert(false);

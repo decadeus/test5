@@ -32,15 +32,15 @@ import Info from "./components/infos";
 const supabase = createClient();
 
 const statusColorMap = {
-  Locataire: "success",
+  User: "success",
   Admin: "danger",
-  Proprietaire: "warning",
+  Proprio: "warning",
 };
 
 const statusOptions = [
-  { name: "Locataire", uid: "Locataire" },
+  { name: "User", uid: "User" },
   { name: "Admin", uid: "Admin" },
-  { name: "Proprietaire", uid: "Proprietaire" },
+  { name: "Proprio", uid: "Proprio" },
 ];
 
 const columns = [
@@ -63,7 +63,7 @@ const INITIAL_VISIBLE_COLUMNS = [
   "delete",
 ];
 
-export default function Order() {
+export default function Order({user}) {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -71,8 +71,9 @@ export default function Order() {
   useEffect(() => {
     async function fetchData() {
       const { data: users, error } = await supabase
-        .from("profiles")
-        .select("*");
+        .from("users")
+        .select("*")
+        .eq('ida', user.id)
       if (error) {
         console.log(error);
       } else {
@@ -87,7 +88,13 @@ export default function Order() {
     try {
       const { data, error } = await supabase.storage
         .from("avatars")
-        .download(path);
+        .download(path, {
+          transform: {
+            width: 100,
+            height: 100,
+            format: 'origin',
+          },
+        });
 
       if (error) {
         throw error;
@@ -303,7 +310,7 @@ export default function Order() {
               </DropdownMenu>
             </Dropdown>
 
-            <Addnew />
+            <Addnew user={user} />
             <Button onClick={() => redirect()} variant="outlined">
               Rafraichir
             </Button>

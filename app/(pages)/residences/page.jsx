@@ -6,6 +6,7 @@ import {
   ModalContent,
   ModalBody,
   ModalFooter,
+  ModalHeader,
   Button,
   useDisclosure,
   Textarea,
@@ -30,6 +31,7 @@ import {
 } from "react-icons/fa";
 import { GiParkBench } from "react-icons/gi";
 import { IoMdBicycle } from "react-icons/io";
+
 
 export default function Page() {
   const supabase = useMemo(() => createClient(), []);
@@ -368,6 +370,10 @@ export default function Page() {
           </div>
         </div>
       </div>
+      <div className="pt-16 flex justify-center items-center">
+      <Online online={profile.online} />
+    
+      </div>
     </div>
   );
 }
@@ -508,4 +514,56 @@ function IconeS({
       </Modal>
     </div>
   );
+}
+
+function Online({online}){
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  return (
+    <div className="flex flex-col justify-center items-center border-2 w-fit p-4 border-black">
+      <Button onPress={onOpen} isIconOnly size="sm" className="bg-gray-300 rounded-full p-4 border-2 text-sm border-black font-bold">?</Button>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+              <ModalBody>
+                <p> 
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam pulvinar risus non risus hendrerit venenatis.
+                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                </p>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam pulvinar risus non risus hendrerit venenatis.
+                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                </p>
+                <p>
+                  Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
+                  dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. 
+                  Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod. 
+                  Et mollit incididunt nisi consectetur esse laborum eiusmod pariatur 
+                  proident Lorem eiusmod et. Culpa deserunt nostrud ad veniam.
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={onClose}>
+                  Action
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+     
+      <div className=" px-4 py-2 flex w-fit justify-center items-center text-center font-bold text-xl ">
+      <p className={online ? 'text-green-500' : 'text-red-500'}>
+      {online ? "votre page est en ligne" : "votre page est hors ligne"}
+      </p>
+     
+      </div>
+    </div>
+  )
 }
