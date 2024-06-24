@@ -3,8 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import b from "@/components/b.png";
 import Connect from "./connect";
-// import Avatar from "../getimage/getone_u";
-// import { Tooltip, Button } from "@nextui-org/react";
+import Avatar from "../getimage/getone_u";
+import { Tooltip, Button } from "@nextui-org/react";
 
 export default async function MainNavBar({ user }) {
   const supabase = createClient();
@@ -49,7 +49,7 @@ export default async function MainNavBar({ user }) {
       <div>
         {user ? (
           <div className="flex gap-2 items-center">
-          {/* <HelpAdmin /> */}
+          <HelpAdmin />
             <div className="flex flex-col text-center">
               <p className="font-bold">{profile?.username}</p>
               <p>{user.email}</p>
@@ -131,12 +131,12 @@ const siteConfig = {
   ],
 };
 
-// function HelpAdmin() {
-//   return (
-//     <div className="pr-8">
-//       <Tooltip content="Aide" className="bg-black text-white">
-//       <h1 className=" text-center flex justify-center items-center font-bold rounded-full border text-white bg-green-500 w-8 h-8">?</h1>
-//       </Tooltip>
-//     </div>
-//   )
-// }
+function HelpAdmin() {
+  return (
+    <div className="pr-8">
+      <Tooltip content="Aide" className="bg-black text-white">
+      <h1 className=" text-center flex justify-center items-center font-bold rounded-full border text-white bg-green-500 w-8 h-8">?</h1>
+      </Tooltip>
+    </div>
+  )
+}
