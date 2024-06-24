@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import b from "@/components/b.png";
 import Connect from "./connect"
-import Avatar from "../getimage/getone_u";
+// import Avatar from "../getimage/getone_u";
 import {Tooltip, Button} from "@nextui-org/react";
 
 export default async function MainNavBar({ user }) {
@@ -59,7 +59,7 @@ export default async function MainNavBar({ user }) {
               </div>
              
               <div className="w-[50px] h-[50px]">
-              <Avatar url={data.avatar_url} width={270} height={270} classn='rounded-full' />
+              {/* <Avatar url={data.avatar_url} width={270} height={270} classn='rounded-full' /> */}
             
               </div>
             
