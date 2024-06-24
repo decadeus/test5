@@ -92,7 +92,7 @@ function Price({ price, desprix }) {
       <div className="w-fit text-xl"><span className="font-bold">{price}</span> €/mois</div>
       <p>{desprix}</p>
       <button className="bg-red-600 text-white px-4 py-2 rounded-lg w-full">
-        contacter le proprietaire
+        contacter le proprietairer
       </button>
     </div>
   );
