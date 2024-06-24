@@ -2,9 +2,9 @@ import { createClient } from "@/utils/supabase/client"; // Ensure the correct pa
 import Link from "next/link";
 import Image from "next/image";
 import b from "@/components/b.png";
-import Connect from "./connect"
+import Connect from "./connect";
 // import Avatar from "../getimage/getone_u";
-import {Tooltip, Button} from "@nextui-org/react";
+// import { Tooltip, Button } from "@nextui-org/react";
 
 export default async function MainNavBar({ user }) {
   const supabase = createClient();
@@ -12,19 +12,17 @@ export default async function MainNavBar({ user }) {
   // Fetch user profile data if user is defined
   const profile = user ? await fetchUserProfile(supabase, user.id) : null;
 
-  const { data, error } = await supabase
-  .from("profiles")
-  .select("avatar_url")
-  .eq("id", user.id)
-  .single()
-
-
+  // const { data, error } = await supabase
+  // .from("profiles")
+  // .select("avatar_url")
+  // .eq("id", user.id)
+  // .single()
 
   return (
     <div className="w-full px-10 py-4 flex justify-between items-center border-b mb-8 text-black">
       <div className="w-12 h-12">
         <Link href="/">
-        <Image src={b} width={50} height={50} alt="Logo" />
+          <Image src={b} width={50} height={50} alt="Logo" />
         </Link>
       </div>
       <div className="flex text-center justify-center items-center">
@@ -53,21 +51,20 @@ export default async function MainNavBar({ user }) {
           <div className="flex gap-2 items-center">
             {/* <HelpAdmin /> */}
             <div className="flex flex-col text-center">
-
               <p className="font-bold">{profile?.username}</p>
               <p>{user.email}</p>
-              </div>
-             
-              <div className="w-[50px] h-[50px]">
-              {/* <Avatar url={data.avatar_url} width={270} height={270} classn='rounded-full' /> */}
-            
-              </div>
-            
+            </div>
+
+            {/* <div className="w-[50px] h-[50px]">
+               <Avatar url={data.avatar_url} width={270} height={270} classn='rounded-full' /> 
+            </div> */}
           </div>
         ) : (
           <div className="flex gap-8 items-center">
-            <div><p>Mettre sa résidence sur Hoomge</p></div>
-         <Connect className="py-2" />
+            <div>
+              <p>Mettre sa résidence sur Hoomge</p>
+            </div>
+            <Connect className="py-2" />
           </div>
         )}
       </div>
@@ -133,7 +130,6 @@ const siteConfig = {
     },
   ],
 };
-
 
 // function HelpAdmin() {
 //   return (
