@@ -11,7 +11,8 @@ import {
   Input,
   Divider,
 } from "@nextui-org/react";
-import Avatar from "../getimage/getone_u";
+import Avatar from "@/app/getimage/getone";
+import UAvatar from "../getimage/Ugetone"; // Use the original Avatar component
 import { createClient } from "@/utils/supabase/client";
 
 export default function Text({ user }) {
@@ -45,7 +46,7 @@ export default function Text({ user }) {
       setLoading(true);
       const { error } = await supabase
         .from("profiles")
-        .update({ username })
+        .update({ username, avatar_url: avatarUrl })
         .eq("id", user.id)
         .single();
       if (error) throw error;
@@ -56,26 +57,39 @@ export default function Text({ user }) {
     } finally {
       setLoading(false);
     }
-  }, [username, supabase, user?.id]);
+  }, [username, avatarUrl, supabase, user?.id]);
 
   return (
     <>
       <button onClick={onOpen}>
-        <div className="w-[50px] h-[50px]">
-          <Avatar
-            url={avatarUrl}
-            width={50}
-            height={50}
-            classn="rounded-full"
-          />
+        <div className="w-[50px] h-[50px] rounded-full">
+          <UAvatar url={avatarUrl} width={50} height={50} classn="rounded-full" />
         </div>
       </button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        className="bg-gradient-to-r from-violet-600 to-indigo-600 border-blue-400 border-2"
+        shadow="lg"
+        hideCloseButton={true}
+      >
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1"></ModalHeader>
               <ModalBody>
+                <div className="w-full h-[300px]">
+                  {avatarUrl && (
+                    <Avatar
+                      uid={user?.id}
+                      width={2000}
+                      height={1000}
+                      url={avatarUrl}
+                      size={150}
+                      onUpload={(url) => setAvatarUrl(url)}
+                    />
+                  )}
+                </div>
                 <Input
                   maxLength={16}
                   fullWidth
@@ -84,10 +98,8 @@ export default function Text({ user }) {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  defaultValue="Indiquez un pseudo"
                   label="Votre pseudo"
                 />
-              
                 <Button
                   color="primary"
                   onClick={() => {
@@ -100,15 +112,13 @@ export default function Text({ user }) {
                 </Button>
               </ModalBody>
               <ModalFooter>
-
-               
-<div className="flex flex-col w-full">
-<Divider className="my-4 w-full" />
-                <form action="/auth/signout" method="post">
-                  <button className="button block" type="submit">
-                    <p className="text-red-600">Se deconnecter</p>
-                  </button>
-                </form>
+                <div className="flex flex-col w-full justify-end">
+                  <Divider className="my-4 w-full" />
+                  <form action="/auth/signout" method="post" className="flex justify-end">
+                    <button type="submit">
+                      <p className="text-red-400">Se deconnecter</p>
+                    </button>
+                  </form>
                 </div>
               </ModalFooter>
             </>

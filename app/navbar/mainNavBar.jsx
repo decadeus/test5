@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import b from "@/components/b.png";
 import Connect from "./connect";
-import Avatar from "../getimage/getone_u";
+import Avatar from "../getimage/Ugetone";
 import { Tooltip, Button } from "@nextui-org/react";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,  useDisclosure} from "@nextui-org/react";
 import Text from "@/app/navbar/text"
@@ -96,10 +96,10 @@ async function fetchUserProfile(supabase, userId) {
 
 const siteConfig = {
   navAdmin: [
-    {
-      label: "Dashboard",
-      href: "/",
-    },
+    // {
+    //   label: "Dashboard",
+    //   href: "/",
+    // },
     {
       label: "Residence",
       href: "/residences",
@@ -108,18 +108,18 @@ const siteConfig = {
       label: "Utilisateurs",
       href: "/utilisateurs",
     },
-    {
-      label: "Actu residence",
-      href: "/",
-    },
-    {
-      label: "Sondage",
-      href: "/",
-    },
-    {
-      label: "News",
-      href: "/",
-    },
+    // {
+    //   label: "Actu residence",
+    //   href: "/",
+    // },
+    // {
+    //   label: "Sondage",
+    //   href: "/",
+    // },
+    // {
+    //   label: "News",
+    //   href: "/",
+    // },
   ],
   navProprio: [
     {

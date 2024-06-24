@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { createClient } from "./../utils/supabase/client";
-import Avatar from "./getimage/getone_u";
+import Avatar from "./getimage/Ugetone";
 import GoogleMaps from "./[residence]/googlemap";
 
 export default function TodoList() {

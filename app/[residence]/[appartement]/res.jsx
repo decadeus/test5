@@ -1,7 +1,7 @@
 import React from "react";
 import GoogleMaps from "./../googlemap";
 import Adresse from "../adresse";
-import Avatar from "@/app/getimage/getone_u";
+import Avatar from "@/app/getimage/Ugetone";
 import BackLink from "./usepath";
 import IconeS from "@/app/components/Icone";
 

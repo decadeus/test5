@@ -1,7 +1,7 @@
 import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import Appart from "./appart";
-import Avatar from "@/app/getimage/getone_u";
+import Avatar from "@/app/getimage/Ugetone";
 import GoogleMaps from "./googlemap";
 import Adresse from "./adresse";
 import IconeS from "@/app/components/Icone"; // Ensure correct path
