@@ -12,11 +12,11 @@ export default async function MainNavBar({ user }) {
   // Fetch user profile data if user is defined
   const profile = user ? await fetchUserProfile(supabase, user.id) : null;
 
-  const { data, error } = await supabase
-  .from("profiles")
-  .select("avatar_url")
-  .eq("id", user.id)
-  .single()
+  // const { data, error } = await supabase
+  // .from("profiles")
+  // .select("avatar_url")
+  // .eq("id", user.id)
+  // .single()
 
   return (
     <div className="w-full px-10 py-4 flex justify-between items-center border-b mb-8 text-black">
