@@ -4,7 +4,7 @@ import Image from "next/image";
 import b from "@/components/b.png";
 import Connect from "./connect";
 // import Avatar from "../getimage/getone_u";
-// import { Tooltip, Button } from "@nextui-org/react";
+import { Tooltip, Button } from "@nextui-org/react";
 
 export default async function MainNavBar({ user }) {
   const supabase = createClient();
