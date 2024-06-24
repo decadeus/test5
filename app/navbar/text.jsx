@@ -9,6 +9,7 @@ import {
   Button,
   useDisclosure,
   Input,
+  Divider,
 } from "@nextui-org/react";
 import Avatar from "../getimage/getone_u";
 import { createClient } from "@/utils/supabase/client";
@@ -38,27 +39,24 @@ export default function Text({ user }) {
     fetchProfile();
   }, [user?.id, supabase]);
 
-  const updateProfile = useCallback(
-    async () => {
-      if (!user?.id) return;
-      try {
-        setLoading(true);
-        const { error } = await supabase
-          .from("profiles")
-          .update({ username })
-          .eq("id", user.id)
-          .single();
-        if (error) throw error;
-        alert("Profile updated!");
-      } catch (error) {
-        console.error("Error updating the profile:", error);
-        alert("Error updating the profile!");
-      } finally {
-        setLoading(false);
-      }
-    },
-    [username, supabase, user?.id]
-  );
+  const updateProfile = useCallback(async () => {
+    if (!user?.id) return;
+    try {
+      setLoading(true);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ username })
+        .eq("id", user.id)
+        .single();
+      if (error) throw error;
+      alert("Profile updated!");
+    } catch (error) {
+      console.error("Error updating the profile:", error);
+      alert("Error updating the profile!");
+    } finally {
+      setLoading(false);
+    }
+  }, [username, supabase, user?.id]);
 
   return (
     <>
@@ -76,11 +74,8 @@ export default function Text({ user }) {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-              
-              </ModalHeader>
+              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
               <ModalBody>
-               
                 <Input
                   maxLength={16}
                   fullWidth
@@ -92,11 +87,7 @@ export default function Text({ user }) {
                   defaultValue="Indiquez un pseudo"
                   label="Votre pseudo"
                 />
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onClick={onClose}>
-                  Close
-                </Button>
+              
                 <Button
                   color="primary"
                   onClick={() => {
@@ -105,8 +96,20 @@ export default function Text({ user }) {
                   }}
                   disabled={loading}
                 >
-                  {loading ? "Updating..." : "Save"}
+                  {loading ? "Updating..." : "Sauvegarder"}
                 </Button>
+              </ModalBody>
+              <ModalFooter>
+
+               
+<div className="flex flex-col w-full">
+<Divider className="my-4 w-full" />
+                <form action="/auth/signout" method="post">
+                  <button className="button block" type="submit">
+                    <p className="text-red-600">Se deconnecter</p>
+                  </button>
+                </form>
+                </div>
               </ModalFooter>
             </>
           )}
