@@ -9,14 +9,14 @@ import { Tooltip, Button } from "@nextui-org/react";
 export default async function MainNavBar({ user }) {
   const supabase = createClient();
 
-  // Fetch user profile data if user is defined
+
   const profile = user ? await fetchUserProfile(supabase, user.id) : null;
 
-  // const { data, error } = await supabase
-  // .from("profiles")
-  // .select("avatar_url")
-  // .eq("id", user.id)
-  // .single()
+  const { data, error } = await supabase
+  .from("profiles")
+  .select("avatar_url")
+  .eq("id", user?.id)
+  .single()
 
   return (
     <div className="w-full px-10 py-4 flex justify-between items-center border-b mb-8 text-black">
@@ -55,9 +55,9 @@ export default async function MainNavBar({ user }) {
               <p>{user.email}</p>
             </div>
 
-            {/* <div className="w-[50px] h-[50px]">
+            <div className="w-[50px] h-[50px]">
                <Avatar url={data.avatar_url} width={270} height={270} classn='rounded-full' /> 
-            </div> */}
+            </div> 
           </div>
         ) : (
           <div className="flex gap-8 items-center">
