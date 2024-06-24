@@ -51,7 +51,7 @@ export default async function MainNavBar({ user }) {
       <div>
         {user ? (
           <div className="flex gap-2 items-center">
-            <HelpAdmin />
+            {/* <HelpAdmin /> */}
             <div className="flex flex-col text-center">
 
               <p className="font-bold">{profile?.username}</p>
@@ -135,12 +135,12 @@ const siteConfig = {
 };
 
 
-function HelpAdmin() {
-  return (
-    <div className="pr-8">
-      <Tooltip content="Aide" className="bg-black text-white">
-      <h1 className=" text-center flex justify-center items-center font-bold rounded-full border text-white bg-green-500 w-8 h-8">?</h1>
-      </Tooltip>
-    </div>
-  )
-}
+// function HelpAdmin() {
+//   return (
+//     <div className="pr-8">
+//       <Tooltip content="Aide" className="bg-black text-white">
+//       <h1 className=" text-center flex justify-center items-center font-bold rounded-full border text-white bg-green-500 w-8 h-8">?</h1>
+//       </Tooltip>
+//     </div>
+//   )
+// }
