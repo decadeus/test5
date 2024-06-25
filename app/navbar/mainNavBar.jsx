@@ -123,8 +123,8 @@ const siteConfig = {
   ],
   navProprio: [
     {
-      label: "Profile",
-      href: "/profile",
+      label: "votre appartement",
+      href: "/appartement",
     },
     {
       label: "Dashboard",
