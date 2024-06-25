@@ -5,10 +5,15 @@ import b from "@/components/b.png";
 import Connect from "./connect";
 import Avatar from "../getimage/Ugetone";
 import { Tooltip, Button } from "@nextui-org/react";
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,  useDisclosure} from "@nextui-org/react";
-import Text from "@/app/navbar/text"
-
-
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from "@nextui-org/react";
+import Text from "@/app/navbar/text";
 
 export default async function MainNavBar({ user }) {
   const supabase = createClient();
@@ -56,13 +61,10 @@ export default async function MainNavBar({ user }) {
             <div className="flex flex-col text-center">
               <p className="font-bold">{profile?.username}</p>
               <p>{user.email}</p>
-             
             </div>
-            
+
             <div className="w-[50px] h-[50px]">
-            <Text user={user} />
-             
-            
+              <Text user={user} />
             </div>
           </div>
         ) : (
@@ -140,12 +142,13 @@ const siteConfig = {
 function HelpAdmin() {
   return (
     <div className="pr-8">
+      <Link href="/aide">
       <Tooltip content="Aide" className="bg-black text-white">
         <h1 className=" text-center flex justify-center items-center font-bold rounded-full border text-white bg-green-500 w-8 h-8">
           ?
         </h1>
       </Tooltip>
+      </Link>
     </div>
   );
 }
-
