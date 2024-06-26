@@ -245,12 +245,12 @@ export default function Page() {
               <span className="font-bold">
                 {" "}
                 <MainTitle
-          main={profile.maintitle}
-          edited={editedData.maintitle}
-          updateProfile={(value) => updateProfile("maintitle", value)}
+          main={profile.prix}
+          edited={editedData.prix}
+          updateProfile={(value) => updateProfile("prix", value)}
           loading={loading}
           setEdited={(value) =>
-            setEditedData({ ...editedData, maintitle: value })
+            setEditedData({ ...editedData, prix: value })
           }
           size="text-lg"
           maxLength={400}
@@ -258,6 +258,7 @@ export default function Page() {
               </span>{" "}
               €/mois
             </div>
+          
             <p>
               {" "}
               <MainTitle

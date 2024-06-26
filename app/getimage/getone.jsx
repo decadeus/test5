@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import Image from 'next/image'
+import { FaDownload } from "react-icons/fa";
 
 export default function Avatar({ uid, url, size, onUpload, classn, width, height}) {
   const supabase = createClient()
@@ -68,8 +69,8 @@ export default function Avatar({ uid, url, size, onUpload, classn, width, height
         
       )}
       <div  className='relative bg-white w-fit rounded-xl text-center border-2 border-black top-4 left-4 py-2 px-4'>
-        <label className="button primary block" htmlFor="single">
-          {uploading ? 'Uploading ...' : 'Changer'}
+        <label className="hover:cursor-pointer" htmlFor="single">
+          {uploading ? 'Uploading ...' : <FaDownload />}
         </label>
         <input
           style={{
