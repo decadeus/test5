@@ -140,6 +140,10 @@ const siteConfig = {
       label: "Projects",
       href: "/projects",
     },
+    {
+      label: "pdfv",
+      href: "/pdf",
+    },
     
    
   ],
