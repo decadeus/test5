@@ -110,6 +110,10 @@ const siteConfig = {
       label: "Utilisateurs",
       href: "/utilisateurs",
     },
+    {
+      label: "Pdf",
+      href: "/addpdf",
+    },
     // {
     //   label: "Actu residence",
     //   href: "/",
@@ -136,6 +140,11 @@ const siteConfig = {
       label: "Projects",
       href: "/projects",
     },
+    {
+      label: "Pdf",
+      href: "/pdf",
+    },
+   
   ],
 };
 
