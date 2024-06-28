@@ -23,6 +23,16 @@ const PDFViewer = () => {
   const [pageWidth, setPageWidth] = useState(800); // Initial page width
   const [selectedPdf, setSelectedPdf] = useState(null); // Store selected PDF for modal
 
+  // Memoize the options object to prevent unnecessary re-renders
+  const options = React.useMemo(() => ({
+    cMapUrl: "cmaps/",
+    cMapPacked: true,
+    standardFontDataUrl: "standard_fonts/",
+  }), []);
+
+  const wj = 300;
+  const zl = 800;
+
   useEffect(() => {
     const fetchPdfUrls = async () => {
       try {
@@ -63,13 +73,6 @@ const PDFViewer = () => {
     setNumPages(numPages);
   }
 
-  const options = {
-    cMapUrl: "cmaps/",
-    cMapPacked: true,
-    standardFontDataUrl: "standard_fonts/",
-  };
-  const wj = 300;
-
   const handleOpenModal = (url) => {
     setSelectedPdf(url);
     onOpen();
@@ -84,11 +87,7 @@ const PDFViewer = () => {
               {loading ? (
                 <div>Loading...</div>
               ) : (
-                <Document
-                  file={url}
-                  onLoadSuccess={onDocumentLoadSuccess}
-                  options={options}
-                >
+                <Document file={url} onLoadSuccess={onDocumentLoadSuccess} options={options}>
                   <Page
                     pageNumber={pageNumber}
                     renderAnnotationLayer={false}
@@ -117,7 +116,7 @@ const PDFViewer = () => {
                   renderAnnotationLayer={false}
                   renderTextLayer={false}
                   onLoadSuccess={onPageLoadSuccess}
-                  width={pageWidth}
+                  width={Math.max(300 * 0.8, zl)}
                 />
               </Document>
             )}
