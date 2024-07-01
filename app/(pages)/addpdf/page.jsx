@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { MdOutlinePool, MdFitnessCenter } from "react-icons/md";
+import PDFViewer from "./add";
 
 export default function Page() {
   const supabase = createClient();
@@ -128,7 +129,7 @@ export default function Page() {
     );
   }
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center gap-16">
       {user && (
         <div style={{ width: "100px" }}>
           <label className="button primary block" htmlFor="single">
@@ -144,6 +145,7 @@ export default function Page() {
           />
         </div>
       )}
+      <PDFViewer />
     </div>
   );
 }

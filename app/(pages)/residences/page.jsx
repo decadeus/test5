@@ -29,11 +29,18 @@ import {
   FaKey,
   FaMasksTheater,
   FaWheelchairMove,
-} from "react-icons/fa";
+  FaMountain,
+  FaWheelchair,
+  FaMugHot,
+  FaNetworkWired,
+  FaUmbrellaBeach,
+ 
+} from "react-icons/fa6";
 import { GiParkBench } from "react-icons/gi";
 import { IoMdBicycle } from "react-icons/io";
 import GoogleMaps from "@/app/[residence]/googlemap";
 import Adresse from "@/app/[residence]/adresse";
+
 
 export default function Page() {
   const supabase = useMemo(() => createClient(), []);
@@ -642,7 +649,25 @@ function IconeS({
     { value: 5, icon: <FaPlaneDeparture size={size} /> },
     { value: 6, icon: <FaGraduationCap size={size} /> },
     { value: 7, icon: <FaKey size={size} /> },
+    { value: 8, icon: <FaElevator size={size} /> },
+    { value: 9, icon: <FaSchoolCircleCheck size={size} /> },
+    { value: 10, icon: <FaBasketShopping size={size} /> },
+    { value: 11, icon: <FaMasksTheater size={size} /> },
+    { value: 12, icon: <FaMugHot size={size} /> },
+    { value: 13, icon: <FaMountain size={size} /> },
+    { value: 14, icon: <FaNetworkWired size={size} /> },
+    { value: 15, icon: <FaUmbrellaBeach size={size} /> },
+    { value: 16, icon: <FaWheelchair size={size} /> },
+    { value: 17, icon: <FaWheelchairMove size={size} /> },
+    { value: 18, icon: <GiParkBench size={size} /> },
+    { value: 19, icon: <MdOutlinePool size={size} /> },
+    { value: 20, icon: <MdFitnessCenter size={size} /> },
+    { value: 21, icon: <IoMdBicycle size={size} /> },
+   
+   
   ];
+
+  
 
   const getIconByValue = (value) => {
     const iconComponent = iconComponents.find(
@@ -666,14 +691,14 @@ function IconeS({
           {(onClose) => (
             <>
               <ModalBody>
-                <div className="flex justify-center items-center p-8">
+                <div className="flex justify-center items-center p-8 ">
                   <RadioGroup
                     value={edited}
                     onValueChange={setEdited}
                     orientation="horizontal"
                   >
                     {iconComponents.map((component) => (
-                      <Radio key={component.value} value={component.value}>
+                      <Radio key={component.value} value={component.value} className="pb-16">
                         <p className="pr-8">{component.icon}</p>
                       </Radio>
                     ))}

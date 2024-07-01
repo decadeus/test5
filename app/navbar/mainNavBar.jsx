@@ -111,7 +111,7 @@ const siteConfig = {
       href: "/utilisateurs",
     },
     {
-      label: "Pdf",
+      label: "Affichage",
       href: "/addpdf",
     },
     // {

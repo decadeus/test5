@@ -50,7 +50,7 @@ const PDFViewer = () => {
         const { data: profileData, error: profileError } = await supabase
           .from("profiles")
           .select("ida")
-          .eq("id", user.id)
+          .eq("id", user?.id)
           .single();
 
         if (profileError) throw profileError;
@@ -96,7 +96,7 @@ const PDFViewer = () => {
     <div className="px-24">
       <div className="flex flex-wrap gap-4 px-24 h-fit">
         {pdfUrls.map((url, index) => (
-          <div key={index} className="border rounded-xl bg-red-300">
+          <div key={index} className="border rounded-xl ">
             <Button onPress={() => handleOpenModal(url)} className="h-fit">
               {loading ? (
                 <div>Loading...</div>

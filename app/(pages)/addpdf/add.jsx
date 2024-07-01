@@ -1,66 +1,153 @@
-
+"use client";
 import React, { useState, useEffect } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
 import { createClient } from "@/utils/supabase/client";
+import {
+  Modal,
+  ModalContent,
+  ModalBody,
+  Button,
+  useDisclosure,
+} from "@nextui-org/react";
 
-export default function Avatar({ uid, url, size, onUpload }) {
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
+const PDFViewer = () => {
   const supabase = createClient();
-  const [uploading, setUploading] = useState(false);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [loading, setLoading] = useState(true);
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pdfUrls, setPdfUrls] = useState([]); // Store multiple PDF URLs in an array
+  const [user, setUser] = useState(null);
+  const [pageWidth, setPageWidth] = useState(800); // Initial page width
+  const [selectedPdf, setSelectedPdf] = useState(null);
+  const [ida, setIda] = useState(null); // Store selected PDF for modal
 
-  async function uploadAvatar(event) {
-    try {
-      setUploading(true);
+  // Memoize the options object to prevent unnecessary re-renders
+  const options = React.useMemo(
+    () => ({
+      cMapUrl: "cmaps/",
+      cMapPacked: true,
+      standardFontDataUrl: "standard_fonts/",
+    }),
+    []
+  );
 
-      if (!event.target.files || event.target.files.length === 0) {
-        throw new Error("You must select a PDF file to upload.");
+  const wj = 300;
+  const zl = 800;
+
+  useEffect(() => {
+    const fetchPdfUrls = async () => {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        setUser(user);
+
+        if (!user) throw new Error("User not authenticated");
+
+        const { data: profileData, error: profileError } = await supabase
+          .from("profiles")
+          .select("ida")
+          .eq("id", user.id)
+          .single();
+
+        if (profileError) throw profileError;
+
+        setIda(profileData.ida);
+
+        const { data, error } = await supabase
+          .from("pdf")
+          .select("pdf_url")
+          .eq("ida", profileData.ida);
+
+        if (error) {
+          throw error;
+        }
+
+        // Extract PDF URLs from the fetched data
+        const urls = data.map((item) => item.pdf_url);
+        setPdfUrls(urls);
+      } catch (error) {
+        console.error("Error fetching PDF URLs:", error.message);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const file = event.target.files[0];
-      if (file.type !== "application/pdf") {
-        throw new Error("Only PDF files are allowed.");
-      }
+    fetchPdfUrls();
+  }, [supabase]);
 
-      const fileExt = file.name.split(".").pop();
-      const filePath = `${uid}-${Math.random()}.${fileExt}`;
-
-      console.log("Selected PDF:", file); // Log selected PDF details
-
-      const uploadResponse = await supabase.storage
-      .from("avatars") // Replace 'avatars' with your bucket name
-      .upload(filePath, file); // Upload file with filePath and file object
-  
-    if (uploadResponse.error) {
-      throw new Error(uploadResponse.error.message); // Use specific error message
-    }
-  
-    console.log("Upload response:", uploadResponse); // Log upload response
-  
-    onUpload(uploadResponse.data.publicUrl); // Pass the uploaded URL to Page component
-  } catch (error) {
-      console.error("Error uploading PDF:", error); // Log specific upload error
-      alert("Error uploading avatar! Please try again.");
-    } finally {
-      setUploading(false);
-    }
+  function onPageLoadSuccess() {
+    setLoading(false);
   }
 
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
+
+  const handleOpenModal = (url) => {
+    setSelectedPdf(url);
+    onOpen();
+  };
+
   return (
-    <div>
-      <div style={{ width: size }}>
-        <label className="button primary block" htmlFor="single">
-          {uploading ? "Uploading ..." : "Upload PDF"}
-        </label>
-        <input
-          style={{
-            visibility: "hidden",
-            position: "absolute",
-          }}
-          type="file"
-          id="single"
-          accept="application/pdf"
-          onChange={uploadAvatar}
-          disabled={uploading}
-        />
+    <div className="px-24">
+      <div className="flex flex-wrap gap-4 px-24 h-fit">
+        {pdfUrls.map((url, index) => (
+          <div key={index} className="border rounded-xl bg-red-300">
+            <Button onPress={() => handleOpenModal(url)} className="h-fit">
+              {loading ? (
+                <div>Loading...</div>
+              ) : (
+                <Document
+                  file={url}
+                  onLoadSuccess={onDocumentLoadSuccess}
+                  options={options}
+                >
+                  <Page
+                    pageNumber={pageNumber}
+                    renderAnnotationLayer={false}
+                    renderTextLayer={false}
+                    onLoadSuccess={onPageLoadSuccess}
+                    width={Math.max(300 * 0.8, wj)}
+                  />
+                </Document>
+              )}
+            </Button>
+          </div>
+        ))}
       </div>
+
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        size="4xl"
+        placement="top"
+      >
+        <ModalContent>
+          <ModalBody>
+            {selectedPdf && (
+              <Document
+                file={selectedPdf}
+                onLoadSuccess={onDocumentLoadSuccess}
+                options={options}
+              >
+                <Page
+                  pageNumber={pageNumber}
+                  renderAnnotationLayer={false}
+                  renderTextLayer={false}
+                  onLoadSuccess={onPageLoadSuccess}
+                  width={Math.max(300 * 0.8, zl)}
+                />
+              </Document>
+            )}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </div>
   );
-}
+};
+
+export default PDFViewer;
