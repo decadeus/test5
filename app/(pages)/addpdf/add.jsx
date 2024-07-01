@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
+import { Document, Page} from "react-pdf";
 import { createClient } from "@/utils/supabase/client";
 import {
   Modal,
@@ -9,6 +9,8 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
+
+import { pdfjs } from 'react-pdf';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
