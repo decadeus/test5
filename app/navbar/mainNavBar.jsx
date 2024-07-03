@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/client"; // Ensure the correct path to your Supabase client
 import Link from "next/link";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import b from "@/components/b.png";
 import Connect from "./connect";
 import Avatar from "../getimage/Ugetone";

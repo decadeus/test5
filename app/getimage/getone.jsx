@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
-import Image from 'next/image'
+import Image from "next/legacy/image"
 import { FaDownload } from "react-icons/fa";
 
 export default function Avatar({ uid, url, size, onUpload, classn, width, height}) {
