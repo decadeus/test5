@@ -32,9 +32,9 @@ export default async function Page({ params }) {
   }
 
   return (
-    <div className="flex flex-col w-full px-20 text-black">
+    <div className="flex flex-col w-full px-2 text-black">
       <div className="flex flex-col xl:flex-col xl:w-full lg:flex-row md:flex-col sm:flex-col">
-        <div className="w-full flex-row w:2/3 xl:w-3/3 lg:w-3/3 md:w-full sm:w-full ">
+        <div className="w-full ">
           <Appart
             
             b1i={b.mainpic_url}

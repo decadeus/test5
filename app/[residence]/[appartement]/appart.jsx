@@ -64,8 +64,8 @@ function Appart({ b1i,b2i, b3i,b4i, b2, t1, d1, m1, price, desprix, bed, bath, s
           </div>
         </div>
       </div>
-      <div className="py-4 flex gap4 bg-white mt-4 px-4 rounded-lg gap-8">
-        <div className="flex flex-col gap-4 w-2/3">
+      <div className="py-4 flex flex-col bg-white mt-4 px-4 rounded-lg gap-8">
+        <div className="flex flex-col gap-4 ">
           <h2 className="font-bold text-xl">{t1}</h2>
           <div>
           <Icone bed={bed} bath={bath} surface={surface} />
@@ -75,7 +75,7 @@ function Appart({ b1i,b2i, b3i,b4i, b2, t1, d1, m1, price, desprix, bed, bath, s
             <p>{d1}</p>
           </div>
         </div>
-        <div className="w-1/3 ">
+        <div className="">
           <Price price={price} desprix={desprix} />
         </div>
       </div>

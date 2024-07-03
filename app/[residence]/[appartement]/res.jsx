@@ -30,9 +30,9 @@ export default function Res({
       <h2 className="text-center flex justify-center pb-4 font-bold text-2xl">
         La résidence
       </h2>
-      <div className="flex">
-        <div className="w-1/2">
-          <div className="h-full">
+      <div className="flex flex-col pb-4 ">
+        <div className="flex justify-center">
+          <div className="w-[200px] h-[200px]">
             <Avatar
               url={mainpic}
               width={200}
@@ -41,8 +41,8 @@ export default function Res({
             />
           </div>
         </div>
-        <div className="flex flex-col px-16 justify-between">
-          <div className="grid grid-cols-3 gap-2 pt-4 divide-x divide-slate-600">
+        <div className="flex flex-col justify-between">
+          <div className="flex flex-col">
             <div className={line}>
               <IconeS specificValue={aut1} size={30} />
               <div>
@@ -58,11 +58,11 @@ export default function Res({
               <p className={text}>{taut3}</p>
             </div>
           </div>
-          <div className="pt-4 flex items-center w-full gap-4 ">
-            <div className="w-1/2">
+          <div className="pt-4 flex flex-col-reverse items-center w-full gap-4 ">
+            <div className="w-full">
               <GoogleMaps lnga={lnga} lata={lata} height="h-64" />
             </div>
-            <div className="w-1/2">
+            <div className="">
               <Adresse
                 maintitle={mainTitle}
                 adresse1={adresse1}
@@ -70,11 +70,12 @@ export default function Res({
                 code_postal={code_postal}
                 city={city}
               />
+              </div>
               <div className="flex justify-center pt-8">
                 <button className="bg-green-600 w-fit text-white py-2 px-4">
                   <BackLink>En savoir plus sur la residence</BackLink>
                 </button>
-              </div>
+              
             </div>
           </div>
         </div>
