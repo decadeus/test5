@@ -64,7 +64,7 @@ function Appart({ b1i,b2i, b3i,b4i, b2, t1, d1, m1, price, desprix, bed, bath, s
           </div>
         </div>
       </div>
-      <div className="py-4 flex flex-col bg-white mt-4 px-4 rounded-lg gap-8">
+      <div className="py-4 flex flex-col md:flex-row bg-white mt-4 px-4 rounded-lg gap-8">
         <div className="flex flex-col gap-4 ">
           <h2 className="font-bold text-xl">{t1}</h2>
           <div>

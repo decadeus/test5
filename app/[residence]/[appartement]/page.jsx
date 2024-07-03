@@ -33,7 +33,7 @@ export default async function Page({ params }) {
 
   return (
     <div className="flex flex-col w-full px-2 text-black">
-      <div className="flex flex-col xl:flex-col xl:w-full lg:flex-row md:flex-col sm:flex-col">
+      <div className="flex flex-col ">
         <div className="w-full ">
           <Appart
             
