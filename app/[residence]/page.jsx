@@ -30,7 +30,7 @@ export default async function Page({ params }) {
       <div className="flex flex-col justify-center items-center w-full pb-4">
         <h1 className="text-4xl font-bold">{data?.mainTitle}</h1>
       </div>
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center md:gap-16">
         <div className="flex flex-col items-center">
           <div className="w-full h-[300px]">
             <Avatar
@@ -41,14 +41,14 @@ export default async function Page({ params }) {
             />
           </div>
         </div>
-        <div className="flex-col">
-          <div className="flex justify-center items-center px-4 pb-4">
-            <div className="flex flex-col gap-8">
+        <div className="flex flex-col md:flex-row ">
+          <div className="flex justify-center items-center px-4 pb-4 md:w-1/2">
+            <div className="flex flex-col gap-8 ">
               <p className="text-xl font-bold text-center">{data.t1}</p>
               <p>{data.d1}</p>
             </div>
           </div>
-          <div className="h-[300px]">
+          <div className="h-[300px] md:w-1/2 md:h-[400px]">
             <Avatar
               url={data?.secondpic_url}
               width={2000}
@@ -57,8 +57,8 @@ export default async function Page({ params }) {
             />
           </div>
         </div>
-        <div className="flex flex-col-reverse gap-8">
-          <div className=" h-[300px]">
+        <div className="flex flex-col-reverse gap-8 md:flex-row ">
+          <div className=" h-[300px] md:w-1/2 md:h-[400px]">
             <Avatar
               url={data?.threepic_url}
               width={2000}
@@ -66,7 +66,7 @@ export default async function Page({ params }) {
               className="rounded-lg"
             />
           </div>
-          <div className="flex justify-center items-center px-4 pb-2">
+          <div className="flex justify-center items-center px-4 pb-2 md:w-1/2">
             <div className="flex flex-col gap-8">
               <p className="text-xl font-bold text-center">{data.t2}</p>
               <p >{data.d2}</p>
@@ -79,7 +79,7 @@ export default async function Page({ params }) {
           <h2 className="font-bold text-xl text-center  pb-8 pt-4">
             Les points clés
           </h2>
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-8 md:flex-row">
             <div className={iconee}>
               <IconeS specificValue={data?.aut1} size={30} />
               <div className="flex flex-col gap-2">
