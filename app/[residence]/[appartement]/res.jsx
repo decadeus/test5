@@ -32,7 +32,7 @@ export default function Res({
       </h2>
       <div className="flex flex-col pb-4 ">
         <div className="flex justify-center">
-          <div className="w-full h-[200px]">
+          <div className="w-full h-[200px] md:h-[400px]">
             <Avatar
               url={mainpic}
               width={200}
@@ -58,11 +58,12 @@ export default function Res({
               <p className={text}>{taut3}</p>
             </div>
           </div>
-          <div className="pt-4 flex flex-col-reverse items-center w-full gap-4 ">
-            <div className="w-full">
+          <div className="pt-4 flex flex-col-reverse items-center w-full gap-4 md:flex-row">
+            <div className="w-full md:w-1/2">
               <GoogleMaps lnga={lnga} lata={lata} height="h-64" />
             </div>
-            <div className="">
+            <div className=" w-1/2 md:justify-center ">
+            <div className="text-center">
               <Adresse
                 maintitle={mainTitle}
                 adresse1={adresse1}
@@ -75,7 +76,7 @@ export default function Res({
                 <button className="bg-green-600 w-fit text-white py-2 px-4">
                   <BackLink>En savoir plus sur la residence</BackLink>
                 </button>
-              
+                </div>
             </div>
           </div>
         </div>
