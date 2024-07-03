@@ -44,9 +44,9 @@ export default function TodoList() {
   }, []);
 
   return (
-    <div className="w-full flex">
-      <div className="w-2/3 px-8">
-        <ul className="flex gap-8">
+    <div className="w-full flex-col lg:flex ">
+      <div className=" w-full px-8 lg:w-2/3 lg:flex-col">
+        <ul className="flex flex-wrap justify-around  gap-8 md:flex">
           {todos.map((todo) => (
             <li key={todo.id} className="w-1/3">
               <Link href={`/${todo.id}`}>
@@ -69,7 +69,7 @@ export default function TodoList() {
           ))}
         </ul>
       </div>
-      <div className="w-1/3">
+      <div className="w-full lg:w:1/3">
         <GoogleMaps
           lata="-9.069839810859907"
           lnga="39.60128890889341"
