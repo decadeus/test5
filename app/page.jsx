@@ -44,13 +44,14 @@ export default function TodoList() {
   }, []);
 
   return (
-    <div className="w-full flex-col lg:flex ">
-      <div className=" w-full px-8 lg:w-2/3 lg:flex-col">
-        <ul className="flex flex-wrap justify-around  gap-8 md:flex">
+    <div className="w-full flex-col">
+      <div className=" w-full px-4">
+        <ul className="flex flex-wrap justify-around gap-8 ">
           {todos.map((todo) => (
-            <li key={todo.id} className="w-1/3">
+            <li key={todo.id} className=" w-full">
               <Link href={`/${todo.id}`}>
-                <div className="aspect-square">
+              <div className="flex gap-4">
+                <div className="aspect-square w-1/2">
                   <Avatar
                     url={todo.mainpic_url}
                     width={270}
@@ -63,6 +64,7 @@ export default function TodoList() {
                   <p>{todo.city}</p>
                   <p className="text-sm">A vendre: {todo.countVendre}</p>
                   <p className="text-sm">A Louer: {todo.countLouer}</p>
+                </div>
                 </div>
               </Link>
             </li>

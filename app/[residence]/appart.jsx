@@ -30,9 +30,9 @@ export default function TodoList({ value }) {
   return (
     <>
       
-      <ul className="flex gap-8 flex-col ">
+      <ul className="flex gap-4 flex-wrap ">
         {todos.map((todo) => (
-          <li key={todo.id} className="text-black">
+          <li key={todo.id} className="text-black ">
             <Link href={`${pathname}/${todo.id}`}>
               <Card className="py-4  border-2 border-black  hover:scale-105 shadow-xl">
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
@@ -40,7 +40,7 @@ export default function TodoList({ value }) {
 
                   <h4 className="font-bold text-large text-black">{todo.type}</h4>
                 </CardHeader>
-                <CardBody className="overflow-visible py-2 w-[200px] h-[200px] ">
+                <CardBody className="overflow-visible py-2 w-[150px] h-[150px] ">
                   <Avatar url={todo.mainpic_url} width={270} height={196} />
                 </CardBody>
               </Card>

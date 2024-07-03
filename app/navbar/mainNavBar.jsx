@@ -69,7 +69,7 @@ export default async function MainNavBar({ user }) {
           </div>
         ) : (
           <div className="flex gap-8 items-center">
-            <div>
+            <div className="invisible">
               <p>Mettre sa résidence sur Hoomge</p>
             </div>
             <Connect className="py-2" />
