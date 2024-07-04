@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/client'
 import Image from "next/legacy/image"
 import { FaDownload } from "react-icons/fa";
 
-export default function Avatar({ uid, url, size, onUpload, classn, width, height}) {
+export default function Avatar({ uid, url, id, size, onUpload, classn, width, height}) {
   const supabase = createClient()
   const [avatarUrl, setAvatarUrl] = useState(null)
   const [uploading, setUploading] = useState(false)
@@ -69,7 +69,7 @@ export default function Avatar({ uid, url, size, onUpload, classn, width, height
         
       )}
       <div  className='relative bg-white w-fit rounded-xl text-center border-2 border-black top-4 left-4 py-2 px-4'>
-        <label className="hover:cursor-pointer" htmlFor="single">
+        <label className="hover:cursor-pointer" htmlFor={id}>
           {uploading ? 'Uploading ...' : <FaDownload />}
         </label>
         <input
@@ -78,7 +78,7 @@ export default function Avatar({ uid, url, size, onUpload, classn, width, height
             position: 'absolute',
           }}
           type="file"
-          id="single"
+          id={id}
           accept="image/*"
           onChange={uploadAvatar}
           disabled={uploading}

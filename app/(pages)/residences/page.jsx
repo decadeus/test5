@@ -76,7 +76,7 @@ export default function Page() {
         setSecondpicUrl(data.secondpic_url);
         setThreepicUrl(data.threepic_url);
       } catch (err) {
-        console.error("Error fetching data:", err);
+     
         setError(err.message);
       }
     }
@@ -109,11 +109,13 @@ export default function Page() {
   );
 
   const handleAvatarUpload = (field, url) => {
+    if (field === "threepic_url") setThreepicUrl(url);
     if (field === "mainpic_url") setMainpicUrl(url);
     if (field === "secondpic_url") setSecondpicUrl(url);
-    if (field === "threepic_url") setThreepicUrl(url);
+    
     updateProfile(field, url);
   };
+
 
   if (error) {
     return (
@@ -132,7 +134,7 @@ export default function Page() {
     );
   }
 
-  console.log("Profile Data:", profile); // Check the profile data in the console
+
 
   return (
     <div className="w-full lg:px-20 md:px-10 sm:px-5 text-black">
@@ -158,6 +160,7 @@ export default function Page() {
           <div className="w-full h-[600px]">
             {profile.mainpic_url && (
               <Avatar
+              id={mainpicUrl}
                 uid={user?.id}
                 width={2000}
                 height={1000}
@@ -171,7 +174,7 @@ export default function Page() {
         <div className="flex gap-8">
           <div className="flex w-1/2 justify-center items-center">
             <div className="flex flex-col gap-8">
-              <p className="text-xl font-bold">
+              <div className="text-xl font-bold">
                 <MainTitle
                   main={profile.t1}
                   edited={editedData.t1}
@@ -183,8 +186,8 @@ export default function Page() {
                   size="text-lg"
                   maxLength={400}
                 />
-              </p>
-              <p>
+              </div>
+              <div>
                 <MainTitle
                   main={profile.d1}
                   edited={editedData.d1}
@@ -196,12 +199,13 @@ export default function Page() {
                   size="text-lg"
                   maxLength={400}
                 />
-              </p>
+              </div>
             </div>
           </div>
           <div className="w-1/2 h-[400px]">
             {profile.secondpic_url && (
               <Avatar
+              id="secondpic_url"
                 uid={user?.id}
                 width={2000}
                 height={1000}
@@ -216,6 +220,7 @@ export default function Page() {
           <div className="w-1/2 h-[400px]">
             {profile.threepic_url && (
               <Avatar
+              id="threepic_url"
                 uid={user?.id}
                 width={2000}
                 height={1000}
@@ -227,7 +232,7 @@ export default function Page() {
           </div>
           <div className="flex w-1/2 justify-center items-center">
             <div className="flex flex-col gap-8">
-              <p className="text-xl font-bold">
+              <div className="text-xl font-bold">
                 <MainTitle
                   main={profile.t2}
                   edited={editedData.t2}
@@ -239,8 +244,8 @@ export default function Page() {
                   size="text-lg"
                   maxLength={400}
                 />
-              </p>
-              <p>
+              </div>
+              <div>
                 <MainTitle
                   main={profile.d2}
                   edited={editedData.d2}
@@ -252,7 +257,7 @@ export default function Page() {
                   size="text-lg"
                   maxLength={400}
                 />
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -260,7 +265,7 @@ export default function Page() {
       <div>
         <div className="grid grid-cols-3 grid-rows-1 gap-4 pt-16 ">
           <div className="bg-gray-300 border-2 p-4">
-            <p className="text-xl font-bold text-center">
+            <div className="text-xl font-bold text-center">
               <IconeS
                 main={profile.aut1}
                 edited={editedData.aut1}
@@ -272,7 +277,7 @@ export default function Page() {
                 size={30}
                 maxLength={400}
               />
-            </p>
+            </div>
             <p className="text-xl font-bold pb-4">
               <MainTitle
                 main={profile.taut1}
@@ -299,7 +304,7 @@ export default function Page() {
             />
           </div>
           <div className="bg-gray-300 border-2 p-4">
-            <p className="text-xl font-bold text-center">
+            <div className="text-xl font-bold text-center">
               <IconeS
                 main={profile.aut2}
                 edited={editedData.aut2}
@@ -311,8 +316,8 @@ export default function Page() {
                 size={30}
                 maxLength={400}
               />
-            </p>
-            <p className="text-xl font-bold pb-4">
+            </div>
+            <div className="text-xl font-bold pb-4">
               <MainTitle
                 main={profile.taut2}
                 edited={editedData.taut2}
@@ -324,7 +329,7 @@ export default function Page() {
                 size="text-lg"
                 maxLength={400}
               />
-            </p>
+            </div>
             <MainTitle
               main={profile.daut2}
               edited={editedData.daut2}
@@ -338,7 +343,7 @@ export default function Page() {
             />
           </div>
           <div className="bg-gray-300 border-2 p-4">
-            <p className="text-xl font-bold text-center">
+            <div className="text-xl font-bold text-center">
               <IconeS
                 main={profile.aut3}
                 edited={editedData.aut3}
@@ -350,7 +355,7 @@ export default function Page() {
                 size={30}
                 maxLength={400}
               />
-            </p>
+            </div>
             <p className="text-xl font-bold pb-4">
               <MainTitle
                 main={profile.taut3}
@@ -531,7 +536,7 @@ function FullAdress({
               <ModalBody>
                 <div className="flex flex-col gap-8 p-8 text-wrap font-thin">
                   <Input
-                    label="Nom de la résidence"
+                    label="Name of the residence"
                     placeholder=""
                     labelPlacement="outside"
                     className="font-bold"
@@ -541,8 +546,8 @@ function FullAdress({
                     onChange={(e) => setResedited(e.target.value)}
                   />
                   <Input
-                    label="Adresse"
-                    placeholder="Ligne 1"
+                    label="Adress"
+                    placeholder="Line 1"
                     labelPlacement="outside"
                     className="font-bold"
                     id="maintitle"
@@ -552,8 +557,8 @@ function FullAdress({
                   />
                   <div className="">
                     <Input
-                      label="Adresse"
-                      placeholder="Ligne 2"
+                      label="Adress"
+                      placeholder="Line 2"
                       labelPlacement="outside"
                       className="font-bold"
                       id="maintitle2"
@@ -564,7 +569,7 @@ function FullAdress({
                   </div>
                   <div className="flex gap-4 w-full">
                     <Input
-                      label="Longitude"
+                      label="Postal Code"
                       placeholder="ex: 75 000"
                       labelPlacement="outside"
                       className="font-bold"
@@ -574,7 +579,7 @@ function FullAdress({
                       onChange={(e) => setCp(e.target.value)}
                     />
                     <Input
-                      label="Latitude"
+                      label="City"
                       placeholder="ex: Paris"
                       labelPlacement="outside"
                       className="font-bold"
