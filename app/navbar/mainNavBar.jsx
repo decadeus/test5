@@ -107,11 +107,11 @@ const siteConfig = {
       href: "/residences",
     },
     {
-      label: "Utilisateurs",
+      label: "Users",
       href: "/utilisateurs",
     },
     {
-      label: "Affichage",
+      label: "Display",
       href: "/addpdf",
     },
     // {
@@ -129,7 +129,7 @@ const siteConfig = {
   ],
   navProprio: [
     {
-      label: "votre appartement",
+      label: "your appartment",
       href: "/appartement",
     },
     {

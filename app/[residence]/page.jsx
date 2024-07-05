@@ -77,9 +77,9 @@ export default async function Page({ params }) {
       <div className="justify-center flex flex-col gap-20 ">
         <div className=" bg-gray-200 mt-8 mb-8 py-8 px-8">
           <h2 className="font-bold text-xl text-center  pb-8 pt-4">
-            Les points clés
+          the key points
           </h2>
-          <div className="flex flex-col gap-8 md:flex-row">
+          <div className="grid grid-cols-3 grid-rows-1 gap-4">
             <div className={iconee}>
               <IconeS specificValue={data?.aut1} size={30} />
               <div className="flex flex-col gap-2">
@@ -105,7 +105,7 @@ export default async function Page({ params }) {
         </div>
       </div>
       <div className="flex justify-center items-center text-center flex-col font-bold text-xl gap-4 ">
-        <p>Appartement(s) disponible(s)</p>
+        <p>apartment available</p>
         <Appart value={data?.id} />
       </div>
       <hr className="mt-8" />

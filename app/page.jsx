@@ -62,8 +62,8 @@ export default function TodoList() {
                 <div className="flex flex-col gap-0 pt-2">
                   <p className="font-bold">{todo.mainTitle}</p>
                   <p>{todo.city}</p>
-                  <p className="text-sm">A vendre: {todo.countVendre}</p>
-                  <p className="text-sm">A Louer: {todo.countLouer}</p>
+                  <p className="text-sm">To sell: {todo.countVendre}</p>
+                  <p className="text-sm">To rent: {todo.countLouer}</p>
                 </div>
                 </div>
               </Link>
