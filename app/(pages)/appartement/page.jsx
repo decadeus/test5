@@ -21,6 +21,10 @@ export default function Page() {
   const [editedData, setEditedData] = useState({});
   const [user, setUser] = useState(null);
   const [mainpicUrl, setMainpicUrl] = useState(null);
+ 
+  const [secondpicUrl, setSecondpicUrl] = useState(null);
+  const [threepicUrl, setThreepicUrl] = useState(null);
+  const [forthpicUrl, setForthpicUrl] = useState(null);
 
   useEffect(() => {
     async function fetchProfile() {
@@ -42,6 +46,9 @@ export default function Page() {
         setProfile(data);
         setEditedData(data);
         setMainpicUrl(data.mainpic_url);
+        setSecondpicUrl(data.secondpic_url);
+        setThreepicUrl(data.threepic_url);
+        setForthpicUrl(data.forthpic_url);
       } catch (err) {
         console.error("Error fetching data:", err);
         setError(err.message);
@@ -93,6 +100,14 @@ export default function Page() {
     );
   }
 
+  const handleAvatarUpload = (field, url) => {
+    if (field === "forthpic_url") setForthpicUrl(url);
+    if (field === "threepic_url") setThreepicUrl(url);
+    if (field === "mainpic_url") setMainpicUrl(url);
+    if (field === "secondpic_url") setSecondpicUrl(url);
+    
+    updateProfile(field, url);
+  };
   return (
     <div className="flex-col xl:flex-col md:flex-row px-4 pb-4 w-full">
       <h1 className="text-center font-bold text-2xl pt-4">
@@ -105,7 +120,7 @@ export default function Page() {
             setEditedData({ ...editedData, maintitle: value })
           }
           size="text-lg"
-          maxLength={400}
+          maxLength={50}
         />
       </h1>
 
@@ -113,6 +128,7 @@ export default function Page() {
         <div className="w-full xl:w-2/3 xl:h-[600px] xl:pr-4 xl:pb-0 sm:w-full sm:h-[300px] sm:pb-4">
           {profile.mainpic_url && (
             <Avatar
+            id="mainpic_url"
               uid={user?.id}
               width={2000}
               height={1000}
@@ -124,38 +140,41 @@ export default function Page() {
         </div>
         <div className="flex xl:flex-col xl:w-1/3 sm:flex-row sm:w-full">
           <div className="h-[200px] xl:w-full sm:w-1/3">
-            {profile.mainpic_url && (
+            {profile.secondpic_url && (
               <Avatar
+              id="secondpic_url"
                 uid={user?.id}
                 width={2000}
                 height={1000}
-                url={mainpicUrl || profile.mainpic_url}
+                url={secondpicUrl || profile.secondpic_url}
                 size={150}
-                onUpload={(url) => handleAvatarUpload("mainpic_url", url)}
+                onUpload={(url) => handleAvatarUpload("secondpic_url", url)}
               />
             )}
           </div>
           <div className="h-[200px] xl:w-full xl:py-4 xl:px-0 sm:px-4 sm:py-0 sm:w-1/3">
-            {profile.mainpic_url && (
+            {profile.threepic_url && (
               <Avatar
+              id="threepic_url"
                 uid={user?.id}
                 width={2000}
                 height={1000}
-                url={mainpicUrl || profile.mainpic_url}
+                url={threepicUrl || profile.threepic_url}
                 size={150}
-                onUpload={(url) => handleAvatarUpload("mainpic_url", url)}
+                onUpload={(url) => handleAvatarUpload("threepic_url", url)}
               />
             )}
           </div>
           <div className="h-[200px] xl:w-full sm:w-1/3">
-            {profile.mainpic_url && (
+            {profile.forthpic_url && (
               <Avatar
+              id="forthpic_url"
                 uid={user?.id}
                 width={2000}
                 height={1000}
-                url={mainpicUrl || profile.mainpic_url}
+                url={forthpicUrl || profile.forthpic_url}
                 size={150}
-                onUpload={(url) => handleAvatarUpload("mainpic_url", url)}
+                onUpload={(url) => handleAvatarUpload("forthpic_url", url)}
               />
             )}
           </div>
@@ -164,7 +183,17 @@ export default function Page() {
 
       <div className="py-4 flex gap4 bg-white mt-4 px-4 rounded-lg gap-8">
         <div className="flex flex-col gap-4 w-2/3">
-          <h2 className="font-bold text-xl"></h2>
+        <p className="font-bold"> <MainTitle
+          main={profile.t1}
+          edited={editedData.t1}
+          updateProfile={(value) => updateProfile("t1", value)}
+          loading={loading}
+          setEdited={(value) =>
+            setEditedData({ ...editedData, t1: value })
+          }
+          size="text-lg"
+          maxLength={100}
+        /></p>
           <div> <div className="flex gap-2">
         <div>
           {profile.surface !== 0 ? (
@@ -199,7 +228,7 @@ export default function Page() {
           size="text-lg"
           maxLength={400}
         />
-              <p>chambre(s)</p>
+              <p>bedroom</p>
             </div>
           ) : null}
         </div>
@@ -218,7 +247,7 @@ export default function Page() {
           size="text-lg"
           maxLength={400}
         />
-              <p>salle de bain</p>
+              <p>bathroom</p>
             </div>
           ) : null}
         </div>
@@ -253,10 +282,10 @@ export default function Page() {
             setEditedData({ ...editedData, prix: value })
           }
           size="text-lg"
-          maxLength={400}
+          maxLength={20}
         />
               </span>{" "}
-              €/mois
+              /month
             </div>
           
             <p>
@@ -270,11 +299,11 @@ export default function Page() {
                   setEditedData({ ...editedData, desprix: value })
                 }
                 size="text-lg"
-                maxLength={2000}
+                maxLength={500}
               />
             </p>
             <button className="bg-red-600 text-white px-4 py-2 rounded-lg w-full">
-              contacter le proprietairer
+              contact the owner
             </button>
           </div>
         </div>
@@ -296,6 +325,13 @@ function MainTitle({
   maxLength,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [charCount, setCharCount] = useState(edited ? edited.length : 0);
+
+  const handleTextareaChange = (e) => {
+    const value = e.target.value;
+    setEdited(value); // Update edited state
+    setCharCount(value.length); // Update character count
+  };
 
   return (
     <>
@@ -307,7 +343,7 @@ function MainTitle({
           {(onClose) => (
             <>
               <ModalBody>
-                <div className="flex justify-center items-center p-8 text-wrap">
+              <div className="flex justify-center items-center p-8 text-wrap flex- flex-col">
                   <Textarea
                     maxLength={maxLength}
                     fullWidth={true}
@@ -316,8 +352,11 @@ function MainTitle({
                     id="maintitle"
                     type="text"
                     value={edited || ""}
-                    onChange={(e) => setEdited(e.target.value)}
+                    onChange={handleTextareaChange}
                   />
+                   <p className="text-gray-500 mt-2">
+                Character count: {charCount} / {maxLength}
+              </p>
                 </div>
               </ModalBody>
               <ModalFooter>
@@ -402,9 +441,11 @@ function Online({ online }) {
   
         <div className=" px-4 py-2 flex w-fit justify-center items-center text-center font-bold text-xl ">
           <p className={online ? "text-green-500" : "text-red-500"}>
-            {online ? "votre page est en ligne" : "votre page est hors ligne"}
+            {online ? "in of search engine" : "Out of search engine"}
           </p>
         </div>
       </div>
     );
   }
+
+

@@ -132,18 +132,18 @@ const siteConfig = {
       label: "your appartment",
       href: "/appartement",
     },
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-    },
-    {
-      label: "Projects",
-      href: "/projects",
-    },
-    {
-      label: "pdfv",
-      href: "/Vpdf",
-    },
+    // {
+    //   label: "Dashboard",
+    //   href: "/dashboard",
+    // },
+    // {
+    //   label: "Projects",
+    //   href: "/projects",
+    // },
+    // {
+    //   label: "pdfv",
+    //   href: "/Vpdf",
+    // },
     
    
   ],

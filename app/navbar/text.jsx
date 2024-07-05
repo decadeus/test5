@@ -12,7 +12,7 @@ import {
   Divider,
 } from "@nextui-org/react";
 import Avatar from "@/app/getimage/getone";
-import UAvatar from "../getimage/Ugetone"; // Use the original Avatar component
+import UAvatar from "../getimage/getone"; // Use the original Avatar component
 import { createClient } from "@/utils/supabase/client";
 
 export default function Text({ user }) {
@@ -98,7 +98,7 @@ export default function Text({ user }) {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  label="Votre pseudo"
+                  label="your pseudo"
                 />
                 <Button
                   color="primary"
@@ -108,7 +108,7 @@ export default function Text({ user }) {
                   }}
                   disabled={loading}
                 >
-                  {loading ? "Updating..." : "Sauvegarder"}
+                  {loading ? "Updating..." : "Save"}
                 </Button>
               </ModalBody>
               <ModalFooter>
@@ -116,7 +116,7 @@ export default function Text({ user }) {
                   <Divider className="my-4 w-full" />
                   <form action="/auth/signout" method="post" className="flex justify-end">
                     <button type="submit">
-                      <p className="text-red-400">Se deconnecter</p>
+                      <p className="text-red-400">Log out</p>
                     </button>
                   </form>
                 </div>
