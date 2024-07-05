@@ -32,7 +32,7 @@ export default async function Page({ params }) {
       </div>
       <div className="flex flex-col justify-center md:gap-16">
         <div className="flex flex-col items-center">
-          <div className="w-full h-[300px]">
+          <div className="w-full h-[400px]">
             <Avatar
               url={data?.mainpic_url}
               width={2000}

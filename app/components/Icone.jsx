@@ -17,6 +17,8 @@ import {
   FaUmbrellaBeach,
   FaWheelchair,
   FaWheelchairMove,
+  FaSquareParking
+  
 } from "react-icons/fa6";
 import { GiParkBench } from "react-icons/gi";
 import { MdOutlinePool, MdFitnessCenter } from "react-icons/md";
@@ -44,6 +46,7 @@ export const iconComponents = (size) => [
   { value: 19, icon: <MdOutlinePool size={size} /> },
   { value: 20, icon: <MdFitnessCenter size={size} /> },
   { value: 21, icon: <IoMdBicycle size={size} /> },
+  { value: 22, icon: <FaSquareParking size={size} /> },
 ];
 
 function IconeS({ specificValue, size }) {

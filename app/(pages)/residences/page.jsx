@@ -34,6 +34,7 @@ import {
   FaMugHot,
   FaNetworkWired,
   FaUmbrellaBeach,
+  FaSquareParking,
  
 } from "react-icons/fa6";
 import { GiParkBench } from "react-icons/gi";
@@ -151,7 +152,7 @@ export default function Page() {
               setEditedData({ ...editedData, mainTitle: value })
             }
             size="text-lg"
-            maxLength={400}
+            maxLength={100}
           />
         </h1>
       </div>
@@ -174,7 +175,7 @@ export default function Page() {
         <div className="flex gap-8">
           <div className="flex w-1/2 justify-center items-center">
             <div className="flex flex-col gap-8">
-              <div className="text-xl font-bold">
+              <h2 className="text-xl font-bold">
                 <MainTitle
                   main={profile.t1}
                   edited={editedData.t1}
@@ -184,9 +185,9 @@ export default function Page() {
                     setEditedData({ ...editedData, t1: value })
                   }
                   size="text-lg"
-                  maxLength={400}
+                  maxLength={50}
                 />
-              </div>
+              </h2>
               <div>
                 <MainTitle
                   main={profile.d1}
@@ -197,7 +198,7 @@ export default function Page() {
                     setEditedData({ ...editedData, d1: value })
                   }
                   size="text-lg"
-                  maxLength={400}
+                  maxLength={900}
                 />
               </div>
             </div>
@@ -232,7 +233,7 @@ export default function Page() {
           </div>
           <div className="flex w-1/2 justify-center items-center">
             <div className="flex flex-col gap-8">
-              <div className="text-xl font-bold">
+              <h2 className="text-xl font-bold">
                 <MainTitle
                   main={profile.t2}
                   edited={editedData.t2}
@@ -242,9 +243,9 @@ export default function Page() {
                     setEditedData({ ...editedData, t2: value })
                   }
                   size="text-lg"
-                  maxLength={400}
+                  maxLength={50}
                 />
-              </div>
+              </h2>
               <div>
                 <MainTitle
                   main={profile.d2}
@@ -255,7 +256,7 @@ export default function Page() {
                     setEditedData({ ...editedData, d2: value })
                   }
                   size="text-lg"
-                  maxLength={400}
+                  maxLength={900}
                 />
               </div>
             </div>
@@ -278,7 +279,7 @@ export default function Page() {
                 maxLength={400}
               />
             </div>
-            <p className="text-xl font-bold pb-4">
+            <h2 className="text-xl font-bold pb-4">
               <MainTitle
                 main={profile.taut1}
                 edited={editedData.taut1}
@@ -288,9 +289,9 @@ export default function Page() {
                   setEditedData({ ...editedData, taut1: value })
                 }
                 size="text-lg"
-                maxLength={400}
+                maxLength={45}
               />
-            </p>
+            </h2>
             <MainTitle
               main={profile.daut1}
               edited={editedData.daut1}
@@ -300,7 +301,7 @@ export default function Page() {
                 setEditedData({ ...editedData, daut1: value })
               }
               size="text-lg"
-              maxLength={400}
+              maxLength={300}
             />
           </div>
           <div className="bg-gray-300 border-2 p-4">
@@ -317,7 +318,7 @@ export default function Page() {
                 maxLength={400}
               />
             </div>
-            <div className="text-xl font-bold pb-4">
+            <h2 className="text-xl font-bold pb-4">
               <MainTitle
                 main={profile.taut2}
                 edited={editedData.taut2}
@@ -327,9 +328,9 @@ export default function Page() {
                   setEditedData({ ...editedData, taut2: value })
                 }
                 size="text-lg"
-                maxLength={400}
+                maxLength={45}
               />
-            </div>
+            </h2>
             <MainTitle
               main={profile.daut2}
               edited={editedData.daut2}
@@ -339,7 +340,7 @@ export default function Page() {
                 setEditedData({ ...editedData, daut2: value })
               }
               size="text-lg"
-              maxLength={400}
+              maxLength={300}
             />
           </div>
           <div className="bg-gray-300 border-2 p-4">
@@ -353,10 +354,10 @@ export default function Page() {
                   setEditedData((prevData) => ({ ...prevData, aut3: value }))
                 }
                 size={30}
-                maxLength={400}
+                maxLength={300}
               />
             </div>
-            <p className="text-xl font-bold pb-4">
+            <h2 className="text-xl font-bold pb-4">
               <MainTitle
                 main={profile.taut3}
                 edited={editedData.taut3}
@@ -366,9 +367,9 @@ export default function Page() {
                   setEditedData({ ...editedData, taut3: value })
                 }
                 size="text-lg"
-                maxLength={400}
+                maxLength={45}
               />
-            </p>
+            </h2>
             <MainTitle
               main={profile.daut3}
               edited={editedData.daut3}
@@ -378,7 +379,7 @@ export default function Page() {
                 setEditedData({ ...editedData, daut3: value })
               }
               size="text-lg"
-              maxLength={400}
+              maxLength={300}
             />
           </div>
         </div>
@@ -432,7 +433,7 @@ export default function Page() {
   );
 }
 
-function MainTitle({
+ function MainTitle({
   main,
   edited,
   updateProfile,
@@ -441,48 +442,56 @@ function MainTitle({
   size,
   maxLength,
 }) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [charCount, setCharCount] = useState(edited ? edited.length : 0);
+
+  const handleTextareaChange = (e) => {
+    const value = e.target.value;
+    setEdited(value); // Update edited state
+    setCharCount(value.length); // Update character count
+  };
+
+  
 
   return (
     <>
       <button className="text-start" variant="light" onClick={onOpen}>
         {main}
       </button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="5xl">
         <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalBody>
-                <div className="flex justify-center items-center p-8 text-wrap">
-                  <Textarea
-                    maxLength={maxLength}
-                    fullWidth={true}
-                    size={size}
-                    className="flex w-2xl"
-                    id="maintitle"
-                    type="text"
-                    value={edited || ""}
-                    onChange={(e) => setEdited(e.target.value)}
-                  />
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button
-                  color="primary"
-                  onClick={() => {
-                    updateProfile();
-                    onClose();
-                  }}
-                  disabled={loading}
-                >
-                  {loading ? "Loading ..." : "Update"}
-                </Button>
-              </ModalFooter>
-            </>
-          )}
+          <ModalBody>
+            <div className="flex justify-center items-center p-8 text-wrap flex- flex-col">
+              <Textarea
+                maxLength={maxLength}
+                fullWidth={true}
+                size={size}
+                className="flex w-2xl"
+                id="maintitle"
+                type="text"
+                value={edited || ""}
+                onChange={handleTextareaChange}
+              />
+              <p className="text-gray-500 mt-2">
+                Character count: {charCount} / {maxLength}
+              </p>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="danger" variant="light" onClick={onClose}>
+              Close
+            </Button>
+            <Button
+              color="primary"
+              onClick={() => {
+                updateProfile();
+                onClose();
+              }}
+              disabled={loading}
+            >
+              {loading ? "Loading ..." : "Update"}
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
@@ -668,6 +677,7 @@ function IconeS({
     { value: 19, icon: <MdOutlinePool size={size} /> },
     { value: 20, icon: <MdFitnessCenter size={size} /> },
     { value: 21, icon: <IoMdBicycle size={size} /> },
+    { value: 22, icon: <FaSquareParking size={size} /> },
    
    
   ];
@@ -792,7 +802,7 @@ function Online({ online }) {
 
       <div className=" px-4 py-2 flex w-fit justify-center items-center text-center font-bold text-xl ">
         <p className={online ? "text-green-500" : "text-red-500"}>
-          {online ? "votre page est en ligne" : "votre page est hors ligne"}
+          {online ? "your page is not indexed on search engines" : "your page is indexed on search engines"}
         </p>
       </div>
     </div>

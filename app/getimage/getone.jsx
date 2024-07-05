@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import Image from "next/legacy/image"
 import { FaDownload } from "react-icons/fa";
+import b from "@/components/b.png";
+
 
 export default function Avatar({ uid, url, id, size, onUpload, classn, width, height}) {
   const supabase = createClient()
@@ -65,7 +67,7 @@ export default function Avatar({ uid, url, id, size, onUpload, classn, width, he
           objectFit="cover"
         />
       ) : (
-        <div className=" bg-gray-300 object-cover w-full h-full"></div>
+        <div className=" relative h-full m-h-[100px]"><Image src={b} width={150} height={150} alt="Logo" /></div>
         
       )}
       <div  className='relative bg-white w-fit rounded-xl text-center border-2 border-black top-4 left-4 py-2 px-4'>

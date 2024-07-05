@@ -84,7 +84,7 @@ export default async function MainNavBar({ user }) {
 async function fetchUserProfile(supabase, userId) {
   const { data: profile, error } = await supabase
     .from("profiles")
-    .select("pic_profil, website, username, rules") // Adjust the fields as necessary
+    .select("pic_profil, username, rules") // Adjust the fields as necessary
     .eq("id", userId)
     .single();
 
@@ -154,9 +154,9 @@ function HelpAdmin() {
     <div className="pr-8">
       <Link href="/aide">
       <Tooltip content="Aide" className="bg-black text-white">
-        <h1 className=" text-center flex justify-center items-center font-bold rounded-full border text-white bg-green-500 w-8 h-8">
+        <p className=" text-center flex justify-center items-center font-bold rounded-full border text-white bg-green-500 w-8 h-8">
           ?
-        </h1>
+        </p>
       </Tooltip>
       </Link>
     </div>
