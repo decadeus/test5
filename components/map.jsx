@@ -3,8 +3,9 @@ import React, { useEffect } from "react";
 import dynamic from "next/dynamic";
 import 'leaflet/dist/leaflet.css';
 import L from "leaflet";
-import MarkerIcon from 'leaflet/dist/images/marker-icon.png';
-import MarkerShadow from 'leaflet/dist/images/marker-shadow.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 // Dynamic import of react-leaflet components
 const MapContainer = dynamic(
@@ -30,9 +31,9 @@ const MapComponent = () => {
     if (typeof window !== "undefined") {
       delete L.Icon.Default.prototype._getIconUrl;
       L.Icon.Default.mergeOptions({
-        iconRetinaUrl: MarkerIcon,
-        iconUrl: MarkerIcon,
-        shadowUrl: MarkerShadow,
+        iconRetinaUrl: markerIcon2x,
+        iconUrl: markerIcon,
+        shadowUrl: markerShadow,
       });
     }
   }, []);
