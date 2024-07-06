@@ -79,7 +79,7 @@ export default async function Page({ params }) {
           <h2 className="font-bold text-xl text-center  pb-8 pt-4">
           the key points
           </h2>
-          <div className="grid grid-cols-3 grid-rows-1 gap-4">
+          <div className="md:grid md:grid-cols-3 md:grid-rows-1 gap-4 flex flex-col">
             <div className={iconee}>
               <IconeS specificValue={data?.aut1} size={30} />
               <div className="flex flex-col gap-2">

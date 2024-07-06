@@ -10,6 +10,8 @@ import {
   Button,
   useDisclosure,
   Textarea,
+  RadioGroup,
+  Radio,
 } from "@nextui-org/react";
 import Avatar from "@/app/getimage/getone";
 
@@ -21,10 +23,10 @@ export default function Page() {
   const [editedData, setEditedData] = useState({});
   const [user, setUser] = useState(null);
   const [mainpicUrl, setMainpicUrl] = useState(null);
- 
   const [secondpicUrl, setSecondpicUrl] = useState(null);
   const [threepicUrl, setThreepicUrl] = useState(null);
   const [forthpicUrl, setForthpicUrl] = useState(null);
+  const [type, setType] = useState("To sell");
 
   useEffect(() => {
     async function fetchProfile() {
@@ -49,6 +51,7 @@ export default function Page() {
         setSecondpicUrl(data.secondpic_url);
         setThreepicUrl(data.threepic_url);
         setForthpicUrl(data.forthpic_url);
+        setType(data.type);
       } catch (err) {
         console.error("Error fetching data:", err);
         setError(err.message);
@@ -63,10 +66,11 @@ export default function Page() {
       try {
         setLoading(true);
         const updatedData = { ...editedData, [field]: value };
+
         const { error } = await supabase
           .from("appartement")
           .update(updatedData)
-          .eq("ide", user?.id) // Ensure the correct column is used
+          .eq("ide", user?.id)
           .single();
         if (error) throw error;
 
@@ -74,8 +78,8 @@ export default function Page() {
         setProfile(updatedData);
         setEditedData(updatedData);
       } catch (error) {
-        console.error("Error updating the data:", error); // Log the error details
-        alert("Error updating the data! " + error.message); // Show error message
+        console.error("Error updating the data:", error);
+        alert("Error updating the data! " + error.message);
       } finally {
         setLoading(false);
       }
@@ -105,9 +109,15 @@ export default function Page() {
     if (field === "threepic_url") setThreepicUrl(url);
     if (field === "mainpic_url") setMainpicUrl(url);
     if (field === "secondpic_url") setSecondpicUrl(url);
-    
+
     updateProfile(field, url);
   };
+
+  const handleTypeChange = (value) => {
+    setType(value);
+    updateProfile("type", value);
+  };
+
   return (
     <div className="flex-col xl:flex-col md:flex-row px-4 pb-4 w-full">
       <h1 className="text-center font-bold text-2xl pt-4">
@@ -128,7 +138,7 @@ export default function Page() {
         <div className="w-full xl:w-2/3 xl:h-[600px] xl:pr-4 xl:pb-0 sm:w-full sm:h-[300px] sm:pb-4">
           {profile.mainpic_url && (
             <Avatar
-            id="mainpic_url"
+              id="mainpic_url"
               uid={user?.id}
               width={2000}
               height={1000}
@@ -142,7 +152,7 @@ export default function Page() {
           <div className="h-[200px] xl:w-full sm:w-1/3">
             {profile.secondpic_url && (
               <Avatar
-              id="secondpic_url"
+                id="secondpic_url"
                 uid={user?.id}
                 width={2000}
                 height={1000}
@@ -155,7 +165,7 @@ export default function Page() {
           <div className="h-[200px] xl:w-full xl:py-4 xl:px-0 sm:px-4 sm:py-0 sm:w-1/3">
             {profile.threepic_url && (
               <Avatar
-              id="threepic_url"
+                id="threepic_url"
                 uid={user?.id}
                 width={2000}
                 height={1000}
@@ -168,7 +178,7 @@ export default function Page() {
           <div className="h-[200px] xl:w-full sm:w-1/3">
             {profile.forthpic_url && (
               <Avatar
-              id="forthpic_url"
+                id="forthpic_url"
                 uid={user?.id}
                 width={2000}
                 height={1000}
@@ -183,111 +193,121 @@ export default function Page() {
 
       <div className="py-4 flex gap4 bg-white mt-4 px-4 rounded-lg gap-8">
         <div className="flex flex-col gap-4 w-2/3">
-        <p className="font-bold"> <MainTitle
-          main={profile.t1}
-          edited={editedData.t1}
-          updateProfile={(value) => updateProfile("t1", value)}
-          loading={loading}
-          setEdited={(value) =>
-            setEditedData({ ...editedData, t1: value })
-          }
-          size="text-lg"
-          maxLength={100}
-        /></p>
-          <div> <div className="flex gap-2">
-        <div>
-          {profile.surface !== 0 ? (
-            <div className="flex gap-1">
-              <MainTitle
-          main={profile.surface}
-          edited={editedData.surface}
-          updateProfile={(value) => updateProfile("surface", value)}
-          loading={loading}
-          setEdited={(value) =>
-            setEditedData({ ...editedData, surface: value })
-          }
-          size="text-lg"
-          maxLength={400}
-        />
-              <p>m2</p>
+          <p className="font-bold">
+            {" "}
+            <MainTitle
+              main={profile.t1}
+              edited={editedData.t1}
+              updateProfile={(value) => updateProfile("t1", value)}
+              loading={loading}
+              setEdited={(value) => setEditedData({ ...editedData, t1: value })}
+              size="text-lg"
+              maxLength={100}
+            />
+          </p>
+          <div>
+            {" "}
+            <div className="flex gap-2">
+              <div>
+                {profile.surface !== 0 ? (
+                  <div className="flex gap-1">
+                    <MainTitle
+                      main={profile.surface}
+                      edited={editedData.surface}
+                      updateProfile={(value) => updateProfile("surface", value)}
+                      loading={loading}
+                      setEdited={(value) =>
+                        setEditedData({ ...editedData, surface: value })
+                      }
+                      size="text-lg"
+                      maxLength={400}
+                    />
+                    <p>m2</p>
+                  </div>
+                ) : null}
+              </div>
+              <p>.</p>
+              <div>
+                {profile.bed !== 0 ? (
+                  <div className="flex gap-1">
+                    <MainTitle
+                      main={profile.bed}
+                      edited={editedData.bed}
+                      updateProfile={(value) => updateProfile("bed", value)}
+                      loading={loading}
+                      setEdited={(value) =>
+                        setEditedData({ ...editedData, bed: value })
+                      }
+                      size="text-lg"
+                      maxLength={400}
+                    />
+                    <p>bedroom</p>
+                  </div>
+                ) : null}
+              </div>
+              <p>.</p>
+              <div>
+                {profile.bath !== 0 ? (
+                  <div className="flex gap-1">
+                    <MainTitle
+                      main={profile.bath}
+                      edited={editedData.bath}
+                      updateProfile={(value) => updateProfile("bath", value)}
+                      loading={loading}
+                      setEdited={(value) =>
+                        setEditedData({ ...editedData, bath: value })
+                      }
+                      size="text-lg"
+                      maxLength={400}
+                    />
+                    <p>bathroom</p>
+                  </div>
+                ) : null}
+              </div>
             </div>
-          ) : null}
-        </div>
-        <p>.</p>
-        <div>
-          {profile.bed !== 0 ? (
-            <div className="flex gap-1">
-               <MainTitle
-          main={profile.bed}
-          edited={editedData.bed}
-          updateProfile={(value) => updateProfile("bed", value)}
-          loading={loading}
-          setEdited={(value) =>
-            setEditedData({ ...editedData, bed: value })
-          }
-          size="text-lg"
-          maxLength={400}
-        />
-              <p>bedroom</p>
-            </div>
-          ) : null}
-        </div>
-        <p>.</p>
-        <div>
-          {profile.bath !== 0 ? (
-            <div className="flex gap-1">
-              <MainTitle
-          main={profile.bath}
-          edited={editedData.bath}
-          updateProfile={(value) => updateProfile("bath", value)}
-          loading={loading}
-          setEdited={(value) =>
-            setEditedData({ ...editedData, bath: value })
-          }
-          size="text-lg"
-          maxLength={400}
-        />
-              <p>bathroom</p>
-            </div>
-          ) : null}
-        </div>
-      </div></div>
+          </div>
           <hr />
           <div>
-          <p style={{ whiteSpace: "pre-wrap" }}> <MainTitle
-          main={profile.d1}
-          edited={editedData.d1}
-          updateProfile={(value) => updateProfile("d1", value)}
-          loading={loading}
-          setEdited={(value) =>
-            setEditedData({ ...editedData, d1: value })
-          }
-          size="text-lg"
-          maxLength={1000}
-        /></p>
+            <p style={{ whiteSpace: "pre-wrap" }}>
+              {" "}
+              <MainTitle
+                main={profile.d1}
+                edited={editedData.d1}
+                updateProfile={(value) => updateProfile("d1", value)}
+                loading={loading}
+                setEdited={(value) =>
+                  setEditedData({ ...editedData, d1: value })
+                }
+                size="text-lg"
+                maxLength={1000}
+              />
+            </p>
           </div>
         </div>
         <div className="w-1/3 ">
           {" "}
           <div className="shadow-lg p-4 rounded-xl flex flex-col gap-4">
+            {/* <RadioGroup value={type} onChange={(value) => setType(value)} orientation="horizontal">
+              <Radio value="To sell">To sell</Radio>
+              <Radio value="To rent">To rent</Radio>
+            </RadioGroup> */}
             <div className="w-fit text-xl">
               <span className="font-bold">
                 {" "}
                 <MainTitle
-          main={profile.prix}
-          edited={editedData.prix}
-          updateProfile={(value) => updateProfile("prix", value)}
-          loading={loading}
-          setEdited={(value) =>
-            setEditedData({ ...editedData, prix: value })
-          }
-          size="text-lg"
-          maxLength={20}
-        />
+                  main={profile.prix}
+                  edited={editedData.prix}
+                  updateProfile={(value) => updateProfile("prix", value)}
+                  loading={loading}
+                  setEdited={(value) =>
+                    setEditedData({ ...editedData, prix: value })
+                  }
+                  size="text-lg"
+                  maxLength={20}
+                />
               </span>{" "}
-              /month
             </div>
-          
+
             <p>
               {" "}
               <MainTitle
@@ -329,8 +349,8 @@ function MainTitle({
 
   const handleTextareaChange = (e) => {
     const value = e.target.value;
-    setEdited(value); // Update edited state
-    setCharCount(value.length); // Update character count
+    setEdited(value);
+    setCharCount(value.length);
   };
 
   return (
@@ -343,7 +363,7 @@ function MainTitle({
           {(onClose) => (
             <>
               <ModalBody>
-              <div className="flex justify-center items-center p-8 text-wrap flex- flex-col">
+                <div className="flex justify-center items-center p-8 text-wrap flex- flex-col">
                   <Textarea
                     maxLength={maxLength}
                     fullWidth={true}
@@ -354,9 +374,9 @@ function MainTitle({
                     value={edited || ""}
                     onChange={handleTextareaChange}
                   />
-                   <p className="text-gray-500 mt-2">
-                Character count: {charCount} / {maxLength}
-              </p>
+                  <p className="text-gray-500 mt-2">
+                    Character count: {charCount} / {maxLength}
+                  </p>
                 </div>
               </ModalBody>
               <ModalFooter>
@@ -383,69 +403,67 @@ function MainTitle({
 }
 
 function Online({ online }) {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    return (
-      <div className="flex flex-col justify-center items-center border-2 w-fit p-4 border-black">
-        <Button
-          onPress={onOpen}
-          isIconOnly
-          size="sm"
-          className="bg-gray-300 rounded-full p-4 border-2 text-sm border-black font-bold"
-        >
-          ?
-        </Button>
-        <Modal
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          isDismissable={false}
-          isKeyboardDismissDisabled={true}
-        >
-          <ModalContent>
-            {(onClose) => (
-              <>
-                <ModalHeader className="flex flex-col gap-1">
-                  Modal Title
-                </ModalHeader>
-                <ModalBody>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Nullam pulvinar risus non risus hendrerit venenatis.
-                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                  </p>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Nullam pulvinar risus non risus hendrerit venenatis.
-                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                  </p>
-                  <p>
-                    Magna exercitation reprehenderit magna aute tempor cupidatat
-                    consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                    incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                    aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-                    nisi consectetur esse laborum eiusmod pariatur proident Lorem
-                    eiusmod et. Culpa deserunt nostrud ad veniam.
-                  </p>
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="danger" variant="light" onPress={onClose}>
-                    Close
-                  </Button>
-                  <Button color="primary" onPress={onClose}>
-                    Action
-                  </Button>
-                </ModalFooter>
-              </>
-            )}
-          </ModalContent>
-        </Modal>
-  
-        <div className=" px-4 py-2 flex w-fit justify-center items-center text-center font-bold text-xl ">
-          <p className={online ? "text-green-500" : "text-red-500"}>
-            {online ? "in of search engine" : "Out of search engine"}
-          </p>
-        </div>
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  return (
+    <div className="flex flex-col justify-center items-center border-2 w-fit p-4 border-black">
+      <Button
+        onPress={onOpen}
+        isIconOnly
+        size="sm"
+        className="bg-gray-300 rounded-full p-4 border-2 text-sm border-black font-bold"
+      >
+        ?
+      </Button>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        isDismissable={false}
+        isKeyboardDismissDisabled={true}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Modal Title
+              </ModalHeader>
+              <ModalBody>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam pulvinar risus non risus hendrerit venenatis.
+                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                </p>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam pulvinar risus non risus hendrerit venenatis.
+                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                </p>
+                <p>
+                  Magna exercitation reprehenderit magna aute tempor cupidatat
+                  consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
+                  incididunt cillum quis. Velit duis sit officia eiusmod Lorem
+                  aliqua enim laboris do dolor eiusmod. Et mollit incididunt
+                  nisi consectetur esse laborum eiusmod pariatur proident Lorem
+                  eiusmod et. Culpa deserunt nostrud ad veniam.
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={onClose}>
+                  Action
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
+      <div className=" px-4 py-2 flex w-fit justify-center items-center text-center font-bold text-xl ">
+        <p className={online ? "text-green-500" : "text-red-500"}>
+          {online ? "in of search engine" : "Out of search engine"}
+        </p>
       </div>
-    );
-  }
-
-
+    </div>
+  );
+}

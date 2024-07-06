@@ -27,8 +27,8 @@ export default function TodoList() {
       // Combine residences with their associated apartments
       const residencesWithCounts = residences.map(residence => {
         const residenceApartments = apartments.filter(apt => apt.ida === residence.id);
-        const countVendre = residenceApartments.filter(apt => apt.type === 'Vendre').length;
-        const countLouer = residenceApartments.filter(apt => apt.type === 'Louer').length;
+        const countVendre = residenceApartments.filter(apt => apt.type === 'To sell').length;
+        const countLouer = residenceApartments.filter(apt => apt.type === 'To rent').length;
         
         return {
           ...residence,
