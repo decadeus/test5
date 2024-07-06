@@ -5,6 +5,7 @@ import Avatar from "@/app/getimage/Ugetone";
 import GoogleMaps from "./googlemap";
 import Adresse from "./adresse";
 import IconeS from "@/app/components/Icone"; // Ensure correct path
+import Map from "@/components/map"
 
 export default async function Page({ params }) {
   const supabase = createClient();
@@ -113,6 +114,7 @@ export default async function Page({ params }) {
       <div className="w-full pt-8 flex flex-col-reverse">
         <div className="">
           <GoogleMaps lnga={data?.lng} lata={data?.lat} height="h-[300px]" />
+          <Map lnga={data?.lng} lata={data?.lat} height="h-[300px]" />
         </div>
         <div className=" flex justify-center items-center text-center w-full">
           <Adresse
