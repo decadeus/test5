@@ -38,17 +38,20 @@ function Appart({ b1i,b2i, b3i,b4i, b2, t1, d1, m1, price, desprix, bed, bath, s
       <div className="sm:hidden">
         <div className="embla" ref={emblaRef}>
           <div className="embla__container">
-            <div className="embla__slide">
+            <div className="flex-[0_0_90%] pr-2">
               <Avatar url={b1i} width={200} height={600} classn={classna} />
             </div>
-            <div className="embla__slide">
-              <Avatar url={b1i} width={200} height={600} classn={classna} />
+            <div className="flex-[0_0_80%] pl-2 pr-2">
+              <Avatar url={b2i} width={200} height={600} classn={classna} />
+            </div>
+            <div className="flex-[0_0_80%] pl-2 pr-4">
+              <Avatar url={b3i} width={200} height={600} classn={classna} />
             </div>
             <div className="embla__slide">
-              <Avatar url={b1i} width={200} height={600} classn={classna} />
+              <Avatar url={b4i} width={200} height={600} classn={classna} />
             </div>
           </div>
-          <div className="flex flex-row justify-between  ">
+          {/* <div className="flex flex-row justify-between  ">
             <button
               className="embla__prev absolute top-20 right-8 p-2 rounded-lg bg-white/70"
               onClick={scrollPrev}
@@ -61,7 +64,7 @@ function Appart({ b1i,b2i, b3i,b4i, b2, t1, d1, m1, price, desprix, bed, bath, s
             >
               Prev
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="py-4 flex flex-col md:flex-row bg-white mt-4 px-4 rounded-lg gap-8">

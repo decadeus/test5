@@ -28,7 +28,7 @@ export default async function Page({ params }) {
   return (
     <div className="w-full lg:px-20 md:px-10 sm:px-5 text-black">
       <div className="flex flex-col justify-center items-center w-full pb-4">
-        <h1 className="text-4xl font-bold">{data?.mainTitle}</h1>
+        <h1 className="text-4xl font-bold text-center">{data?.mainTitle}</h1>
       </div>
       <div className="flex flex-col justify-center md:gap-16">
         <div className="flex flex-col items-center">
