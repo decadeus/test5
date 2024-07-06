@@ -46,10 +46,11 @@ export default function TodoList() {
 
   return (
     <div className="w-full flex-col">
-       <div><p>ici map</p><Map lnga={data?.lng} lata={data?.lat} height="h-[300px]" /> </div>
+       
       <div className=" w-full px-4">
         <ul className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly gap-8 ">
           {todos.map((todo) => (
+            
             <li key={todo.id} className=" justify-center">
               <Link href={`/${todo.id}`}>
               <div className="flex gap-4 md:flex-col">
