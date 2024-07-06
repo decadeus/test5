@@ -1,43 +1,39 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import dynamic from "next/dynamic";
-import 'leaflet/dist/leaflet.css';
+import 'leaflet/dist/leaflet.css'
 import L from "leaflet";
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import MarkerIcon from "../node_modules/leaflet/dist/images/marker-icon.png"
+import MarkerShadow from "../node_modules/leaflet/dist/images/marker-shadow.png"
+
 
 // Dynamic import of react-leaflet components
 const MapContainer = dynamic(
   () => import("react-leaflet").then((module) => module.MapContainer),
-  { ssr: false }
+  {
+    ssr: false, // Disable server-side rendering for this component
+  }
 );
 const TileLayer = dynamic(
   () => import("react-leaflet").then((module) => module.TileLayer),
-  { ssr: false }
+  {
+    ssr: false,
+  }
 );
 const Marker = dynamic(
   () => import("react-leaflet").then((module) => module.Marker),
-  { ssr: false }
+  {
+    ssr: false,
+  }
 );
 const Popup = dynamic(
   () => import("react-leaflet").then((module) => module.Popup),
-  { ssr: false }
+  {
+    ssr: false,
+  }
 );
 
 const MapComponent = () => {
-  useEffect(() => {
-    // Only run the Leaflet configuration on the client side
-    if (typeof window !== "undefined") {
-      delete L.Icon.Default.prototype._getIconUrl;
-      L.Icon.Default.mergeOptions({
-        iconRetinaUrl: markerIcon2x,
-        iconUrl: markerIcon,
-        shadowUrl: markerShadow,
-      });
-    }
-  }, []);
-
   return (
     <MapContainer
       center={[37.7577, -122.4376]}
@@ -48,12 +44,24 @@ const MapComponent = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <Marker position={[37.7577, -122.4376]}>
-        <Popup>San Francisco</Popup>
+       <Marker
+        icon={
+          new L.Icon({
+            iconUrl: MarkerIcon.src,
+            iconRetinaUrl: MarkerIcon.src,
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowUrl: MarkerShadow.src,
+            shadowSize: [41, 41],
+          })
+        }
+        position={[37.7577, -122.4376]}
+      >
+        <Popup>User Post Location</Popup>
       </Marker>
-      <Marker position={[37.7749, -122.4194]}>
-        <Popup>Another Location</Popup>
-      </Marker>
+      
+      
     </MapContainer>
   );
 };
