@@ -1,7 +1,10 @@
 "use client";
 import React from "react";
 import dynamic from "next/dynamic";
-import 'leaflet/dist/leaflet.css'
+import 'leaflet/dist/leaflet.css';
+import L from "leaflet";
+import MarkerIcon from 'leaflet/dist/images/marker-icon.png';
+import MarkerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 // Dynamic import of react-leaflet components
 const MapContainer = dynamic(
@@ -29,6 +32,14 @@ const Popup = dynamic(
   }
 );
 
+// Fix the default icon issue by setting the paths manually
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: MarkerIcon.src,
+  iconUrl: MarkerIcon.src,
+  shadowUrl: MarkerShadow.src,
+});
+
 const MapComponent = () => {
   return (
     <MapContainer
@@ -41,12 +52,11 @@ const MapComponent = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       <Marker position={[37.7577, -122.4376]}>
-        <Popup>User Post Location</Popup>
+        <Popup>San Francisco</Popup>
       </Marker>
-      <Marker position={[107.8577, -122.4376]}>
-        <Popup>User Post Location</Popup>
+      <Marker position={[37.7749, -122.4194]}>
+        <Popup>Another Location</Popup>
       </Marker>
-      
     </MapContainer>
   );
 };
