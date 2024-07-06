@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import dynamic from "next/dynamic";
 import 'leaflet/dist/leaflet.css';
 import L from "leaflet";
@@ -9,38 +9,34 @@ import MarkerShadow from 'leaflet/dist/images/marker-shadow.png';
 // Dynamic import of react-leaflet components
 const MapContainer = dynamic(
   () => import("react-leaflet").then((module) => module.MapContainer),
-  {
-    ssr: false, // Disable server-side rendering for this component
-  }
+  { ssr: false }
 );
 const TileLayer = dynamic(
   () => import("react-leaflet").then((module) => module.TileLayer),
-  {
-    ssr: false,
-  }
+  { ssr: false }
 );
 const Marker = dynamic(
   () => import("react-leaflet").then((module) => module.Marker),
-  {
-    ssr: false,
-  }
+  { ssr: false }
 );
 const Popup = dynamic(
   () => import("react-leaflet").then((module) => module.Popup),
-  {
-    ssr: false,
-  }
+  { ssr: false }
 );
 
-// Fix the default icon issue by setting the paths manually
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: MarkerIcon.src,
-  iconUrl: MarkerIcon.src,
-  shadowUrl: MarkerShadow.src,
-});
-
 const MapComponent = () => {
+  useEffect(() => {
+    // Only run the Leaflet configuration on the client side
+    if (typeof window !== "undefined") {
+      delete L.Icon.Default.prototype._getIconUrl;
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl: MarkerIcon,
+        iconUrl: MarkerIcon,
+        shadowUrl: MarkerShadow,
+      });
+    }
+  }, []);
+
   return (
     <MapContainer
       center={[37.7577, -122.4376]}
