@@ -27,11 +27,10 @@ const MapComponent = () => {
   const [icon, setIcon] = useState(null);
 
   useEffect(() => {
-    // Only run the Leaflet configuration on the client side
     if (typeof window !== "undefined") {
       const newIcon = new L.Icon({
-        iconUrl: customMarkerIcon.src,
-        iconRetinaUrl: customMarkerIcon.src,
+        iconUrl: customMarkerIcon.src || customMarkerIcon,
+        iconRetinaUrl: customMarkerIcon.src || customMarkerIcon,
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
