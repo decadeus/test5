@@ -4,6 +4,7 @@ import Link from "next/link";
 import { createClient } from "./../utils/supabase/client";
 import Avatar from "./getimage/Ugetone";
 import GoogleMaps from "./[residence]/googlemap";
+import Map from "@/components/map"
 
 export default function TodoList() {
   const supabase = createClient();
@@ -45,6 +46,7 @@ export default function TodoList() {
 
   return (
     <div className="w-full flex-col">
+       <div><p>ici map</p><Map /></div>
       <div className=" w-full px-4">
         <ul className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly gap-8 ">
           {todos.map((todo) => (
@@ -71,6 +73,7 @@ export default function TodoList() {
           ))}
         </ul>
       </div>
+     
       <div className="w-full lg:w:1/3">
         <GoogleMaps
           lata="-9.069839810859907"
