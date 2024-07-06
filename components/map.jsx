@@ -2,8 +2,8 @@
 import React from "react";
 import dynamic from "next/dynamic";
 import L from "leaflet";
-import MarkerIcon from "../node_modules/leaflet/dist/images/marker-icon.png";
-import MarkerShadow from "../node_modules/leaflet/dist/images/marker-shadow.png";
+import MarkerIcon from "../node_modules/leaflet/dist/images/marker-icon.png"
+import MarkerShadow from "../node_modules/leaflet/dist/images/marker-shadow.png"
 import 'leaflet/dist/leaflet.css'
 
 // Dynamic import of react-leaflet components
