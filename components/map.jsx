@@ -43,6 +43,10 @@ const MapComponent = () => {
       <Marker position={[37.7577, -122.4376]}>
         <Popup>User Post Location</Popup>
       </Marker>
+      <Marker position={[107.8577, -122.4376]}>
+        <Popup>User Post Location</Popup>
+      </Marker>
+      
     </MapContainer>
   );
 };
