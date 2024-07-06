@@ -113,8 +113,8 @@ export default async function Page({ params }) {
 
       <div className="w-full pt-8 flex flex-col-reverse">
         <div className="">
-          <GoogleMaps lnga={data?.lng} lata={data?.lat} height="h-[300px]" />
-          <Map lnga={data?.lng} lata={data?.lat}  /> 
+          <GoogleMaps lnga={data?.lata} lata={data?.lnga} height="h-[300px]" />
+          <Map lnga={data?.lat} lata={data?.lng}  /> 
         </div>
         <div className=" flex justify-center items-center text-center w-full">
           <Adresse

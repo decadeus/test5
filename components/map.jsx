@@ -30,10 +30,10 @@ const Popup = dynamic(
   }
 );
 
-const MapComponent = () => {
+const MapComponent = ({lata, lnga}) => {
   return (
     <MapContainer
-      center={[37.7577, -122.4376]}
+      center={[lata, lnga]}
       zoom={8}
       style={{ width: "50vw", height: "50vh" }}
     >
@@ -41,7 +41,7 @@ const MapComponent = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <Marker position={[37.7577, -122.4376]}>
+      <Marker position={[lata, lnga]}>
         <Popup>User Post Location</Popup>
       </Marker>
       
