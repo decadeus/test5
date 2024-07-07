@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import Avatar from "@/app/getimage/Ugetone";
 import Link from "next/link";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+
 import Leaflet from "leaflet";
 
 // Import Leaflet library
