@@ -112,9 +112,10 @@ export default async function Page({ params }) {
       <hr className="mt-8" />
 
       <div className="w-full pt-8 flex flex-col-reverse md:flex-row">
-        <div className="">
+        <div className="w-full">
           
-          <Map lnga={data?.lat} lata={data?.lng}  /> 
+          
+          <Map lnga={data?.lng} lata={data?.lat} classN="w-full h-[200px]"  /> 
         </div>
         <div className=" flex justify-center items-center text-center w-full">
           <Adresse

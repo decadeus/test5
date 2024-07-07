@@ -30,12 +30,12 @@ const Popup = dynamic(
   }
 );
 
-const MapComponent = ({lata, lnga}) => {
+const MapComponent = ({lata, lnga, classN}) => {
   return (
     <MapContainer
       center={[lata, lnga]}
       zoom={12}
-      style={{ width: "50vw", height: "50vh" }}
+     className={classN}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
