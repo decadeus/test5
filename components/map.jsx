@@ -34,14 +34,14 @@ const MapComponent = ({lata, lnga}) => {
   return (
     <MapContainer
       center={[lata, lnga]}
-      zoom={8}
+      zoom={12}
       style={{ width: "50vw", height: "50vh" }}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <Marker position={[lata, lnga]}>
+      <Marker position={[lata, lnga]} style={{color: "lightblue"}}>
         <Popup>User Post Location</Popup>
       </Marker>
       
