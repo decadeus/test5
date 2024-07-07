@@ -49,7 +49,7 @@ export default function TodoList() {
     <div className="w-full flex-col">
       <Map classN="w-full h-[300px]" />
        
-      <div className=" w-full px-16">
+      <div className=" w-full px-4 md:px-16">
         <ul className="flex flex-col md:flex-row md:flex-wrap md:justify-start gap-8 pt-16 ">
           {todos.map((todo) => (
             
