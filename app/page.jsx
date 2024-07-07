@@ -8,13 +8,12 @@ import Image from "next/image";
 import image from "@/components/image/appart3.jpg";
 import { RadioGroup, Radio, Checkbox } from "@nextui-org/react";
 import { FaHeart } from "react-icons/fa";
-import { FaRegHeart } from "react-icons/fa";
 
 export default function TodoList() {
   const supabase = createClient();
   const [todos, setTodos] = useState([]);
   const [selected, setSelected] = useState("All");
-  const [selectedB, setSelectedB] = useState("To sell");
+  const [selectedB, setSelectedB] = useState("All");
 
   useEffect(() => {
     // Function to fetch data from Supabase
@@ -170,7 +169,7 @@ export default function TodoList() {
           </ul>
         </div>
         <div className="w-1/3">
-          <Map classN="w-full h-[400px] rounded-2xl" />
+          <Map classN="w-full h-[400px] rounded-2xl" todos={todos} />
         </div>
       </div>
     </div>
