@@ -57,14 +57,24 @@ export default function TodoList() {
           };
         });
 
-        setTodos(residencesWithCounts);
+        // Apply filters based on selected radio buttons
+        const filteredTodos = residencesWithCounts.filter((residence) => {
+          if (selectedB === "To sell") {
+            return residence.countVendre > 0;
+          } else if (selectedB === "To rent") {
+            return residence.countLouer > 0;
+          }
+          return true;
+        });
+
+        setTodos(filteredTodos);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [supabase]);
+  }, [selectedB, supabase]);
 
   return (
     <div className="w-full px-8 md:px-32">
@@ -86,7 +96,6 @@ export default function TodoList() {
             <div className="">
               <RadioGroup
               orientation="horizontal"
-             
                 value={selected}
                 onValueChange={setSelected}
               >
