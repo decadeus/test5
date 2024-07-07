@@ -62,7 +62,7 @@ export default function TodoList() {
                     classn="rounded-2xl"
                   />
                 </div>
-                <div className="flex flex-col gap-0 pt-2">
+                <div className="flex flex-col gap-0 pt-2 w-1/2">
                   <p className="font-bold">{todo.mainTitle}</p>
                   <p>{todo.city}</p>
                   <p className="text-sm">To sell: {todo.countVendre}</p>
