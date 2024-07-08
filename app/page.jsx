@@ -91,12 +91,12 @@ export default function TodoList() {
         </div>
       </div>
       <div className="w-full flex-col z-10 -mt-16  px-4 justify-center">
-        <div className="px-32 flex justify-center ">
-          <Map classN="w-full h-[400px] rounded-2xl " todos={todos} />
+        <div className="md:px-32 flex justify-center ">
+          <Map classN="w-full md:h-[400px] h-[200px] rounded-2xl " todos={todos} />
         </div>
         <div className="w-full rounded-2xl z-10 pt-8">
-          <ul className="flex flex-col  gap-8 pt-8 bg-gray-200 p-4 rounded-2xl">
-            <div className="flex justify-between px-8">
+          <ul className="flex flex-col  gap-8 pt-8 bg-gray-200 md:p-4 rounded-2xl">
+            <div className="md:flex-row flex-col justify-between md:px-8 px-2 ">
               <div className="">
                 <RadioGroup
                   orientation="horizontal"
@@ -104,17 +104,17 @@ export default function TodoList() {
                   onValueChange={setSelected}
                 >
                   <Radio value="All" className="text-black">
-                    <p className="text-black">All</p>
+                    <p className="text-black ">All</p>
                   </Radio>
                   <Radio value="Existing">
-                    <p className="text-black">Existing</p>
+                    <p className="text-black ">Existing</p>
                   </Radio>
                   <Radio value="Construction">
-                    <p className="text-black">Construction</p>
+                    <p className="text-black ">Construction</p>
                   </Radio>
                 </RadioGroup>
               </div>
-              <div className="">
+              <div className="pt-4">
                 <RadioGroup
                   value={selectedB}
                   onValueChange={setSelectedB}
@@ -132,7 +132,7 @@ export default function TodoList() {
                   </Radio>
                 </RadioGroup>
               </div>
-              <div className="flex justify-center">
+              <div className="flex md:justify-center pt-4">
               <Checkbox color="danger" defaultSelected>
                 <p className="text-black">Your favorite</p>
               </Checkbox>
