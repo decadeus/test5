@@ -76,7 +76,7 @@ export default function TodoList() {
   }, [selectedB, supabase]);
 
   return (
-    <div className="w-full px-8 md:px-32">
+    <div className="w-full px-8 md:px-16">
       <div className="flex justify-center w-full h-[300px] z-0 rounded-2xl relative">
         <div
           className="relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12  w-full"
@@ -85,91 +85,107 @@ export default function TodoList() {
             height: "400px",
           }}
         >
-          <p className="text-white font-bold text-3xl">Find your dream apartment <br/> and residence</p>
+          <p className="text-white font-bold text-3xl">
+            Find your dream apartment <br /> and residence
+          </p>
         </div>
       </div>
-      <div className="w-full flex z-10 -mt-16 justify-center px-16">
-        <div className="w-2/3 px-4 md:px-16 rounded-2xl z-10">
-          <ul className="flex flex-col gap-8 pt-8 bg-gray-200 p-4 rounded-2xl">
+      <div className="w-full flex-col z-10 -mt-16  px-4 justify-center">
+        <div className="px-32 flex justify-center ">
+          <Map classN="w-full h-[400px] rounded-2xl " todos={todos} />
+        </div>
+        <div className="w-full rounded-2xl z-10 pt-8">
+          <ul className="flex flex-col  gap-8 pt-8 bg-gray-200 p-4 rounded-2xl">
             <div className="flex justify-between px-8">
-            <div className="">
-              <RadioGroup
-              orientation="horizontal"
-                value={selected}
-                onValueChange={setSelected}
-              >
-                <Radio value="All" className="text-black">
-                  <p className="text-black">All</p>
-                </Radio>
-                <Radio value="Existing">
-                  <p className="text-black">Existing</p>
-                </Radio>
-                <Radio value="Construction">
-                  <p className="text-black">Construction</p>
-                </Radio>
-              
-              </RadioGroup>
-             
+              <div className="">
+                <RadioGroup
+                  orientation="horizontal"
+                  value={selected}
+                  onValueChange={setSelected}
+                >
+                  <Radio value="All" className="text-black">
+                    <p className="text-black">All</p>
+                  </Radio>
+                  <Radio value="Existing">
+                    <p className="text-black">Existing</p>
+                  </Radio>
+                  <Radio value="Construction">
+                    <p className="text-black">Construction</p>
+                  </Radio>
+                </RadioGroup>
+              </div>
+              <div className="">
+                <RadioGroup
+                  value={selectedB}
+                  onValueChange={setSelectedB}
+                  orientation="horizontal"
+                  color="text-black"
+                >
+                  <Radio value="All" className="text-black">
+                    <p className="text-black">All</p>
+                  </Radio>
+                  <Radio value="To rent">
+                    <p className="text-black">To rent</p>
+                  </Radio>
+                  <Radio value="To sell">
+                    <p className="text-black">To sell</p>
+                  </Radio>
+                </RadioGroup>
+              </div>
+              <div className="flex justify-center">
+              <Checkbox color="danger" defaultSelected>
+                <p className="text-black">Your favorite</p>
+              </Checkbox>
             </div>
-            <div className="">
-              <RadioGroup
-                value={selectedB}
-                onValueChange={setSelectedB}
-                orientation="horizontal"
-                color="text-black"
-              >
-                <Radio value="All" className="text-black">
-                  <p className="text-black">All</p>
-                </Radio>
-                <Radio value="To rent">
-                  <p className="text-black">To rent</p>
-                </Radio>
-                <Radio value="To sell">
-                  <p className="text-black">To sell</p>
-                </Radio>
-              </RadioGroup>
-             
             </div>
            
-            </div>
-            <div className="flex justify-center">
-            <Checkbox color="danger" defaultSelected><p className="text-black">Your favorite</p></Checkbox>
-            </div>
-            {todos.map((todo) => (
-              <li key={todo.id} className="border bg-white p-4 rounded-2xl">
-                <div className="flex">
-                <div className="w-full">
-                <Link href={`/${todo.id}`}>
-                  <div className="flex gap-4">
-                    <div className="w-1/2 h-36">
-                      <Avatar
-                        url={todo.mainpic_url}
-                        width={270}
-                        height={196}
-                        classn="rounded-2xl"
-                      />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+              {todos.map((todo) => (
+                <li
+                  key={todo.id}
+                  className="border bg-white rounded-2xl p-2 "
+                >
+                  <div className="flex">
+                    <div className="w-full">
+                      <Link href={`/${todo.id}`}>
+                        <div className="flex-col gap-4">
+                          <div className="h-36">
+                            <Avatar
+                              url={todo.mainpic_url}
+                              width={270}
+                              height={196}
+                              classn="rounded-2xl"
+                            />
+                          </div>
+                          <div className="flex w-full justify-between pt-4">
+                            <div className="flex flex-col  ">
+                              <p className="font-bold">{todo.mainTitle}</p>
+                              <div className="flex gap-2">
+                                <p>{todo.adresse1},</p>
+                                <p>{todo.city}</p>
+                              </div>
+                              <div className="flex gap-2 items-center">
+                                <p className="text-sm">
+                                  To sell: {todo.countVendre}
+                                </p>
+                                <p className="text-bold text-xl">.</p>
+                                <p className="text-sm">
+                                  To rent: {todo.countLouer}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="w-[30px]">
+                              <FaHeart fill="red" />
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
                     </div>
-                    <div className="flex flex-col gap-2 w-1/2">
-                      <p className="font-bold">{todo.mainTitle}</p>
-                      <p>{todo.city}</p>
-                      <p className="text-sm">To sell: {todo.countVendre}</p>
-                      <p className="text-sm">To rent: {todo.countLouer}</p>
-                    </div>
-                    
                   </div>
-                  
-                </Link>
-                </div>
-                <div className="w-[30px]">
-                <FaHeart fill="red" />
-                </div>
-                </div>
-              </li>
-            ))}
+                </li>
+              ))}
+            </div>
           </ul>
-        </div>
-        <div className="w-1/3">
-          <Map classN="w-full h-[400px] rounded-2xl" todos={todos} />
         </div>
       </div>
     </div>

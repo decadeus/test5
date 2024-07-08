@@ -4,8 +4,6 @@ import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import Avatar from "@/app/getimage/Ugetone";
 import Link from "next/link";
-import {Icon} from "leaflet";
-
 
 
 // Import Leaflet library
@@ -40,13 +38,7 @@ const MapComponent = ({ classN, todos }) => {
     }
   }, [todos]);
 
-  // Define markerIcon using Leaflet
-  const markerIcon =new Icon({
-    iconUrl: 'https://img.icons8.com/plasticine/100/exterior.png',
-    iconSize: [38, 45], // size of the icon
-    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-})
+
 
   const getMapBounds = (todos) => {
     // Initialize empty bounds
@@ -71,7 +63,7 @@ const MapComponent = ({ classN, todos }) => {
         <MarkerDynamic
           key={todo.id}
           position={[todo.lat, todo.lng]}
-          icon={markerIcon} // Assign custom marker icon here
+     
         >
           <PopupDynamic maxWidth={500}>
             <div className="flex-row w-full">
