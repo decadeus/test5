@@ -322,7 +322,7 @@ export default function Page() {
               <MainTitle
                 main={profile.taut2}
                 edited={editedData.taut2}
-                updateProfile={() => updateProfile("d2", editedData.taut2)}
+                updateProfile={() => updateProfile("taut2", editedData.taut2)}
                 loading={loading}
                 setEdited={(value) =>
                   setEditedData({ ...editedData, taut2: value })
@@ -361,7 +361,7 @@ export default function Page() {
               <MainTitle
                 main={profile.taut3}
                 edited={editedData.taut3}
-                updateProfile={() => updateProfile("d3", editedData.taut3)}
+                updateProfile={() => updateProfile("tait3", editedData.taut3)}
                 loading={loading}
                 setEdited={(value) =>
                   setEditedData({ ...editedData, taut3: value })
@@ -373,7 +373,7 @@ export default function Page() {
             <MainTitle
               main={profile.daut3}
               edited={editedData.daut3}
-              updateProfile={() => updateProfile("d2", editedData.daut3)}
+              updateProfile={() => updateProfile("daut3", editedData.daut3)}
               loading={loading}
               setEdited={(value) =>
                 setEditedData({ ...editedData, daut3: value })

@@ -26,13 +26,17 @@ export default function Res({
   const line = "flex flex-col text-center items-center gap-4 p-2";
 
   const text = "";
+
+  
   return (
-    <div className="w-full px-4 pt-4 border pb-8 bg-gray-100">
+    <div className="w-full px-4 pt-4 border pb-8 bg-gray-100 gap-4">
+      <div>
       <h2 className="text-center flex justify-center pb-4 font-bold text-2xl">
         The residence
       </h2>
-      <div className="flex flex-col pb-4 ">
-        <div className="flex justify-center">
+      </div>
+      <div className="flex flex-col pb-4 gap-16">
+        <div className="flex justify-center gap-16">
           <div className="w-full h-[200px] md:h-[400px]">
             <Avatar
               url={mainpic}
@@ -42,8 +46,8 @@ export default function Res({
             />
           </div>
         </div>
-        <div className="flex flex-col justify-between  ">
-          <div className="flex flex-col lg:flex-row justify-center pt-8 ">
+        <div className="flex flex-col justify-between gap-16 ">
+          <div className="grid grid-cols-3 grid-rows-1 gap-4 px-32">
             <div className={line}>
               <IconeS specificValue={aut1} size={30} />
               <div>

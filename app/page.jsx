@@ -6,7 +6,7 @@ import Avatar from "./getimage/Ugetone";
 import Map from "@/components/fullmap";
 import Image from "next/image";
 import image from "@/components/image/appart3.jpg";
-import { RadioGroup, Radio, Checkbox } from "@nextui-org/react";
+import { RadioGroup, Radio, Checkbox, Select, SelectItem } from "@nextui-org/react";
 import { FaHeart } from "react-icons/fa";
 
 export default function TodoList() {
@@ -14,13 +14,19 @@ export default function TodoList() {
   const [todos, setTodos] = useState([]);
   const [selected, setSelected] = useState("All");
   const [selectedB, setSelectedB] = useState("All");
+  const [selectedCountry, setSelectedCountry] = useState("All");
 
   useEffect(() => {
-    // Function to fetch data from Supabase
     const fetchData = async () => {
       try {
+        let residenceQuery = supabase.from("residence").select("*");
+
+        if (selectedCountry !== "All") {
+          residenceQuery = residenceQuery.eq("country", selectedCountry);
+        }
+
         const [residenceResponse, apartmentResponse] = await Promise.all([
-          supabase.from("residence").select("*"),
+          residenceQuery,
           supabase.from("appartement").select("type, ida"),
         ]);
 
@@ -37,7 +43,6 @@ export default function TodoList() {
           return;
         }
 
-        // Combine residences with their associated apartments
         const residencesWithCounts = residences.map((residence) => {
           const residenceApartments = apartments.filter(
             (apt) => apt.ida === residence.id
@@ -56,12 +61,12 @@ export default function TodoList() {
           };
         });
 
-        // Apply filters based on selected radio buttons
         const filteredTodos = residencesWithCounts.filter((residence) => {
-          if (selectedB === "To sell") {
-            return residence.countVendre > 0;
-          } else if (selectedB === "To rent") {
-            return residence.countLouer > 0;
+          if (selectedB === "To sell" && residence.countVendre === 0) {
+            return false;
+          }
+          if (selectedB === "To rent" && residence.countLouer === 0) {
+            return false;
           }
           return true;
         });
@@ -73,13 +78,19 @@ export default function TodoList() {
     };
 
     fetchData();
-  }, [selectedB, supabase]);
+  }, [selectedB, selectedCountry, supabase]);
+
+  const countries = [
+    { id: 1, label: "All" },
+    { id: 2, label: "France" },
+    { id: 3, label: "Poland" },
+  ];
 
   return (
     <div className="w-full px-8 md:px-16">
       <div className="flex justify-center w-full h-[300px] z-0 rounded-2xl relative">
         <div
-          className="relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12  w-full"
+          className="relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12 w-full"
           style={{
             backgroundImage: `url(${image.src})`,
             height: "400px",
@@ -90,13 +101,31 @@ export default function TodoList() {
           </p>
         </div>
       </div>
-      <div className="w-full flex-col z-10 -mt-16  px-4 justify-center">
-        <div className="md:px-32 flex justify-center ">
-          <Map classN="w-full md:h-[400px] h-[200px] rounded-2xl " todos={todos} />
+      <div className="w-full flex-col z-10 -mt-16 px-4 justify-center">
+        <div className="md:px-32 flex justify-center">
+          <Map classN="w-full md:h-[400px] h-[200px] rounded-2xl" todos={todos} />
         </div>
-        <div className="w-full rounded-2xl z-10 pt-8">
-          <ul className="flex flex-col  gap-8 pt-8 bg-gray-200 md:p-4 rounded-2xl">
-            <div className="md:flex-row flex-col justify-between md:px-8 px-2 ">
+        <div className="w-full rounded-2xl z-10 pt-16">
+          <ul className="flex flex-col gap-8 pt-8 bg-gray-200 md:p-4 rounded-2xl">
+            <div className="md:flex-row flex-col justify-between items-center md:px-8 px-2">
+              <div className="flex justify-between">
+              <div className="">
+              <Select
+             
+                
+                placeholder="Country?"
+                className="w-[200px]"
+                selectedKey={selectedCountry}
+                onChange={(e) => setSelectedCountry(e.target.value)}
+              >
+                {countries.map((country) => (
+                  <SelectItem key={country.id} value={country.label}>
+                    {country.label}
+                  </SelectItem>
+                ))}
+              </Select>
+              </div>
+              <div className="flex gap-32 items-center">
               <div className="">
                 <RadioGroup
                   orientation="horizontal"
@@ -104,17 +133,17 @@ export default function TodoList() {
                   onValueChange={setSelected}
                 >
                   <Radio value="All" className="text-black">
-                    <p className="text-black ">All</p>
+                    <p className="text-black">All</p>
                   </Radio>
                   <Radio value="Existing">
-                    <p className="text-black ">Existing</p>
+                    <p className="text-black">Existing</p>
                   </Radio>
                   <Radio value="Construction">
-                    <p className="text-black ">Construction</p>
+                    <p className="text-black">Construction</p>
                   </Radio>
                 </RadioGroup>
               </div>
-              <div className="pt-4">
+              <div className="">
                 <RadioGroup
                   value={selectedB}
                   onValueChange={setSelectedB}
@@ -132,18 +161,19 @@ export default function TodoList() {
                   </Radio>
                 </RadioGroup>
               </div>
-              <div className="flex md:justify-center pt-4">
-              <Checkbox color="danger" defaultSelected>
-                <p className="text-black">Your favorite</p>
-              </Checkbox>
+              </div>
+              <div className="flex md:justify-center items-center ">
+                <Checkbox color="danger" defaultSelected>
+                  <p className="text-black">Your favorite</p>
+                </Checkbox>
+              </div>
+              </div>
             </div>
-            </div>
-           
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
               {todos.map((todo) => (
                 <li
                   key={todo.id}
-                  className="border bg-white rounded-2xl p-2 "
+                  className="border bg-white rounded-2xl p-2"
                 >
                   <div className="flex">
                     <div className="w-full">
@@ -158,7 +188,7 @@ export default function TodoList() {
                             />
                           </div>
                           <div className="flex w-full justify-between pt-4">
-                            <div className="flex flex-col  ">
+                            <div className="flex flex-col">
                               <p className="font-bold">{todo.mainTitle}</p>
                               <div className="flex gap-2">
                                 <p>{todo.adresse1},</p>

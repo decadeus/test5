@@ -75,8 +75,8 @@ export default async function Page({ params }) {
           </div>
         </div>
       </div>
-      <div className="justify-center flex flex-col gap-20 ">
-        <div className=" bg-gray-200 mt-8 mb-8 py-8 px-8">
+      <div className="justify-center flex flex-col gap-20 pt-8 ">
+        <div className=" bg-gray-200 mt-8 mb-8 py-8 ">
           <h2 className="font-bold text-xl text-center  pb-8 pt-4">
           the key points
           </h2>

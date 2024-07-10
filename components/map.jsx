@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 
 // Dynamic import of react-leaflet components
+
 const MapContainer = dynamic(
   () => import("react-leaflet").then((module) => module.MapContainer),
   {

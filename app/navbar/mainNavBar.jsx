@@ -29,18 +29,16 @@ export default async function MainNavBar({ user }) {
   return (
     <div className="w-full px-10 py-4 flex justify-between items-center border-b mb-8 text-black">
       <div className="flex justify-center items-center gap-2 border border-gray-400 rounded-xl px-2 py-2">
-      
         <Link href="/">
-        <div className="flex gap-2 justify-center items-center">
-        <div className="w-8 h-8">
-          <Image src={b} width={50} height={50} alt="Logo" />
-          </div>
-          <div>Home</div>
+          <div className="flex gap-2 justify-center items-center">
+            <div className="w-8 h-8">
+              <Image src={b} width={50} height={50} alt="Logo" />
+            </div>
+            <div>Home</div>
           </div>
         </Link>
-      
-     
       </div>
+      <Link href="/projets">Projet</Link>
       <div className="flex text-center justify-center items-center">
         {profile?.rules === "Admin" ? (
           <ul className="flex gap-8 ">
@@ -152,8 +150,6 @@ const siteConfig = {
     //   label: "pdfv",
     //   href: "/Vpdf",
     // },
-    
-   
   ],
 };
 
@@ -161,11 +157,11 @@ function HelpAdmin() {
   return (
     <div className="pr-8">
       <Link href="/aide">
-      <Tooltip content="Aide" className="bg-black text-white">
-        <p className=" text-center flex justify-center items-center font-bold rounded-full border text-white bg-green-500 w-8 h-8">
-          ?
-        </p>
-      </Tooltip>
+        <Tooltip content="Aide" className="bg-black text-white">
+          <p className=" text-center flex justify-center items-center font-bold rounded-full border text-white bg-green-500 w-8 h-8">
+            ?
+          </p>
+        </Tooltip>
       </Link>
     </div>
   );
