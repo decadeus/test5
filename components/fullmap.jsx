@@ -1,5 +1,4 @@
-"use client";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import Avatar from "@/app/getimage/Ugetone";
@@ -7,7 +6,7 @@ import Link from "next/link";
 import L from "leaflet";
 import B from "@/components/icon8.png";
 
-// Dynamic import of react-leaflet components
+// Dynamic import of react-leaflet components with ssr disabled
 const MapContainer = dynamic(
   () => import("react-leaflet").then((module) => module.MapContainer),
   { ssr: false }
@@ -46,13 +45,22 @@ const customIcon = new L.Icon({
 
 const MapComponent = ({ classN, todos }) => {
   const [center, setCenter] = useState([52.07957, 20.97848]); // Default center
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    // Set the state to true after the component mounts on the client-side
+    setIsClient(true);
+
     if (todos.length > 0) {
       const bounds = getMapBounds(todos);
       setCenter(bounds.getCenter());
     }
   }, [todos]);
+
+  if (!isClient) {
+    // Avoid rendering the component until client-side
+    return null;
+  }
 
   return (
     <MapContainer center={center} zoom={12} className={classN}>
