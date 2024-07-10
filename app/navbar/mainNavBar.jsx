@@ -72,6 +72,7 @@ export default async function MainNavBar({ user }) {
             <div className="w-[50px] h-[50px]">
               <Text user={user} />
             </div>
+            
           </div>
         ) : (
           <div className="flex gap-8 items-center">

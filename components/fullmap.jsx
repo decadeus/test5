@@ -4,10 +4,11 @@ import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import Avatar from "@/app/getimage/Ugetone";
 import Link from "next/link";
-import { FaPenSquare } from "react-icons/fa";
+
 
 import L, { Icon, divIcon, point } from "leaflet";
-import B from "@/components/b.png";
+
+import B from "@/components/icon8.png";
 
 // Dynamic import of react-leaflet components
 const MapContainer = dynamic(
@@ -31,6 +32,8 @@ const Popup = dynamic(
   { ssr: false }
 );
 
+
+
 const getMapBounds = (todos) => {
   const bounds = new L.LatLngBounds();
   todos.forEach((todo) => {
@@ -39,18 +42,10 @@ const getMapBounds = (todos) => {
   return bounds;
 };
 
-const customIcon = new Icon({
+const customIcon = new L.Icon({
   iconUrl: B.src,
-  iconSize: [38, 38]
+  iconSize: [38, 38],
 });
-
-const createClusterCustomIcon = function (cluster) {
-  return new divIcon({
-    html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
-    className: "custom-marker-cluster",
-    iconSize: point(33, 33, true)
-  });
-};
 
 const MapComponent = ({ classN, todos }) => {
   const [center, setCenter] = useState([52.07957, 20.97848]); // Default center
@@ -69,11 +64,7 @@ const MapComponent = ({ classN, todos }) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       {todos.map((todo) => (
-        <Marker
-          key={todo.id}
-          position={[todo.lat, todo.lng]}
-          icon={customIcon}
-        >
+        <Marker key={todo.id} position={[todo.lat, todo.lng]} icon={customIcon}>
           <Popup maxWidth={500}>
             <div className="flex-row w-full">
               <div className="w-[150px] aspect-square rounded-md">
@@ -85,7 +76,7 @@ const MapComponent = ({ classN, todos }) => {
                   style={{
                     objectFit: "cover",
                     width: "350px",
-                    height: "350px"
+                    height: "350px",
                   }}
                 />
               </div>

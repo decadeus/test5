@@ -131,7 +131,7 @@ export default function Page() {
       <Appartement songs={songData} />
       </div>
       <div>
-      <button className=" bg-red-600 rounded-xl px-4 py-2 text-white text-xl">Nous contacter</button>
+      <button className=" bg-red-600 rounded-xl px-4 py-2 text-white text-xl shadow-2xl">Nous contacter</button>
       </div>
     </div>
   );
