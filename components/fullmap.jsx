@@ -4,10 +4,7 @@ import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import Avatar from "@/app/getimage/Ugetone";
 import Link from "next/link";
-
-
-import L, { Icon, divIcon, point } from "leaflet";
-
+import L from "leaflet";
 import B from "@/components/icon8.png";
 
 // Dynamic import of react-leaflet components
@@ -32,8 +29,7 @@ const Popup = dynamic(
   { ssr: false }
 );
 
-
-
+// Helper function to get map bounds based on todos
 const getMapBounds = (todos) => {
   const bounds = new L.LatLngBounds();
   todos.forEach((todo) => {
@@ -42,6 +38,7 @@ const getMapBounds = (todos) => {
   return bounds;
 };
 
+// Custom icon for map markers
 const customIcon = new L.Icon({
   iconUrl: B.src,
   iconSize: [38, 38],
