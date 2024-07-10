@@ -4,8 +4,6 @@ import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import Avatar from "@/app/getimage/Ugetone";
 import Link from "next/link";
-import Leaflet from "leaflet";
-import imageI from "@/components/b.png";
 
 
 // Dynamic import of react-leaflet components
@@ -25,13 +23,6 @@ const Popup = dynamic(
   () => import("react-leaflet").then((module) => module.Popup),
   { ssr: false }
 );
-const markerIcon = new L.Icon({
-  iconUrl: {imageI}, // Path to custom marker icon image
-  iconSize: [36, 48], // Size of the icon
-  iconAnchor: [18, 48], // Anchor point of the icon which should correspond to marker's location
-  popupAnchor: [0, -48], // Anchor point for the popup bubble
-});
-
 
 const getMapBounds = (todos) => {
   // Initialize empty bounds
@@ -66,7 +57,6 @@ const MapComponent = ({ classN, todos }) => {
           key={todo.id}
           position={[todo.lat, todo.lng]}
           style={{ color: "lightblue" }}
-          icon={markerIcon}
         >
           <Popup maxWidth={500}>
             <div className="flex-row w-full">
