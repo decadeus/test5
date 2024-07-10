@@ -8,6 +8,7 @@ import Image from "next/image";
 import image from "@/components/image/appart3.jpg";
 import { RadioGroup, Radio, Checkbox, Select, SelectItem } from "@nextui-org/react";
 import { FaHeart } from "react-icons/fa";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 export default function TodoList() {
   const supabase = createClient();
@@ -133,13 +134,13 @@ export default function TodoList() {
                   onValueChange={setSelected}
                 >
                   <Radio value="All" className="text-black">
-                    <p className="text-black">All</p>
+                    <p className="text-black pr-4">All</p>
                   </Radio>
                   <Radio value="Existing">
-                    <p className="text-black">Existing</p>
+                    <p className="text-black flex gap-1 items-center pr-4"> Existing <FaMapMarkerAlt color="red"/></p>
                   </Radio>
                   <Radio value="Construction">
-                    <p className="text-black">Construction</p>
+                  <p className="text-black flex gap-1 items-center">Construction <FaMapMarkerAlt color="fuchsia"/></p>
                   </Radio>
                 </RadioGroup>
               </div>

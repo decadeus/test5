@@ -81,7 +81,9 @@ const MapComponent = ({ classN, todos }) => {
           </Popup>
         </Marker>
       ))}
+     
     </MapContainer>
+   
   );
 };
 

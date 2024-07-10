@@ -126,8 +126,13 @@ export default function Page() {
   ];
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col justify-center items-center gap-16">
+        <div>
       <Appartement songs={songData} />
+      </div>
+      <div>
+      <button className=" bg-red-600 rounded-xl px-4 py-2 text-white text-xl">Nous contacter</button>
+      </div>
     </div>
   );
 }
@@ -252,7 +257,7 @@ function Pop({
                 <div className="w-full ">
                   <Image src={archi} alt="appart" />
 
-                  <div className="flex">
+                  <div className="flex gap-2">
                     <div className="font-bold">
                       <p>{Ann1}</p>
                       <p>{Ann2}</p>
