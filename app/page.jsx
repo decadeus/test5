@@ -6,7 +6,13 @@ import Avatar from "./getimage/Ugetone";
 import Map from "@/components/fullmap";
 import Image from "next/image";
 import image from "@/components/image/appart3.jpg";
-import { RadioGroup, Radio, Checkbox, Select, SelectItem } from "@nextui-org/react";
+import {
+  RadioGroup,
+  Radio,
+  Checkbox,
+  Select,
+  SelectItem,
+} from "@nextui-org/react";
 import { FaHeart } from "react-icons/fa";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
@@ -102,84 +108,87 @@ export default function TodoList() {
           </p>
         </div>
       </div>
-      <div className="w-full flex-col z-10 -mt-16 px-4 justify-center">
+      <div className="w-full flex-col z-10 -mt-16 md:px-4 justify-center">
         <div className="md:px-32 flex justify-center">
-          <Map classN="w-full md:h-[400px] h-[200px] rounded-2xl" todos={todos} />
+          <Map
+            classN="w-full md:h-[400px] h-[200px] rounded-2xl"
+            todos={todos}
+          />
         </div>
         <div className="w-full rounded-2xl z-10 pt-16">
           <ul className="flex flex-col gap-8 pt-8 bg-gray-200 md:p-4 rounded-2xl">
-            <div className="md:flex-row flex-col justify-between items-center md:px-8 px-2">
-              <div className="flex justify-between">
-              <div className="">
-              <Select
-             
-                
-                placeholder="Country?"
-                className="w-[200px]"
-                selectedKey={selectedCountry}
-                onChange={(e) => setSelectedCountry(e.target.value)}
-              >
-                {countries.map((country) => (
-                  <SelectItem key={country.id} value={country.label}>
-                    {country.label}
-                  </SelectItem>
-                ))}
-              </Select>
-              </div>
-              <div className="flex gap-32 items-center">
-              <div className="">
-                <RadioGroup
-                  orientation="horizontal"
-                  value={selected}
-                  onValueChange={setSelected}
-                >
-                  <Radio value="All" className="text-black">
-                    <p className="text-black pr-4">All</p>
-                  </Radio>
-                  <Radio value="Existing">
-                    <p className="text-black flex gap-1 items-center pr-4"> Existing <FaMapMarkerAlt color="red"/></p>
-                  </Radio>
-                  <Radio value="Construction">
-                  <p className="text-black flex gap-1 items-center">Construction <FaMapMarkerAlt color="fuchsia"/></p>
-                  </Radio>
-                </RadioGroup>
-              </div>
-              <div className="">
-                <RadioGroup
-                  value={selectedB}
-                  onValueChange={setSelectedB}
-                  orientation="horizontal"
-                  color="text-black"
-                >
-                  <Radio value="All" className="text-black">
-                    <p className="text-black">All</p>
-                  </Radio>
-                  <Radio value="To rent">
-                    <p className="text-black">To rent</p>
-                  </Radio>
-                  <Radio value="To sell">
-                    <p className="text-black">To sell</p>
-                  </Radio>
-                </RadioGroup>
-              </div>
-              </div>
-              <div className="flex md:justify-center items-center ">
-                <Checkbox color="danger" defaultSelected>
-                  <p className="text-black">Your favorite</p>
-                </Checkbox>
-              </div>
+            <div className="">
+              <div className=" md:justify-between justify-start flex flex-col md:flex-row items-center ">
+                <div className="md:flex-row flex-col flex md:gap-32 gap-8 md:items-center">
+                  <div className="">
+                    <Select
+                      placeholder="Country?"
+                      className="w-[200px]"
+                      selectedKey={selectedCountry}
+                      onChange={(e) => setSelectedCountry(e.target.value)}
+                    >
+                      {countries.map((country) => (
+                        <SelectItem key={country.id} value={country.label}>
+                          {country.label}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </div>
+                  <div className="">
+                    <RadioGroup
+                      orientation="vertical"
+                      value={selected}
+                      onValueChange={setSelected}
+                    >
+                      <Radio value="All" className="text-black">
+                        <p className="text-black pr-4">All</p>
+                      </Radio>
+                      <Radio value="Existing">
+                        <p className="text-black flex gap-1 items-center pr-4">
+                          {" "}
+                          Existing <FaMapMarkerAlt color="red" />
+                        </p>
+                      </Radio>
+                      <Radio value="Construction">
+                        <p className="text-black flex gap-1 items-center">
+                          Construction <FaMapMarkerAlt color="fuchsia" />
+                        </p>
+                      </Radio>
+                    </RadioGroup>
+                  </div>
+
+                  <div className="">
+                    <RadioGroup
+                      value={selectedB}
+                      onValueChange={setSelectedB}
+                      orientation="vertical"
+                    >
+                      <Radio value="All" className="text-black">
+                        <p className="text-black">All</p>
+                      </Radio>
+                      <Radio value="To rent">
+                        <p className="text-black">To rent</p>
+                      </Radio>
+                      <Radio value="To sell">
+                        <p className="text-black">To sell</p>
+                      </Radio>
+                    </RadioGroup>
+                  </div>
+                  <div className="flex md:justify-center md:items-center justify-start ">
+                    <Checkbox color="danger" defaultSelected>
+                      <p className="text-black">Your favorite</p>
+                    </Checkbox>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
               {todos.map((todo) => (
-                <li
-                  key={todo.id}
-                  className="border bg-white rounded-2xl p-2"
-                >
-                  <div className="flex">
+                <li key={todo.id} className="border bg-white rounded-2xl p-2 mx-2 mb-2">
+                  <div className="flex ">
                     <div className="w-full">
                       <Link href={`/${todo.id}`}>
-                        <div className="flex-col gap-4">
+                        <div className="flex-col gap-4 ">
                           <div className="h-36">
                             <Avatar
                               url={todo.mainpic_url}

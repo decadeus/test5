@@ -7,7 +7,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import React from "react";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlusCircle } from "react-icons/fa";
 import Image from "next/image";
 import Im from "@/components/image/appart3.jpg";
 import archi from "@/components/image/plan_archi.jpg";
@@ -221,9 +221,9 @@ function Pop({
       <Button
         onPress={onOpen}
         isIconOnly
-        className="bg-transparent rounded-full border-black border hover:rotate-45"
+        className="bg-transparent rounded-full  hover:rotate-45"
       >
-        <FaPlus />
+        <FaPlusCircle color="indigo" size={30}  />
       </Button>
       <Modal
         isOpen={isOpen}
