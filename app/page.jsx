@@ -94,7 +94,7 @@ export default function TodoList() {
   ];
 
   return (
-    <div className="w-full px-8 md:px-16">
+    <div className="w-full px-4 md:px-16">
       <div className="flex justify-center w-full h-[300px] z-0 rounded-2xl relative">
         <div
           className="relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12 w-full"
@@ -118,8 +118,8 @@ export default function TodoList() {
         <div className="w-full rounded-2xl z-10 pt-16">
           <ul className="flex flex-col gap-8 pt-8 bg-gray-200 md:p-4 rounded-2xl">
             <div className="">
-              <div className=" md:justify-between justify-start flex flex-col md:flex-row items-center ">
-                <div className="md:flex-row flex-col flex md:gap-32 gap-8 md:items-center">
+              <div className=" md:justify-between justify-between flex flex-col md:flex-row items-center ">
+                <div className="md:flex-row flex-col flex md:gap-32 gap-8 md:items-center w-full px-12">
                   <div className="">
                     <Select
                       placeholder="Country?"
@@ -134,6 +134,7 @@ export default function TodoList() {
                       ))}
                     </Select>
                   </div>
+                  <div className="flex justify-between w-full">
                   <div className="">
                     <RadioGroup
                       orientation="vertical"
@@ -173,6 +174,7 @@ export default function TodoList() {
                         <p className="text-black">To sell</p>
                       </Radio>
                     </RadioGroup>
+                  </div>
                   </div>
                   <div className="flex md:justify-center md:items-center justify-start ">
                     <Checkbox color="danger" defaultSelected>
