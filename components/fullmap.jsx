@@ -4,11 +4,18 @@ import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import Avatar from "@/app/getimage/Ugetone";
 import Link from "next/link";
+import { FaPenSquare } from "react-icons/fa";
 
+import L, { Icon, divIcon, point } from "leaflet";
+import B from "@/components/b.png";
 
 // Dynamic import of react-leaflet components
 const MapContainer = dynamic(
   () => import("react-leaflet").then((module) => module.MapContainer),
+  { ssr: false }
+);
+const MarkerClusterGroup = dynamic(
+  () => import("react-leaflet").then((module) => module.MarkerClusterGroup),
   { ssr: false }
 );
 const TileLayer = dynamic(
@@ -25,16 +32,24 @@ const Popup = dynamic(
 );
 
 const getMapBounds = (todos) => {
-  // Initialize empty bounds
-  const bounds = new L.latLngBounds([]);
-
-  // Iterate through todos and extend bounds for each marker
+  const bounds = new L.LatLngBounds();
   todos.forEach((todo) => {
-    const latLng = new L.latLng(todo.lat, todo.lng);
-    bounds.extend(latLng);
+    bounds.extend([todo.lat, todo.lng]);
   });
-
   return bounds;
+};
+
+const customIcon = new Icon({
+  iconUrl: B.src,
+  iconSize: [38, 38]
+});
+
+const createClusterCustomIcon = function (cluster) {
+  return new divIcon({
+    html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
+    className: "custom-marker-cluster",
+    iconSize: point(33, 33, true)
+  });
 };
 
 const MapComponent = ({ classN, todos }) => {
@@ -46,8 +61,9 @@ const MapComponent = ({ classN, todos }) => {
       setCenter(bounds.getCenter());
     }
   }, [todos]);
+
   return (
-    <MapContainer center={[52.07957, 20.97848]} zoom={12} className={classN}>
+    <MapContainer center={center} zoom={12} className={classN}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -56,7 +72,7 @@ const MapComponent = ({ classN, todos }) => {
         <Marker
           key={todo.id}
           position={[todo.lat, todo.lng]}
-          style={{ color: "lightblue" }}
+          icon={customIcon}
         >
           <Popup maxWidth={500}>
             <div className="flex-row w-full">
@@ -69,7 +85,7 @@ const MapComponent = ({ classN, todos }) => {
                   style={{
                     objectFit: "cover",
                     width: "350px",
-                    height: "350px",
+                    height: "350px"
                   }}
                 />
               </div>
@@ -81,9 +97,7 @@ const MapComponent = ({ classN, todos }) => {
           </Popup>
         </Marker>
       ))}
-     
     </MapContainer>
-   
   );
 };
 
