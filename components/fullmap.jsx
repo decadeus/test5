@@ -1,18 +1,13 @@
-import { useState, useEffect } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import Avatar from "@/app/getimage/Ugetone";
 import Link from "next/link";
-import L from "leaflet";
-import B from "@/components/icon8.png";
 
-// Dynamic import of react-leaflet components with ssr disabled
+// Dynamic import of react-leaflet components
 const MapContainer = dynamic(
   () => import("react-leaflet").then((module) => module.MapContainer),
-  { ssr: false }
-);
-const MarkerClusterGroup = dynamic(
-  () => import("react-leaflet").then((module) => module.MarkerClusterGroup),
   { ssr: false }
 );
 const TileLayer = dynamic(
@@ -28,48 +23,40 @@ const Popup = dynamic(
   { ssr: false }
 );
 
-// Helper function to get map bounds based on todos
 const getMapBounds = (todos) => {
-  const bounds = new L.LatLngBounds();
+  // Initialize empty bounds
+  const bounds = new L.latLngBounds([]);
+
+  // Iterate through todos and extend bounds for each marker
   todos.forEach((todo) => {
-    bounds.extend([todo.lat, todo.lng]);
+    const latLng = new L.latLng(todo.lat, todo.lng);
+    bounds.extend(latLng);
   });
+
   return bounds;
 };
 
-// Custom icon for map markers
-const customIcon = new L.Icon({
-  iconUrl: B.src,
-  iconSize: [38, 38],
-});
-
 const MapComponent = ({ classN, todos }) => {
   const [center, setCenter] = useState([52.07957, 20.97848]); // Default center
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // Set the state to true after the component mounts on the client-side
-    setIsClient(true);
-
     if (todos.length > 0) {
       const bounds = getMapBounds(todos);
       setCenter(bounds.getCenter());
     }
   }, [todos]);
-
-  if (!isClient) {
-    // Avoid rendering the component until client-side
-    return null;
-  }
-
   return (
-    <MapContainer center={center} zoom={12} className={classN}>
+    <MapContainer center={[52.07957, 20.97848]} zoom={12} className={classN}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       {todos.map((todo) => (
-        <Marker key={todo.id} position={[todo.lat, todo.lng]} icon={customIcon}>
+        <Marker
+          key={todo.id}
+          position={[todo.lat, todo.lng]}
+          style={{ color: "lightblue" }}
+        >
           <Popup maxWidth={500}>
             <div className="flex-row w-full">
               <div className="w-[150px] aspect-square rounded-md">
