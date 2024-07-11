@@ -38,7 +38,8 @@ export default async function MainNavBar({ user }) {
           </div>
         </Link>
       </div>
-      <Link href="/projets">Projet</Link>
+      
+  
       <div className="flex text-center justify-center items-center">
         {profile?.rules === "Admin" ? (
           <ul className="flex gap-8 ">

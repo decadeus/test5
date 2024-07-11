@@ -134,7 +134,7 @@ export default function TodoList() {
                       ))}
                     </Select>
                   </div>
-                  <div className="flex justify-between w-full">
+                  <div className="flex justify-between md:justify-center w-full md:gap-16">
                   <div className="">
                     <RadioGroup
                       orientation="vertical"
