@@ -13,14 +13,16 @@ import {
   Select,
   SelectItem,
 } from "@nextui-org/react";
-import { FaHeart } from "react-icons/fa";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaHeart, FaKey } from "react-icons/fa";
+import { FaMapPin } from "react-icons/fa6";
+import { BsBuildingFillGear } from "react-icons/bs";
 
 export default function TodoList() {
   const supabase = createClient();
   const [todos, setTodos] = useState([]);
   const [selected, setSelected] = useState("All");
   const [selectedB, setSelectedB] = useState("All");
+  const [selectedC, setSelectedC] = useState("All");
   const [selectedCountry, setSelectedCountry] = useState("All");
 
   useEffect(() => {
@@ -94,7 +96,86 @@ export default function TodoList() {
   ];
 
   return (
-    <div className="w-full px-4 md:px-16">
+    <div className="w-full px-4 md:px-16  flex flex-col justify-center gap-8">
+      <div className="md:flex-row flex flex-col justify-center items-center  gap-4  ">
+        <div className="border-black border-2 w-fit rounded-xl flex justify-center  gap-4">
+        <div>
+      <Select
+        label={<FaMapPin color="purple" size={20} />}
+        labelPlacement="outside"
+        isMultiline={true}
+        placeholder="Country"
+        selectedKey={selectedCountry}
+        onChange={(e) => setSelectedCountry(e.target.value)}
+        style={{ backgroundColor: 'transparent' }} // Style inline pour rendre l'arrière-plan transparent
+       className="md:w-[200px] w-[90px] flex items-center"
+      >
+        {countries.map((country) => (
+          <SelectItem key={country.id} value={country.label}>
+            {country.label}
+          </SelectItem>
+        ))}
+      </Select>
+    </div>
+          <div className="divider divider-horizontal  divider-secondary divide-x-large h-full"></div>
+          <hr className="border-l-2 border-indigo-800 h-[20px]" />
+          <div>
+            <Select
+              labelPlacement="outside"
+              style={{ backgroundColor: 'transparent' }}
+
+              isMultiline={true}
+              label={<BsBuildingFillGear color="purple" size={20} />}
+              value={selectedB}
+              placeholder="Status"
+              onChange={(e) => setSelectedB(e.target.value)}
+            className="md:w-[200px] w-[90px] flex items-center"
+            >
+              <SelectItem key="All">All</SelectItem>
+              <SelectItem key="Available">Available</SelectItem>
+              <SelectItem key="Project">Project</SelectItem>
+            </Select>
+          </div>
+          { selectedB === "Project" || "All"  && (
+          <hr className="border-l-2 border-indigo-800 h-[20px]" />
+        )}
+          { selectedB === "Project" || "All" && (
+          <div>
+            <Select
+              labelPlacement="outside"
+              style={{ backgroundColor: 'transparent' }}
+
+              isMultiline={true}
+              label={<FaKey color="purple" size={20} />}
+              value={selectedC}
+              placeholder="Type"
+              onChange={(e) => setSelectedB(e.target.value)}
+              className="md:w-[200px] w-[90px] flex items-center"
+            >
+            
+              <SelectItem key="To rent">To rent</SelectItem>
+              <SelectItem key="To sell">To sell</SelectItem>
+            </Select>
+          </div>)}
+        </div>
+        <div className="border-black border-2 w-fit rounded-xl 
+          gap-4 py-2 px-4 md:ml-16">
+        <div className="flex gap-4">
+        <Checkbox
+      defaultChecked
+      isIconOnly
+      variant="bordered" 
+      color="danger"
+      
+      icon={<FaHeart />}
+     
+    >
+     Favorite
+    </Checkbox>
+   
+    </div>  
+        </div>
+      </div>
       <div className="flex justify-center w-full h-[300px] z-0 rounded-2xl relative">
         <div
           className="relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12 w-full"
@@ -108,7 +189,7 @@ export default function TodoList() {
           </p>
         </div>
       </div>
-      <div className="w-full flex-col z-10 -mt-16 md:px-4 justify-center">
+      <div className="w-full flex-col z-10 -mt-32 md:px-4 justify-center">
         <div className="md:px-32 flex justify-center">
           <Map
             classN="w-full md:h-[400px] h-[200px] rounded-2xl"
@@ -117,76 +198,12 @@ export default function TodoList() {
         </div>
         <div className="w-full rounded-2xl z-10 pt-16">
           <ul className="flex flex-col gap-8 pt-8 bg-gray-200 md:p-4 rounded-2xl">
-            <div className="">
-              <div className=" md:justify-between justify-between flex flex-col md:flex-row items-center ">
-                <div className="md:flex-row flex-col flex md:gap-32 gap-8 md:items-center w-full px-12">
-                  <div className="">
-                    <Select
-                      placeholder="Country?"
-                      className="w-[200px]"
-                      selectedKey={selectedCountry}
-                      onChange={(e) => setSelectedCountry(e.target.value)}
-                    >
-                      {countries.map((country) => (
-                        <SelectItem key={country.id} value={country.label}>
-                          {country.label}
-                        </SelectItem>
-                      ))}
-                    </Select>
-                  </div>
-                  <div className="flex justify-between md:justify-center w-full md:gap-16">
-                  <div className="">
-                    <RadioGroup
-                      orientation="vertical"
-                      value={selected}
-                      onValueChange={setSelected}
-                    >
-                      <Radio value="All" className="text-black">
-                        <p className="text-black pr-4">All</p>
-                      </Radio>
-                      <Radio value="Existing">
-                        <p className="text-black flex gap-1 items-center pr-4">
-                          {" "}
-                          Existing <FaMapMarkerAlt color="red" />
-                        </p>
-                      </Radio>
-                      <Radio value="Construction">
-                        <p className="text-black flex gap-1 items-center">
-                          Construction <FaMapMarkerAlt color="fuchsia" />
-                        </p>
-                      </Radio>
-                    </RadioGroup>
-                  </div>
-
-                  <div className="">
-                    <RadioGroup
-                      value={selectedB}
-                      onValueChange={setSelectedB}
-                      orientation="vertical"
-                    >
-                      <Radio value="All" className="text-black">
-                        <p className="text-black">All</p>
-                      </Radio>
-                      <Radio value="To rent">
-                        <p className="text-black">To rent</p>
-                      </Radio>
-                      <Radio value="To sell">
-                        <p className="text-black">To sell</p>
-                      </Radio>
-                    </RadioGroup>
-                  </div>
-                  </div>
-                  <div className="flex md:justify-center md:items-center justify-start ">
-                    <Checkbox color="danger" defaultSelected>
-                      <p className="text-black">Your favorite</p>
-                    </Checkbox>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
               {todos.map((todo) => (
-                <li key={todo.id} className="border bg-white rounded-2xl p-2 mx-2 mb-2">
+                <li
+                  key={todo.id}
+                  className="border bg-white rounded-2xl p-2 mx-2 mb-2 shadow-xl"
+                >
                   <div className="flex ">
                     <div className="w-full">
                       <Link href={`/${todo.id}`}>
