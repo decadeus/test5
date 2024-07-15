@@ -98,82 +98,78 @@ export default function TodoList() {
   return (
     <div className="w-full px-4 md:px-16  flex flex-col justify-center gap-8">
       <div className="md:flex-row flex flex-col justify-center items-center  gap-4  ">
-        <div className="border-black border-2 w-fit rounded-xl flex justify-center  gap-4">
-        <div>
-      <Select
-        label={<FaMapPin color="purple" size={20} />}
-        labelPlacement="outside"
-        isMultiline={true}
-        placeholder="Country"
-        selectedKey={selectedCountry}
-        onChange={(e) => setSelectedCountry(e.target.value)}
-        style={{ backgroundColor: 'transparent' }} // Style inline pour rendre l'arrière-plan transparent
-       className="md:w-[200px] w-[90px] flex items-center"
-      >
-        {countries.map((country) => (
-          <SelectItem key={country.id} value={country.label}>
-            {country.label}
-          </SelectItem>
-        ))}
-      </Select>
-    </div>
-          <div className="divider divider-horizontal  divider-secondary divide-x-large h-full"></div>
-          <hr className="border-l-2 border-indigo-800 h-[20px]" />
+        <div className="border-black border-2 w-full rounded-xl flex-col justify-center  gap-4">
+          <div>
+            <Select
+              size="md"
+              label={<FaMapPin color="purple" size={20} />}
+              labelPlacement="outside"
+              isMultiline={true}
+              placeholder="Country"
+              selectedKey={selectedCountry}
+              onChange={(e) => setSelectedCountry(e.target.value)}
+              style={{ backgroundColor: "transparent" }} // Style inline pour rendre l'arrière-plan transparent
+              className="md:w-[200px] w-full flex items-center custom-select"
+            >
+              {countries.map((country) => (
+                <SelectItem key={country.id} value={country.label}>
+                  {country.label}
+                </SelectItem>
+              ))}
+            </Select>
+          </div>
+
           <div>
             <Select
               labelPlacement="outside"
-              style={{ backgroundColor: 'transparent' }}
-
+              style={{ backgroundColor: "transparent" }}
               isMultiline={true}
               label={<BsBuildingFillGear color="purple" size={20} />}
               value={selectedB}
               placeholder="Status"
               onChange={(e) => setSelectedB(e.target.value)}
-            className="md:w-[200px] w-[90px] flex items-center"
+              className="md:w-[200px] w-full flex items-center"
             >
               <SelectItem key="All">All</SelectItem>
               <SelectItem key="Available">Available</SelectItem>
               <SelectItem key="Project">Project</SelectItem>
             </Select>
           </div>
-          { selectedB === "Project" || "All"  && (
-          <hr className="border-l-2 border-indigo-800 h-[20px]" />
-        )}
-          { selectedB === "Project" || "All" && (
-          <div>
-            <Select
-              labelPlacement="outside"
-              style={{ backgroundColor: 'transparent' }}
-
-              isMultiline={true}
-              label={<FaKey color="purple" size={20} />}
-              value={selectedC}
-              placeholder="Type"
-              onChange={(e) => setSelectedB(e.target.value)}
-              className="md:w-[200px] w-[90px] flex items-center"
-            >
-            
-              <SelectItem key="To rent">To rent</SelectItem>
-              <SelectItem key="To sell">To sell</SelectItem>
-            </Select>
-          </div>)}
-        </div>
-        <div className="border-black border-2 w-fit rounded-xl 
-          gap-4 py-2 px-4 md:ml-16">
-        <div className="flex gap-4">
-        <Checkbox
-      defaultChecked
-      isIconOnly
-      variant="bordered" 
-      color="danger"
       
-      icon={<FaHeart />}
-     
-    >
-     Favorite
-    </Checkbox>
-   
-    </div>  
+          {selectedB === "Project" ||
+            ("All" && (
+              <div>
+                <Select
+                  labelPlacement="outside"
+                  style={{ backgroundColor: "transparent" }}
+                  isMultiline={true}
+                  label={<FaKey color="purple" size={20} />}
+                  value={selectedC}
+                  placeholder="Type"
+                  onChange={(e) => setSelectedB(e.target.value)}
+                  className="md:w-[200px] w-full flex items-center"
+                >
+                  <SelectItem key="To rent">To rent</SelectItem>
+                  <SelectItem key="To sell">To sell</SelectItem>
+                </Select>
+              </div>
+            ))}
+        </div>
+        <div
+          className="border-black border-2 w-fit rounded-xl 
+          gap-4 py-2 px-4 md:ml-16"
+        >
+          <div className="flex gap-4">
+            <Checkbox
+              defaultChecked
+              isIconOnly
+              variant="bordered"
+              color="danger"
+              icon={<FaHeart />}
+            >
+              Favorite
+            </Checkbox>
+          </div>
         </div>
       </div>
       <div className="flex justify-center w-full h-[300px] z-0 rounded-2xl relative">
