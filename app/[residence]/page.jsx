@@ -8,6 +8,7 @@ import Adresse from "./adresse";
 import IconeS from "@/app/components/Icone";
 import Map from "@/components/map";
 import { FaHeart } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
 
 const FAVORITE_APARTMENTS_KEY = "favoriteApartments";
 
@@ -162,13 +163,23 @@ export default function Page({ params }) {
       <div className="flex justify-center items-center text-center flex-col font-bold text-xl gap-4">
         <p>Apartment Available</p>
         <Appart value={apartment.id} />
+        
+      </div>
+      <div className="flex w-full justify-center items-center pt-16 ">
+        <div className="flex border-2 p-4 justify-center items-center">
+        <p className="w-full">Add to your favorite</p>
         <button
-          className="bg-red-600 text-white px-4 py-2 rounded-lg w-full mt-4"
+          className=" text-white px-4  rounded-lg w-fit flex justify-center items-center"
           onClick={toggleFavorite}
         >
-          <FaHeart fill={isFavorite ? "red" : "blue"} size={20} />
+          {isFavorite ? (
+  <FaHeart fill="red" size={20} />
+) : (
+  <FaRegHeart fill="red" size={20} />
+)}
         </button>
-      </div>
+        </div>
+        </div>
       <hr className="mt-8" />
       {/* Map and Address */}
       <div className="w-full pt-8 flex flex-col-reverse md:flex-row">

@@ -16,7 +16,12 @@ import {
 import { FaHeart, FaKey } from "react-icons/fa";
 import { FaMapPin } from "react-icons/fa6";
 import { BsBuildingFillGear } from "react-icons/bs";
+import { FaRegHeart } from "react-icons/fa";
+
+
+
 const FAVORITE_TODOS_KEY = "favoriteApartments";
+
 export default function TodoList() {
   const supabase = createClient();
   const [todos, setTodos] = useState([]);
@@ -163,6 +168,7 @@ export default function TodoList() {
                   onChange={(e) => setSelectedB(e.target.value)}
                   className="md:w-[200px] w-full flex items-center"
                 >
+                  <SelectItem key="All">All</SelectItem>
                   <SelectItem key="To rent">To rent</SelectItem>
                   <SelectItem key="To sell">To sell</SelectItem>
                 </Select>
@@ -245,14 +251,11 @@ export default function TodoList() {
                               </div>
                             </div>
                             <div className="flex gap-4">
-                              <FaHeart
-                                fill={
-                                  favoriteTodos.includes(todo.id)
-                                    ? "red"
-                                    : "blue"
-                                }
-                                size={20}
-                              />
+                            {favoriteTodos.includes(todo.id) ? (
+  <FaHeart style={{ color: "red" }} size={20} />
+) : (
+  <FaRegHeart style={{ color: "red" }} size={20} />
+)}
                             </div>
                           </div>
                         </div>
