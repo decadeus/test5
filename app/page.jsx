@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { createClient } from "./../utils/supabase/client";
@@ -16,7 +16,7 @@ import {
 import { FaHeart, FaKey } from "react-icons/fa";
 import { FaMapPin } from "react-icons/fa6";
 import { BsBuildingFillGear } from "react-icons/bs";
-
+const FAVORITE_TODOS_KEY = "favoriteApartments";
 export default function TodoList() {
   const supabase = createClient();
   const [todos, setTodos] = useState([]);
@@ -24,6 +24,12 @@ export default function TodoList() {
   const [selectedB, setSelectedB] = useState("All");
   const [selectedC, setSelectedC] = useState("All");
   const [selectedCountry, setSelectedCountry] = useState("All");
+  const [favoriteTodos, setFavoriteTodos] = useState(() => {
+    // Retrieve from localStorage on component mount
+    const storedFavorites = localStorage.getItem(FAVORITE_TODOS_KEY);
+    return storedFavorites ? JSON.parse(storedFavorites) : [];
+  });
+  const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,15 +85,23 @@ export default function TodoList() {
           }
           return true;
         });
+        const finalFilteredTodos = showOnlyFavorites
+        ? filteredTodos.filter((residence) =>
+            favoriteTodos.includes(residence.id)
+          )
+        : filteredTodos;
 
-        setTodos(filteredTodos);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+      setTodos(finalFilteredTodos);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
     fetchData();
-  }, [selectedB, selectedCountry, supabase]);
+  },[selectedB, selectedC, selectedCountry, supabase, favoriteTodos, showOnlyFavorites]);
+  const toggleShowOnlyFavorites = () => {
+    setShowOnlyFavorites(!showOnlyFavorites);
+  };
 
   const countries = [
     { id: 1, label: "All" },
@@ -96,9 +110,9 @@ export default function TodoList() {
   ];
 
   return (
-    <div className="w-full px-4 md:px-16  flex flex-col justify-center gap-8">
-      <div className="md:flex-row flex flex-col justify-center items-center  gap-4  ">
-        <div className="border-black border-2 w-full rounded-xl flex-col justify-center  gap-4">
+    <div className="w-full px-4 md:px-16 flex flex-col justify-center gap-8">
+      <div className="md:flex-row flex flex-col justify-center items-center gap-4">
+        <div className="border-black border-2 w-fit flex rounded-xl flex-col md:flex-row justify-center gap-4">
           <div>
             <Select
               size="md"
@@ -160,14 +174,15 @@ export default function TodoList() {
           gap-4 py-2 px-4 md:ml-16"
         >
           <div className="flex gap-4">
-            <Checkbox
-              defaultChecked
+          <Checkbox
+              isSelected={showOnlyFavorites}
               isIconOnly
               variant="bordered"
               color="danger"
               icon={<FaHeart />}
+              onChange={toggleShowOnlyFavorites}
             >
-              Favorite
+              All Favorites
             </Checkbox>
           </div>
         </div>
@@ -202,7 +217,7 @@ export default function TodoList() {
                 >
                   <div className="flex ">
                     <div className="w-full">
-                      <Link href={`/${todo.id}`}>
+                    <Link href={`/${todo.id}`}>
                         <div className="flex-col gap-4 ">
                           <div className="h-36">
                             <Avatar
@@ -229,8 +244,15 @@ export default function TodoList() {
                                 </p>
                               </div>
                             </div>
-                            <div className="w-[30px]">
-                              <FaHeart fill="red" />
+                            <div className="flex gap-4">
+                              <FaHeart
+                                fill={
+                                  favoriteTodos.includes(todo.id)
+                                    ? "red"
+                                    : "blue"
+                                }
+                                size={20}
+                              />
                             </div>
                           </div>
                         </div>

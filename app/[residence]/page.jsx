@@ -1,27 +1,76 @@
-import React from "react";
-import { createClient } from "@/utils/supabase/server";
+"use client"
+import React, { useState, useEffect } from "react";
+import { createClient } from "@/utils/supabase/client";
 import Appart from "./appart";
 import Avatar from "@/app/getimage/Ugetone";
 import GoogleMaps from "./googlemap";
 import Adresse from "./adresse";
-import IconeS from "@/app/components/Icone"; // Ensure correct path
-import Map from "@/components/map"
+import IconeS from "@/app/components/Icone";
+import Map from "@/components/map";
+import { FaHeart } from "react-icons/fa";
 
-export default async function Page({ params }) {
+const FAVORITE_APARTMENTS_KEY = "favoriteApartments";
+
+export default function Page({ params }) {
   const supabase = createClient();
   const id = params.residence; // Extracting 'id' from params
-  const iconee = "flex flex-col text-center items-center px-4 gap-2";
-  const { data, error } = await supabase
-    .from("residence")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const [apartment, setApartment] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(false);
 
-  if (error) {
-    console.error("Error fetching data:", error);
+  useEffect(() => {
+    const fetchApartment = async () => {
+      const { data, error } = await supabase
+        .from("residence")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        console.error("Error fetching data:", error);
+      } else {
+        setApartment(data);
+        checkIfFavorite(data?.id);
+      }
+    };
+
+    fetchApartment();
+  }, [id]);
+
+  const checkIfFavorite = (apartmentId) => {
+    const favoriteApartments = JSON.parse(
+      localStorage.getItem(FAVORITE_APARTMENTS_KEY) || "[]"
+    );
+    setIsFavorite(favoriteApartments.includes(apartmentId));
+  };
+
+  const toggleFavorite = () => {
+    const favoriteApartments = JSON.parse(
+      localStorage.getItem(FAVORITE_APARTMENTS_KEY) || "[]"
+    );
+
+    if (isFavorite) {
+      const updatedFavorites = favoriteApartments.filter(
+        (apartmentId) => apartmentId !== apartment.id
+      );
+      localStorage.setItem(
+        FAVORITE_APARTMENTS_KEY,
+        JSON.stringify(updatedFavorites)
+      );
+      setIsFavorite(false);
+    } else {
+      const updatedFavorites = [...favoriteApartments, apartment.id];
+      localStorage.setItem(
+        FAVORITE_APARTMENTS_KEY,
+        JSON.stringify(updatedFavorites)
+      );
+      setIsFavorite(true);
+    }
+  };
+
+  if (!apartment) {
     return (
       <div className="w-full px-40 flex justify-center items-center">
-        <h1 className="text-4xl font-bold">Error loading data</h1>
+        <h1 className="text-4xl font-bold">Loading...</h1>
       </div>
     );
   }
@@ -29,39 +78,42 @@ export default async function Page({ params }) {
   return (
     <div className="w-full lg:px-20 md:px-10 sm:px-5 text-black">
       <div className="flex flex-col justify-center items-center w-full pb-4">
-        <h1 className="text-4xl font-bold text-center px-8 ">{data?.mainTitle}</h1>
+        <h1 className="text-4xl font-bold text-center px-8">{apartment.mainTitle}</h1>
       </div>
       <div className="flex flex-col justify-center md:gap-16">
+        {/* Main Pictures */}
         <div className="flex flex-col items-center">
           <div className="w-full h-[400px]">
             <Avatar
-              url={data?.mainpic_url}
+              url={apartment.mainpic_url}
               width={2000}
               height={600}
               className="rounded-lg"
             />
           </div>
         </div>
-        <div className="flex flex-col md:flex-row ">
+        {/* Secondary Pictures and Description */}
+        <div className="flex flex-col md:flex-row">
           <div className="flex justify-center items-center px-4 pb-4 md:w-1/2">
-            <div className="flex flex-col gap-8 ">
-              <p className="text-xl font-bold text-center">{data.t1}</p>
-              <p>{data.d1}</p>
+            <div className="flex flex-col gap-8">
+              <p className="text-xl font-bold text-center">{apartment.t1}</p>
+              <p>{apartment.d1}</p>
             </div>
           </div>
           <div className="h-[300px] md:w-1/2 md:h-[400px]">
             <Avatar
-              url={data?.secondpic_url}
+              url={apartment.secondpic_url}
               width={2000}
               height={600}
               className="rounded-lg"
             />
           </div>
         </div>
-        <div className="flex flex-col-reverse gap-8 md:flex-row ">
-          <div className=" h-[300px] md:w-1/2 md:h-[400px]">
+        {/* Additional Pictures and Description */}
+        <div className="flex flex-col-reverse md:flex-row">
+          <div className="h-[300px] md:w-1/2 md:h-[400px]">
             <Avatar
-              url={data?.threepic_url}
+              url={apartment.threepic_url}
               width={2000}
               height={600}
               className="rounded-lg"
@@ -69,62 +121,68 @@ export default async function Page({ params }) {
           </div>
           <div className="flex justify-center items-center px-4 pb-2 md:w-1/2">
             <div className="flex flex-col gap-8">
-              <p className="text-xl font-bold text-center">{data.t2}</p>
-              <p >{data.d2}</p>
+              <p className="text-xl font-bold text-center">{apartment.t2}</p>
+              <p>{apartment.d2}</p>
             </div>
           </div>
         </div>
       </div>
-      <div className="justify-center flex flex-col gap-20 pt-8 ">
-        <div className=" bg-gray-200 mt-8 mb-8 py-8 ">
-          <h2 className="font-bold text-xl text-center  pb-8 pt-4">
-          the key points
+      {/* Key Points */}
+      <div className="justify-center flex flex-col gap-20 pt-8">
+        <div className="bg-gray-200 mt-8 mb-8 py-8">
+          <h2 className="font-bold text-xl text-center pb-8 pt-4">
+            Key Points
           </h2>
           <div className="md:grid md:grid-cols-3 md:grid-rows-1 gap-4 flex flex-col">
-            <div className={iconee}>
-              <IconeS specificValue={data?.aut1} size={30} />
+            <div className="flex flex-col text-center items-center px-4 gap-2">
+              <IconeS specificValue={apartment.aut1} size={30} />
               <div className="flex flex-col gap-2">
-                <p className="font-bold">{data?.taut1}</p>
-                {data?.daut1}
+                <p className="font-bold">{apartment.taut1}</p>
+                {apartment.daut1}
               </div>
             </div>
-            <div className={iconee}>
-              <IconeS specificValue={data?.aut2} size={30} />
+            <div className="flex flex-col text-center items-center px-4 gap-2">
+              <IconeS specificValue={apartment.aut2} size={30} />
               <div className="flex flex-col gap-2">
-                <p className="font-bold">{data?.taut2}</p>
-                {data?.daut2}
+                <p className="font-bold">{apartment.taut2}</p>
+                {apartment.daut2}
               </div>
             </div>
-            <div className={iconee}>
-              <IconeS specificValue={data?.aut3} size={30} />
+            <div className="flex flex-col text-center items-center px-4 gap-2">
+              <IconeS specificValue={apartment.aut3} size={30} />
               <div className="flex flex-col gap-2">
-                <p className="font-bold">{data?.taut3}</p>
-                {data?.daut3}
+                <p className="font-bold">{apartment.taut3}</p>
+                {apartment.daut3}
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center text-center flex-col font-bold text-xl gap-4 ">
-        <p>apartment available</p>
-        <Appart value={data?.id} />
+      {/* Favorite Button and Apartment Details */}
+      <div className="flex justify-center items-center text-center flex-col font-bold text-xl gap-4">
+        <p>Apartment Available</p>
+        <Appart value={apartment.id} />
+        <button
+          className="bg-red-600 text-white px-4 py-2 rounded-lg w-full mt-4"
+          onClick={toggleFavorite}
+        >
+          <FaHeart fill={isFavorite ? "red" : "blue"} size={20} />
+        </button>
       </div>
       <hr className="mt-8" />
-
+      {/* Map and Address */}
       <div className="w-full pt-8 flex flex-col-reverse md:flex-row">
         <div className="w-full">
-          
-          
-          <Map lnga={data?.lng} lata={data?.lat} classN="w-full h-[200px]"  /> 
+          <Map lnga={apartment.lng} lata={apartment.lat} classN="w-full h-[200px]" />
         </div>
-        <div className=" flex justify-center items-center text-center w-full">
+        <div className="flex justify-center items-center text-center w-full">
           <Adresse
-            name={data?.mainTitle}
-            adresse={data?.adresse}
-            code_postal={data?.codepost}
-            city={data?.city}
-            adresse1={data?.adresse1}
-            adresse2={data?.adresse2}
+            name={apartment.mainTitle}
+            adresse={apartment.adresse}
+            code_postal={apartment.codepost}
+            city={apartment.city}
+            adresse1={apartment.adresse1}
+            adresse2={apartment.adresse2}
           />
         </div>
       </div>

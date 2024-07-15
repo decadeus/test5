@@ -50,6 +50,7 @@ export default async function Page({ params }) {
             bed={b.bed}
             bath={b.bath}
             surface={b.surface}
+            
           />
         </div>
         <hr  className="b"/>
