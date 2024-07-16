@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { createClient } from "./../utils/supabase/client";
@@ -17,8 +17,6 @@ import { FaHeart, FaKey } from "react-icons/fa";
 import { FaMapPin } from "react-icons/fa6";
 import { BsBuildingFillGear } from "react-icons/bs";
 import { FaRegHeart } from "react-icons/fa";
-
-
 
 const FAVORITE_TODOS_KEY = "favoriteApartments";
 
@@ -91,19 +89,26 @@ export default function TodoList() {
           return true;
         });
         const finalFilteredTodos = showOnlyFavorites
-        ? filteredTodos.filter((residence) =>
-            favoriteTodos.includes(residence.id)
-          )
-        : filteredTodos;
+          ? filteredTodos.filter((residence) =>
+              favoriteTodos.includes(residence.id)
+            )
+          : filteredTodos;
 
-      setTodos(finalFilteredTodos);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+        setTodos(finalFilteredTodos);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
     fetchData();
-  },[selectedB, selectedC, selectedCountry, supabase, favoriteTodos, showOnlyFavorites]);
+  }, [
+    selectedB,
+    selectedC,
+    selectedCountry,
+    supabase,
+    favoriteTodos,
+    showOnlyFavorites,
+  ]);
   const toggleShowOnlyFavorites = () => {
     setShowOnlyFavorites(!showOnlyFavorites);
   };
@@ -117,7 +122,7 @@ export default function TodoList() {
   return (
     <div className="w-full px-4 md:px-16 flex flex-col justify-center gap-8">
       <div className="md:flex-row flex flex-col justify-center items-center gap-4">
-        <div className="border-black border-2 w-fit flex rounded-xl flex-col md:flex-row justify-center gap-4">
+        <div className="border-black border-2 md:w-fit w-full flex rounded-xl flex-col md:flex-row justify-center gap-4">
           <div>
             <Select
               size="md"
@@ -154,7 +159,7 @@ export default function TodoList() {
               <SelectItem key="Project">Project</SelectItem>
             </Select>
           </div>
-      
+
           {selectedB === "Project" ||
             ("All" && (
               <div>
@@ -180,7 +185,7 @@ export default function TodoList() {
           gap-4 py-2 px-4 md:ml-16"
         >
           <div className="flex gap-4">
-          <Checkbox
+            <Checkbox
               isSelected={showOnlyFavorites}
               isIconOnly
               variant="bordered"
@@ -223,7 +228,7 @@ export default function TodoList() {
                 >
                   <div className="flex ">
                     <div className="w-full">
-                    <Link href={`/${todo.id}`}>
+                      <Link href={`/${todo.id}`}>
                         <div className="flex-col gap-4 ">
                           <div className="h-36">
                             <Avatar
@@ -251,11 +256,14 @@ export default function TodoList() {
                               </div>
                             </div>
                             <div className="flex gap-4">
-                            {favoriteTodos.includes(todo.id) ? (
-  <FaHeart style={{ color: "red" }} size={20} />
-) : (
-  <FaRegHeart style={{ color: "red" }} size={20} />
-)}
+                              {favoriteTodos.includes(todo.id) ? (
+                                <FaHeart style={{ color: "red" }} size={20} />
+                              ) : (
+                                <FaRegHeart
+                                  style={{ color: "red" }}
+                                  size={20}
+                                />
+                              )}
                             </div>
                           </div>
                         </div>

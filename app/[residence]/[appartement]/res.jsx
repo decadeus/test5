@@ -47,7 +47,7 @@ export default function Res({
           </div>
         </div>
         <div className="flex flex-col justify-between gap-16 ">
-          <div className="grid grid-cols-3 grid-rows-1 gap-4 px-32">
+          <div className="md:grid md:grid-cols-3 md:grid-rows-1 md:gap-4 md:px-32 flex flex-col gap-8">
             <div className={line}>
               <IconeS specificValue={aut1} size={30} />
               <div>
