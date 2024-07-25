@@ -27,14 +27,14 @@ export default async function MainNavBar({ user }) {
     .single();
 
   return (
-    <div className="w-full px-10 py-4 flex justify-between items-center border-b mb-8 text-black">
-      <div className="flex justify-center items-center gap-2 border border-gray-400 rounded-xl px-2 py-2">
+    <div className="w-full px-10 flex justify-between items-center border-b mb-8 text-black bg-black">
+      <div className="flex justify-center items-center gap-2  ">
         <Link href="/">
           <div className="flex gap-2 justify-center items-center">
             <div className="w-8 h-8">
               <Image src={b} width={50} height={50} alt="Logo" />
             </div>
-            <div>Home</div>
+           
           </div>
         </Link>
       </div>
@@ -58,7 +58,18 @@ export default async function MainNavBar({ user }) {
             ))}
           </ul>
         ) : (
-          <div></div>
+          <div className="flex gap-16">
+          <div>
+          <Link href="/" className="text-white">Completed Residential building</Link>
+          </div>
+          <div>
+
+          <Link href="/" className="text-white">Residential Building Projects</Link>
+          </div>
+          <div className="">
+              <p className="text-white">Mettre sa résidence sur Hoomge</p>
+            </div>
+          </div>
         )}
       </div>
       <div>
@@ -77,9 +88,7 @@ export default async function MainNavBar({ user }) {
           </div>
         ) : (
           <div className="flex gap-8 items-center">
-            <div className="invisible">
-              <p>Mettre sa résidence sur Hoomge</p>
-            </div>
+            
             <Connect className="py-2" />
           </div>
         )}

@@ -10,12 +10,13 @@ export default function Connect() {
 
   return (
     <>
+  
       <Link
        href="/login"
       
-        className="w-fit border-2 pl-2 rounded-2xl"
+        className="w-fit border pl-2 rounded-2xl border-white"
       >
-        <div className="flex gap-2 items-center  py-2 mr-4 ">
+        <div className="flex gap-2 items-center  mr-4 text-white">
           <IoMenu />
           <FaUser
             size={25}
@@ -24,6 +25,7 @@ export default function Connect() {
           />
         </div>
       </Link>
+      
     
     </>
   );

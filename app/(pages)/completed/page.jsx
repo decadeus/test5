@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { createClient } from "./../utils/supabase/client";
-import Avatar from "./getimage/Ugetone";
+import { createClient } from "@/utils/supabase/client";
+import Avatar from "@/app/getimage/Ugetone";
 import Map from "@/components/fullmap";
 import Image from "next/image";
 import image from "@/components/image/appart3.jpg";
