@@ -60,11 +60,11 @@ export default async function MainNavBar({ user }) {
         ) : (
           <div className="flex gap-16">
           <div>
-          <Link href="/" className="text-white">Completed Residential building</Link>
+          <Link href="/completed" className="text-white">Completed Residential building</Link>
           </div>
           <div>
 
-          <Link href="/" className="text-white">Residential Building Projects</Link>
+          <Link href="/projects" className="text-white">Residential Building Projects</Link>
           </div>
           <div className="">
               <p className="text-white">Mettre sa résidence sur Hoomge</p>
