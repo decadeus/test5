@@ -1,77 +1,77 @@
-'use client';
-
-import React, { useState, useEffect } from "react";
-import { Checkbox, CheckboxGroup, Input } from "@nextui-org/react";
+"use client";
+import React, { useState, useEffect, useMemo } from "react";
+import { Checkbox, CheckboxGroup, Slider } from "@nextui-org/react";
 import Image from "next/image";
 import a from "@/components/image/appart1.jpg";
 import { createClient } from "@/utils/supabase/client";
+import { FaBed } from "react-icons/fa";
+import { SlSizeFullscreen } from "react-icons/sl";
+import { TbCurrencyZloty } from "react-icons/tb";
+import { FaEuroSign } from "react-icons/fa";
+import Map from "@/components/fullmap";
 
 function Page() {
   const [projects, setProjects] = useState([]);
+  const [originalProjects, setOriginalProjects] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedCountries, setSelectedCountries] = useState(["France", "Poland"]);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(Infinity);
-  const [minSurface, setMinSurface] = useState(0);
-  const [maxSurface, setMaxSurface] = useState(Infinity);
+  const [selectedCountries, setSelectedCountries] = useState([
+    "France",
+    "Poland",
+  ]);
+  const [priceRange, setPriceRange] = useState([0, 1000000]); // Adjust max value based on your data
+  const [surfaceRange, setSurfaceRange] = useState([0, 200]);
+  const [bedRange, setBedRange] = useState([0, 10]);
+
+  const fetchProjects = async () => {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("projectlist")
+      .select("*, project(*, lat, lng, mainpic_url)");
+    if (error) {
+      setError(error);
+    } else {
+      setOriginalProjects(data);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      const supabase = createClient();
-      const { data, error } = await supabase.from("projectlist").select("*, project(city, country)");
-      if (error) {
-        setError(error);
-      } else {
-        setProjects(data);
-      }
-      setLoading(false);
-    };
-
     fetchProjects();
   }, []);
+
+  const filteredProjects = useMemo(() => {
+    return originalProjects.filter(
+      (project) =>
+        selectedCountries.includes(project.project.country) &&
+        project.price >= priceRange[0] &&
+        project.price <= priceRange[1] &&
+        project.surface >= surfaceRange[0] &&
+        project.surface <= surfaceRange[1] &&
+        project.bed >= bedRange[0] &&
+        project.bed <= bedRange[1]
+    );
+  }, [originalProjects, selectedCountries, priceRange, surfaceRange, bedRange]);
+
+  useEffect(() => {
+    setProjects(filteredProjects);
+  }, [filteredProjects]);
 
   const handleCountryChange = (selected) => {
     setSelectedCountries(selected);
   };
 
-  const handleMinPriceChange = (event) => {
-    const value = parseFloat(event.target.value);
-    setMinPrice(value);
-    if (value > maxPrice) {
-      setMaxPrice(value);
-    }
+  const handlePriceRangeChange = (values) => {
+    setPriceRange(values);
   };
 
-  const handleMaxPriceChange = (event) => {
-    const value = parseFloat(event.target.value);
-    if (value >= minPrice) {
-      setMaxPrice(value);
-    }
+  const handleSurfaceRangeChange = (values) => {
+    setSurfaceRange(values);
   };
 
-  const handleMinSurfaceChange = (event) => {
-    const value = parseFloat(event.target.value);
-    setMinSurface(value);
-    if (value > maxSurface) {
-      setMaxSurface(value);
-    }
+  const handleBedRangeChange = (values) => {
+    setBedRange(values);
   };
-
-  const handleMaxSurfaceChange = (event) => {
-    const value = parseFloat(event.target.value);
-    if (value >= minSurface) {
-      setMaxSurface(value);
-    }
-  };
-
-  const filteredProjects = projects.filter(project =>
-    selectedCountries.includes(project.project.country) &&
-    project.price >= minPrice &&
-    project.price <= maxPrice &&
-    project.surface >= minSurface &&
-    project.surface <= maxSurface
-  );
 
   if (loading) {
     return <div>Loading...</div>;
@@ -81,45 +81,70 @@ function Page() {
     return <div>Error fetching data: {error.message}</div>;
   }
 
-  const fiche = "shadow-lg pb-4";
+  const fiche = "pb-2 flex";
   return (
-    <div className="flex w-full px-16">
-      <div className="w-2/6">
+    <div className="flex flex-col w-full px-16">
+      <div>
         <Filter
           selectedCountries={selectedCountries}
           onCountryChange={handleCountryChange}
-          minPrice={minPrice}
-          maxPrice={maxPrice}
-          onMinPriceChange={handleMinPriceChange}
-          onMaxPriceChange={handleMaxPriceChange}
-          minSurface={minSurface}
-          maxSurface={maxSurface}
-          onMinSurfaceChange={handleMinSurfaceChange}
-          onMaxSurfaceChange={handleMaxSurfaceChange}
+          priceRange={priceRange}
+          onPriceRangeChange={handlePriceRangeChange}
+          surfaceRange={surfaceRange}
+          onSurfaceRangeChange={handleSurfaceRangeChange}
+          bedRange={bedRange}
+          onBedRangeChange={handleBedRangeChange}
         />
       </div>
-      <div className="w-4/6">
-        <div className="grid grid-cols-3 grid-rows-2 gap-4">
-          {filteredProjects.map((item, index) => (
-            <div key={index} className={fiche}>
-              <div className="relative h-36 w-full">
-                <Image
-                  src={item.pic || a}
-                  layout="fill"
-                  objectFit="cover"
-                  alt="Project Image"
-                />
+      <div className="grid grid-cols-2 grid-rows-1 gap-4">
+        <div className="">
+          <div className="flex-col flex gap-4">
+            {filteredProjects.map((item, index) => (
+              <div key={index} className={fiche}>
+                <div className="relative h-40 w-2/3">
+                  <Image
+                    src={item.mainpic_url || a}
+                    layout="fill"
+                    objectFit="cover"
+                    alt="Project Image"
+                  />
+                </div>
+                <div className="px-2 pt-2 flex w-1/3">
+                  <div className="flex flex-col gap-2">
+                    <p className="flex gap-2 items-center">
+                      {item.pricetype === "PLN" ? (
+                        <>
+                          <TbCurrencyZloty size={20} /> {item.price}
+                        </>
+                      ) : (
+                        <>
+                          <FaEuroSign /> {item.price}
+                        </>
+                      )}
+                    </p>
+                    <p className="flex gap-2 items-center">
+                      <SlSizeFullscreen size={15} /> {item.surface} m²
+                    </p>
+                    <p className="flex gap-2 items-center">
+                      <FaBed size={20} /> {item.bed}
+                    </p>
+                    <p>{item.project.city}</p>
+                    <p>{item.project.country}</p>
+                    <p>{item.project.lat}</p>
+                  </div>
+                </div>
               </div>
-              <div className="px-2">
-                <h3>City: {item.project.city}</h3>
-                <p>Price: ${item.price}</p>
-                <p>Surface: {item.surface} m²</p>
-                <p>Bed: {item.bed}</p>
-                <p>Available: {item.available}</p>
-                <h3>Country: {item.project.country}</h3>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+        <div className="">
+          <Map
+            classN="w-full md:h-[400px] h-[200px] rounded-2xl"
+            todos={filteredProjects.map(({ project }) => ({
+              lat: project?.lat,
+              lng: project?.lng
+            }))}
+          />
         </div>
       </div>
     </div>
@@ -131,278 +156,88 @@ export default Page;
 function Filter({
   selectedCountries,
   onCountryChange,
-  minPrice,
-  maxPrice,
-  onMinPriceChange,
-  onMaxPriceChange,
-  minSurface,
-  maxSurface,
-  onMinSurfaceChange,
-  onMaxSurfaceChange
+  priceRange,
+  onPriceRangeChange,
+  surfaceRange,
+  onSurfaceRangeChange,
+  bedRange,
+  onBedRangeChange,
 }) {
-  const htwo = "text-sm font-bold";
+  const htwo = "text-sm font-bold ";
+
   return (
-    <div className="flex flex-col gap-8">
+    <div className="grid grid-cols-4 grid-rows-1 gap-3 pb-8">
       <div className="flex flex-col gap-2">
         <h2 className={htwo}>Country</h2>
         <CheckboxGroup
           value={selectedCountries}
           onChange={onCountryChange}
           color="secondary"
+          orientation="horizontal"
+          aria-label="Country"
         >
           <Checkbox value="France">France</Checkbox>
           <Checkbox value="Poland">Poland</Checkbox>
         </CheckboxGroup>
       </div>
-      <h2 className={htwo}>Price range</h2>
-      <div className="flex w-fit flex-wrap md:flex-nowrap gap-4">
-        <Input
-          type="number"
-          size="sm"
-          radius="lg"
-          variant="bordered"
-          classNames={{
-            label: "text-black/50 dark:text-white/90",
-            input: [
-              "bg-transparent",
-              "text-black/90 dark:text-white/90",
-              "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-            ],
-            innerWrapper: "bg-transparent",
-            inputWrapper: [
-              "shadow-lg",
-              "bg-default-200/50",
-              "dark:bg-default/60",
-              "backdrop-blur-xl",
-              "backdrop-saturate-200",
-              "hover:bg-default-200/70",
-              "dark:hover:bg-default/70",
-              "group-data-[focus=true]:bg-default-200/50",
-              "dark:group-data-[focus=true]:bg-default/60",
-              "!cursor-text",
-            ],
-          }}
-          placeholder="min..."
-          value={minPrice === 0 ? "" : minPrice}
-          onChange={onMinPriceChange}
+
+      <div className="flex flex-col gap-2">
+        <h2 className={htwo}>Price range</h2>
+        <Slider
+          min={0}
+          maxValue={1000000} // Adjust this based on your data
+          step={1}
+          value={priceRange}
+          onChange={onPriceRangeChange}
+          range
+          className="max-w-md"
+          color="secondary"
+          aria-label="Price range"
         />
-        <Input
-          type="number"
-          size="sm"
-          radius="lg"
-          variant="bordered"
-          classNames={{
-            label: "text-black/50 dark:text-white/90",
-            input: [
-              "bg-transparent",
-              "text-black/90 dark:text-white/90",
-              "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-            ],
-            innerWrapper: "bg-transparent",
-            inputWrapper: [
-              "shadow-lg",
-              "bg-default-200/50",
-              "dark:bg-default/60",
-              "backdrop-blur-xl",
-              "backdrop-saturate-200",
-              "hover:bg-default-200/70",
-              "dark:hover:bg-default/70",
-              "group-data-[focus=true]:bg-default-200/50",
-              "dark:group-data-[focus=true]:bg-default/60",
-              "!cursor-text",
-            ],
-          }}
-          placeholder="max..."
-          value={maxPrice === Infinity ? "" : maxPrice}
-          onChange={onMaxPriceChange}
-        />
+        <div className="flex justify-between">
+          <p className="text-default-500 font-medium text-small">
+            Selected price: {priceRange[0]} – {priceRange[1]}
+          </p>
+        </div>
       </div>
       <div className="flex flex-col gap-2">
-        <h2 className={htwo}>Surface</h2>
-        <div className="flex w-fit flex-wrap md:flex-nowrap gap-4">
-          <Input
-            type="number"
-            size="sm"
-            radius="lg"
-            variant="bordered"
-            classNames={{
-              label: "text-black/50 dark:text-white/90",
-              input: [
-                "bg-transparent",
-                "text-black/90 dark:text-white/90",
-                "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-              ],
-              innerWrapper: "bg-transparent",
-              inputWrapper: [
-                "shadow-lg",
-                "bg-default-200/50",
-                "dark:bg-default/60",
-                "backdrop-blur-xl",
-                "backdrop-saturate-200",
-                "hover:bg-default-200/70",
-                "dark:hover:bg-default/70",
-                "group-data-[focus=true]:bg-default-200/50",
-                "dark:group-data-[focus=true]:bg-default/60",
-                "!cursor-text",
-              ],
-            }}
-            placeholder="min..."
-            value={minSurface === 0 ? "" : minSurface}
-            onChange={onMinSurfaceChange}
-          />
-          <Input
-            type="number"
-            size="sm"
-            radius="lg"
-            variant="bordered"
-            classNames={{
-              label: "text-black/50 dark:text-white/90",
-              input: [
-                "bg-transparent",
-                "text-black/90 dark:text-white/90",
-                "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-              ],
-              innerWrapper: "bg-transparent",
-              inputWrapper: [
-                "shadow-lg",
-                "bg-default-200/50",
-                "dark:bg-default/60",
-                "backdrop-blur-xl",
-                "backdrop-saturate-200",
-                "hover:bg-default-200/70",
-                "dark:hover:bg-default/70",
-                "group-data-[focus=true]:bg-default-200/50",
-                "dark:group-data-[focus=true]:bg-default/60",
-                "!cursor-text",
-              ],
-            }}
-            placeholder="max..."
-            value={maxSurface === Infinity ? "" : maxSurface}
-            onChange={onMaxSurfaceChange}
-          />
+        <p className={htwo}>Surface</p>
+        <Slider
+          min={0}
+          maxValue={200} // Adjust this based on your data
+          step={1}
+          value={surfaceRange}
+          onChange={onSurfaceRangeChange}
+          range
+          className="max-w-md"
+          color="secondary"
+          aria-label="Surface"
+        />
+        <div className="flex justify-between">
+          <p className="text-default-500 font-medium text-small">
+            Selected surface: {surfaceRange[0]} – {surfaceRange[1]}
+          </p>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <p className={htwo}>Number of bedrooms</p>
+        <Slider
+          min={0}
+          maxValue={10} // Adjust this based on your data
+          step={1}
+          value={bedRange}
+          onChange={onBedRangeChange}
+          range
+          className="max-w-md"
+          color="secondary"
+          aria-label="Number of bedrooms"
+        />
+        <div className="flex justify-between">
+          <p className="text-default-500 font-medium text-small">
+            Selected bedrooms: {bedRange[0]} – {bedRange[1]}
+          </p>
         </div>
       </div>
     </div>
   );
-}
-
-
-{
-  /* <div className="flex flex-col gap-2">
-        
-      </div>
-      <div className="flex flex-col gap-2">
-        <h2 className={htwo}>Surface</h2>
-        <div className="flex w-fit flex-wrap md:flex-nowrap gap-4">
-          <Input
-            type="text"
-            size="sm"
-            radius="lg"
-            variant="bordered"
-            classNames={{
-              label: "text-black/50 dark:text-white/90",
-              input: [
-                "bg-transparent",
-                "text-black/90 dark:text-white/90",
-                "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-              ],
-              innerWrapper: "bg-transparent",
-              inputWrapper: [
-                "shadow-lg",
-                "bg-default-200/50",
-                "dark:bg-default/60",
-                "backdrop-blur-xl",
-                "backdrop-saturate-200",
-                "hover:bg-default-200/70",
-                "dark:hover:bg-default/70",
-                "group-data-[focus=true]:bg-default-200/50",
-                "dark:group-data-[focus=true]:bg-default/60",
-                "!cursor-text",
-              ],
-            }}
-            placeholder="min..."
-          />
-          <Input
-            type="text"
-            size="sm"
-            radius="lg"
-            variant="bordered"
-            classNames={{
-              label: "text-black/50 dark:text-white/90",
-              input: [
-                "bg-transparent",
-                "text-black/90 dark:text-white/90",
-                "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-              ],
-              innerWrapper: "bg-transparent",
-              inputWrapper: [
-                "shadow-lg",
-                "bg-default-200/50",
-                "dark:bg-default/60",
-                "backdrop-blur-xl",
-                "backdrop-saturate-200",
-                "hover:bg-default-200/70",
-                "dark:hover:bg-default/70",
-                "group-data-[focus=true]:bg-default-200/50",
-                "dark:group-data-[focus=true]:bg-default/60",
-                "!cursor-text",
-              ],
-            }}
-            placeholder="max..."
-          />
-        </div>
-      </div>
-      <div className="flex flex-col gap-2">
-        <h2 className={htwo}>Bedrooms</h2>
-        <CheckboxGroup
-          orientation="horizontal"
-          color="secondary"
-          defaultValue={["buenos-aires", "san-francisco"]}
-        >
-          <Checkbox value="buenos-aires" size="sm">
-            1
-          </Checkbox>
-          <Checkbox value="sydney" size="sm" className="pl-8">
-            2
-          </Checkbox>
-          <Checkbox value="san-francisco" size="sm" className="pl-8">
-            3
-          </Checkbox>
-          <Checkbox value="london" size="sm" className="pl-8">
-            4
-          </Checkbox>
-          <Checkbox value="tokyo" size="sm" className="pl-8">
-            5
-          </Checkbox>
-          <Checkbox value="tokyo" size="sm" className="pl-8">
-            5+
-          </Checkbox>
-        </CheckboxGroup>
-      </div>
-      <div className="flex flex-col gap-2">
-        <h2 className={htwo}>Available</h2>
-        <CheckboxGroup
-          orientation="horizontal"
-          color="secondary"
-          defaultValue={["buenos-aires", "san-francisco"]}
-        >
-          <div className="flex flex-col justify-start gap-2">
-            <Checkbox value="buenos-aires" size="sm">
-              Available
-            </Checkbox>
-            <Checkbox value="sydney" size="sm" className="">
-              Less 3 months
-            </Checkbox>
-            <Checkbox value="san-francisco" size="sm" className="">
-              3 months/ 6 months
-            </Checkbox>
-            <Checkbox value="london" size="sm" className="">
-              6 months/ 1 year
-            </Checkbox>
-            <Checkbox value="tokyo" size="sm" className="">
-              + 1 year
-            </Checkbox>
-          </div>
-        </CheckboxGroup>
-      </div> */
 }

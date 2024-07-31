@@ -18,6 +18,7 @@ import Adresse from "@/app/[residence]/adresse";
 import Map from "@/components/map";
 import { createClient } from "@/utils/supabase/client";
 
+
 export default function Test() {
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState(null);
