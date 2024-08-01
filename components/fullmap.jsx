@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import Avatar from "@/app/getimage/Ugetone";
 import Link from "next/link";
-import L from "leaflet";
+
 
 // Dynamic import of react-leaflet components
 const MapContainer = dynamic(
@@ -27,11 +27,11 @@ const Popup = dynamic(
 
 const getMapBounds = (todos) => {
   // Initialize empty bounds
-  const bounds = new L.LatLngBounds([]);
+  const bounds = new L.latLngBounds([]);
 
   // Iterate through todos and extend bounds for each marker
   todos.forEach((todo) => {
-    const latLng = new L.LatLng(todo.lat, todo.lng);
+    const latLng = new L.latLng(todo.lat, todo.lng);
     bounds.extend(latLng);
   });
 
@@ -40,26 +40,20 @@ const getMapBounds = (todos) => {
 
 const MapComponent = ({ classN, todos }) => {
   const [center, setCenter] = useState([52.07957, 20.97848]); // Default center (Continental United States)
-  const [zoom, setZoom] = useState(4); // Default zoom level
-  const mapRef = useRef();
 
   useEffect(() => {
-    if (todos.length > 0 && mapRef.current) {
-      const bounds = getMapBounds(todos);
-      const map = mapRef.current;
+    if (todos.length > 0) {
 
-      map.fitBounds(bounds); // Automatically adjusts zoom to fit bounds
+      const bounds = getMapBounds(todos);
+      
+
+      // Automatically adjusts zoom to fit bounds
       setCenter(bounds.getCenter());
     }
   }, [todos]);
 
   return (
-    <MapContainer
-      center={center}
-      zoom={zoom}
-      className={classN}
-      whenCreated={(mapInstance) => { mapRef.current = mapInstance; }}
-    >
+    <MapContainer center={center} zoom={12} className={classN}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

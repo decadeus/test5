@@ -110,7 +110,7 @@ function Page() {
           <div className="w-full flex gap-4 flex-wrap">
             <ScrollArea className="h-[600px] w-full rounded-md border p-4">
               {filteredProjects.map((item, index) => (
-                <div key={index} className="flex flex-col w-full gap-4 pt-4">
+                <div key={index} className="flex flex-col w-full gap-4 mt-4 border shadow-sm">
                   <div className="flex  gap-4 w-full">
                     <div className="relative h-40 w-1/2 ">
                       <Image
