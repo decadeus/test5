@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
-import { Checkbox, CheckboxGroup, Slider } from "@nextui-org/react";
+import { Checkbox, CheckboxGroup, Slider, Button } from "@nextui-org/react";
 import Image from "next/image";
 import a from "@/components/image/appart1.jpg";
 import { createClient } from "@/utils/supabase/client";
@@ -9,6 +9,7 @@ import { SlSizeFullscreen } from "react-icons/sl";
 import { TbCurrencyZloty } from "react-icons/tb";
 import { FaEuroSign } from "react-icons/fa";
 import Map from "@/components/fullmap";
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 function Page() {
   const [projects, setProjects] = useState([]);
@@ -19,6 +20,7 @@ function Page() {
     "France",
     "Poland",
   ]);
+  const [selectedGarden, setSelectedGarden] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 1000000]); // Adjust max value based on your data
   const [surfaceRange, setSurfaceRange] = useState([0, 200]);
   const [bedRange, setBedRange] = useState([0, 10]);
@@ -49,9 +51,10 @@ function Page() {
         project.surface >= surfaceRange[0] &&
         project.surface <= surfaceRange[1] &&
         project.bed >= bedRange[0] &&
-        project.bed <= bedRange[1]
+        project.bed <= bedRange[1] &&
+        (!selectedGarden || project.garden === selectedGarden)
     );
-  }, [originalProjects, selectedCountries, priceRange, surfaceRange, bedRange]);
+  }, [originalProjects, selectedCountries, priceRange, surfaceRange, bedRange, selectedGarden]);
 
   useEffect(() => {
     setProjects(filteredProjects);
@@ -73,6 +76,10 @@ function Page() {
     setBedRange(values);
   };
 
+  const handleGardenChange = (selected) => {
+    setSelectedGarden(selected.includes('garden'));
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -81,13 +88,15 @@ function Page() {
     return <div>Error fetching data: {error.message}</div>;
   }
 
-  const fiche = "pb-2 flex";
+  const fiche = "grid grid-cols-2 grid-rows-1 gap-4";
   return (
     <div className="flex flex-col w-full px-16">
       <div>
         <Filter
           selectedCountries={selectedCountries}
           onCountryChange={handleCountryChange}
+          selectedGarden={selectedGarden}
+          onGardenChange={handleGardenChange}
           priceRange={priceRange}
           onPriceRangeChange={handlePriceRangeChange}
           surfaceRange={surfaceRange}
@@ -96,53 +105,67 @@ function Page() {
           onBedRangeChange={handleBedRangeChange}
         />
       </div>
-      <div className="grid grid-cols-2 grid-rows-1 gap-4">
-        <div className="">
-          <div className="flex-col flex gap-4">
-            {filteredProjects.map((item, index) => (
-              <div key={index} className={fiche}>
-                <div className="relative h-40 w-2/3">
-                  <Image
-                    src={item.mainpic_url || a}
-                    layout="fill"
-                    objectFit="cover"
-                    alt="Project Image"
-                  />
-                </div>
-                <div className="px-2 pt-2 flex w-1/3">
-                  <div className="flex flex-col gap-2">
-                    <p className="flex gap-2 items-center">
-                      {item.pricetype === "PLN" ? (
-                        <>
-                          <TbCurrencyZloty size={20} /> {item.price}
-                        </>
-                      ) : (
-                        <>
-                          <FaEuroSign /> {item.price}
-                        </>
-                      )}
-                    </p>
-                    <p className="flex gap-2 items-center">
-                      <SlSizeFullscreen size={15} /> {item.surface} m²
-                    </p>
-                    <p className="flex gap-2 items-center">
-                      <FaBed size={20} /> {item.bed}
-                    </p>
-                    <p>{item.project.city}</p>
-                    <p>{item.project.country}</p>
-                    <p>{item.project.lat}</p>
+      <div className="grid grid-cols-2 grid-rows-1 gap-4 h-[600px]">
+        <div className="w-full">
+          <div className="w-full flex gap-4 flex-wrap">
+            <ScrollArea className="h-[600px] w-full rounded-md border p-4">
+              {filteredProjects.map((item, index) => (
+                <div key={index} className="flex flex-col w-full gap-4 pt-4">
+                  <div className="flex  gap-4 w-full">
+                    <div className="relative h-40 w-1/2 ">
+                      <Image
+                        src={item.mainpic_url || a}
+                        layout="fill"
+                        objectFit="cover"
+                        alt="Project Image"
+                      />
+                    </div>
+                    <div className="px-2 pt-2 flex flex-col w-1/2 ">
+                      <div className="flex justify-between w-full">
+                        <div className="">
+                          <p className="flex gap-2 items-center">
+                            {item.pricetype === "PLN" ? (
+                              <>
+                                <TbCurrencyZloty size={20} /> {item.price}
+                              </>
+                            ) : (
+                              <>
+                                <FaEuroSign /> {item.price}
+                              </>
+                            )}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="flex gap-2 items-center">
+                            <SlSizeFullscreen size={15} /> {item.surface} m²
+                          </p>
+                        </div>
+                        <div>
+                          <p className="flex gap-2 items-center">
+                            <FaBed size={20} /> {item.bed}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex justify-between">
+                        <p>{item.project.city}</p>
+                        <p>{item.project.country}</p>
+                      </div>
+                      <div className="w-fit">
+                        <Button color="secondary">Voir</Button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </ScrollArea>
           </div>
         </div>
         <div className="">
           <Map
-            classN="w-full md:h-[400px] h-[200px] rounded-2xl"
+            classN="w-full h-full h-[200px] rounded-2xl"
             todos={filteredProjects.map(({ project }) => ({
               lat: project?.lat,
-              lng: project?.lng
+              lng: project?.lng,
             }))}
           />
         </div>
@@ -156,6 +179,8 @@ export default Page;
 function Filter({
   selectedCountries,
   onCountryChange,
+  selectedGarden,
+  onGardenChange,
   priceRange,
   onPriceRangeChange,
   surfaceRange,
@@ -178,6 +203,18 @@ function Filter({
         >
           <Checkbox value="France">France</Checkbox>
           <Checkbox value="Poland">Poland</Checkbox>
+        </CheckboxGroup>
+      </div>
+      <div className="flex flex-col gap-2">
+        <h2 className={htwo}>Garden</h2>
+        <CheckboxGroup
+          value={selectedGarden ? ['garden'] : []}
+          onChange={onGardenChange}
+          color="secondary"
+          orientation="horizontal"
+          aria-label="Garden"
+        >
+          <Checkbox value="garden">With garden</Checkbox>
         </CheckboxGroup>
       </div>
 
