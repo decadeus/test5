@@ -15,6 +15,7 @@ const siteConfig = {
     { label: "Your Apartment", href: "/appartement" },
   ],
   noUser: [
+    { label: "Home", href: "/" },
     { label: "Completed Residential Building", href: "/completed" },
     { label: "Residential Building Projects", href: "/projects" },
   ],
@@ -53,13 +54,15 @@ export default function ListNav({ userId }) {
 
   const renderNavItems = (items) =>
     items.map((item) => {
-      const isActive = pathname.startsWith(item.href);
+        const isActive = pathname === item.href;
       return (
-        <li key={item.href}>
+     
+        <li key={item.href} className="mr-16 last:mr-0">
           <Link href={item.href} className={isActive ? "bgcolorS text-white rounded-xl px4 py-2 px-2 border-white border-2" : "text-white"}>
             {item.label}
           </Link>
         </li>
+       
       );
     });
 

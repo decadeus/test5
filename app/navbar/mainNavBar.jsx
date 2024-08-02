@@ -36,12 +36,17 @@ export default function MainNavBar({ user }) {
   }, [user, supabase]);
 
   return (
-    <div className="w-full px-10 py-10 flex justify-between items-center border-b mb-8 text-black bgcolorP">
+    <div className="w-full px-10 py-10 flex justify-between items-center   text-black bgcolorP">
       <div className="flex justify-center items-center gap-2">
         <Link href="/">
-          <div className="flex gap-2 justify-center items-center">
-            <div className="w-8 h-8">
+          <div className="flex gap-2 items-center">
+            <div className="flex justify-center items-center gap-2">
+              <div className="w-8 h-8">
               <Image src={b} width={50} height={50} alt="Logo" />
+              </div>
+              <div>
+              <h2 className="text-white text-2xl font-bold">Hoomge.com</h2>
+            </div>
             </div>
           </div>
         </Link>
