@@ -126,7 +126,7 @@ export default function TodoList() {
           <div>
             <Select
               size="md"
-              label={<FaMapPin color="purple" size={20} />}
+              label={<FaMapPin className="txcolorP" size={20} />}
               labelPlacement="outside"
               isMultiline={true}
               placeholder="Country"
@@ -148,7 +148,7 @@ export default function TodoList() {
               labelPlacement="outside"
               style={{ backgroundColor: "transparent" }}
               isMultiline={true}
-              label={<BsBuildingFillGear color="purple" size={20} />}
+              label={<BsBuildingFillGear className="txcolorP" size={20} />}
               value={selectedC}
               placeholder="Status"
               onChange={(e) => setSelectedC(e.target.value)}
@@ -167,7 +167,7 @@ export default function TodoList() {
                   labelPlacement="outside"
                   style={{ backgroundColor: "transparent" }}
                   isMultiline={true}
-                  label={<FaKey color="purple" size={20} />}
+                  label={<FaKey className="txcolorP" size={20} />}
                   value={selectedB}
                   placeholder="Type"
                   onChange={(e) => setSelectedB(e.target.value)}

@@ -5,6 +5,7 @@ import MainNavBar from "@/app/navbar/mainNavBar";
 import { createClient } from "@/utils/supabase/server";
 import Head from "next/head";
 import Link from "next/link";
+import "@/app/globals.css"
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`

@@ -1,9 +1,16 @@
-import React from 'react'
+import { Button } from "@nextui-org/react";
+import React from "react";
+import colore from "@/app/color/colorf";
 
-function page() {
+
+function Page() {
   return (
-    <div>page</div>
-  )
+    <div>
+      <Button className="bgcolorP text-white rounded-2xl">
+        Test
+      </Button>
+    </div>
+  );
 }
 
-export default page
+export default Page;
