@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import MostBeauty from "@/app/mainpage/MostBeauty";
-import Summer from "@/app/mainpage/Summer";
+import MostBeauty from "@/app/mainpage/mostBeauty";
+import Summer from "@/app/mainpage/summer";
 import image2 from "@/components/image/beach2.jpg";
 import image1 from "@/components/image/beach.jpg";
 import { Button } from "@nextui-org/react";
