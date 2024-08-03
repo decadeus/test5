@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import MostBeauty from "@/app/mainpage/mostBeauty";
+import MostBeauty from "@/app/mainpage/mostbeauty";
 import Summer from "@/app/mainpage/summer";
 import image2 from "@/components/image/beach2.jpg";
 import image1 from "@/components/image/beach.jpg";
