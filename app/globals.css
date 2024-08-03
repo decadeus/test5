@@ -20,3 +20,7 @@
 .txcolorS{
     color: var(--secondary-color);
   }
+
+  .borderI{
+    border: 2px solid var(--primary-color);
+  }

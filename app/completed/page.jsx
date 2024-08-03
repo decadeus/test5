@@ -18,7 +18,9 @@ import { FaMapPin } from "react-icons/fa6";
 import { BsBuildingFillGear } from "react-icons/bs";
 import { FaRegHeart } from "react-icons/fa";
 
+
 const FAVORITE_TODOS_KEY = "favoriteApartments";
+
 
 export default function TodoList() {
   const supabase = createClient();

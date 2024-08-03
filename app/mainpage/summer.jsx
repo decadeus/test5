@@ -4,7 +4,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/Ugetone";
 
-export default function MostBeauty({ country }) {
+export default function Summer() {
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState(null);
@@ -12,10 +12,7 @@ export default function MostBeauty({ country }) {
   useEffect(() => {
     const fetchProjects = async () => {
       const supabase = createClient();
-      const { data, error } = await supabase
-        .from("residence")
-        .select("*")
-        .eq("country", country); // Filter by selected country
+      const { data, error } = await supabase.from("residence").select("*");
 
       if (error) {
         setError(error);
@@ -27,7 +24,7 @@ export default function MostBeauty({ country }) {
     };
 
     fetchProjects();
-  }, [country]); // Re-fetch projects when country changes
+  }, []);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -35,28 +32,27 @@ export default function MostBeauty({ country }) {
   return (
     <div>
       <ScrollArea className="w-full whitespace-nowrap">
-        <div className="flex w-max space-x-4">
+        <div className="flex w-max space-x-4 ">
           {projects.length === 0 ? (
             <div>No projects found</div>
           ) : (
             projects.map((item, index) => (
               <div
                 key={index}
-                className="flex flex-col w-full gap-4 mt-4 shadow-lg p-4 rounded-lg"
+                className="flex flex-col w-full gap-4 mt-4  rounded-lg "
               >
                 <div className="h-36 w-64">
                   <Avatar
                     url={item.mainpic_url}
                     width={270}
                     height={196}
-                    className="rounded-2xl"
+                    classn="rounded-2xl"
+                    classNamed="object-position-1"
                   />
                 </div>
-                <div>
-                  <p className="flex gap-2 items-center">{item.city}</p>
-                  <p className="flex gap-2 items-center font-bold">
-                    {item.country}
-                  </p>
+                <div className="">
+                <p className="flex gap-2 items-center text-white">{item.city}</p>
+                <p className="flex gap-2 items-center font-bold text-white">{item.country}</p>
                 </div>
               </div>
             ))
