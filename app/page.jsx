@@ -101,7 +101,7 @@ function Page() {
           </div>
           <div className="w-full bgcolorS rounded-xl p-8 mt-8">
             <div className="grid grid-cols-4 grid-rows-1 gap-3">
-              <div className="text-xl text-white pl-4">
+              <div className="text-xl text-white pl-4 flex justify-center items-center">
                 Your appartement get more value{" "}
               </div>
               <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-xl">
@@ -113,13 +113,13 @@ function Page() {
               <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-xl">
                 <div className="w-1/3  flex justify-center"><MdOutlinePoll color="white" size="45" /></div>
                 <div className="w-2/3">
-                <p className="text-white  flex justify-center text-center font-thin">Advertisement for the sale/rental of your apartment</p>
+                <p className="text-white  flex justify-center text-center font-thin">Participate in surveys for the residence</p>
                 </div>
               </div>
               <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-xl">
-                <div className="w-1/3  flex justify-center"><LuNewspaper color="white" size="45" /></div>
+                <div className="w-1/3  flex justify-center"><LuNewspaper color="white" size="40" /></div>
                 <div className="w-2/3">
-                <p className="text-white  flex justify-center text-center font-thin">Advertisement for the sale/rental of your apartment</p>
+                <p className="text-white  flex justify-center text-center font-thin">Residence information online</p>
                 </div>
               </div>
             </div>
@@ -147,10 +147,10 @@ function Page() {
             <div className="relative p-12 flex items-center h-full">
               <div className="flex flex-col justify-start items-start">
                 <h2 className="text-white text-3xl pb-8 font-bold">
-                  List your property on Hoomgeand highlight <br /> the benefits
+                  List your property on Hoomge and highlight <br /> the benefits
                   for residents
                 </h2>
-                <Button className="bgcolorS text-white rounded-3xl">
+                <Button className="bgcolorS text-white rounded-3xl borderI">
                   List your properly{" "}
                 </Button>
               </div>

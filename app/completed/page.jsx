@@ -122,7 +122,7 @@ export default function TodoList() {
   ];
 
   return (
-    <div className="w-full px-4 md:px-16 flex flex-col justify-center gap-8">
+    <div className="w-full px-4 md:px-16 flex flex-col justify-center gap-8 pt-8">
       <div className="md:flex-row flex flex-col justify-center items-center gap-4">
         <div className="border-black border-2 md:w-fit w-full flex rounded-xl flex-col md:flex-row justify-center gap-4">
           <div>

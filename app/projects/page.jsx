@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState, useEffect, useMemo } from "react";
 import { Checkbox, CheckboxGroup, Slider, Button } from "@nextui-org/react";
 import Image from "next/image";
@@ -9,42 +9,32 @@ import { SlSizeFullscreen } from "react-icons/sl";
 import { TbCurrencyZloty } from "react-icons/tb";
 import { FaEuroSign } from "react-icons/fa";
 import Map from "@/components/fullmap";
-import { ScrollArea } from "@/components/ui/scroll-area";
-
-// Helper functions to convert between dates and numeric values
-const dateToMonthYear = (date) => {
-  return date.getFullYear() * 12 + date.getMonth(); // Convert to numeric value (YYYYMM)
-};
-
-const monthYearToDate = (monthYear) => {
-  const year = Math.floor(monthYear / 12);
-  const month = monthYear % 12;
-  return new Date(year, month);
-};
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 function Page() {
   const [projects, setProjects] = useState([]);
   const [originalProjects, setOriginalProjects] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedCountries, setSelectedCountries] = useState(["France", "Poland"]);
+  const [selectedCountries, setSelectedCountries] = useState([
+    "France",
+    "Poland",
+  ]);
   const [selectedGarden, setSelectedGarden] = useState(false);
-  const [priceRange, setPriceRange] = useState([0, 1000000]);
+  const [priceRange, setPriceRange] = useState([0, 1000000]); // Adjust max value based on your data
   const [surfaceRange, setSurfaceRange] = useState([0, 200]);
   const [bedRange, setBedRange] = useState([0, 10]);
-  const [sliderValue, setSliderValue] = useState(0);
 
   const fetchProjects = async () => {
     const supabase = createClient();
-    const { data, error } = await supabase.from("projectlist").select("*, project(*, lat, lng, mainpic_url)");
-
+    const { data, error } = await supabase
+      .from("projectlist")
+      .select("*, project(*, lat, lng, mainpic_url)");
     if (error) {
       setError(error);
-      setLoading(false);
-      return;
+    } else {
+      setOriginalProjects(data);
     }
-
-    setOriginalProjects(data);
     setLoading(false);
   };
 
@@ -53,31 +43,8 @@ function Page() {
   }, []);
 
   const filteredProjects = useMemo(() => {
-    return originalProjects.filter((project) => {
-      const now = new Date();
-      const projectDate = new Date(project.available);
-
-      const dateFilter = (() => {
-        switch (sliderValue) {
-          case 0: // All
-            return true;
-          case 1: // +1 year
-            return projectDate > new Date(now.setFullYear(now.getFullYear() + 1));
-          case 2: // 1 year
-            now.setFullYear(now.getFullYear() - 1); // Reset now to current date
-            return projectDate <= new Date(now.setFullYear(now.getFullYear() + 1));
-          case 3: // 6 months
-            now.setFullYear(now.getFullYear() - 1); // Reset now to current date
-            return projectDate <= new Date(now.setMonth(now.getMonth() + 6));
-          case 4: // Ready
-            now.setFullYear(now.getFullYear() - 1); // Reset now to current date
-            return projectDate <= new Date();
-          default:
-            return false;
-        }
-      })();
-
-      return (
+    return originalProjects.filter(
+      (project) =>
         selectedCountries.includes(project.project.country) &&
         project.price >= priceRange[0] &&
         project.price <= priceRange[1] &&
@@ -85,25 +52,43 @@ function Page() {
         project.surface <= surfaceRange[1] &&
         project.bed >= bedRange[0] &&
         project.bed <= bedRange[1] &&
-        (!selectedGarden || project.garden === selectedGarden) &&
-        dateFilter
-      );
-    });
-  }, [originalProjects, selectedCountries, priceRange, surfaceRange, bedRange, selectedGarden, sliderValue]);
+        (!selectedGarden || project.garden === selectedGarden)
+    );
+  }, [originalProjects, selectedCountries, priceRange, surfaceRange, bedRange, selectedGarden]);
 
   useEffect(() => {
     setProjects(filteredProjects);
   }, [filteredProjects]);
 
-  const handleCountryChange = (selected) => setSelectedCountries(selected);
-  const handlePriceRangeChange = (values) => setPriceRange(values);
-  const handleSurfaceRangeChange = (values) => setSurfaceRange(values);
-  const handleBedRangeChange = (values) => setBedRange(values);
-  const handleGardenChange = (selected) => setSelectedGarden(selected.includes('garden'));
+  const handleCountryChange = (selected) => {
+    setSelectedCountries(selected);
+  };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error fetching data: {error.message}</div>;
+  const handlePriceRangeChange = (values) => {
+    setPriceRange(values);
+  };
 
+  const handleSurfaceRangeChange = (values) => {
+    setSurfaceRange(values);
+  };
+
+  const handleBedRangeChange = (values) => {
+    setBedRange(values);
+  };
+
+  const handleGardenChange = (selected) => {
+    setSelectedGarden(selected.includes('garden'));
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error fetching data: {error.message}</div>;
+  }
+
+  const fiche = "grid grid-cols-2 grid-rows-1 gap-4";
   return (
     <div className="flex flex-col w-full px-16">
       <div>
@@ -118,28 +103,26 @@ function Page() {
           onSurfaceRangeChange={handleSurfaceRangeChange}
           bedRange={bedRange}
           onBedRangeChange={handleBedRangeChange}
-          sliderValue={sliderValue}
-          onSliderChange={setSliderValue}
         />
       </div>
       <div className="grid grid-cols-2 grid-rows-1 gap-4 h-[600px]">
         <div className="w-full">
           <div className="w-full flex gap-4 flex-wrap">
             <ScrollArea className="h-[600px] w-full rounded-md border p-4">
-              {projects.map((item, index) => (
+              {filteredProjects.map((item, index) => (
                 <div key={index} className="flex flex-col w-full gap-4 mt-4 border shadow-sm">
-                  <div className="flex gap-4 w-full">
-                    <div className="relative h-40 w-1/2">
-                      {/* <Image
-                        src={item.project.mainpic_url || a}
+                  <div className="flex  gap-4 w-full">
+                    <div className="relative h-40 w-1/2 ">
+                      <Image
+                        src={item.mainpic_url || a}
                         layout="fill"
                         objectFit="cover"
                         alt="Project Image"
-                      /> */}
+                      />
                     </div>
-                    <div className="px-2 pt-2 flex flex-col w-1/2">
+                    <div className="px-2 pt-2 flex flex-col w-1/2 ">
                       <div className="flex justify-between w-full">
-                        <div>
+                        <div className="">
                           <p className="flex gap-2 items-center">
                             {item.pricetype === "PLN" ? (
                               <>
@@ -166,7 +149,6 @@ function Page() {
                       <div className="flex justify-between">
                         <p>{item.project.city}</p>
                         <p>{item.project.country}</p>
-                        <p>{new Date(item.available).toDateString()}</p>
                       </div>
                       <div className="w-fit">
                         <Button color="secondary">Voir</Button>
@@ -178,10 +160,10 @@ function Page() {
             </ScrollArea>
           </div>
         </div>
-        <div>
+        <div className="">
           <Map
             classN="w-full h-full h-[200px] rounded-2xl"
-            todos={projects.map(({ project }) => ({
+            todos={filteredProjects.map(({ project }) => ({
               lat: project?.lat,
               lng: project?.lng,
             }))}
@@ -205,13 +187,12 @@ function Filter({
   onSurfaceRangeChange,
   bedRange,
   onBedRangeChange,
-  sliderValue,
-  onSliderChange,
 }) {
-  const htwo = "text-sm font-bold";
+  const htwo = "text-sm font-bold ";
 
   return (
-    <div className="grid grid-cols-4 grid-rows-1 gap-3 pb-8">
+    <div className="flex w-full gap-8 pt-8 justify-center">
+      <div className="flex gap-4">
       <div className="flex flex-col gap-2">
         <h2 className={htwo}>Country</h2>
         <CheckboxGroup
@@ -237,11 +218,13 @@ function Filter({
           <Checkbox value="garden">With garden</Checkbox>
         </CheckboxGroup>
       </div>
-      <div className="flex flex-col gap-2">
+      </div>
+<div className="flex w-2/3 gap-4">
+      <div className="flex flex-col gap-2 w-1/3">
         <h2 className={htwo}>Price range</h2>
         <Slider
           min={0}
-          max={1000000}
+          maxValue={1000000} // Adjust this based on your data
           step={1}
           value={priceRange}
           onChange={onPriceRangeChange}
@@ -256,11 +239,11 @@ function Filter({
           </p>
         </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <h2 className={htwo}>Surface</h2>
+      <div className="flex flex-col gap-2 w-1/3">
+        <p className={htwo}>Surface</p>
         <Slider
           min={0}
-          max={200}
+          maxValue={200} // Adjust this based on your data
           step={1}
           value={surfaceRange}
           onChange={onSurfaceRangeChange}
@@ -275,11 +258,11 @@ function Filter({
           </p>
         </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <h2 className={htwo}>Number of bedrooms</h2>
+      <div className="flex flex-col gap-2 w-1/3">
+        <p className={htwo}>Number of bedrooms</p>
         <Slider
           min={0}
-          max={10}
+          maxValue={10} // Adjust this based on your data
           step={1}
           value={bedRange}
           onChange={onBedRangeChange}
@@ -294,36 +277,6 @@ function Filter({
           </p>
         </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <h2 className={htwo}>Available range</h2>
-        <Slider
-          min={0}
-          max={4}
-          step={1}
-          value={sliderValue}
-          onChange={onSliderChange}
-          marks={[
-            { value: 0, label: 'All' },
-            { value: 1, label: '+ 1 year' },
-            { value: 2, label: '1 year' },
-            { value: 3, label: '6 months' },
-            { value: 4, label: 'Ready' },
-          ]}
-          className="max-w-md"
-          color="secondary"
-          aria-label="Available range"
-        />
-        <div className="flex justify-between">
-          <p className="text-default-500 font-medium text-small">
-            Selected range: {
-              sliderValue === 0 ? 'All' :
-              sliderValue === 1 ? '+ 1 year' :
-              sliderValue === 2 ? '1 year' :
-              sliderValue === 3 ? '6 months' :
-              'Ready'
-            }
-          </p>
-        </div>
       </div>
     </div>
   );
