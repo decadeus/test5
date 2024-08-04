@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import MostBeauty from "@/app/mainpage/mostbeauty";
 import Summer from "@/app/mainpage/summer";
+import Equipment from "@/app/mainpage/equipment";
+import Last from "@/app/mainpage/last";
 import image2 from "@/components/image/beach2.jpg";
 import image1 from "@/components/image/beach.jpg";
 import { Button } from "@nextui-org/react";
@@ -21,8 +23,9 @@ function Page() {
           Existing or Project, Find Your Dream Apartment
         </h1>
         <h2 className="text-xl text-white pt-4">
-          Search by number of bedrooms, size, country, city, price ...
+        Consult information about the residential building +  Search by number of bedrooms, size, country, city, price ...
         </h2>
+      
       </div>
       <div className="px-16 pt-16">
         <div className="flex flex-col justify-start items-start text-start gap-8">
@@ -51,14 +54,19 @@ function Page() {
               </button>
             </div>
           </div>
-          <div>
-            <h2 className={subtitle}>
-              Recent Searches for Available Residences
-            </h2>
-          </div>
+         
           <div className="flex flex-col justify-start items-start w-full">
             <h2 className={subtitle}>The Most Beautiful Existing Residences</h2>
             <MostBeauty country={selectedCountry} />
+          </div>
+
+          <div>
+            <h2 className={subtitle}>
+            The latest arrivals on hoomge.com
+            </h2>
+          </div>
+          <div className="w-full">
+          <Last />
           </div>
           <div
             className="relative overflow-hidden rounded-lg w-full  "
@@ -86,7 +94,7 @@ function Page() {
           </div>
           <div className="flex flex-col justify-start items-start w-full">
             <h2 className={subtitle}>Residence with sports or relaxation facilities</h2>
-            <MostBeauty country={selectedCountry} />
+            <Equipment country={selectedCountry} />
           </div>
           <div className="w-full bgcolorS rounded-xl p-8 ">
             <div className="grid grid-cols-4 grid-rows-1 gap-3">
