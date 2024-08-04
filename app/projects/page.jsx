@@ -191,7 +191,7 @@ function Filter({
   const htwo = "text-sm font-bold ";
 
   return (
-    <div className="flex w-full gap-8 pt-8 justify-center">
+    <div className="flex w-full gap-8 pt-8 justify-evenly">
       <div className="flex gap-4">
       <div className="flex flex-col gap-2">
         <h2 className={htwo}>Country</h2>
