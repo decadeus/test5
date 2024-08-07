@@ -19,6 +19,11 @@ const siteConfig = {
     { label: "Completed Residential Building", href: "/completed" },
     { label: "Residential Building Projects", href: "/projects" },
   ],
+  Cproject: [
+    { label: "Home", href: "/" },
+    { label: "project", href: "/cproject" },
+ 
+  ],
 };
 
 export default function ListNav({ userId }) {
@@ -71,6 +76,8 @@ export default function ListNav({ userId }) {
     navItems = siteConfig.navAdmin;
   } else if (profile?.rules === "Proprio") {
     navItems = siteConfig.navProprio;
+  } else if (profile?.rules === "Cproject") {
+    navItems = siteConfig.Cproject;
   } else {
     navItems = siteConfig.noUser;
   }
