@@ -1,5 +1,5 @@
 import React from "react";
-import Project from "@/app/cproject/project";
+import Projectb from "@/app/cproject/projectb";
 import { createClient } from '@/utils/supabase/server'
 
 export default async function Page() {
@@ -8,9 +8,10 @@ export default async function Page() {
         data: { user },
       } = await supabase.auth.getUser()
   return (
-    <>
+    <div className="w-full">
   
-      <Project user={user} />
-    </>
+  
+      <Projectb user={user} />
+    </div>
   );
 }

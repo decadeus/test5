@@ -1,9 +1,12 @@
  "use client";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import Avatar from "@/app/getimage/getone";
+import p from "@/components/image/appart1.jpg";
 
 export default function Project({ user }) {
   const [projects, setProjects] = useState([]);
+  const [mainpicUrl, setMainpicUrl] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [editProject, setEditProject] = useState(null);
@@ -33,6 +36,9 @@ export default function Project({ user }) {
         setError(error);
       } else {
         setProjects(data);
+        setMainpicUrl(data.mainpic_url);
+        console.log("mainpic_url:", data.mainpic_url);
+        
       }
       setLoading(false);
     }
@@ -43,6 +49,8 @@ export default function Project({ user }) {
       setLoading(false);
     }
   }, [user]);
+
+
 
   async function handleSaveProject(project) {
     const supabase = createClient();
@@ -265,11 +273,32 @@ export default function Project({ user }) {
 
   return (
     <div className="flex flex-col w-full px-2 text-black bg-blue-950 gap-16 pt-16">
+        <div className="w-[400px] h-[400px]">
+        {projects.mainpic_url && (
+  <Avatar
+    id="mainpic_url"
+    uid={user?.id}
+    width={2000}
+    height={1000}
+    url={data.mainpic_url || p} // Provide a default image if mainpic_url is missing
+    size={150}
+    onUpload={(url) => handleAvatarUpload("mainpic_url", url)}
+  />
+)}
+
+        </div>
       {projects.length > 0 ? (
         projects.map((project) => (
           <div key={project.id} className="flex flex-col mb-4">
             {editProject === project.id ? (
               <div className="flex w-fit gap-2">
+                 <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="border border-gray-300 px-2  rounded w-fit"
+                />
                 <input
                   type="text"
                   name="country"
@@ -298,13 +327,7 @@ export default function Project({ user }) {
                   onChange={handleChange}
                   className="border border-gray-300 px-2 rounded w-fit"
                 />
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="border border-gray-300 px-2  rounded w-fit"
-                />
+               
                 <button
                   onClick={() => handleSaveProject(project)}
                   className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
@@ -315,11 +338,12 @@ export default function Project({ user }) {
             ) : (
               <div className="flex w-fit gap-2 ">
                 <p className={listmain}>{project.compagny}</p>
+                <p className={listmain}>{project.name}</p>
                 <p className={listmain}>{project.country}</p>
                 <p className={listmain}>{project.city}</p>
                 <p className={listmain}>{project.lng}</p>
                 <p className={listmain}>{project.lat}</p>
-                <p className={listmain}>{project.name}</p>
+                
                 <button
                   onClick={() => handleEditProject(project)}
                   className="bg-yellow-500 text-white px-4 py-2 rounded mt-2"
@@ -364,7 +388,7 @@ export default function Project({ user }) {
                   </td>
                   <td className={Td}>
                     <input
-                      type="text"
+                      type="number"
                       name="bed"
                       value={newItem.bed}
                       onChange={handleNewItemChange}
@@ -373,7 +397,7 @@ export default function Project({ user }) {
                   </td>
                   <td className={Td}>
                     <input
-                      type="text"
+                      type="number"
                       name="floor"
                       value={newItem.floor}
                       onChange={handleNewItemChange}
@@ -382,7 +406,7 @@ export default function Project({ user }) {
                   </td>
                   <td className={Td}>
                     <input
-                      type="text"
+                      type="number"
                       name="surface"
                       value={newItem.surface}
                       onChange={handleNewItemChange}
@@ -391,7 +415,7 @@ export default function Project({ user }) {
                   </td>
                   <td className={Td}>
                     <input
-                      type="text"
+                      type="number"
                       name="price"
                       value={newItem.price}
                       onChange={handleNewItemChange}
@@ -432,7 +456,7 @@ export default function Project({ user }) {
                         </td>
                         <td className={Td}>
                           <input
-                            type="text"
+                            type="number"
                             name="bed"
                             value={formData.bed}
                             onChange={handleChange}
@@ -441,7 +465,7 @@ export default function Project({ user }) {
                         </td>
                         <td className={Td}>
                           <input
-                            type="text"
+                            type="number"
                             name="floor"
                             value={formData.floor}
                             onChange={handleChange}
@@ -450,7 +474,7 @@ export default function Project({ user }) {
                         </td>
                         <td className={Td}>
                           <input
-                            type="text"
+                            type="number"
                             name="surface"
                             value={formData.surface}
                             onChange={handleChange}
@@ -459,7 +483,7 @@ export default function Project({ user }) {
                         </td>
                         <td className={Td}>
                           <input
-                            type="text"
+                            type="number"
                             name="price"
                             value={formData.price}
                             onChange={handleChange}
