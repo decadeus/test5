@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-
-import AvatarComponent from "@/app/cproject/image";
+import Maindata from "@/app/cproject/maindata";
+import { IoMdEyeOff } from "react-icons/io";
+import { IoEye } from "react-icons/io5";
+import { PiFlowerTulipBold } from "react-icons/pi";
 
 export default function Projectb({ user }) {
   const supabase = createClient();
@@ -17,7 +19,10 @@ export default function Projectb({ user }) {
     garden: false,
     noprice: false,
   });
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "desc",
+  });
 
   useEffect(() => {
     if (user?.id) {
@@ -29,7 +34,8 @@ export default function Projectb({ user }) {
     const { data, error } = await supabase
       .from("project")
       .select(`*, projectlist(*)`)
-      .eq("ide", user.id);
+      .eq("ide", user.id)
+      .order("created_at", { ascending: false });
 
     if (error) {
       console.error("Error fetching projects:", error);
@@ -61,16 +67,23 @@ export default function Projectb({ user }) {
 
   const handleChange = (e, projectIndex, itemIndex, field) => {
     const updatedProjects = [...projects];
-    updatedProjects[projectIndex].projectlist[itemIndex][field] = field === 'garden' || field === 'noprice' ? e.target.checked : e.target.value;
-    if (field === 'price') {
-      updatedProjects[projectIndex].projectlist[itemIndex].noprice = e.target.value === "";
+    updatedProjects[projectIndex].projectlist[itemIndex][field] =
+      field === "garden" || field === "noprice"
+        ? e.target.checked
+        : e.target.value;
+    if (field === "price") {
+      updatedProjects[projectIndex].projectlist[itemIndex].noprice =
+        e.target.value === "";
     }
     setProjects(updatedProjects);
   };
 
   const handleNewChange = (e, field) => {
-    const value = field === 'garden' || field === 'noprice' ? e.target.checked : e.target.value;
-    setNewItem(prev => ({ ...prev, [field]: value }));
+    const value =
+      field === "garden" || field === "noprice"
+        ? e.target.checked
+        : e.target.value;
+    setNewItem((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleNewSave = async (projectIndex) => {
@@ -81,9 +94,7 @@ export default function Projectb({ user }) {
 
     const newItemToSave = { ...newItem, ide: projects[projectIndex].id };
 
-    const { error } = await supabase
-      .from("projectlist")
-      .insert(newItemToSave);
+    const { error } = await supabase.from("projectlist").insert(newItemToSave);
 
     if (error) {
       console.error("Error adding new item:", error);
@@ -101,19 +112,37 @@ export default function Projectb({ user }) {
     }
   };
 
-  const sortTable = (key) => {
-    if (key === 'noprice') return; // Skip sorting for 'noprice'
-    
-    let direction = 'asc';
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
+  const handleDelete = async (projectIndex, itemIndex) => {
+    const itemToDelete = projects[projectIndex].projectlist[itemIndex];
+
+    if (!itemToDelete || !itemToDelete.id) {
+      console.error("Item to delete is missing or does not have an ID.");
+      return;
     }
 
-    const sortedProjects = projects.map(project => ({
+    const { error } = await supabase
+      .from("projectlist")
+      .delete()
+      .eq("id", itemToDelete.id);
+
+    if (error) {
+      console.error("Error deleting item:", error);
+    } else {
+      fetchProjects();
+    }
+  };
+
+  const sortTable = (key) => {
+    let direction = "desc";
+    if (sortConfig.key === key && sortConfig.direction === "desc") {
+      direction = "asc";
+    }
+
+    const sortedProjects = projects.map((project) => ({
       ...project,
       projectlist: [...project.projectlist].sort((a, b) => {
-        if (a[key] < b[key]) return direction === 'asc' ? -1 : 1;
-        if (a[key] > b[key]) return direction === 'asc' ? 1 : -1;
+        if (a[key] < b[key]) return direction === "asc" ? -1 : 1;
+        if (a[key] > b[key]) return direction === "asc" ? 1 : -1;
         return 0;
       }),
     }));
@@ -123,43 +152,76 @@ export default function Projectb({ user }) {
   };
 
   const getSortIndicator = (key) => {
-    if (key === 'noprice') return ''; // Skip sort indicator for 'noprice'
-    if (sortConfig.key !== key) return '';
-    return sortConfig.direction === 'asc' ? '▲' : '▼';
+    if (sortConfig.key !== key) return "";
+    return sortConfig.direction === "asc" ? "▲" : "▼";
   };
+
+  // Calculate total number of rows
+  const totalRows = projects.reduce(
+    (total, project) => total + project.projectlist.length,
+    0
+  );
 
   return (
     <div className="w-full p-4">
-      <AvatarComponent user={user} />
+      {/* Display total number of rows */}
+      <div className="mb-4"></div>
 
       {projects.map((project, projectIndex) => (
         <div key={projectIndex} className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">{project.compagny}</h2>
+          <div className="flex flex-col">
+            <Maindata
+              compagny={project.compagny}
+              country={project.country}
+              city={project.city}
+              name={project.name}
+              lat={project.lat}
+              lng={project.lng}
+              cur={project.currency}
+              online={project.online}
+
+              user={user}
+            />
+            <p className="text-gray-600 text-center font-extrabold">
+              Number of apartments: {totalRows}
+            </p>
+          </div>
           <div className="overflow-x-auto">
             <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
               <thead className="bg-gray-200">
                 <tr>
-                  <th className="py-2 px-4 border-b text-left cursor-pointer" onClick={() => sortTable('ref')}>
-                    Ref {getSortIndicator('ref')}
+                  <th
+                    className="py-2 px-4 border-b text-center cursor-pointer"
+                    onClick={() => sortTable("ref")}
+                  >
+                    Ref {getSortIndicator("ref")}
                   </th>
-                  <th className="py-2 px-4 border-b text-right cursor-pointer" onClick={() => sortTable('bed')}>
-                    Bed {getSortIndicator('bed')}
+                  <th
+                    className="py-2 px-4 border-b text-center cursor-pointer"
+                    onClick={() => sortTable("bed")}
+                  >
+                    Bedroom {getSortIndicator("bed")}
                   </th>
-                  <th className="py-2 px-4 border-b text-right cursor-pointer" onClick={() => sortTable('floor')}>
-                    Floor {getSortIndicator('floor')}
+                  <th
+                    className="py-2 px-4 border-b text-center cursor-pointer"
+                    onClick={() => sortTable("floor")}
+                  >
+                    Floor {getSortIndicator("floor")}
                   </th>
-                  <th className="py-2 px-4 border-b text-right cursor-pointer" onClick={() => sortTable('surface')}>
-                    Surface {getSortIndicator('surface')}
+                  <th
+                    className="py-2 px-4 border-b text-center cursor-pointer"
+                    onClick={() => sortTable("surface")}
+                  >
+                    Surface {getSortIndicator("surface")}
                   </th>
-                  <th className="py-2 px-4 border-b text-right cursor-pointer" onClick={() => sortTable('price')}>
-                    Price {getSortIndicator('price')}
+                  <th
+                    className="py-2 px-4 border-b text-center cursor-pointer"
+                    onClick={() => sortTable("price")}
+                  >
+                    Price {getSortIndicator("price")}
                   </th>
-                  <th className="py-2 px-4 border-b text-center">
-                    No Price
-                  </th>
-                  <th className="py-2 px-4 border-b text-center">
-                    Garden
-                  </th>
+                  <th className="py-2 px-4 border-b text-center">No Price</th>
+                  <th className="py-2 px-4 border-b text-center">Garden</th>
                   <th className="py-2 px-4 border-b text-center">Actions</th>
                 </tr>
               </thead>
@@ -170,7 +232,7 @@ export default function Projectb({ user }) {
                       type="text"
                       value={newItem.ref}
                       onChange={(e) => handleNewChange(e, "ref")}
-                      className="p-2 border rounded w-full"
+                      className="p-2 border rounded w-full text-center"
                       placeholder="Ref"
                     />
                   </td>
@@ -179,8 +241,8 @@ export default function Projectb({ user }) {
                       type="number"
                       value={newItem.bed}
                       onChange={(e) => handleNewChange(e, "bed")}
-                      className="p-2 border rounded w-full text-right"
-                      placeholder="Bed"
+                      className="p-2 border rounded w-full text-center"
+                      placeholder="Bedroom"
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-right">
@@ -188,7 +250,7 @@ export default function Projectb({ user }) {
                       type="number"
                       value={newItem.floor}
                       onChange={(e) => handleNewChange(e, "floor")}
-                      className="p-2 border rounded w-full text-right"
+                      className="p-2 border rounded w-full text-center"
                       placeholder="Floor"
                     />
                   </td>
@@ -197,16 +259,20 @@ export default function Projectb({ user }) {
                       type="number"
                       value={newItem.surface}
                       onChange={(e) => handleNewChange(e, "surface")}
-                      className="p-2 border rounded w-full text-right"
+                      className="p-2 border rounded w-full text-center"
                       placeholder="Surface"
                     />
                   </td>
-                  <td className={`py-2 px-4 border-b text-right ${newItem.noprice ? 'bg-gray-300' : ''}`}>
+                  <td
+                    className={`py-2 px-4 border-b text-right ${
+                      newItem.noprice ? "bg-gray-300" : ""
+                    }`}
+                  >
                     <input
                       type="number"
                       value={newItem.price}
                       onChange={(e) => handleNewChange(e, "price")}
-                      className="p-2 border rounded w-full text-right"
+                      className="p-2 border rounded w-full text-center"
                       placeholder="Price"
                       disabled={newItem.noprice}
                     />
@@ -238,13 +304,16 @@ export default function Projectb({ user }) {
                 </tr>
                 {project.projectlist.map((item, itemIndex) => (
                   <tr key={itemIndex}>
-                    {editing?.projectIndex === projectIndex && editing?.itemIndex === itemIndex ? (
+                    {editing?.projectIndex === projectIndex &&
+                    editing?.itemIndex === itemIndex ? (
                       <>
                         <td className="py-2 px-4 border-b text-left">
                           <input
                             type="text"
                             value={item.ref}
-                            onChange={(e) => handleChange(e, projectIndex, itemIndex, "ref")}
+                            onChange={(e) =>
+                              handleChange(e, projectIndex, itemIndex, "ref")
+                            }
                             className="w-full p-2 border rounded"
                           />
                         </td>
@@ -252,7 +321,9 @@ export default function Projectb({ user }) {
                           <input
                             type="number"
                             value={item.bed}
-                            onChange={(e) => handleChange(e, projectIndex, itemIndex, "bed")}
+                            onChange={(e) =>
+                              handleChange(e, projectIndex, itemIndex, "bed")
+                            }
                             className="w-full p-2 border rounded text-right"
                           />
                         </td>
@@ -260,7 +331,9 @@ export default function Projectb({ user }) {
                           <input
                             type="number"
                             value={item.floor}
-                            onChange={(e) => handleChange(e, projectIndex, itemIndex, "floor")}
+                            onChange={(e) =>
+                              handleChange(e, projectIndex, itemIndex, "floor")
+                            }
                             className="w-full p-2 border rounded text-right"
                           />
                         </td>
@@ -268,15 +341,28 @@ export default function Projectb({ user }) {
                           <input
                             type="number"
                             value={item.surface}
-                            onChange={(e) => handleChange(e, projectIndex, itemIndex, "surface")}
+                            onChange={(e) =>
+                              handleChange(
+                                e,
+                                projectIndex,
+                                itemIndex,
+                                "surface"
+                              )
+                            }
                             className="w-full p-2 border rounded text-right"
                           />
                         </td>
-                        <td className={`py-2 px-4 border-b text-right ${item.noprice ? 'bg-gray-300' : ''}`}>
+                        <td
+                          className={`py-2 px-4 border-b text-right ${
+                            item.noprice ? "bg-gray-300" : ""
+                          }`}
+                        >
                           <input
                             type="number"
                             value={item.price || ""}
-                            onChange={(e) => handleChange(e, projectIndex, itemIndex, "price")}
+                            onChange={(e) =>
+                              handleChange(e, projectIndex, itemIndex, "price")
+                            }
                             className="w-full p-2 border rounded text-right"
                             disabled={item.noprice}
                           />
@@ -285,7 +371,14 @@ export default function Projectb({ user }) {
                           <input
                             type="checkbox"
                             checked={item.noprice}
-                            onChange={(e) => handleChange(e, projectIndex, itemIndex, "noprice")}
+                            onChange={(e) =>
+                              handleChange(
+                                e,
+                                projectIndex,
+                                itemIndex,
+                                "noprice"
+                              )
+                            }
                             className="w-full"
                           />
                         </td>
@@ -293,7 +386,9 @@ export default function Projectb({ user }) {
                           <input
                             type="checkbox"
                             checked={item.garden}
-                            onChange={(e) => handleChange(e, projectIndex, itemIndex, "garden")}
+                            onChange={(e) =>
+                              handleChange(e, projectIndex, itemIndex, "garden")
+                            }
                             className="w-full"
                           />
                         </td>
@@ -304,30 +399,72 @@ export default function Projectb({ user }) {
                           >
                             Save
                           </button>
+                          <button
+                            onClick={() =>
+                              handleDelete(projectIndex, itemIndex)
+                            }
+                            className="px-4 py-2 bg-red-500 text-white rounded ml-2"
+                          >
+                            Delete
+                          </button>
                         </td>
                       </>
                     ) : (
                       <>
-                        <td className="py-2 px-4 border-b text-left">{item.ref}</td>
-                        <td className="py-2 px-4 border-b text-right">{item.bed}</td>
-                        <td className="py-2 px-4 border-b text-right">{item.floor}</td>
-                        <td className="py-2 px-4 border-b text-right">{item.surface}</td>
-                        <td className={`py-2 px-4 border-b text-right ${item.noprice ? 'bg-gray-300' : ''}`}>
-                          {item.price || 'N/A'}
-                        </td>
-                        <td className={`py-2 px-4 border-b text-center ${item.noprice ? 'text-red-500' : 'text-green-500'}`}>
-                          {item.noprice ? 'No Price' : 'Has Price'}
+                        <td className="py-2 px-4 border-b text-center font-semibold">
+                          {item.ref}
                         </td>
                         <td className="py-2 px-4 border-b text-center">
-                          {item.garden ? '✔️' : '❌'}
+                          {item.bed}
                         </td>
                         <td className="py-2 px-4 border-b text-center">
-                          <button
-                            onClick={() => handleEdit(projectIndex, itemIndex)}
-                            className="px-4 py-2 bg-yellow-500 text-white rounded"
-                          >
-                            Edit
-                          </button>
+                          {item.floor}
+                        </td>
+                        <td className="py-2 px-4 border-b text-center">
+                          {item.surface}
+                        </td>
+                        <td
+                          className={`py-2 px-4 border-b text-center ${
+                            item.noprice ? "bg-gray-300" : ""
+                          }`}
+                        >
+                          {item.price || "N/A"}
+                        </td>
+                        <td
+                          className={`py-2 px-4 border-b text-center ${
+                            item.noprice ? "text-red-500" : "text-green-500"
+                          }`}
+                        >
+                          <div className="flex items-center justify-center h-full">
+                            {item.noprice ? (
+                              <IoMdEyeOff className="text-xl" />
+                            ) : (
+                              <IoEye className="text-xl" />
+                            )}
+                          </div>
+                        </td>
+                        <td className="py-2 px-4 border-b text-center">
+                          {item.garden ? <PiFlowerTulipBold color="purple" size={20} /> : ""}
+                        </td>
+                        <td className="py-2 px-4 border-b text-center">
+                          <div className="flex">
+                            <button
+                              onClick={() =>
+                                handleEdit(projectIndex, itemIndex)
+                              }
+                              className="px-4 py-2 bg-yellow-500 text-white rounded"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() =>
+                                handleDelete(projectIndex, itemIndex)
+                              }
+                              className="px-4 py-2 bg-red-500 text-white rounded ml-2"
+                            >
+                              Delete
+                            </button>
+                          </div>
                         </td>
                       </>
                     )}

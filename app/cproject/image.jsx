@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
 import { createClient } from "@/utils/supabase/client";
-import Avatar from "@/app/getimage/getone";
+import Avatar from "@/app/cproject/getimage";
 
 const supabase = createClient();
 
@@ -65,7 +65,7 @@ export default function AvatarComponent({ user }) {
   };
 
   return (
-    <div className="w-[200px] h-[200px]">
+    <div className="w-[200px] h-[200px] shadow-xl">
       {error && <div className="error-message">{error}</div>}
       {loading && <div className="loading-message">Updating...</div>} {/* Show loading message */}
       
@@ -75,6 +75,7 @@ export default function AvatarComponent({ user }) {
         url={mainpicUrl}
         size={150}
         onUpload={(url) => handleAvatarUpload("mainpic_url", url)}
+       
       />
     </div>
   );
