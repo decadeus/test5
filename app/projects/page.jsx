@@ -31,7 +31,7 @@ function Page() {
     const { data, error } = await supabase
       .from("projectlist")
       .select("*, project(*, lat, lng, mainpic_url)")
-      .order('surface', { ascending: false });
+      .order("surface", { ascending: false });
     if (error) {
       setError(error);
     } else {
@@ -56,7 +56,7 @@ function Page() {
         project.bed <= bedRange[1] &&
         (!selectedGarden || project.garden === selectedGarden)
     );
-    console.log('Filtered Projects Count:', filtered.length); // Log the count
+    console.log("Filtered Projects Count:", filtered.length); // Log the count
     return filtered;
   }, [
     originalProjects,
@@ -101,8 +101,7 @@ function Page() {
 
   const fiche = "grid grid-cols-2 grid-rows-1 gap-4";
   return (
-    <div className="flex flex-col w-full px-60 gap-16 pt-16">
-
+    <div className="flex flex-col w-full px-72 gap-16 pt-16">
       <div className="flex flex-col gap-4">
         <div className="w-full h-[270px]">
           <Map
@@ -133,9 +132,10 @@ function Page() {
           <div className="w-2/3">
             <div className="w-full flex gap-4 flex-wrap">
               <ScrollArea className="h-[1000px] w-full p-4">
-              <div>
-                <p>Total Projects: {filteredProjects.length}</p> {/* Display the count */}
-              </div>
+                <div>
+                  <p>Total Projects: {filteredProjects.length}</p>{" "}
+                  {/* Display the count */}
+                </div>
                 {filteredProjects.map((item, index) => (
                   <div
                     key={index}
@@ -143,34 +143,50 @@ function Page() {
                   >
                     <div className="flex  gap-4 w-full">
                       <div className="relative h-40 w-1/3">
-                      <Avatar
-                              url={item.project.mainpic_url || a}
-                              width={270}
-                              height={196}
-                              classn="rounded-2xl"
-                            />
+                        <Avatar
+                          url={item.project.mainpic_url || a}
+                          width={270}
+                          height={196}
+                          classn="rounded-2xl"
+                        />
                       </div>
-                      <div className="px-2 pt-2 flex flex-col w-2/3 ">
-                        <div className="flex justify-between w-full">
-                          <div className="w-1/2">
-                            <p className="font-bold">{item.project.name}</p>
-                            <p>{item.project.city}</p>
-                            <p>{item.project.country}</p>
+                      <div className="px-2 pt-2 flex flex-col w-2/3 h-full ">
+                        <div className="flex justify-between w-full h-full">
+                          <div className="w-1/2 flex flex-col justify-between h-36">
+                            <div>
+                              <p className="font-bold text-xl">
+                                {item.project.name}
+                              </p>
+                              <p>{item.project.city}</p>
+                              <p>{item.project.country}</p>
+                            </div>
+                            {item.des && (
+                              <div>
+                                <p className="text-white bg-red-600 rounded-md px-2 text-sm w-fit">
+                                  {item.des}
+                                </p>
+                              </div>
+                            )}
                           </div>
-                          <div className="w-1/2 flex flex-col items-end">
-                            <p className="flex gap-1 items-center">
-                              {item.pricetype === "PLN" ? (
-                                <>
-                                  <TbCurrencyZloty size={20} /> {item.price}
-                                </>
-                              ) : (
-                                <>
-                                  <FaEuroSign /> {item.price}
-                                </>
+                          <div className="w-1/2 flex flex-col items-end justify-between h-36">
+                            <div>
+                              {item.noprice && (
+                                <p className="flex gap-1 items-center justify-between">
+                                  {item.pricetype === "PLN" ? (
+                                    <>
+                                      <TbCurrencyZloty size={20} /> {item.price}
+                                    </>
+                                  ) : (
+                                    <>
+                                      <FaEuroSign /> {item.price}
+                                    </>
+                                  )}
+                                </p>
                               )}
-                            </p>
-                            <p>{item.surface} m2</p>
-                            <p>{item.bed}</p>
+                              <p>{item.surface} m2</p>
+                              <p>{item.bed}</p>
+                            </div>
+
                             <div className="w-fit">
                               <Button color="secondary">Voir</Button>
                             </div>
@@ -209,16 +225,16 @@ function Filter({
 
   return (
     <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8">
-     
+      <div>
+        <h2 className="font-extrabold text-xl pb-4">Country</h2>
         <div>
-          <h2 className={htwo}>Country</h2>
           <div className={hfouth}>
             <CheckboxGroup
               value={selectedCountries}
               onChange={onCountryChange}
               color="secondary"
               aria-label="Country"
-              className="flex flex-col gap-2"
+              className="flex flex-col gap-2 "
             >
               <Checkbox value="France">
                 <p className={hthree}>France</p>
@@ -229,8 +245,10 @@ function Filter({
             </CheckboxGroup>
           </div>
         </div>
-        <h2 className="font-extrabold text-xl">Apartement</h2>
-        <div className="">
+      </div>
+      <div>
+        <h2 className="font-extrabold text-xl pb-4 ">Apartement</h2>
+        <div className="pb-8">
           <h2 className={htwo}>Garden</h2>
           <CheckboxGroup
             value={selectedGarden ? ["garden"] : []}
@@ -239,13 +257,30 @@ function Filter({
             orientation="horizontal"
             aria-label="Garden"
           >
-            <Checkbox value="garden"><p className={hthree}>With garden</p></Checkbox>
+            <Checkbox value="garden">
+              <p className={hthree}>Only with garden</p>
+            </Checkbox>
           </CheckboxGroup>
         </div>
-    
-     
-        <div className="">
+
+        <div className="pb-8">
           <h2 className={htwo}>Price range</h2>
+          <div className="w-full flex gap-4 pb-4">
+            <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+              <p className="font-semibold text-sm">min</p>
+              <div className="flex items-center gap-1">
+                <TbCurrencyZloty size={15} />
+                <p>{priceRange[0]}</p>
+              </div>
+            </div>
+            <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+              <p className="font-semibold text-sm">max</p>
+              <div className="flex items-center gap-1">
+                <TbCurrencyZloty size={15} />
+                <p>{priceRange[1]}</p>
+              </div>
+            </div>
+          </div>
           <Slider
             min={0}
             maxValue={1000000} // Adjust this based on your data
@@ -257,14 +292,25 @@ function Filter({
             aria-label="Price range"
             size="sm"
           />
-          <div className="flex justify-between">
-            <p className="text-default-500 font-medium text-small pt-2">
-              Price: {priceRange[0]} – {priceRange[1]}
-            </p>
-          </div>
         </div>
-        <div className="">
+        <div className="pb-8">
           <p className={htwo}>Surface</p>
+          <div className="w-full flex gap-4 pb-4">
+            <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+              <p className="font-semibold text-sm">min</p>
+              <div className="flex items-center gap-1">
+                <p className="text-xs">m2</p>
+                <p>{surfaceRange[0]}</p>
+              </div>
+            </div>
+            <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+              <p className="font-semibold text-sm">max</p>
+              <div className="flex items-center gap-1">
+                <p className="text-xs">m2</p>
+                <p>{surfaceRange[1]}</p>
+              </div>
+            </div>
+          </div>
           <Slider
             min={0}
             maxValue={200} // Adjust this based on your data
@@ -276,14 +322,23 @@ function Filter({
             aria-label="Surface"
             size="sm"
           />
-          <div className="flex justify-between">
-            <p className="text-default-500 font-medium text-small pt-2">
-              Surface: {surfaceRange[0]} – {surfaceRange[1]}
-            </p>
-          </div>
         </div>
         <div className="">
           <p className={htwo}>Number of bedrooms</p>
+          <div className="w-full flex gap-4 pb-4">
+            <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+              <p className="font-semibold text-sm">min</p>
+              <div className="flex items-center gap-1">
+                <p>{bedRange[0]}</p>
+              </div>
+            </div>
+            <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+              <p className="font-semibold text-sm">max</p>
+              <div className="flex items-center gap-1">
+                <p>{bedRange[1]}</p>
+              </div>
+            </div>
+          </div>
           <Slider
             min={0}
             maxValue={10} // Adjust this based on your data
@@ -295,56 +350,53 @@ function Filter({
             aria-label="Number of bedrooms"
             size="sm"
           />
-          <div className="flex justify-between">
-            <p className="text-default-500 font-medium text-small pt-2">
-              Bedrooms: {bedRange[0]} – {bedRange[1]}
-            </p>
+        </div>
+      </div>
+      <div>
+        <h2 className="font-extrabold text-xl pb-4">Residence</h2>
+
+        <div className="flex flex-col gap-8">
+          <div>
+            <h3 className={htwo}>Amenities</h3>
+            <div className="flex flex-col gap-2">
+              <Checkbox>
+                <p className={hthree}>Swimming pool</p>
+              </Checkbox>
+              <Checkbox>
+                <p className={hthree}>Fitness room</p>
+              </Checkbox>
+
+              <Checkbox>
+                <p className={hthree}>Children's playground</p>
+              </Checkbox>
+
+              <Checkbox>
+                <p className={hthree}>Adapted for disabled people</p>
+              </Checkbox>
+              <Checkbox>
+                <p className={hthree}>Bicycle parking</p>
+              </Checkbox>
+            </div>
           </div>
-        </div>
-        <h2 className="font-extrabold text-xl">Residence</h2>
-     
-      <div className="">
-        <h3 className={htwo}>Amenities</h3>
-        <div className="flex flex-col gap-2">
-          <Checkbox>
-            <p className={hthree}>Swimming pool</p>
-          </Checkbox>
-          <Checkbox>
-            <p className={hthree}>Fitness room</p>
-          </Checkbox>
-      
-    
-          <Checkbox>
-            <p className={hthree}>Children's playground</p>
-          </Checkbox>
+          <div>
+            <h3 className={htwo}>Security</h3>
+            <div className="flex flex-col gap-2">
+              <Checkbox>
+                <p className={hthree}>Entrance with reception</p>
+              </Checkbox>
+              <Checkbox>
+                <p className={hthree}>Fenced area</p>
+              </Checkbox>
 
-          <Checkbox>
-            <p className={hthree}>Building adapted for disabled people</p>
-          </Checkbox>
-          <Checkbox>
-            <p className={hthree}>Bicycle parking</p>
-          </Checkbox>
-      
+              <Checkbox>
+                <p className={hthree}>CCTV</p>
+              </Checkbox>
 
-        </div>
-        <h3 className={htwo}>Security</h3>
-        <div className="flex flex-col gap-2">
-        
-          <Checkbox>
-            <p className={hthree}>Entrance with reception</p>
-          </Checkbox>
-          <Checkbox>
-            <p className={hthree}>Fenced area</p>
-          </Checkbox>
- 
-          <Checkbox>
-            <p className={hthree}>CCTV</p>
-          </Checkbox>
-        
-          <Checkbox>
-            <p className={hthree}>closed subdivision</p>
-          </Checkbox>
-
+              <Checkbox>
+                <p className={hthree}>closed subdivision</p>
+              </Checkbox>
+            </div>
+          </div>
         </div>
       </div>
     </div>

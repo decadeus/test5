@@ -27,7 +27,7 @@ function Page() {
         </h2>
       
       </div>
-      <div className="px-16 pt-16">
+      <div className="px-64 pt-16">
         <div className="flex flex-col justify-start items-start text-start gap-8">
           <div className="flex flex-col justify-center items-center w-full">
             <h2 className="font-bold">Select country</h2>

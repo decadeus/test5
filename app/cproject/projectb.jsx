@@ -18,6 +18,7 @@ export default function Projectb({ user }) {
     price: "",
     garden: false,
     noprice: false,
+    des: "",
   });
   const [sortConfig, setSortConfig] = useState({
     key: null,
@@ -101,6 +102,7 @@ export default function Projectb({ user }) {
     } else {
       setNewItem({
         ref: "",
+        des: "",
         bed: "",
         floor: "",
         surface: "",
@@ -179,7 +181,6 @@ export default function Projectb({ user }) {
               lng={project.lng}
               cur={project.currency}
               online={project.online}
-
               user={user}
             />
             <p className="text-gray-600 text-center font-extrabold">
@@ -220,8 +221,14 @@ export default function Projectb({ user }) {
                   >
                     Price {getSortIndicator("price")}
                   </th>
-                  <th className="py-2 px-4 border-b text-center">No Price</th>
+                  <th className="py-2 px-4 border-b text-center">Show Price</th>
                   <th className="py-2 px-4 border-b text-center">Garden</th>
+                  <th
+                    className="py-2 px-4 border-b text-center cursor-pointer"
+                    onClick={() => sortTable("des")}
+                  >
+                    Special info {getSortIndicator("des")}
+                  </th>
                   <th className="py-2 px-4 border-b text-center">Actions</th>
                 </tr>
               </thead>
@@ -291,6 +298,16 @@ export default function Projectb({ user }) {
                       checked={newItem.garden}
                       onChange={(e) => handleNewChange(e, "garden")}
                       className="w-full"
+                    />
+                  </td>
+                  <td className="py-2 px-4 border-b text-left">
+                    <input
+                      type="text"
+                      value={newItem.des}
+                      onChange={(e) => handleNewChange(e, "des")}
+                      className="p-2 border rounded w-full text-center"
+                      placeholder="des"
+                      maxLength={25}
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-center">
@@ -392,6 +409,17 @@ export default function Projectb({ user }) {
                             className="w-full"
                           />
                         </td>
+                        <td className="py-2 px-4 border-b text-left">
+                          <input
+                            type="text"
+                            value={item.des}
+                            onChange={(e) =>
+                              handleChange(e, projectIndex, itemIndex, "des")
+                            }
+                            className="w-full p-2 border rounded"
+                            maxLength={25}
+                          />
+                        </td>
                         <td className="py-2 px-4 border-b text-center">
                           <button
                             onClick={() => handleSave(projectIndex, itemIndex)}
@@ -443,8 +471,15 @@ export default function Projectb({ user }) {
                             )}
                           </div>
                         </td>
-                        <td className="py-2 px-4 border-b text-center">
-                          {item.garden ? <PiFlowerTulipBold color="purple" size={20} /> : ""}
+                        <td className="py-2 px-4 border-b text-center flex items-center justify-center">
+                          {item.garden ? (
+                            <PiFlowerTulipBold color="purple" size={20} />
+                          ) : (
+                            ""
+                          )}
+                        </td>
+                        <td className="py-2 px-4 border-b text-center font-semibold">
+                          {item.des}
                         </td>
                         <td className="py-2 px-4 border-b text-center">
                           <div className="flex">
