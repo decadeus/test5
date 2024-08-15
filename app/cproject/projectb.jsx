@@ -221,7 +221,7 @@ export default function Projectb({ user }) {
                   >
                     Price {getSortIndicator("price")}
                   </th>
-                  <th className="py-2 px-4 border-b text-center">Show Price</th>
+                  <th className="py-2 px-4 border-b text-center">Hide Price</th>
                   <th className="py-2 px-4 border-b text-center">Garden</th>
                   <th
                     className="py-2 px-4 border-b text-center cursor-pointer"
@@ -240,7 +240,7 @@ export default function Projectb({ user }) {
                       value={newItem.ref}
                       onChange={(e) => handleNewChange(e, "ref")}
                       className="p-2 border rounded w-full text-center"
-                      placeholder="Ref"
+                      placeholder="ex: AA0302"
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-right">
@@ -249,7 +249,7 @@ export default function Projectb({ user }) {
                       value={newItem.bed}
                       onChange={(e) => handleNewChange(e, "bed")}
                       className="p-2 border rounded w-full text-center"
-                      placeholder="Bedroom"
+                      placeholder="ex: 2"
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-right">
@@ -258,7 +258,7 @@ export default function Projectb({ user }) {
                       value={newItem.floor}
                       onChange={(e) => handleNewChange(e, "floor")}
                       className="p-2 border rounded w-full text-center"
-                      placeholder="Floor"
+                      placeholder="ex: 3"
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-right">
@@ -267,7 +267,7 @@ export default function Projectb({ user }) {
                       value={newItem.surface}
                       onChange={(e) => handleNewChange(e, "surface")}
                       className="p-2 border rounded w-full text-center"
-                      placeholder="Surface"
+                      placeholder="ex: 320"
                     />
                   </td>
                   <td
@@ -280,7 +280,7 @@ export default function Projectb({ user }) {
                       value={newItem.price}
                       onChange={(e) => handleNewChange(e, "price")}
                       className="p-2 border rounded w-full text-center"
-                      placeholder="Price"
+                      placeholder="ex: 324000"
                       disabled={newItem.noprice}
                     />
                   </td>
@@ -306,7 +306,7 @@ export default function Projectb({ user }) {
                       value={newItem.des}
                       onChange={(e) => handleNewChange(e, "des")}
                       className="p-2 border rounded w-full text-center"
-                      placeholder="des"
+                      placeholder="ex: - 10%"
                       maxLength={25}
                     />
                   </td>

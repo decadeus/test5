@@ -133,7 +133,7 @@ export default function Maindata({
   };
 
   return (
-    <div className="mx-auto mt-10 p-6 bg-white rounded-lg shadow-md flex flex-col justify-center items-center mb-8">
+    <div className="mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl flex flex-col justify-center items-center mb-8">
       <div className="mb-8">
         <AvatarComponent user={user} />
       </div>
