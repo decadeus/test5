@@ -172,7 +172,13 @@ function Page() {
     <div className="flex flex-col w-full px-72 gap-16 pt-16">
       <div className="flex flex-col gap-4">
         <div className="w-full h-[270px]">
-          <LazyMap />
+          <LazyMap
+            classN="w-full h-full h-[270px] rounded-2xl"
+            todos={filteredProjects.map(({ project }) => ({
+              lat: project?.lat,
+              lng: project?.lng,
+            }))}
+          />
         </div>
         <div className="flex w-full">
           <div className="w-1/3">
