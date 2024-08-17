@@ -10,22 +10,7 @@ import "leaflet-defaulticon-compatibility";
 
 
 // Dynamic import of react-leaflet components
-const MapContainer = dynamic(
-  () => import("react-leaflet").then((module) => module.MapContainer),
-  { ssr: false }
-);
-const TileLayer = dynamic(
-  () => import("react-leaflet").then((module) => module.TileLayer),
-  { ssr: false }
-);
-const Marker = dynamic(
-  () => import("react-leaflet").then((module) => module.Marker),
-  { ssr: false }
-);
-const Popup = dynamic(
-  () => import("react-leaflet").then((module) => module.Popup),
-  { ssr: false }
-);
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 const getMapBounds = (todos) => {
   // Initialize empty bounds
