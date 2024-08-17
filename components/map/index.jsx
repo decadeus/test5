@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 import "leaflet-defaulticon-compatibility";
@@ -9,55 +8,30 @@ import "leaflet-defaulticon-compatibility";
 import Avatar from "@/app/getimage/Ugetone";
 import Link from "next/link";
 
-
-
-
 // Dynamic import of react-leaflet components
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
-const getMapBounds = (todos) => {
-  // Initialize empty bounds
-  const bounds = new L.latLngBounds([]);
-
-  // Iterate through todos and extend bounds for each marker
-  todos.forEach((todo) => {
-    const latLng = new L.latLng(todo.lat, todo.lng);
-    bounds.extend(latLng);
-  });
-
-  return bounds;
-};
-
-const MapComponent = ({ classN, todos }) => {
-  const [center, setCenter] = useState([52.07957, 20.97848]); // Default center (Continental United States)
-
-  useEffect(() => {
-    if (todos.length > 0) {
-
-      const bounds = getMapBounds(todos);
-      
-
-      // Automatically adjusts zoom to fit bounds
-      setCenter(bounds.getCenter());
-    }
-  }, [todos]);
+export function MapComponent({ todos }) {
+  const position = [51.505, -0.09];
 
   return (
-    <MapContainer center={center} zoom={4} className={classN}>
+    <MapContainer
+      center={position}
+      zoom={11}
+      scrollWheelZoom={true}
+      style={{ height: "400px", width: "600px" }}
+    >
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {todos
-        .filter(todo => todo.lat && todo.lng) // Ensure lat and lng are defined
+        .filter((todo) => todo.lat && todo.lng) // Ensure lat and lng are defined
         .map((todo) => (
           <Marker
             key={todo.id}
             position={[todo.lat, todo.lng]}
             style={{ color: "lightblue" }}
-           
-          
-           
           >
             <Popup maxWidth={500}>
               <div className="flex-row w-full">
@@ -84,6 +58,4 @@ const MapComponent = ({ classN, todos }) => {
         ))}
     </MapContainer>
   );
-};
-
-export default MapComponent;
+}

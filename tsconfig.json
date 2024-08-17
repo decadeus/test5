@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/page.jsx", "app/layout.jsx", "app/login/page.tsx", "utils/supabase/client.ts", "utils/supabase/server.ts", "app/(pages)/Vpdf/page.jsx", "components/fullmap.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/page.jsx", "app/layout.jsx", "app/login/page.tsx", "utils/supabase/client.ts", "utils/supabase/server.ts", "app/(pages)/Vpdf/page.jsx", "components/fullmap.jsx", "components/map/index.jsx"],
   "exclude": ["node_modules"]
 }
