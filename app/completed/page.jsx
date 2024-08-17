@@ -17,9 +17,15 @@ import { FaHeart, FaKey } from "react-icons/fa";
 import { FaMapPin } from "react-icons/fa6";
 import { BsBuildingFillGear } from "react-icons/bs";
 import { FaRegHeart } from "react-icons/fa";
+import dynamic from "next/dynamic";
 
 
 const FAVORITE_TODOS_KEY = "favoriteApartments";
+
+const LazyMap = dynamic(() => import("@/components/fullmap"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 
 export default function TodoList() {
@@ -123,7 +129,9 @@ export default function TodoList() {
 
   return (
     <div className="w-full px-4 md:px-16 flex flex-col justify-center gap-8 pt-8">
+        
       <div className="md:flex-row flex flex-col justify-center items-center gap-4">
+    
         <div className="border-black border-2 md:w-fit w-full flex rounded-xl flex-col md:flex-row justify-center gap-4">
           <div>
             <Select
@@ -215,12 +223,14 @@ export default function TodoList() {
       </div>
       <div className="w-full flex-col z-10 -mt-32 md:px-4 justify-center">
         <div className="md:px-32 flex justify-center">
-          <Map
+          <LazyMap
             classN="w-full md:h-[400px] h-[200px] rounded-2xl"
             todos={todos}
           />
         </div>
         <div className="w-full rounded-2xl z-10 pt-16">
+      
+
           <ul className="flex flex-col gap-8 pt-8 bg-gray-200 md:p-4 rounded-2xl">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
               {todos.map((todo) => (
