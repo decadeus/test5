@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
-import "leaflet/dist/leaflet.css";
+
 import Avatar from "@/app/getimage/Ugetone";
 import Link from "next/link";
 import "leaflet/dist/leaflet.css";
