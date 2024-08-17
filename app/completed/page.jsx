@@ -223,10 +223,7 @@ export default function TodoList() {
       </div>
       <div className="w-full flex-col z-10 -mt-32 md:px-4 justify-center">
         <div className="md:px-32 flex justify-center">
-          <LazyMap
-            classN="w-full md:h-[400px] h-[200px] rounded-2xl"
-            todos={todos}
-          />
+          <LazyMap />
         </div>
         <div className="w-full rounded-2xl z-10 pt-16">
       
