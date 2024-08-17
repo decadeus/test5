@@ -11,6 +11,15 @@ import { FaEuroSign } from "react-icons/fa";
 import Map from "@/components/fullmap";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Avatar from "@/app/getimage/Ugetone";
+import { IoGameControllerOutline } from "react-icons/io5";
+import { PiPersonSimpleSwimDuotone } from "react-icons/pi";
+import { IoIosFitness } from "react-icons/io";
+import { BiHandicap } from "react-icons/bi";
+import { MdOutlineDirectionsBike } from "react-icons/md";
+import { BiCctv } from "react-icons/bi";
+import { BiDoorOpen } from "react-icons/bi";
+
+
 
 function Page() {
   const [projects, setProjects] = useState([]);
@@ -22,6 +31,13 @@ function Page() {
     "Poland",
   ]);
   const [selectedGarden, setSelectedGarden] = useState(false);
+  const [selectedSwim, setSelectedSwim] = useState(false);
+  const [selectedFitness, setSelectedFitness] = useState(false);
+  const [selectedChild, setSelectedChild] = useState(false);
+  const [selectedDisabled, setSelectedDisabled] = useState(false);
+  const [selectedBike, setSelectedBike] = useState(false);
+  const [selectedCctv, setSelectedCctv] = useState(false);
+  const [selectedEntrance, setSelectedEntrance] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 1000000]); // Adjust max value based on your data
   const [surfaceRange, setSurfaceRange] = useState([0, 200]);
   const [bedRange, setBedRange] = useState([0, 10]);
@@ -30,7 +46,9 @@ function Page() {
     const supabase = createClient();
     const { data, error } = await supabase
       .from("projectlist")
-      .select("*, project(*, lat, lng, mainpic_url)")
+      .select(
+        "*, project(*, lat, lng, mainpic_url, swim, fitness, child, disabled, bike, cctv, entrance)"
+      )
       .order("surface", { ascending: false });
     if (error) {
       setError(error);
@@ -54,9 +72,16 @@ function Page() {
         project.surface <= surfaceRange[1] &&
         project.bed >= bedRange[0] &&
         project.bed <= bedRange[1] &&
-        (!selectedGarden || project.garden === selectedGarden)
+        (!selectedGarden || project.garden === selectedGarden) &&
+        (!selectedSwim || project.project.swim === selectedSwim) &&
+        (!selectedFitness || project.project.fitness === selectedFitness) &&
+        (!selectedChild || project.project.child === selectedChild) &&
+        (!selectedDisabled || project.project.disabled === selectedDisabled) &&
+        (!selectedBike || project.project.bike === selectedBike) &&
+        (!selectedCctv || project.project.cctv === selectedCctv) &&
+        (!selectedEntrance || project.project.entrance === selectedEntrance)
     );
-    console.log("Filtered Projects Count:", filtered.length); // Log the count
+    console.log("Filtered Projects Count:", filtered); // Log the count
     return filtered;
   }, [
     originalProjects,
@@ -65,6 +90,13 @@ function Page() {
     surfaceRange,
     bedRange,
     selectedGarden,
+    selectedSwim,
+    selectedFitness,
+    selectedChild,
+    selectedDisabled,
+    selectedBike,
+    selectedCctv,
+    selectedEntrance,
   ]);
 
   useEffect(() => {
@@ -89,6 +121,34 @@ function Page() {
 
   const handleGardenChange = (selected) => {
     setSelectedGarden(selected.includes("garden"));
+  };
+
+  const handleSwimChange = (selected) => {
+    setSelectedSwim(selected.includes("swim"));
+  };
+
+  const handleFitnessChange = (selected) => {
+    setSelectedFitness(selected.includes("fitness"));
+  };
+
+  const handleChildChange = (selected) => {
+    setSelectedChild(selected.includes("child"));
+  };
+
+  const handleDisabledChange = (selected) => {
+    setSelectedDisabled(selected.includes("disabled"));
+  };
+
+  const handleBikeChange = (selected) => {
+    setSelectedBike(selected.includes("bike"));
+  };
+
+  const handleCctvChange = (selected) => {
+    setSelectedCctv(selected.includes("cctv"));
+  };
+
+  const handleEntranceChange = (selected) => {
+    setSelectedEntrance(selected.includes("entrance"));
   };
 
   if (loading) {
@@ -120,6 +180,20 @@ function Page() {
                 onCountryChange={handleCountryChange}
                 selectedGarden={selectedGarden}
                 onGardenChange={handleGardenChange}
+                selectedSwim={selectedSwim}
+                onSwimChange={handleSwimChange}
+                selectedFitness={selectedFitness}
+                onFitnessChange={handleFitnessChange}
+                selectedChild={selectedChild}
+                onChildChange={handleChildChange}
+                selectedDisabled={selectedDisabled}
+                onDisabledChange={handleDisabledChange}
+                selectedBike={selectedBike}
+                onBikeChange={handleBikeChange}
+                selectedCctv={selectedCctv}
+                onCctvChange={handleCctvChange}
+                selectedEntrance={selectedEntrance}
+                onEntranceChange={handleEntranceChange}
                 priceRange={priceRange}
                 onPriceRangeChange={handlePriceRangeChange}
                 surfaceRange={surfaceRange}
@@ -131,11 +205,11 @@ function Page() {
           </div>
           <div className="w-2/3">
             <div className="w-full flex gap-4 flex-wrap">
-              <ScrollArea className="h-[1000px] w-full p-4">
-                <div>
-                  <p>Total Projects: {filteredProjects.length}</p>{" "}
-                  {/* Display the count */}
+            <div>
+                  <p className="font-bold">Total Projects: {filteredProjects.length} apartments found</p>
                 </div>
+              <ScrollArea className="h-[1000px] w-full p-4">
+               
                 {filteredProjects.map((item, index) => (
                   <div
                     key={index}
@@ -153,12 +227,27 @@ function Page() {
                       <div className="px-2 pt-2 flex flex-col w-2/3 h-full ">
                         <div className="flex justify-between w-full h-full">
                           <div className="w-1/2 flex flex-col justify-between h-36">
-                            <div>
+                            <div className="flex flex-col gap-1">
                               <p className="font-bold text-xl">
                                 {item.project.name}
                               </p>
-                              <p>{item.project.city}</p>
                               <p>{item.project.country}</p>
+                              <p>{item.project.city}</p>
+                             
+                              <div className="flex gap-2">
+
+                              {item.project.swim && (
+                                <PiPersonSimpleSwimDuotone />
+                              )}
+                              {item.project.child && (
+                                <IoGameControllerOutline />
+                              )}
+                              {item.project.fitness && <IoIosFitness />}
+                              {item.project.disabled && <BiHandicap />}
+                              {item.project.bike && <MdOutlineDirectionsBike />}
+                              {item.project.cctv && <BiCctv />}
+                              {item.project.entrance && <BiDoorOpen />}
+                              </div>
                             </div>
                             {item.des && (
                               <div>
@@ -168,6 +257,7 @@ function Page() {
                               </div>
                             )}
                           </div>
+                          
                           <div className="w-1/2 flex flex-col items-end justify-between h-36">
                             <div>
                               {item.noprice && (
@@ -184,7 +274,7 @@ function Page() {
                                 </p>
                               )}
                               <p>{item.surface} m2</p>
-                              <p>{item.bed}</p>
+                              <p>{item.bed} bedroom(s)</p>
                             </div>
 
                             <div className="w-fit">
@@ -212,6 +302,20 @@ function Filter({
   onCountryChange,
   selectedGarden,
   onGardenChange,
+  selectedSwim,
+  onSwimChange,
+  selectedFitness,
+  onFitnessChange,
+  selectedChild,
+  onChildChange,
+  selectedDisabled,
+  onDisabledChange,
+  selectedBike,
+  onBikeChange,
+  selectedCctv,
+  onCctvChange,
+  selectedEntrance,
+  onEntranceChange,
   priceRange,
   onPriceRangeChange,
   surfaceRange,
@@ -224,12 +328,15 @@ function Filter({
   const hfouth = "flex flex-col gap-2";
 
   return (
-    <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8">
-      <div>
-        <h2 className="font-extrabold text-xl pb-4">Country</h2>
+    <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
+     
+       
         <div>
+        
+        <h2 className="font-extrabold text-xl pb-4">Country</h2>
           <div className={hfouth}>
             <CheckboxGroup
+              id="country"
               value={selectedCountries}
               onChange={onCountryChange}
               color="secondary"
@@ -245,160 +352,208 @@ function Filter({
             </CheckboxGroup>
           </div>
         </div>
+        <div>
+          <h2 className="font-extrabold text-xl pb-4 ">Apartement</h2>
+          <div className="pb-8">
+            <h2 className={htwo}>Garden</h2>
+            <CheckboxGroup
+              value={selectedGarden ? ["garden"] : []}
+              onChange={onGardenChange}
+              color="secondary"
+              orientation="horizontal"
+              aria-label="Garden"
+            >
+              <Checkbox value="garden">
+                <p className={hthree}>Only with garden</p>
+              </Checkbox>
+            </CheckboxGroup>
+          </div>
+
+          <div className="pb-8">
+            <h2 className={htwo}>Price range</h2>
+            <div className="w-full flex gap-4 pb-4">
+              <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                <p className="font-semibold text-sm">min</p>
+                <div className="flex items-center gap-1">
+                  <TbCurrencyZloty size={15} />
+                  <p>{priceRange[0]}</p>
+                </div>
+              </div>
+              <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                <p className="font-semibold text-sm">max</p>
+                <div className="flex items-center gap-1">
+                  <TbCurrencyZloty size={15} />
+                  <p>{priceRange[1]}</p>
+                </div>
+              </div>
+            </div>
+            <Slider
+              min={0}
+              maxValue={1000000} // Adjust this based on your data
+              step={1}
+              value={priceRange}
+              onChange={onPriceRangeChange}
+              className="max-w-md"
+              color="secondary"
+              aria-label="Price range"
+              size="sm"
+            />
+          </div>
+          <div className="pb-8">
+            <p className={htwo}>Surface</p>
+            <div className="w-full flex gap-4 pb-4">
+              <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                <p className="font-semibold text-sm">min</p>
+                <div className="flex items-center gap-1">
+                  <p className="text-xs">m2</p>
+                  <p>{surfaceRange[0]}</p>
+                </div>
+              </div>
+              <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                <p className="font-semibold text-sm">max</p>
+                <div className="flex items-center gap-1">
+                  <p className="text-xs">m2</p>
+                  <p>{surfaceRange[1]}</p>
+                </div>
+              </div>
+            </div>
+            <Slider
+              min={0}
+              maxValue={200} // Adjust this based on your data
+              step={1}
+              value={surfaceRange}
+              onChange={onSurfaceRangeChange}
+              className="max-w-md"
+              color="secondary"
+              aria-label="Surface"
+              size="sm"
+            />
+          </div>
+          <div className="">
+            <p className={htwo}>Number of bedrooms</p>
+            <div className="w-full flex gap-4 pb-4">
+              <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                <p className="font-semibold text-sm">min</p>
+                <div className="flex items-center gap-1">
+                  <p>{bedRange[0]}</p>
+                </div>
+              </div>
+              <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                <p className="font-semibold text-sm">max</p>
+                <div className="flex items-center gap-1">
+                  <p>{bedRange[1]}</p>
+                </div>
+              </div>
+            </div>
+            <Slider
+              min={0}
+              maxValue={10} // Adjust this based on your data
+              step={1}
+              value={bedRange}
+              onChange={onBedRangeChange}
+              className="max-w-md"
+              color="secondary"
+              aria-label="Number of bedrooms"
+              size="sm"
+            />
+          </div>
+        </div>
+        <div>
+          <h2 className="font-extrabold text-xl pb-4">Residence</h2>
+
+          <div className="flex flex-col gap-8">
+            <div>
+              <h3 className={htwo}>Amenities</h3>
+              <div className="flex flex-col gap-2">
+                <CheckboxGroup
+                  id="swim"
+                  value={selectedSwim ? ["swim"] : []}
+                  onChange={onSwimChange}
+                  color="secondary"
+                  orientation="horizontal"
+                  aria-label="Swim"
+                >
+                  <Checkbox value="swim">
+                    <p className={hthree}>Swimming pool</p>
+                  </Checkbox>
+                </CheckboxGroup>
+                <CheckboxGroup
+                  id="fitness"
+                  value={selectedFitness ? ["fitness"] : []}
+                  onChange={onFitnessChange}
+                  color="secondary"
+                  orientation="horizontal"
+                  aria-label="Fitness"
+                >
+                  <Checkbox value="fitness">
+                    <p className={hthree}>Fitness room</p>
+                  </Checkbox>
+                </CheckboxGroup>
+                <CheckboxGroup
+                  id="child"
+                  value={selectedChild ? ["child"] : []}
+                  onChange={onChildChange}
+                  color="secondary"
+                  orientation="horizontal"
+                  aria-label="Child"
+                >
+                  <Checkbox value="child">
+                    <p className={hthree}>Children's playground</p>
+                  </Checkbox>
+                </CheckboxGroup>
+                <CheckboxGroup
+                  id="disabled"
+                  value={selectedDisabled ? ["disabled"] : []}
+                  onChange={onDisabledChange}
+                  color="secondary"
+                  orientation="horizontal"
+                  aria-label="Disabled"
+                >
+                  <Checkbox value="disabled">
+                    <p className={hthree}>Adapted for disabled people</p>
+                  </Checkbox>
+                </CheckboxGroup>
+                <CheckboxGroup
+                  id="bike"
+                  value={selectedBike ? ["bike"] : []}
+                  onChange={onBikeChange}
+                  color="secondary"
+                  orientation="horizontal"
+                  aria-label="Bike"
+                >
+                  <Checkbox value="bike">
+                    <p className={hthree}>Bicycle parking</p>
+                  </Checkbox>
+                </CheckboxGroup>
+                <CheckboxGroup
+                  id="cctv"
+                  value={selectedCctv ? ["cctv"] : []}
+                  onChange={onCctvChange}
+                  color="secondary"
+                  orientation="horizontal"
+                  aria-label="Cctv"
+                >
+                  <Checkbox value="cctv">
+                    <p className={hthree}>CCTV</p>
+                  </Checkbox>
+                </CheckboxGroup>
+                <CheckboxGroup
+                  id="entrance"
+                  value={selectedEntrance ? ["entrance"] : []}
+                  onChange={onEntranceChange}
+                  color="secondary"
+                  orientation="horizontal"
+                  aria-label="Entrance"
+                >
+                  <Checkbox value="entrance">
+                    <p className={hthree}>Entrance with reception</p>
+                  </Checkbox>
+                </CheckboxGroup>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div>
-        <h2 className="font-extrabold text-xl pb-4 ">Apartement</h2>
-        <div className="pb-8">
-          <h2 className={htwo}>Garden</h2>
-          <CheckboxGroup
-            value={selectedGarden ? ["garden"] : []}
-            onChange={onGardenChange}
-            color="secondary"
-            orientation="horizontal"
-            aria-label="Garden"
-          >
-            <Checkbox value="garden">
-              <p className={hthree}>Only with garden</p>
-            </Checkbox>
-          </CheckboxGroup>
-        </div>
-
-        <div className="pb-8">
-          <h2 className={htwo}>Price range</h2>
-          <div className="w-full flex gap-4 pb-4">
-            <div className=" border-2 border-black rounded-xl w-1/2 p-2">
-              <p className="font-semibold text-sm">min</p>
-              <div className="flex items-center gap-1">
-                <TbCurrencyZloty size={15} />
-                <p>{priceRange[0]}</p>
-              </div>
-            </div>
-            <div className=" border-2 border-black rounded-xl w-1/2 p-2">
-              <p className="font-semibold text-sm">max</p>
-              <div className="flex items-center gap-1">
-                <TbCurrencyZloty size={15} />
-                <p>{priceRange[1]}</p>
-              </div>
-            </div>
-          </div>
-          <Slider
-            min={0}
-            maxValue={1000000} // Adjust this based on your data
-            step={1}
-            value={priceRange}
-            onChange={onPriceRangeChange}
-            className="max-w-md"
-            color="secondary"
-            aria-label="Price range"
-            size="sm"
-          />
-        </div>
-        <div className="pb-8">
-          <p className={htwo}>Surface</p>
-          <div className="w-full flex gap-4 pb-4">
-            <div className=" border-2 border-black rounded-xl w-1/2 p-2">
-              <p className="font-semibold text-sm">min</p>
-              <div className="flex items-center gap-1">
-                <p className="text-xs">m2</p>
-                <p>{surfaceRange[0]}</p>
-              </div>
-            </div>
-            <div className=" border-2 border-black rounded-xl w-1/2 p-2">
-              <p className="font-semibold text-sm">max</p>
-              <div className="flex items-center gap-1">
-                <p className="text-xs">m2</p>
-                <p>{surfaceRange[1]}</p>
-              </div>
-            </div>
-          </div>
-          <Slider
-            min={0}
-            maxValue={200} // Adjust this based on your data
-            step={1}
-            value={surfaceRange}
-            onChange={onSurfaceRangeChange}
-            className="max-w-md"
-            color="secondary"
-            aria-label="Surface"
-            size="sm"
-          />
-        </div>
-        <div className="">
-          <p className={htwo}>Number of bedrooms</p>
-          <div className="w-full flex gap-4 pb-4">
-            <div className=" border-2 border-black rounded-xl w-1/2 p-2">
-              <p className="font-semibold text-sm">min</p>
-              <div className="flex items-center gap-1">
-                <p>{bedRange[0]}</p>
-              </div>
-            </div>
-            <div className=" border-2 border-black rounded-xl w-1/2 p-2">
-              <p className="font-semibold text-sm">max</p>
-              <div className="flex items-center gap-1">
-                <p>{bedRange[1]}</p>
-              </div>
-            </div>
-          </div>
-          <Slider
-            min={0}
-            maxValue={10} // Adjust this based on your data
-            step={1}
-            value={bedRange}
-            onChange={onBedRangeChange}
-            className="max-w-md"
-            color="secondary"
-            aria-label="Number of bedrooms"
-            size="sm"
-          />
-        </div>
-      </div>
-      <div>
-        <h2 className="font-extrabold text-xl pb-4">Residence</h2>
-
-        <div className="flex flex-col gap-8">
-          <div>
-            <h3 className={htwo}>Amenities</h3>
-            <div className="flex flex-col gap-2">
-              <Checkbox>
-                <p className={hthree}>Swimming pool</p>
-              </Checkbox>
-              <Checkbox>
-                <p className={hthree}>Fitness room</p>
-              </Checkbox>
-
-              <Checkbox>
-                <p className={hthree}>Children's playground</p>
-              </Checkbox>
-
-              <Checkbox>
-                <p className={hthree}>Adapted for disabled people</p>
-              </Checkbox>
-              <Checkbox>
-                <p className={hthree}>Bicycle parking</p>
-              </Checkbox>
-            </div>
-          </div>
-          <div>
-            <h3 className={htwo}>Security</h3>
-            <div className="flex flex-col gap-2">
-              <Checkbox>
-                <p className={hthree}>Entrance with reception</p>
-              </Checkbox>
-              <Checkbox>
-                <p className={hthree}>Fenced area</p>
-              </Checkbox>
-
-              <Checkbox>
-                <p className={hthree}>CCTV</p>
-              </Checkbox>
-
-              <Checkbox>
-                <p className={hthree}>closed subdivision</p>
-              </Checkbox>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+   
   );
 }

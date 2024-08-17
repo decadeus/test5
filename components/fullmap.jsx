@@ -5,6 +5,9 @@ import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import Avatar from "@/app/getimage/Ugetone";
 import Link from "next/link";
+import "leaflet/dist/leaflet.css";
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
+import "leaflet-defaulticon-compatibility";
 
 
 // Dynamic import of react-leaflet components
@@ -65,6 +68,9 @@ const MapComponent = ({ classN, todos }) => {
             key={todo.id}
             position={[todo.lat, todo.lng]}
             style={{ color: "lightblue" }}
+           
+          
+           
           >
             <Popup maxWidth={500}>
               <div className="flex-row w-full">
