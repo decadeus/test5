@@ -21,7 +21,7 @@ import { BiDoorOpen } from "react-icons/bi";
 import dynamic from "next/dynamic";
 
 
-const LazyMap = dynamic(() => import("@/components/fullmap"), {
+const LazyMap = dynamic(() => import("@/components/map/index"), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });

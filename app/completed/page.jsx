@@ -22,7 +22,7 @@ import dynamic from "next/dynamic";
 
 const FAVORITE_TODOS_KEY = "favoriteApartments";
 
-const LazyMap = dynamic(() => import("@/components/fullmap"), {
+const LazyMap = dynamic(() => import("@/components/map/index"), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
