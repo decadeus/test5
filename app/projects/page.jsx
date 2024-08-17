@@ -18,6 +18,14 @@ import { BiHandicap } from "react-icons/bi";
 import { MdOutlineDirectionsBike } from "react-icons/md";
 import { BiCctv } from "react-icons/bi";
 import { BiDoorOpen } from "react-icons/bi";
+import dynamic from "next/dynamic";
+
+
+const LazyMap = dynamic(() => import("@/components/fullmap"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
+
 
 
 
@@ -164,7 +172,7 @@ function Page() {
     <div className="flex flex-col w-full px-72 gap-16 pt-16">
       <div className="flex flex-col gap-4">
         <div className="w-full h-[270px]">
-          <Map
+          <LazyMap
             classN="w-full h-full h-[270px] rounded-2xl"
             todos={filteredProjects.map(({ project }) => ({
               lat: project?.lat,
