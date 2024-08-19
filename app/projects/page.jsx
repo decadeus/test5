@@ -309,15 +309,20 @@ function Page() {
                           </div>
 
                           <div className="w-2/12  justify-end   hidden sm:flex">
-                          <div className="flex justify-end ">
-                            <FaHeart size={20} color="red" />
+                            <div className="flex justify-end ">
+                              <FaHeart size={20} color="red" />
                             </div>
                           </div>
                         </div>
 
                         <div className="mt-auto w-full rounded-md flex justify-center items-center gap-8 pt-4">
-                          <button className="w-full py-1 bgcolorS text-white hover:bg-[#990033] rounded-lg">The project</button>
-                          <div className="block sm:hidden">  <FaHeart size={20} color="red" /></div>
+                          <button className="w-full py-1 bgcolorS text-white hover:bg-[#990033] rounded-lg">
+                            The project
+                          </button>
+                          <div className="block sm:hidden">
+                            {" "}
+                            <FaHeart size={20} color="red" />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -370,6 +375,9 @@ function Filter({
       <div className="hidden sm:block">
         <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
           <div>
+            <div className=" rounded-xl w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center ">
+              Only your favorite <FaHeart color="red" />
+            </div>
             <h2 className="font-extrabold text-xl pb-4">Country</h2>
             <div className={hfouth}>
               <CheckboxGroup
@@ -614,6 +622,9 @@ function Filter({
                 <ModalBody>
                   <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
                     <div>
+                      <div className=" rounded-xl w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center ">
+                        Only your favorite <FaHeart color="red" />
+                      </div>
                       <h2 className="font-extrabold text-xl pb-4">Country</h2>
                       <div className={hfouth}>
                         <CheckboxGroup
