@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
-import { Checkbox, CheckboxGroup, Slider, Button } from "@nextui-org/react";
+import { Checkbox, CheckboxGroup, Slider, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
 import Image from "next/image";
 import a from "@/components/image/appart1.jpg";
 import { createClient } from "@/utils/supabase/client";
@@ -21,14 +21,10 @@ import { BiDoorOpen } from "react-icons/bi";
 import dynamic from "next/dynamic";
 
 
-
 const LazyMap = dynamic(() => import("@/app/map/index"), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
-
-
-
 
 function Page() {
   const [projects, setProjects] = useState([]);
@@ -172,9 +168,9 @@ function Page() {
   return (
     <div className="flex flex-col w-full 2xl:px-72 xl:px-48 lg:px-36  md:px-28 sm:px-8 px-4   gap-16 pt-16">
       <div className="flex flex-col gap-4">
-        <div className="w-full h-[440px]">
+        <div className="w-full xl:h-[440px] sm:h-[220px] h-[200px] z-0">
           <LazyMap
-            classN="w-full h-full h-[440px] rounded-2xl"
+            classN="w-full xl:h-[440px] sm:h-[220px] h-[200px] rounded-2xl"
             todos={filteredProjects.map(({ project }) => ({
               lat: project?.lat,
               lng: project?.lng,
@@ -182,7 +178,7 @@ function Page() {
               country: project?.country,
               city: project?.city,
               compagny: project?.compagny,
-            
+
               mainpic_url: project?.mainpic_url,
             }))}
           />
@@ -220,11 +216,12 @@ function Page() {
           </div>
           <div className="xl:w-2/3 w-full">
             <div className="w-full flex gap-4 flex-wrap">
-            <div>
-                  <p className="font-bold">Total Projects: {filteredProjects.length} apartments found</p>
-                </div>
+              <div>
+                <p className="font-bold">
+                  Total Projects: {filteredProjects.length} apartments found
+                </p>
+              </div>
               <ScrollArea className="h-[1000px] w-full p-4">
-               
                 {filteredProjects.map((item, index) => (
                   <div
                     key={index}
@@ -248,20 +245,21 @@ function Page() {
                               </p>
                               <p>{item.project.country}</p>
                               <p>{item.project.city}</p>
-                             
-                              <div className="flex gap-2">
 
-                              {item.project.swim && (
-                                <PiPersonSimpleSwimDuotone />
-                              )}
-                              {item.project.child && (
-                                <IoGameControllerOutline />
-                              )}
-                              {item.project.fitness && <IoIosFitness />}
-                              {item.project.disabled && <BiHandicap />}
-                              {item.project.bike && <MdOutlineDirectionsBike />}
-                              {item.project.cctv && <BiCctv />}
-                              {item.project.entrance && <BiDoorOpen />}
+                              <div className="flex gap-2">
+                                {item.project.swim && (
+                                  <PiPersonSimpleSwimDuotone />
+                                )}
+                                {item.project.child && (
+                                  <IoGameControllerOutline />
+                                )}
+                                {item.project.fitness && <IoIosFitness />}
+                                {item.project.disabled && <BiHandicap />}
+                                {item.project.bike && (
+                                  <MdOutlineDirectionsBike />
+                                )}
+                                {item.project.cctv && <BiCctv />}
+                                {item.project.entrance && <BiDoorOpen />}
                               </div>
                             </div>
                             {item.des && (
@@ -272,18 +270,18 @@ function Page() {
                               </div>
                             )}
                           </div>
-                          
+
                           <div className="w-1/2 flex flex-col items-end justify-between h-36">
                             <div>
                               {item.noprice && (
                                 <p className="flex gap-1 items-center justify-between">
                                   {item.pricetype === "PLN" ? (
                                     <p className="flex">
-                                       {item.price} <TbCurrencyZloty size={20} />
+                                      {item.price} <TbCurrencyZloty size={20} />
                                     </p>
                                   ) : (
                                     <p className="flex justify-center items-center">
-                                       {item.price} <FaEuroSign size={13} />
+                                      {item.price} <FaEuroSign size={13} />
                                     </p>
                                   )}
                                 </p>
@@ -341,234 +339,480 @@ function Filter({
   const htwo = "text-sm font-bold pb-4 ";
   const hthree = "text-sm";
   const hfouth = "flex flex-col gap-2";
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
   return (
-    <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
-     
-       
-        <div>
-        
-        <h2 className="font-extrabold text-xl pb-4">Country</h2>
-          <div className={hfouth}>
-            <CheckboxGroup
-              id="country"
-              value={selectedCountries}
-              onChange={onCountryChange}
-              color="secondary"
-              aria-label="Country"
-              className="flex flex-col gap-2 "
-            >
-              <Checkbox value="France">
-                <p className={hthree}>France</p>
-              </Checkbox>
-              <Checkbox value="Poland">
-                <p className={hthree}>Poland</p>
-              </Checkbox>
-            </CheckboxGroup>
+    <div className="z-10">
+      <div className="hidden sm:block">
+        <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
+          <div>
+            <h2 className="font-extrabold text-xl pb-4">Country</h2>
+            <div className={hfouth}>
+              <CheckboxGroup
+                id="country"
+                value={selectedCountries}
+                onChange={onCountryChange}
+                color="secondary"
+                aria-label="Country"
+                className="flex flex-col gap-2 "
+              >
+                <Checkbox value="France">
+                  <p className={hthree}>France</p>
+                </Checkbox>
+                <Checkbox value="Poland">
+                  <p className={hthree}>Poland</p>
+                </Checkbox>
+              </CheckboxGroup>
+            </div>
           </div>
-        </div>
-        <div>
-          <h2 className="font-extrabold text-xl pb-4 ">Apartement</h2>
-          <div className="pb-8">
-            <h2 className={htwo}>Garden</h2>
-            <CheckboxGroup
-              value={selectedGarden ? ["garden"] : []}
-              onChange={onGardenChange}
-              color="secondary"
-              orientation="horizontal"
-              aria-label="Garden"
-            >
-              <Checkbox value="garden">
-                <p className={hthree}>Only with garden</p>
-              </Checkbox>
-            </CheckboxGroup>
-          </div>
+          <div>
+            <h2 className="font-extrabold text-xl pb-4 ">Apartement</h2>
+            <div className="pb-8">
+              <h2 className={htwo}>Garden</h2>
+              <CheckboxGroup
+                value={selectedGarden ? ["garden"] : []}
+                onChange={onGardenChange}
+                color="secondary"
+                orientation="horizontal"
+                aria-label="Garden"
+              >
+                <Checkbox value="garden">
+                  <p className={hthree}>Only with garden</p>
+                </Checkbox>
+              </CheckboxGroup>
+            </div>
 
-          <div className="pb-8">
-            <h2 className={htwo}>Price range</h2>
-            <div className="w-full flex gap-4 pb-4">
-              <div className=" border-2 border-black rounded-xl w-1/2 p-2">
-                <p className="font-semibold text-sm">min</p>
-                <div className="flex items-center gap-1">
-                  <TbCurrencyZloty size={15} />
-                  <p>{priceRange[0]}</p>
+            <div className="pb-8">
+              <h2 className={htwo}>Price range</h2>
+              <div className="w-full flex gap-4 pb-4">
+                <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                  <p className="font-semibold text-sm">min</p>
+                  <div className="flex items-center gap-1">
+                    <TbCurrencyZloty size={15} />
+                    <p>{priceRange[0]}</p>
+                  </div>
+                </div>
+                <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                  <p className="font-semibold text-sm">max</p>
+                  <div className="flex items-center gap-1">
+                    <TbCurrencyZloty size={15} />
+                    <p>{priceRange[1]}</p>
+                  </div>
                 </div>
               </div>
-              <div className=" border-2 border-black rounded-xl w-1/2 p-2">
-                <p className="font-semibold text-sm">max</p>
-                <div className="flex items-center gap-1">
-                  <TbCurrencyZloty size={15} />
-                  <p>{priceRange[1]}</p>
-                </div>
-              </div>
+              <Slider
+                min={0}
+                maxValue={1000000} // Adjust this based on your data
+                step={1}
+                value={priceRange}
+                onChange={onPriceRangeChange}
+                className="max-w-md"
+                color="secondary"
+                aria-label="Price range"
+                size="sm"
+              />
             </div>
-            <Slider
-              min={0}
-              maxValue={1000000} // Adjust this based on your data
-              step={1}
-              value={priceRange}
-              onChange={onPriceRangeChange}
-              className="max-w-md"
-              color="secondary"
-              aria-label="Price range"
-              size="sm"
-            />
-          </div>
-          <div className="pb-8">
-            <p className={htwo}>Surface</p>
-            <div className="w-full flex gap-4 pb-4">
-              <div className=" border-2 border-black rounded-xl w-1/2 p-2">
-                <p className="font-semibold text-sm">min</p>
-                <div className="flex items-center gap-1">
-                  <p className="text-xs">m2</p>
-                  <p>{surfaceRange[0]}</p>
+            <div className="pb-8">
+              <p className={htwo}>Surface</p>
+              <div className="w-full flex gap-4 pb-4">
+                <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                  <p className="font-semibold text-sm">min</p>
+                  <div className="flex items-center gap-1">
+                    <p className="text-xs">m2</p>
+                    <p>{surfaceRange[0]}</p>
+                  </div>
+                </div>
+                <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                  <p className="font-semibold text-sm">max</p>
+                  <div className="flex items-center gap-1">
+                    <p className="text-xs">m2</p>
+                    <p>{surfaceRange[1]}</p>
+                  </div>
                 </div>
               </div>
-              <div className=" border-2 border-black rounded-xl w-1/2 p-2">
-                <p className="font-semibold text-sm">max</p>
-                <div className="flex items-center gap-1">
-                  <p className="text-xs">m2</p>
-                  <p>{surfaceRange[1]}</p>
-                </div>
-              </div>
+              <Slider
+                min={0}
+                maxValue={200} // Adjust this based on your data
+                step={1}
+                value={surfaceRange}
+                onChange={onSurfaceRangeChange}
+                className="max-w-md"
+                color="secondary"
+                aria-label="Surface"
+                size="sm"
+              />
             </div>
-            <Slider
-              min={0}
-              maxValue={200} // Adjust this based on your data
-              step={1}
-              value={surfaceRange}
-              onChange={onSurfaceRangeChange}
-              className="max-w-md"
-              color="secondary"
-              aria-label="Surface"
-              size="sm"
-            />
-          </div>
-          <div className="">
-            <p className={htwo}>Number of bedrooms</p>
-            <div className="w-full flex gap-4 pb-4">
-              <div className=" border-2 border-black rounded-xl w-1/2 p-2">
-                <p className="font-semibold text-sm">min</p>
-                <div className="flex items-center gap-1">
-                  <p>{bedRange[0]}</p>
+            <div className="">
+              <p className={htwo}>Number of bedrooms</p>
+              <div className="w-full flex gap-4 pb-4">
+                <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                  <p className="font-semibold text-sm">min</p>
+                  <div className="flex items-center gap-1">
+                    <p>{bedRange[0]}</p>
+                  </div>
+                </div>
+                <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                  <p className="font-semibold text-sm">max</p>
+                  <div className="flex items-center gap-1">
+                    <p>{bedRange[1]}</p>
+                  </div>
                 </div>
               </div>
-              <div className=" border-2 border-black rounded-xl w-1/2 p-2">
-                <p className="font-semibold text-sm">max</p>
-                <div className="flex items-center gap-1">
-                  <p>{bedRange[1]}</p>
-                </div>
-              </div>
+              <Slider
+                min={0}
+                maxValue={10} // Adjust this based on your data
+                step={1}
+                value={bedRange}
+                onChange={onBedRangeChange}
+                className="max-w-md"
+                color="secondary"
+                aria-label="Number of bedrooms"
+                size="sm"
+              />
             </div>
-            <Slider
-              min={0}
-              maxValue={10} // Adjust this based on your data
-              step={1}
-              value={bedRange}
-              onChange={onBedRangeChange}
-              className="max-w-md"
-              color="secondary"
-              aria-label="Number of bedrooms"
-              size="sm"
-            />
           </div>
-        </div>
-        <div>
-          <h2 className="font-extrabold text-xl pb-4">Residence</h2>
+          <div>
+            <h2 className="font-extrabold text-xl pb-4">Residence</h2>
 
-          <div className="flex flex-col gap-8">
-            <div>
-              <h3 className={htwo}>Amenities</h3>
-              <div className="flex flex-col gap-2">
-                <CheckboxGroup
-                  id="swim"
-                  value={selectedSwim ? ["swim"] : []}
-                  onChange={onSwimChange}
-                  color="secondary"
-                  orientation="horizontal"
-                  aria-label="Swim"
-                >
-                  <Checkbox value="swim">
-                    <p className={hthree}>Swimming pool</p>
-                  </Checkbox>
-                </CheckboxGroup>
-                <CheckboxGroup
-                  id="fitness"
-                  value={selectedFitness ? ["fitness"] : []}
-                  onChange={onFitnessChange}
-                  color="secondary"
-                  orientation="horizontal"
-                  aria-label="Fitness"
-                >
-                  <Checkbox value="fitness">
-                    <p className={hthree}>Fitness room</p>
-                  </Checkbox>
-                </CheckboxGroup>
-                <CheckboxGroup
-                  id="child"
-                  value={selectedChild ? ["child"] : []}
-                  onChange={onChildChange}
-                  color="secondary"
-                  orientation="horizontal"
-                  aria-label="Child"
-                >
-                  <Checkbox value="child">
-                    <p className={hthree}>Children's playground</p>
-                  </Checkbox>
-                </CheckboxGroup>
-                <CheckboxGroup
-                  id="disabled"
-                  value={selectedDisabled ? ["disabled"] : []}
-                  onChange={onDisabledChange}
-                  color="secondary"
-                  orientation="horizontal"
-                  aria-label="Disabled"
-                >
-                  <Checkbox value="disabled">
-                    <p className={hthree}>Adapted for disabled people</p>
-                  </Checkbox>
-                </CheckboxGroup>
-                <CheckboxGroup
-                  id="bike"
-                  value={selectedBike ? ["bike"] : []}
-                  onChange={onBikeChange}
-                  color="secondary"
-                  orientation="horizontal"
-                  aria-label="Bike"
-                >
-                  <Checkbox value="bike">
-                    <p className={hthree}>Bicycle parking</p>
-                  </Checkbox>
-                </CheckboxGroup>
-                <CheckboxGroup
-                  id="cctv"
-                  value={selectedCctv ? ["cctv"] : []}
-                  onChange={onCctvChange}
-                  color="secondary"
-                  orientation="horizontal"
-                  aria-label="Cctv"
-                >
-                  <Checkbox value="cctv">
-                    <p className={hthree}>CCTV</p>
-                  </Checkbox>
-                </CheckboxGroup>
-                <CheckboxGroup
-                  id="entrance"
-                  value={selectedEntrance ? ["entrance"] : []}
-                  onChange={onEntranceChange}
-                  color="secondary"
-                  orientation="horizontal"
-                  aria-label="Entrance"
-                >
-                  <Checkbox value="entrance">
-                    <p className={hthree}>Entrance with reception</p>
-                  </Checkbox>
-                </CheckboxGroup>
+            <div className="flex flex-col gap-8">
+              <div>
+                <h3 className={htwo}>Amenities</h3>
+                <div className="flex flex-col gap-2">
+                  <CheckboxGroup
+                    id="swim"
+                    value={selectedSwim ? ["swim"] : []}
+                    onChange={onSwimChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Swim"
+                  >
+                    <Checkbox value="swim">
+                      <p className={hthree}>Swimming pool</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                  <CheckboxGroup
+                    id="fitness"
+                    value={selectedFitness ? ["fitness"] : []}
+                    onChange={onFitnessChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Fitness"
+                  >
+                    <Checkbox value="fitness">
+                      <p className={hthree}>Fitness room</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                  <CheckboxGroup
+                    id="child"
+                    value={selectedChild ? ["child"] : []}
+                    onChange={onChildChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Child"
+                  >
+                    <Checkbox value="child">
+                      <p className={hthree}>Children's playground</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                  <CheckboxGroup
+                    id="disabled"
+                    value={selectedDisabled ? ["disabled"] : []}
+                    onChange={onDisabledChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Disabled"
+                  >
+                    <Checkbox value="disabled">
+                      <p className={hthree}>Adapted for disabled people</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                  <CheckboxGroup
+                    id="bike"
+                    value={selectedBike ? ["bike"] : []}
+                    onChange={onBikeChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Bike"
+                  >
+                    <Checkbox value="bike">
+                      <p className={hthree}>Bicycle parking</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                  <CheckboxGroup
+                    id="cctv"
+                    value={selectedCctv ? ["cctv"] : []}
+                    onChange={onCctvChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Cctv"
+                  >
+                    <Checkbox value="cctv">
+                      <p className={hthree}>CCTV</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                  <CheckboxGroup
+                    id="entrance"
+                    value={selectedEntrance ? ["entrance"] : []}
+                    onChange={onEntranceChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Entrance"
+                  >
+                    <Checkbox value="entrance">
+                      <p className={hthree}>Entrance with reception</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-   
+      <div className="flex sm:hidden justify-center">
+      <Button onPress={onOpen} className="flex justify-center items-center text-center">Filter</Button>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior="inside" placement="bottom-center">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Filter</ModalHeader>
+              <ModalBody>
+              <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
+          <div>
+            <h2 className="font-extrabold text-xl pb-4">Country</h2>
+            <div className={hfouth}>
+              <CheckboxGroup
+                id="country"
+                value={selectedCountries}
+                onChange={onCountryChange}
+                color="secondary"
+                aria-label="Country"
+                className="flex flex-col gap-2 "
+              >
+                <Checkbox value="France">
+                  <p className={hthree}>France</p>
+                </Checkbox>
+                <Checkbox value="Poland">
+                  <p className={hthree}>Poland</p>
+                </Checkbox>
+              </CheckboxGroup>
+            </div>
+          </div>
+          <div>
+            <h2 className="font-extrabold text-xl pb-4 ">Apartement</h2>
+            <div className="pb-8">
+              <h2 className={htwo}>Garden</h2>
+              <CheckboxGroup
+                value={selectedGarden ? ["garden"] : []}
+                onChange={onGardenChange}
+                color="secondary"
+                orientation="horizontal"
+                aria-label="Garden"
+              >
+                <Checkbox value="garden">
+                  <p className={hthree}>Only with garden</p>
+                </Checkbox>
+              </CheckboxGroup>
+            </div>
+
+            <div className="pb-8">
+              <h2 className={htwo}>Price range</h2>
+              <div className="w-full flex gap-4 pb-4">
+                <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                  <p className="font-semibold text-sm">min</p>
+                  <div className="flex items-center gap-1">
+                    <TbCurrencyZloty size={15} />
+                    <p>{priceRange[0]}</p>
+                  </div>
+                </div>
+                <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                  <p className="font-semibold text-sm">max</p>
+                  <div className="flex items-center gap-1">
+                    <TbCurrencyZloty size={15} />
+                    <p>{priceRange[1]}</p>
+                  </div>
+                </div>
+              </div>
+              <Slider
+                min={0}
+                maxValue={1000000} // Adjust this based on your data
+                step={1}
+                value={priceRange}
+                onChange={onPriceRangeChange}
+                className="max-w-md"
+                color="secondary"
+                aria-label="Price range"
+                size="sm"
+              />
+            </div>
+            <div className="pb-8">
+              <p className={htwo}>Surface</p>
+              <div className="w-full flex gap-4 pb-4">
+                <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                  <p className="font-semibold text-sm">min</p>
+                  <div className="flex items-center gap-1">
+                    <p className="text-xs">m2</p>
+                    <p>{surfaceRange[0]}</p>
+                  </div>
+                </div>
+                <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                  <p className="font-semibold text-sm">max</p>
+                  <div className="flex items-center gap-1">
+                    <p className="text-xs">m2</p>
+                    <p>{surfaceRange[1]}</p>
+                  </div>
+                </div>
+              </div>
+              <Slider
+                min={0}
+                maxValue={200} // Adjust this based on your data
+                step={1}
+                value={surfaceRange}
+                onChange={onSurfaceRangeChange}
+                className="max-w-md"
+                color="secondary"
+                aria-label="Surface"
+                size="sm"
+              />
+            </div>
+            <div className="">
+              <p className={htwo}>Number of bedrooms</p>
+              <div className="w-full flex gap-4 pb-4">
+                <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                  <p className="font-semibold text-sm">min</p>
+                  <div className="flex items-center gap-1">
+                    <p>{bedRange[0]}</p>
+                  </div>
+                </div>
+                <div className=" border-2 border-black rounded-xl w-1/2 p-2">
+                  <p className="font-semibold text-sm">max</p>
+                  <div className="flex items-center gap-1">
+                    <p>{bedRange[1]}</p>
+                  </div>
+                </div>
+              </div>
+              <Slider
+                min={0}
+                maxValue={10} // Adjust this based on your data
+                step={1}
+                value={bedRange}
+                onChange={onBedRangeChange}
+                className="max-w-md"
+                color="secondary"
+                aria-label="Number of bedrooms"
+                size="sm"
+              />
+            </div>
+          </div>
+          <div>
+            <h2 className="font-extrabold text-xl pb-4">Residence</h2>
+
+            <div className="flex flex-col gap-8">
+              <div>
+                <h3 className={htwo}>Amenities</h3>
+                <div className="flex flex-col gap-2">
+                  <CheckboxGroup
+                    id="swim"
+                    value={selectedSwim ? ["swim"] : []}
+                    onChange={onSwimChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Swim"
+                  >
+                    <Checkbox value="swim">
+                      <p className={hthree}>Swimming pool</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                  <CheckboxGroup
+                    id="fitness"
+                    value={selectedFitness ? ["fitness"] : []}
+                    onChange={onFitnessChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Fitness"
+                  >
+                    <Checkbox value="fitness">
+                      <p className={hthree}>Fitness room</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                  <CheckboxGroup
+                    id="child"
+                    value={selectedChild ? ["child"] : []}
+                    onChange={onChildChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Child"
+                  >
+                    <Checkbox value="child">
+                      <p className={hthree}>Children's playground</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                  <CheckboxGroup
+                    id="disabled"
+                    value={selectedDisabled ? ["disabled"] : []}
+                    onChange={onDisabledChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Disabled"
+                  >
+                    <Checkbox value="disabled">
+                      <p className={hthree}>Adapted for disabled people</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                  <CheckboxGroup
+                    id="bike"
+                    value={selectedBike ? ["bike"] : []}
+                    onChange={onBikeChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Bike"
+                  >
+                    <Checkbox value="bike">
+                      <p className={hthree}>Bicycle parking</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                  <CheckboxGroup
+                    id="cctv"
+                    value={selectedCctv ? ["cctv"] : []}
+                    onChange={onCctvChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Cctv"
+                  >
+                    <Checkbox value="cctv">
+                      <p className={hthree}>CCTV</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                  <CheckboxGroup
+                    id="entrance"
+                    value={selectedEntrance ? ["entrance"] : []}
+                    onChange={onEntranceChange}
+                    color="secondary"
+                    orientation="horizontal"
+                    aria-label="Entrance"
+                  >
+                    <Checkbox value="entrance">
+                      <p className={hthree}>Entrance with reception</p>
+                    </Checkbox>
+                  </CheckboxGroup>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={onClose}>
+                  Action
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      </div>
+    </div>
   );
 }
