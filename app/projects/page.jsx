@@ -166,7 +166,7 @@ function Page() {
 
   const fiche = "grid grid-cols-2 grid-rows-1 gap-4";
   return (
-    <div className="flex flex-col w-full 2xl:px-72 xl:px-48 lg:px-32  md:px-16 sm:px-8 px-4   gap-16 pt-16">
+    <div className="flex flex-col w-full 2xl:px-72 xl:px-48 lg:px-32  md:px-16 sm:px-8 px-2   gap-16 pt-4">
       <div className="flex flex-col gap-4">
         <div className="w-full xl:h-[440px] sm:h-[220px] h-[200px] z-0">
           <LazyMap
