@@ -21,6 +21,7 @@ import { BiDoorOpen } from "react-icons/bi";
 import dynamic from "next/dynamic";
 
 
+
 const LazyMap = dynamic(() => import("@/app/map/index"), {
   ssr: false,
   loading: () => <p>Loading...</p>,
@@ -55,7 +56,7 @@ function Page() {
     const { data, error } = await supabase
       .from("projectlist")
       .select(
-        "*, project(*, lat, lng, mainpic_url, swim, fitness, child, disabled, bike, cctv, entrance)"
+        "*, project(*, city, lat, lng, mainpic_url, swim, fitness, child, disabled, bike, cctv, entrance)"
       )
       .order("surface", { ascending: false });
     if (error) {
@@ -171,12 +172,18 @@ function Page() {
   return (
     <div className="flex flex-col w-full px-72 gap-16 pt-16">
       <div className="flex flex-col gap-4">
-        <div className="w-full h-[270px]">
+        <div className="w-full h-[440px]">
           <LazyMap
-            classN="w-full h-full h-[270px] rounded-2xl"
+            classN="w-full h-full h-[440px] rounded-2xl"
             todos={filteredProjects.map(({ project }) => ({
               lat: project?.lat,
               lng: project?.lng,
+              name: project?.name,
+              country: project?.country,
+              city: project?.city,
+              compagny: project?.compagny,
+            
+              mainpic_url: project?.mainpic_url,
             }))}
           />
         </div>
