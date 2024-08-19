@@ -227,8 +227,8 @@ function Page() {
                     key={index}
                     className="flex flex-col w-full gap-4 mt-4 border shadow-lg rounded-xl pr-2"
                   >
-                    <div className="flex  gap-4 w-full">
-                      <div className="relative h-40 w-1/3">
+                    <div className="flex sm:flex-row flex-col  gap-4 w-full">
+                      <div className="relative h-40 sm:w-1/3 w-full">
                         <Avatar
                           url={item.project.mainpic_url || a}
                           width={270}
@@ -236,7 +236,7 @@ function Page() {
                           classn="rounded-2xl"
                         />
                       </div>
-                      <div className="px-2 pt-2 flex flex-col w-2/3 h-full ">
+                      <div className="px-2 pt-2 flex flex-col w-full h-full sm:w-2/3 ">
                         <div className="flex justify-between w-full h-full">
                           <div className="w-1/2 flex flex-col justify-between h-36">
                             <div className="flex flex-col gap-1">
