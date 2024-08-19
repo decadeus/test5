@@ -49,8 +49,8 @@ const MapComponent = ({ classN, todos }) => {
             position={[todo.lat, todo.lng]}
             style={{ color: "lightblue" }}
           >
-            <Popup maxWidth={500}>
-              <div className="flex gap-4">
+            <Popup maxWidth={900}>
+              <div className="flex gap-4 w-full">
                 <div className="w-[250px] h-[150px] relative rounded-md">
                   <Avatar
                     url={todo.mainpic_url || a}
@@ -65,7 +65,7 @@ const MapComponent = ({ classN, todos }) => {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 grid-rows-4 gap-0">
+                <div className="w-[200px] grid grid-cols-1 grid-rows-4 gap-0">
                   <div>
                     <h2 className="font-bold text-xl">{todo.name}</h2>
                   </div>

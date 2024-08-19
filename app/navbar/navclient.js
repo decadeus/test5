@@ -16,7 +16,7 @@ const siteConfig = {
   ],
   noUser: [
     { label: "Home", href: "/" },
-    { label: "Completed Residential Building", href: "/completed" },
+    // { label: "Completed Residential Building", href: "/completed" },
     { label: "Residential Building Projects", href: "/projects" },
   ],
   Cproject: [

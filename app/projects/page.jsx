@@ -170,7 +170,7 @@ function Page() {
 
   const fiche = "grid grid-cols-2 grid-rows-1 gap-4";
   return (
-    <div className="flex flex-col w-full px-72 gap-16 pt-16">
+    <div className="flex flex-col w-full 2xl:px-72 xl:px-48 lg:px-36  md:px-28 sm:px-8 px-4   gap-16 pt-16">
       <div className="flex flex-col gap-4">
         <div className="w-full h-[440px]">
           <LazyMap
@@ -187,8 +187,8 @@ function Page() {
             }))}
           />
         </div>
-        <div className="flex w-full">
-          <div className="w-1/3">
+        <div className="flex flex-col xl:flex-row lg:flex-row md:flex-row w-full">
+          <div className="xl:w-1/3 lg:w-1/3 md:w-1/3  w-full">
             <div className="w-full">
               <Filter
                 selectedCountries={selectedCountries}
@@ -218,7 +218,7 @@ function Page() {
               />
             </div>
           </div>
-          <div className="w-2/3">
+          <div className="xl:w-2/3 w-full">
             <div className="w-full flex gap-4 flex-wrap">
             <div>
                   <p className="font-bold">Total Projects: {filteredProjects.length} apartments found</p>
@@ -278,13 +278,13 @@ function Page() {
                               {item.noprice && (
                                 <p className="flex gap-1 items-center justify-between">
                                   {item.pricetype === "PLN" ? (
-                                    <>
-                                      <TbCurrencyZloty size={20} /> {item.price}
-                                    </>
+                                    <p className="flex">
+                                       {item.price} <TbCurrencyZloty size={20} />
+                                    </p>
                                   ) : (
-                                    <>
-                                      <FaEuroSign /> {item.price}
-                                    </>
+                                    <p className="flex justify-center items-center">
+                                       {item.price} <FaEuroSign size={13} />
+                                    </p>
                                   )}
                                 </p>
                               )}
