@@ -176,7 +176,7 @@ function Page() {
 
   const fiche = "grid grid-cols-2 grid-rows-1 gap-4";
   return (
-    <div className="flex flex-col w-full 2xl:px-72 xl:px-48 lg:px-32  md:px-16 sm:px-8 px-2   gap-16 pt-4">
+    <div className="flex flex-col w-full 2xl:px-72 xl:px-32 lg:px-16  md:px-8 sm:px-4 px-2   gap-16 pt-4">
       <div className="flex flex-col gap-4">
         <div className="w-full xl:h-[440px] sm:h-[220px] h-[200px] z-0">
           <LazyMap
@@ -225,13 +225,13 @@ function Page() {
             </div>
           </div>
           <div className="xl:w-2/3 w-full">
-            <div className="w-full flex gap-4 flex-wrap">
-              <div>
-                <p className="font-bold">
+            <div className="w-full flex flex-wrap">
+              <div className="w-full md:mt-4 sm:my-4">
+                <p className="font-bold text-center">
                   Total Projects: {filteredProjects.length} apartments found
                 </p>
               </div>
-              <ScrollArea className="h-[1000px] w-full p-4">
+              <ScrollArea className="h-[1000px] w-full px-4">
                 {filteredProjects.map((item, index) => (
                   <div
                     key={index}
@@ -603,7 +603,7 @@ function Filter({
       <div className="flex sm:hidden justify-center">
         <Button
           onPress={onOpen}
-          className="flex justify-center items-center text-center"
+          className="flex justify-center items-center text-center border-2 border-purple-900 bg-white text-purple-900 mb-4"
         >
           Filter
         </Button>
