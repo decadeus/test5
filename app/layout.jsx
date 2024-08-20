@@ -5,6 +5,7 @@ import MainNavBar from "@/app/navbar/mainNavBar";
 import { createClient } from "@/utils/supabase/server";
 import Head from "next/head";
 import Link from "next/link";
+import Foot from "@/app/footer/footer";
 import "@/app/globals.css"
 
 const defaultUrl = process.env.VERCEL_URL
@@ -37,9 +38,7 @@ export default async function RootLayout({ children }) {
           <main className="min-h-screen flex flex-col items-center text-black">
             {children}
           </main>
-          <div className="flex w-full bg-slate-500 mt-16 h-16 justify-center items-center">
-            FOOTER
-          </div>
+          <Foot />
         </Providers>
       </body>
     </html>
