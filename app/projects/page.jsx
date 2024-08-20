@@ -193,8 +193,8 @@ function Page() {
             }))}
           />
         </div>
-        <div className="flex flex-col xl:flex-row lg:flex-row md:flex-row w-full">
-          <div className="xl:w-1/3 lg:w-1/3 md:w-1/3  w-full">
+        <div className="flex flex-col xl:flex-row lg:flex-row  w-full">
+          <div className="xl:w-1/3 lg:w-1/3  w-full">
             <div className="w-full">
               <Filter
                 selectedCountries={selectedCountries}
