@@ -36,7 +36,7 @@ export default function MainNavBar({ user }) {
   }, [user, supabase]);
 
   return (
-    <div className="w-full px-10 sm:py-10 py-4 flex justify-between items-center   text-black bgcolorP">
+    <div className="w-full px-10  py-4 flex justify-between items-center   text-black bgcolorP">
       <div className="flex justify-center items-center gap-2">
         <Link href="/">
           <div className="flex gap-2 items-center">
@@ -67,8 +67,11 @@ export default function MainNavBar({ user }) {
             </div>
           </div>
         ) : (
+          <div className="flex gap-4">
           <div className="flex gap-8 items-center">
             <Connect className="py-2" />
+          </div>
+          <div className="bg-gray-300 py-1 px-2 rounded-xl"> <Link href="/addproject">Add your project</Link></div>
           </div>
         )}
       </div>

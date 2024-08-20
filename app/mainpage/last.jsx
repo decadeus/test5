@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
+import Avatar from "@/app/getimage/Ugetone";
 
 export default function Summer() {
   const [loading, setLoading] = useState(true);
@@ -11,8 +12,8 @@ export default function Summer() {
     const fetchProjects = async () => {
       const supabase = createClient();
       const { data, error } = await supabase
-        .from("projectlist")
-        .select("ref, created_at")
+        .from("project")
+        .select("created_at, compagny, mainpic_url")
         .order("created_at", { ascending: false })
         .limit(5);
 
@@ -31,7 +32,7 @@ export default function Summer() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const styler = "border-2 border-black rounded-lg p-4";
+  const styler = "border-2 border-black rounded-lg h-44 ";
 
   return (
     <div>
@@ -41,28 +42,36 @@ export default function Summer() {
         ) : (
           <>
             {projects[0] && (
-              <div className={`col-span-3 ${styler}`}>{projects[0].ref}</div>
+              <div className={`col-span-3 ${styler}`}>{projects[0].compagny}</div>
             )}
             {projects[1] && (
               <div
                 className={`col-span-3 col-start-4 ${styler}`}
               >
-                {projects[1].ref}
+               <p> {projects[1].compagny}</p>
               </div>
             )}
             {projects[2] && (
               <div className={`col-span-2 row-start-2  ${styler}`}>
-                {projects[2].ref}
+               
+                <div className="h-full w-full">
+                  <Avatar
+                    url={projects[2].mainpic_url}
+                    width={270}
+                    height={196}
+                    className="rounded-lg"
+                  />
+                </div>
               </div>
             )}
             {projects[3] && (
               <div className={`col-span-2 col-start-3 row-start-2  ${styler}`}>
-                {projects[3].ref}
+                {projects[3].compagny}
               </div>
             )}
             {projects[4] && (
               <div className={`col-span-2 col-start-5 row-start-2 ${styler}`}>
-                {projects[4].ref}
+                {projects[4].compagny}
               </div>
             )}
           </>

@@ -18,6 +18,7 @@ const siteConfig = {
     // { label: "Home", href: "/" },
     // { label: "Completed Residential Building", href: "/completed" },
     { label: "Search", href: "/projects" },
+
   ],
   Cproject: [
     { label: "Home", href: "/" },

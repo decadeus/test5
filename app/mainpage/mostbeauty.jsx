@@ -13,9 +13,10 @@ export default function MostBeauty({ country }) {
     const fetchProjects = async () => {
       const supabase = createClient();
       const { data, error } = await supabase
-        .from("residence")
+        .from("project")
         .select("*")
-        .eq("country", country); // Filter by selected country
+        .eq("country", country)
+        .eq("beau", true) // Filter by selected country
 
       if (error) {
         setError(error);
