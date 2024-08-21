@@ -71,7 +71,7 @@ export default function MainNavBar({ user }) {
           <div className="flex gap-8 items-center">
             <Connect className="py-2" />
           </div>
-          <div className="bg-gray-300 py-1 px-2 rounded-xl"> <Link href="/addproject">Add your project</Link></div>
+          <div className="bg-gray-300 py-1 px-2 rounded-xl flex justify-center items-center"> <Link href="/addproject">Add your project</Link></div>
           </div>
         )}
       </div>

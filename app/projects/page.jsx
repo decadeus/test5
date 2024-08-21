@@ -30,12 +30,21 @@ import { MdOutlineDirectionsBike } from "react-icons/md";
 import { BiCctv } from "react-icons/bi";
 import { BiDoorOpen } from "react-icons/bi";
 import dynamic from "next/dynamic";
+import { TailSpin } from 'react-loader-spinner';
 
 const LazyMap = dynamic(() => import("@/app/map/index"), {
   ssr: false,
-  loading: () => <p>Loading...</p>,
+  loading: () => (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <TailSpin
+        color="IndianRed" // Couleur du spinner
+        height={80}     // Hauteur du spinner
+        width={80}      // Largeur du spinner
+        ariaLabel="loading" // Label accessible pour les lecteurs d'écran
+      />
+    </div>
+  ),
 });
-
 function Page() {
   const [projects, setProjects] = useState([]);
   const [originalProjects, setOriginalProjects] = useState([]);
@@ -316,7 +325,7 @@ function Page() {
                         </div>
 
                         <div className="mt-auto w-full rounded-md flex justify-center items-center gap-8 pt-4">
-                          <button className="w-full py-1 bgcolorS text-white hover:bg-[#990033] rounded-lg">
+                          <button className="w-full py-1 bg-blue-500 text-white hover:bg-[#990033] rounded-lg">
                             The project
                           </button>
                           <div className="block sm:hidden">

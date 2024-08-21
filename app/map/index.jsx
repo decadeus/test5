@@ -47,7 +47,7 @@ const MapComponent = ({ classN, todos }) => {
           <Marker
             key={todo.id}
             position={[todo.lat, todo.lng]}
-            style={{ color: "lightblue" }}
+            style={{ color: "IndianRed" }}
           >
             <Popup maxWidth={900}>
               <div className="flex gap-4 w-full">

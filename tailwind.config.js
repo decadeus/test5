@@ -19,6 +19,10 @@ module.exports = {
           "background-hover": "hsl(var(--btn-background-hover))",
         },
       },
+      fontFamily: {
+        oswald: ["Oswald", "sans-serif"],
+        montserrat: ["Montserrat", "sans-serif"],
+      },
     },
   },
  
