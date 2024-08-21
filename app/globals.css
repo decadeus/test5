@@ -28,4 +28,6 @@
     border: 2px solid var(--primary-color);
   }
 
-  
+  .bgmap{
+    background-color: #2a81c0;
+  }

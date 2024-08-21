@@ -134,7 +134,7 @@ export default function Form() {
 
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition duration-300"
+          className="bgmap hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition duration-300"
         >
           Request to Add Your Property
         </button>

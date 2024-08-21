@@ -325,7 +325,7 @@ function Page() {
                         </div>
 
                         <div className="mt-auto w-full rounded-md flex justify-center items-center gap-8 pt-4">
-                          <button className="w-full py-1 bg-blue-500 text-white hover:bg-[#990033] rounded-lg">
+                          <button className="w-full py-1 secondary text-white hover:bg-[#990033] rounded-lg">
                             The project
                           </button>
                           <div className="block sm:hidden">
@@ -397,7 +397,7 @@ function Filter({
                 aria-label="Country"
                 className="flex flex-col gap-2 "
               >
-                <Checkbox value="France">
+                <Checkbox value="France" >
                   <p className={hthree}>France</p>
                 </Checkbox>
                 <Checkbox value="Poland">
@@ -640,7 +640,7 @@ function Filter({
                           id="country"
                           value={selectedCountries}
                           onChange={onCountryChange}
-                          color="secondary"
+                          color="pink"
                           aria-label="Country"
                           className="flex flex-col gap-2 "
                         >

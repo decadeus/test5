@@ -10,7 +10,7 @@ export default function Page() {
   const stepContainerStyle =
     "flex flex-col md:flex-row items-center justify-center gap-6 mb-8";
   const stepStyle =
-    "bg-blue-500 text-white font-semibold p-4 rounded-full shadow-lg w-12 h-12 flex items-center justify-center text-2xl font-montserrat";
+    "bgcolorS text-white font-semibold p-4 rounded-full shadow-lg w-12 h-12 flex items-center justify-center text-2xl font-montserrat";
   const contentStyle =
     "bg-white shadow-lg rounded-lg p-6 w-full md:w-3/4 lg:w-1/2";
   const titleStyle = "text-2xl font-bold text-gray-800 mb-2";

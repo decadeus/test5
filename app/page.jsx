@@ -36,7 +36,7 @@ function Page() {
                 onClick={() => setSelectedCountry("France")}
                 className={`px-4 py-2 rounded ${
                   selectedCountry === "France"
-                    ? "bgcolorS text-white borderI rounded-3xl"
+                    ? "bgmap text-white borderI rounded-3xl"
                     : "bg-gray-200 borderI rounded-3xl"
                 }`}
               >
@@ -46,7 +46,7 @@ function Page() {
                 onClick={() => setSelectedCountry("Poland")}
                 className={`px-4 py-2 rounded ${
                   selectedCountry === "Poland"
-                    ? "bgcolorS text-white borderI rounded-3xl"
+                    ? "bgmap text-white borderI rounded-3xl"
                     : "bg-gray-200 borderI rounded-3xl"
                 }`}
               >
@@ -154,7 +154,7 @@ function Page() {
                   List your property on Hoomge and highlight <br /> the benefits
                   for residents
                 </h2>
-                <Button className="bgcolorS text-white rounded-3xl borderI">
+                <Button className="bgmap text-white rounded-3xl borderI">
                   List your properly{" "}
                 </Button>
               </div>
