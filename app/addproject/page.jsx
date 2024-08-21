@@ -1,144 +1,57 @@
-"use client";
-import { useState } from "react";
+import React from "react";
+import Form from "@/app/addproject/form";
 
 export default function Page() {
-  // Define state to manage form data, errors, selected country, and agreement checkbox
-  const [formData, setFormData] = useState({
-    email: "",
-    message: "",
-    country: "", // Add country field
-    agreeToTerms: false, // Add checkbox field for agreement
-  });
-  const [error, setError] = useState("");
-
-  // Handle form input changes
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Handle checkbox toggle
-  const handleCheckboxChange = (e) => {
-    setFormData({
-      ...formData,
-      agreeToTerms: e.target.checked,
-    });
-  };
-
-  // Handle country selection
-  const handleCountrySelect = (country) => {
-    setFormData({
-      ...formData,
-      country: country,
-    });
-  };
-
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Basic validation for enterprise email
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(formData.email)) {
-      setError("Please enter a valid enterprise email.");
-      return;
-    }
-
-    if (!formData.country) {
-      setError("Please select a country.");
-      return;
-    }
-
-    if (!formData.agreeToTerms) {
-      setError("You must agree to the terms and conditions.");
-      return;
-    }
-
-    // Clear error if the form is valid
-    setError("");
-
-    // Submit form logic (e.g., API request)
-    console.log("Form submitted", formData);
-  };
+  // Styles for a modern design
+  const containerStyle =
+    "flex flex-col items-center bg-gray-50 w-full px-16 mt-16";
+  const headerStyle = "text-3xl font-extrabold text-gray-900 mb-4";
+  const subheaderStyle = "text-lg text-gray-600 mb-8";
+  const stepContainerStyle =
+    "flex flex-col md:flex-row items-center justify-center gap-6 mb-8";
+  const stepStyle =
+    "bg-blue-500 text-white font-semibold p-4 rounded-full shadow-lg w-12 h-12 flex items-center justify-center text-2xl";
+  const contentStyle =
+    "bg-white shadow-lg rounded-lg p-6 w-full md:w-3/4 lg:w-1/2";
+  const titleStyle = "text-2xl font-bold text-gray-800 mb-2";
+  const textStyle = "text-gray-600";
+  const stepItemStyle =
+    "flex flex-col items-center justify-center gap-4 p-8 bg-white rounded-lg shadow-md";
 
   return (
-    <div className="mt-8 w-[800px] mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="font-bold text-2xl mb-4 text-center text-gray-800">
-        Add Your Property Project for Free
+    <div className={containerStyle}>
+      <h1 className={headerStyle}>
+        The Largest Collection of Residential Real Estate Projects
       </h1>
-      <p className="text-center mb-6 text-gray-600">
-        Provide details about your property to help us tailor the management experience to you.
+      <p className={subheaderStyle}>
+        List Your Residential Apartments for Sale in Minutes, Completely Free.
       </p>
-      
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        {error && <p className="text-red-600 text-center">{error}</p>}
-        
-        <div className="flex flex-col gap-2">
-          <label className="font-semibold text-gray-700">Your Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Only professional email. e.g., jane.doe@company.com"
-          />
+      <div className={stepContainerStyle}>
+        <div className={stepItemStyle}>
+          <div className={stepStyle}>1</div>
+          <h3 className="text-xl font-semibold">Step 1: Fill Out the Form</h3>
+          <p className={textStyle}>
+            Complete the form to receive a login account after verification.
+          </p>
         </div>
-
-        <div className="flex flex-col gap-2">
-          <label className="font-semibold text-gray-700">Property Project Name</label>
-          <input
-            type="text"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter your property project name"
-          />
+        <div className={stepItemStyle}>
+          <div className={stepStyle}>2</div>
+          <h3 className="text-xl font-semibold">
+            Step 2: List Your Apartments for Sale
+          </h3>
+          <p className={textStyle}>
+            Provide the public details of your real estate project and list the apartments for sale.
+          </p>
         </div>
-
-        <div className="flex flex-col gap-2">
-          <label className="font-semibold text-gray-700">Select Country</label>
-          <div className="flex gap-4">
-            <button
-              type="button"
-              className={`p-3 w-full rounded-md ${formData.country === "France" ? "bgcolorS txcolorP border borderI" : "bg-gray-200 text-gray-700 hover:bg-blue-100"}`}
-              onClick={() => handleCountrySelect("France")}
-            >
-              France
-            </button>
-            <button
-              type="button"
-              className={`p-3 w-full rounded-md ${formData.country === "Poland" ? "bgcolorS txcolorP border borderI" : "bg-gray-200 text-gray-700 hover:bg-blue-100"}`}
-              onClick={() => handleCountrySelect("Poland")}
-            >
-              Poland
-            </button>
-          </div>
+        <div className={stepItemStyle}>
+          <div className={stepStyle}>3</div>
+          <h3 className="text-xl font-semibold">Step 3: Publish Your Project</h3>
+          <p className={textStyle}>
+            Once the information is provided, publish it with a single click. You can modify the information at any time.
+          </p>
         </div>
-
-        <div className="flex items-start gap-3">
-          <input
-            type="checkbox"
-            name="agreeToTerms"
-            checked={formData.agreeToTerms}
-            onChange={handleCheckboxChange}
-            className="mt-1 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-          />
-          <label className="text-gray-700">
-            By clicking Add Your Property, I agree that I will provide accurate and non-discriminatory information and comply with the <a href="#" className="text-blue-500 underline">Terms and Conditions</a> and the <a href="#" className="text-blue-500 underline">Add a Property Terms of Service</a>.
-          </label>
-        </div>
-
-        <button
-          type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition duration-300"
-        >
-          Request to Add Your Property
-        </button>
-      </form>
+      </div>
+      <Form />
     </div>
   );
 }
