@@ -5,7 +5,7 @@ import { FaTwitter } from "react-icons/fa";
 
 export default function Foot() {
   return (
-    <footer className="bg-gray-300 flex py-16 border-t-1 border-gray-500 px-24  gap-10 mt-8">
+    <footer className="bg-gray-300 flex py-16 border-t-1 border-gray-500 px-24  gap-10 ">
       <div className="flex gap-2 justify-end items-end border-r-1 border-black pr-4">
         <div className="w-16 h-16 rounded-full">
           <Image

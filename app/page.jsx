@@ -17,7 +17,7 @@ function Page() {
   const subtitle = "font-extrabold text-xl text-center";
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-32">
       <div className="w-full bgcolorP px-16 pb-8">
         <h1 className="text-3xl text-white pt-8">
           Existing or Project, Find Your Dream Apartment
@@ -154,8 +154,8 @@ function Page() {
                   List your property on Hoomge and highlight <br /> the benefits
                   for residents
                 </h2>
-                <Button className="bgmap text-white rounded-3xl borderI">
-                  List your properly{" "}
+                <Button className="bgmap hover:bg-blue-700 text-white rounded-3xl borderI">
+                  List your properly
                 </Button>
               </div>
             </div>

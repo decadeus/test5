@@ -4,14 +4,8 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 
-
-export default function Login({
-  searchParams,
-}: {
-  searchParams: { message: string };
-}) {
-
-
+export default function Login({ searchParams }: { searchParams: { message: string } }) {
+  
   const signIn = async (formData: FormData) => {
     "use server";
 
@@ -19,10 +13,7 @@ export default function Login({
     const password = formData.get("password") as string;
     const supabase = createClient();
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
       return redirect("/login?message=Could not authenticate user");
@@ -51,52 +42,67 @@ export default function Login({
       return redirect("/login?message=Could not authenticate user");
     }
 
-    return redirect("/login?message=Check email to continue sign in process");
+    return redirect("/login?message=Check your email to continue the sign-in process");
   };
 
   return (
-    <div className="">
-   
-
-      <form className="animate-in flex-1 flex flex-col  gap-2 text-foreground border-2 rounded-xl p-8">
-        <label className="text-md" htmlFor="email">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <form className="flex flex-col gap-4 p-8 bg-white border border-gray-300 rounded-lg shadow-md max-w-sm w-full">
+        <h1 className="text-2xl font-semibold text-center text-gray-700 mb-6">Login</h1>
+        
+        <label className="text-sm font-medium text-gray-600" htmlFor="email">
           Email
         </label>
         <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
+          className="rounded-lg px-4 py-2 border border-gray-300 focus:ring focus:ring-green-200 focus:outline-none"
+          type="email"
           name="email"
+          id="email"
           placeholder="you@example.com"
           required
         />
-        <label className="text-md" htmlFor="password">
+        
+        <label className="text-sm font-medium text-gray-600" htmlFor="password">
           Password
         </label>
         <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
+          className="rounded-lg px-4 py-2 border border-gray-300 focus:ring focus:ring-green-200 focus:outline-none"
           type="password"
           name="password"
+          id="password"
           placeholder="••••••••"
           required
         />
+
         <SubmitButton
           formAction={signIn}
-          className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"
+          className="bgmap text-white rounded-lg px-4 py-2 hover:bg-green-700 transition mb-4"
           pendingText="Signing In..."
         >
           Sign In
         </SubmitButton>
+
+        {/* Uncomment if sign-up functionality is needed */}
         {/* <SubmitButton
           formAction={signUp}
-          className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
+          className="bg-gray-200 text-gray-700 rounded-lg px-4 py-2 hover:bg-gray-300 transition"
           pendingText="Signing Up..."
         >
           Sign Up
         </SubmitButton> */}
+
         {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+          <p className="mt-4 p-3 bg-red-100 text-red-700 text-center rounded-md">
             {searchParams.message}
           </p>
         )}
+
+        <p className="text-center text-sm text-gray-500 mt-4">
+          Don't have an account?{" "}
+          <Link href="/signup" className="text-green-600 hover:underline">
+            Sign Up
+          </Link>
+        </p>
       </form>
     </div>
   );

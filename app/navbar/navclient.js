@@ -64,7 +64,7 @@ export default function ListNav({ userId }) {
       return (
      
         <li key={item.href} className="mr-16 last:mr-0 sm:text-xl text-md">
-          <Link href={item.href} className={isActive ? "bgcolorS text-white rounded-xl px4 py-2 px-2 border-white border-2" : "text-white"}>
+          <Link href={item.href} className={isActive ? " text-white " : "text-white"}>
             {item.label}
           </Link>
         </li>

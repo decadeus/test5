@@ -325,7 +325,7 @@ function Page() {
                         </div>
 
                         <div className="mt-auto w-full rounded-md flex justify-center items-center gap-8 pt-4">
-                          <button className="w-full py-1 secondary text-white hover:bg-[#990033] rounded-lg">
+                          <button className="w-full py-1 secondary text-white hover:bg-blue-700 rounded-lg bgmap">
                             The project
                           </button>
                           <div className="block sm:hidden">
@@ -380,7 +380,7 @@ function Filter({
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <div className="z-10">
+    <div className="z-10 pb-32">
       <div className="hidden sm:block">
         <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
           <div>

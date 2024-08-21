@@ -4,7 +4,7 @@ import Form from "@/app/addproject/form";
 export default function Page() {
   // Styles for a modern design
   const containerStyle =
-    "flex flex-col items-center bg-gray-50 w-full px-16 mt-16";
+    "flex flex-col items-center bg-gray-50 w-full px-16 pt-32 pb-32";
   const headerStyle = "text-3xl font-extrabold text-gray-900 mb-4 font-montserrat";
   const subheaderStyle = "text-lg text-gray-600 mb-8 font-montserrat";
   const stepContainerStyle =
