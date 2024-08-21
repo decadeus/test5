@@ -39,14 +39,14 @@ export default function Equipment() {
             projects.map((item, index) => (
               <div
                 key={index}
-                className="flex flex-col w-full gap-4 mt-4  rounded-lg "
+                className="flex flex-col w-full gap-4 mt-4  rounded-sm "
               >
                 <div className="h-36 w-64">
                   <Avatar
                     url={item.mainpic_url}
                     width={270}
                     height={196}
-                    classn="rounded-2xl"
+                    classn="rounded-sm"
                     classNamed="object-position-1"
                   />
                 </div>

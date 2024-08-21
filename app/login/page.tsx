@@ -46,7 +46,7 @@ export default function Login({ searchParams }: { searchParams: { message: strin
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center  bg-gray-100 mt-64">
       <form className="flex flex-col gap-4 p-8 bg-white border border-gray-300 rounded-lg shadow-md max-w-sm w-full">
         <h1 className="text-2xl font-semibold text-center text-gray-700 mb-6">Login</h1>
         
@@ -76,7 +76,7 @@ export default function Login({ searchParams }: { searchParams: { message: strin
 
         <SubmitButton
           formAction={signIn}
-          className="bgmap text-white rounded-lg px-4 py-2 hover:bg-green-700 transition mb-4"
+          className="bgmap text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition mb-4"
           pendingText="Signing In..."
         >
           Sign In

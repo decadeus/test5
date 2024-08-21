@@ -12,11 +12,11 @@ export default function Page() {
   const stepStyle =
     "bgcolorS text-white font-semibold p-4 rounded-full shadow-lg w-12 h-12 flex items-center justify-center text-2xl font-montserrat";
   const contentStyle =
-    "bg-white shadow-lg rounded-lg p-6 w-full md:w-3/4 lg:w-1/2";
+    "bg-white shadow-lg rounded-sm p-6 w-full md:w-3/4 lg:w-1/2";
   const titleStyle = "text-2xl font-bold text-gray-800 mb-2";
   const textStyle = "text-gray-600 font-montserrat";
   const stepItemStyle =
-    "flex flex-col items-center justify-center gap-4 p-8 bg-white rounded-lg shadow-md";
+    "flex flex-col items-center justify-center gap-4 p-8 bg-white rounded-sm shadow-md";
 
   return (
     <div className={containerStyle}>

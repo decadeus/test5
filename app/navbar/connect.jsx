@@ -14,7 +14,7 @@ export default function Connect() {
       <Link
        href="/login"
       
-        className="w-fit border pl-2 py-1 rounded-2xl border-white"
+        className="w-fit border pl-2 py-1 rounded-sm border-white"
       >
         <div className="flex gap-2 items-center  mr-4 text-white">
           <IoMenu />

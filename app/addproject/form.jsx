@@ -82,7 +82,7 @@ export default function Form() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-gray-300 p-3 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Only professional email. e.g., jane.doe@company.com"
           />
         </div>
@@ -94,7 +94,7 @@ export default function Form() {
             name="message"
             value={formData.message}
             onChange={handleChange}
-            className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-gray-300 p-3 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your property project name"
           />
         </div>
@@ -104,14 +104,14 @@ export default function Form() {
           <div className="flex gap-4">
             <button
               type="button"
-              className={`p-3 w-full rounded-md ${formData.country === "France" ? "bgcolorS txcolorP border borderI" : "bg-gray-200 text-gray-700 hover:bg-blue-100"}`}
+              className={`p-3 w-full rounded-sm ${formData.country === "France" ? "bgcolorS txcolorP border borderI" : "bg-gray-200 text-gray-700 hover:bg-blue-100"}`}
               onClick={() => handleCountrySelect("France")}
             >
               France
             </button>
             <button
               type="button"
-              className={`p-3 w-full rounded-md ${formData.country === "Poland" ? "bgcolorS txcolorP border borderI" : "bg-gray-200 text-gray-700 hover:bg-blue-100"}`}
+              className={`p-3 w-full rounded-sm ${formData.country === "Poland" ? "bgcolorS txcolorP border borderI" : "bg-gray-200 text-gray-700 hover:bg-blue-100"}`}
               onClick={() => handleCountrySelect("Poland")}
             >
               Poland
@@ -134,7 +134,7 @@ export default function Form() {
 
         <button
           type="submit"
-          className="bgmap hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition duration-300"
+          className="bgmap hover:bg-blue-700 text-white font-semibold py-3 rounded-sm transition duration-300"
         >
           Request to Add Your Property
         </button>

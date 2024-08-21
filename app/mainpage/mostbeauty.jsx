@@ -43,14 +43,14 @@ export default function MostBeauty({ country }) {
             projects.map((item, index) => (
               <div
                 key={index}
-                className="flex flex-col w-full gap-4 mt-4 shadow-lg p-4 rounded-lg"
+                className="flex flex-col w-full gap-4 mt-4 shadow-lg p-4 rounded-sm"
               >
                 <div className="h-36 w-64">
                   <Avatar
                     url={item.mainpic_url}
                     width={270}
                     height={196}
-                    className="rounded-2xl"
+                    className="rounded-sm"
                   />
                 </div>
                 <div>

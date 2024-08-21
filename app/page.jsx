@@ -36,8 +36,8 @@ function Page() {
                 onClick={() => setSelectedCountry("France")}
                 className={`px-4 py-2 rounded ${
                   selectedCountry === "France"
-                    ? "bgmap text-white borderI rounded-3xl"
-                    : "bg-gray-200 borderI rounded-3xl"
+                    ? "bgmap text-white borderI rounded-sm"
+                    : "bg-gray-200 borderI rounded-sm"
                 }`}
               >
                 France
@@ -46,8 +46,8 @@ function Page() {
                 onClick={() => setSelectedCountry("Poland")}
                 className={`px-4 py-2 rounded ${
                   selectedCountry === "Poland"
-                    ? "bgmap text-white borderI rounded-3xl"
-                    : "bg-gray-200 borderI rounded-3xl"
+                    ? "bgmap text-white borderI rounded-sm"
+                    : "bg-gray-200 borderI rounded-sm"
                 }`}
               >
                 Poland
@@ -69,7 +69,7 @@ function Page() {
           <Last />
           </div>
           <div
-            className="relative overflow-hidden rounded-lg w-full  "
+            className="relative overflow-hidden rounded-sm w-full  "
             style={{ height: "500px" }}
           >
             <div
@@ -96,12 +96,12 @@ function Page() {
             <h2 className={subtitle}>Residence with sports or relaxation facilities</h2>
             <Equipment country={selectedCountry} />
           </div>
-          <div className="w-full bgcolorS rounded-xl p-8 ">
+          <div className="w-full bgcolorS rounded-sm p-8 ">
             <div className="grid grid-cols-4 grid-rows-1 gap-3">
               <div className="text-xl text-white pl-4 flex justify-center items-center">
                 Your appartement get more value{" "}
               </div>
-              <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-xl">
+              <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-sm">
                 <div className="w-1/3  flex justify-center">
                   <RiHome8Line color="white" size="45" />
                 </div>
@@ -111,7 +111,7 @@ function Page() {
                   </p>
                 </div>
               </div>
-              <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-xl">
+              <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-sm">
                 <div className="w-1/3  flex justify-center">
                   <MdOutlinePoll color="white" size="45" />
                 </div>
@@ -121,7 +121,7 @@ function Page() {
                   </p>
                 </div>
               </div>
-              <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-xl">
+              <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-sm">
                 <div className="w-1/3  flex justify-center">
                   <LuNewspaper color="white" size="40" />
                 </div>
@@ -134,7 +134,7 @@ function Page() {
             </div>
           </div>
           <div
-            className="relative overflow-hidden rounded-lg w-full "
+            className="relative overflow-hidden rounded-sm w-full "
             style={{ height: "500px" }}
           >
             <div
@@ -154,7 +154,7 @@ function Page() {
                   List your property on Hoomge and highlight <br /> the benefits
                   for residents
                 </h2>
-                <Button className="bgmap hover:bg-blue-700 text-white rounded-3xl borderI">
+                <Button className="bgmap hover:bg-blue-700 text-white rounded-sm borderI">
                   List your properly
                 </Button>
               </div>

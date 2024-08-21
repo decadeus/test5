@@ -32,7 +32,7 @@ export default function Summer() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const styler = "border-2 border-black rounded-lg h-44 ";
+  const styler = "border-2 border-black rounded-sm h-44 ";
 
   return (
     <div>
@@ -59,7 +59,7 @@ export default function Summer() {
                     url={projects[2].mainpic_url}
                     width={270}
                     height={196}
-                    className="rounded-lg"
+                    className="rounded-sm"
                   />
                 </div>
               </div>

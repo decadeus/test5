@@ -1,3 +1,4 @@
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -37,6 +38,7 @@ export default async function RootLayout({ children }) {
           <MainNavBar user={user} />
           <main className="min-h-screen flex flex-col items-center text-black">
             {children}
+            <SpeedInsights />
           </main>
           <Foot />
         </Providers>
