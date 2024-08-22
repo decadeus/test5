@@ -277,11 +277,7 @@ export default function Projectb({ user }) {
                   >
                     <input
                       type="number"
-                      value={
-                        newItem.price !== undefined && newItem.price !== null
-                          ? newItem.price
-                          : 0
-                      } // Affiche la valeur ou vide pour utiliser le placeholder
+                      value={newItem.price} // Affiche la valeur ou vide pour utiliser le placeholder
                       min={0} // Valeur minimale à zéro
                       onChange={(e) => handleNewChange(e, "price")} // Gestionnaire de changement
                       className="p-2 border rounded w-full text-center"
