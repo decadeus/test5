@@ -388,7 +388,7 @@ export default function Projectb({ user }) {
                             value={
                               item.price !== undefined && item.price !== null
                                 ? item.price
-                                : ""
+                                : 0
                             } // Si la valeur est définie, afficher sinon laisser vide
                             placeholder="N/A"
                             min={0}
