@@ -277,7 +277,7 @@ export default function Projectb({ user }) {
                   >
                     <input
                     type="number"
-                    value={newItem.price}  // Valeur par défaut à 0
+                    value={newItem.price || 0}  // Valeur par défaut à 0
                     min={0}  // Valeur minimale à zéro
                     onChange={(e) => handleNewChange(e, "price")}  // Gestionnaire de changement
                     className="p-2 border rounded w-full text-center"
