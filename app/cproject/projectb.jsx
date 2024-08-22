@@ -376,7 +376,8 @@ export default function Projectb({ user }) {
                         >
                           <input
                             type="number"
-                            value={item.price || ""}
+                            value={item.price || 0}
+                            min={0}
                             onChange={(e) =>
                               handleChange(e, projectIndex, itemIndex, "price")
                             }
