@@ -277,11 +277,11 @@ export default function Projectb({ user }) {
                   >
                     <input
                       type="number"
-                      value={newItem.price|| 0}
+                      value={item.price !== undefined && item.price !== null ? item.price : ""}
                       min={0}
                       onChange={(e) => handleNewChange(e, "price")}
                       className="p-2 border rounded w-full text-center"
-                      placeholder=""
+                      placeholder="N/A"
                       disabled={newItem.noprice}
                     />
                   </td>
@@ -377,7 +377,12 @@ export default function Projectb({ user }) {
                         >
                           <input
                             type="number"
-                            value={item.price || 0}
+                            value={
+                              item.price !== undefined && item.price !== null
+                                ? item.price
+                                : ""
+                            } // Si la valeur est définie, afficher sinon laisser vide
+                            placeholder="N/A"
                             min={0}
                             onChange={(e) =>
                               handleChange(e, projectIndex, itemIndex, "price")
