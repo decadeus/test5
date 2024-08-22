@@ -287,7 +287,7 @@ export default function Projectb({ user }) {
                       className="p-2 border rounded w-full text-center"
                       placeholder={
                         newItem.price === undefined || newItem.price === null
-                          ? "N/A"
+                          ? ""
                           : "0"
                       } // Placeholder "N/A" si aucune valeur
                       disabled={newItem.noprice} // Désactivation conditionnelle
