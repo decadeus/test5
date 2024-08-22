@@ -277,12 +277,20 @@ export default function Projectb({ user }) {
                   >
                     <input
                       type="number"
-                      value={newItem.price || 0}
-                      min={0}
-                      onChange={(e) => handleNewChange(e, "price")}
+                      value={
+                        newItem.price !== undefined && newItem.price !== null
+                          ? newItem.price
+                          : ""
+                      } // Affiche la valeur ou vide pour utiliser le placeholder
+                      min={0} // Valeur minimale à zéro
+                      onChange={(e) => handleNewChange(e, "price")} // Gestionnaire de changement
                       className="p-2 border rounded w-full text-center"
-                      placeholder="N/A"
-                      disabled={newItem.noprice}
+                      placeholder={
+                        newItem.price === undefined || newItem.price === null
+                          ? "N/A"
+                          : ""
+                      } // Placeholder "N/A" si aucune valeur
+                      disabled={newItem.noprice} // Désactivation conditionnelle
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-center">
