@@ -249,7 +249,7 @@ export default function Projectb({ user }) {
                       value={newItem.bed}
                       onChange={(e) => handleNewChange(e, "bed")}
                       className="p-2 border rounded w-full text-center"
-                      placeholder="ex: 2"
+                      placeholder=""
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-right">
@@ -258,7 +258,7 @@ export default function Projectb({ user }) {
                       value={newItem.floor}
                       onChange={(e) => handleNewChange(e, "floor")}
                       className="p-2 border rounded w-full text-center"
-                      placeholder="ex: 3"
+                      placeholder=""
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-right">
@@ -267,7 +267,7 @@ export default function Projectb({ user }) {
                       value={newItem.surface}
                       onChange={(e) => handleNewChange(e, "surface")}
                       className="p-2 border rounded w-full text-center"
-                      placeholder="ex: 320"
+                      placeholder=""
                     />
                   </td>
                   <td
@@ -280,7 +280,7 @@ export default function Projectb({ user }) {
                       value={newItem.price}
                       onChange={(e) => handleNewChange(e, "price")}
                       className="p-2 border rounded w-full text-center"
-                      placeholder="ex: 324000"
+                      placeholder=""
                       disabled={newItem.noprice}
                     />
                   </td>

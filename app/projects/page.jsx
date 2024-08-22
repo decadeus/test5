@@ -247,9 +247,9 @@ function Page() {
                     className="flex flex-col w-full gap-4 mt-4 border shadow-lg rounded-sm pr-2"
                   >
                     <div className="flex sm:flex-row flex-col  gap-4 w-full p-2">
-                      <div className="relative h-40 sm:w-1/3 w-full">
+                      <div className="relative h-40 sm:w-1/3 w-[300px]">
                         <Avatar
-                          url={item.project.mainpic_url || a}
+                          url={item.project.mainpic_url}
                           width={270}
                           height={196}
                           classn="rounded-sm"

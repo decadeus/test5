@@ -11,7 +11,7 @@ export default function UAvatar({ uid, url, size, classn, width, height}) {
   useEffect(() => {
     async function downloadImage(path) {
       try {
-        const { data, error } = await supabase.storage.from('avatars').download(path)
+        const { data, error } = await supabase.storage.from('project').download(path)
         if (error) {
           throw error
         }
