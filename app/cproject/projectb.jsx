@@ -277,7 +277,8 @@ export default function Projectb({ user }) {
                   >
                     <input
                       type="number"
-                      value={newItem.price}
+                      value={newItem.price|| 0}
+                      min={0}
                       onChange={(e) => handleNewChange(e, "price")}
                       className="p-2 border rounded w-full text-center"
                       placeholder=""
