@@ -280,7 +280,7 @@ export default function Projectb({ user }) {
                       value={
                         newItem.price !== undefined && newItem.price !== null
                           ? newItem.price
-                          : "0"
+                          : 0
                       } // Affiche la valeur ou vide pour utiliser le placeholder
                       min={0} // Valeur minimale à zéro
                       onChange={(e) => handleNewChange(e, "price")} // Gestionnaire de changement
