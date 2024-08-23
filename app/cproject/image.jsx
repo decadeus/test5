@@ -65,7 +65,7 @@ export default function AvatarComponent({ user }) {
   };
 
   return (
-    <div className="w-[200px] h-[200px] shadow-xl">
+    <div className="w-[200px] h-[200px] shadow-xl text-black">
       {error && <div className="error-message">{error}</div>}
       {loading && <div className="loading-message">Updating...</div>} {/* Show loading message */}
       

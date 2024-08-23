@@ -31,3 +31,16 @@
   .bgmap{
     background-color: #2a81c0;
   }
+
+  .shadowI{
+    text-shadow: 4px 14px 63px rgba(188, 47, 222, 1);
+  }
+
+  .shadowW{
+    box-shadow: 8px 8px 100px 67px rgba(159, 1, 199, 0.1);
+  }
+
+  .bgmain{
+    background: linear-gradient(338deg, rgba(161,159,236,0.1982186624649859) 35%, rgba(244,230,255,0.5) 100%);
+
+  }

@@ -35,7 +35,7 @@ export default async function RootLayout({ children }) {
       </Head>
       <body className=" text-foreground">
         <Providers>
-          <MainNavBar user={user} />
+          <MainNavBar user={user}  />
           <main className="min-h-screen flex flex-col items-center text-black">
             {children}
             <SpeedInsights />

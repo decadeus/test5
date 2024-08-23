@@ -8,7 +8,7 @@ export default async function Page() {
         data: { user },
       } = await supabase.auth.getUser()
   return (
-    <div className="w-full">
+    <div className="w-full bg-black">
   
   
       <Projectb user={user} />

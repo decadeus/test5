@@ -165,7 +165,7 @@ export default function Projectb({ user }) {
   );
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full p-4 ">
       {/* Display total number of rows */}
       <div className="mb-4"></div>
 
@@ -183,16 +183,16 @@ export default function Projectb({ user }) {
               online={project.online}
               user={user}
             />
-            <p className="text-gray-600 text-center font-extrabold">
+            <p className="text-gray-100 text-center font-extrabold text-lg mb-4">
               Number of apartments: {totalRows}
             </p>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
-              <thead className="bg-gray-200">
-                <tr>
+          <div className="overflow-x-auto ">
+            <table className="w-full bg-[#12171E] shadow-md rounded-lg overflow-hidden">
+              <thead className="bg-[#12171E] text-white">
+                <tr className="text-white">
                   <th
-                    className="py-2 px-4 border-b text-center cursor-pointer"
+                    className="py-2 px-4 border-b text-center cursor-pointer "
                     onClick={() => sortTable("ref")}
                   >
                     Ref {getSortIndicator("ref")}
@@ -224,7 +224,7 @@ export default function Projectb({ user }) {
                   <th className="py-2 px-4 border-b text-center">Hide Price</th>
                   <th className="py-2 px-4 border-b text-center">Garden</th>
                   <th
-                    className="py-2 px-4 border-b text-center cursor-pointer"
+                    className="py-2 px-4 border-b text-center cursor-pointer "
                     onClick={() => sortTable("des")}
                   >
                     Special info {getSortIndicator("des")}
@@ -233,13 +233,13 @@ export default function Projectb({ user }) {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-gray-100">
-                  <td className="py-2 px-4 border-b text-left">
+                <tr className="bg-[#12171E] text-white">
+                  <td className="py-2 px-4 border-b text-left ">
                     <input
                       type="text"
                       value={newItem.ref}
                       onChange={(e) => handleNewChange(e, "ref")}
-                      className="p-2 border rounded w-full text-center"
+                      className="p-2 border rounded w-full text-center text-black"
                       placeholder="ex: AA0302"
                     />
                   </td>
@@ -248,7 +248,7 @@ export default function Projectb({ user }) {
                       type="number"
                       value={newItem.bed}
                       onChange={(e) => handleNewChange(e, "bed")}
-                      className="p-2 border rounded w-full text-center"
+                      className="p-2 border rounded w-full text-center text-black"
                       placeholder=""
                     />
                   </td>
@@ -257,7 +257,7 @@ export default function Projectb({ user }) {
                       type="number"
                       value={newItem.floor}
                       onChange={(e) => handleNewChange(e, "floor")}
-                      className="p-2 border rounded w-full text-center"
+                      className="p-2 border rounded w-full text-center text-black"
                       placeholder=""
                     />
                   </td>
@@ -266,13 +266,13 @@ export default function Projectb({ user }) {
                       type="number"
                       value={newItem.surface}
                       onChange={(e) => handleNewChange(e, "surface")}
-                      className="p-2 border rounded w-full text-center"
+                      className="p-2 border rounded w-full text-center text-black"
                       placeholder=""
                     />
                   </td>
                   <td
                     className={`py-2 px-4 border-b text-right ${
-                      newItem.noprice ? "bg-gray-300" : ""
+                      newItem.noprice ? "bg-gray-800" : ""
                     }`}
                   >
                     <input
@@ -280,7 +280,7 @@ export default function Projectb({ user }) {
                     value={newItem.price || 0}  // Valeur par défaut à 0
                     min={0}  // Valeur minimale à zéro
                     onChange={(e) => handleNewChange(e, "price")}  // Gestionnaire de changement
-                    className="p-2 border rounded w-full text-center"
+                    className="p-2 border rounded w-full text-center text-black"
                     disabled={newItem.noprice}  // Désactivation conditionnelle
                     />
                   </td>
@@ -305,7 +305,7 @@ export default function Projectb({ user }) {
                       type="text"
                       value={newItem.des}
                       onChange={(e) => handleNewChange(e, "des")}
-                      className="p-2 border rounded w-full text-center"
+                      className="p-2 border rounded w-full text-center text-black"
                       placeholder="ex: - 10%"
                       maxLength={25}
                     />
@@ -331,7 +331,7 @@ export default function Projectb({ user }) {
                             onChange={(e) =>
                               handleChange(e, projectIndex, itemIndex, "ref")
                             }
-                            className="w-full p-2 border rounded"
+                            className="w-full p-2 border rounded text-right"
                           />
                         </td>
                         <td className="py-2 px-4 border-b text-right">
@@ -371,7 +371,7 @@ export default function Projectb({ user }) {
                         </td>
                         <td
                           className={`py-2 px-4 border-b text-right ${
-                            item.noprice ? "bg-gray-300" : ""
+                            item.noprice ? "bg-gray-800" : ""
                           }`}
                         >
                           <input
@@ -426,7 +426,7 @@ export default function Projectb({ user }) {
                             maxLength={25}
                           />
                         </td>
-                        <td className="py-2 px-4 border-b text-center">
+                        <td className="py-2 px-4 border-b text-center flex">
                           <button
                             onClick={() => handleSave(projectIndex, itemIndex)}
                             className="px-4 py-2 bg-blue-500 text-white rounded"
@@ -445,21 +445,21 @@ export default function Projectb({ user }) {
                       </>
                     ) : (
                       <>
-                        <td className="py-2 px-4 border-b text-center font-semibold">
+                        <td className="py-2 px-4 border-b text-center font-semibold text-white">
                           {item.ref}
                         </td>
-                        <td className="py-2 px-4 border-b text-center">
+                        <td className="py-2 px-4 border-b text-center text-white">
                           {item.bed}
                         </td>
-                        <td className="py-2 px-4 border-b text-center">
+                        <td className="py-2 px-4 border-b text-center text-white">
                           {item.floor}
                         </td>
-                        <td className="py-2 px-4 border-b text-center">
+                        <td className="py-2 px-4 border-b text-center text-white">
                           {item.surface}
                         </td>
                         <td
-                          className={`py-2 px-4 border-b text-center ${
-                            item.noprice ? "bg-gray-300" : ""
+                          className={`py-2 px-4 border-b text-center text-white ${
+                            item.noprice ? "bg-gray-800 text-black" : ""
                           }`}
                         >
                           {item.price || "N/A"}
@@ -477,14 +477,16 @@ export default function Projectb({ user }) {
                             )}
                           </div>
                         </td>
-                        <td className="py-2 px-4 border-b text-center flex items-center justify-center">
+                        <td className="py-2 px-4 border-b text-center  ">
                           {item.garden ? (
-                            <PiFlowerTulipBold color="purple" size={20} />
+                            <p className="flex justify-center items-center">
+                            <PiFlowerTulipBold color="pink" size={20} />
+                            </p>
                           ) : (
                             ""
                           )}
                         </td>
-                        <td className="py-2 px-4 border-b text-center font-semibold">
+                        <td className="py-2 px-4 border-b text-center font-semibold text-white">
                           {item.des}
                         </td>
                         <td className="py-2 px-4 border-b text-center">
