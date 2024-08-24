@@ -7,7 +7,7 @@ import Image from "next/legacy/image";
 export default function Page() {
   // Styles for a modern design
   const containerStyle =
-    "flex flex-col items-center bg-[#0E1117] w-full px-64 pt-32 pb-32";
+    "flex flex-col items-center bg-gray-800 w-full px-64 pt-32 pb-32";
   const headerStyle =
     "text-6xl font-bold text-gray-100 mb-8 font-montserrat text-center shadowI bg-transparent";
   const subheaderStyle = "text-lg text-gray-100 mb-8 font-montserrat mb-32";
@@ -60,8 +60,9 @@ export default function Page() {
         <p className="text-gray-400 text-xl mb-20">
         Fill in the information for each apartment. You can specify a price or choose not to publish it. Update the information at any time.
           </p>
-        <div className="w-[670px] shadowW">
-          <Image src={e} width={670} height={300} alt="Logo" className="" />
+        <div className=" relative w-[670px] shadowW">
+          <Image src={e}  layout="fill"
+          objectFit="cover" alt="Logo" className="" />
         </div>
       </div>
      

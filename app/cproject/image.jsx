@@ -65,7 +65,7 @@ export default function AvatarComponent({ user }) {
   };
 
   return (
-    <div className="w-[200px] h-[200px] shadow-xl text-black">
+    <div className="w-[400px] h-[250px] shadow-xl text-black">
       {error && <div className="error-message">{error}</div>}
       {loading && <div className="loading-message">Updating...</div>} {/* Show loading message */}
       
@@ -73,7 +73,7 @@ export default function AvatarComponent({ user }) {
         id="mainpic_url"
         uid={user?.id}
         url={mainpicUrl}
-        size={150}
+        size={550}
         onUpload={(url) => handleAvatarUpload("mainpic_url", url)}
        
       />

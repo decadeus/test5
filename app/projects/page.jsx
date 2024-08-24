@@ -185,7 +185,7 @@ function Page() {
 
   const fiche = "grid grid-cols-2 grid-rows-1 gap-4";
   return (
-    <div className="flex flex-col w-full 2xl:px-72 xl:px-32 lg:px-16  md:px-8 sm:px-4 px-2   gap-16 pt-4">
+    <div className="flex flex-col w-full 2xl:px-72 xl:px-32 lg:px-16  md:px-8 sm:px-4 px-2   gap-16 pt-4 bg-gray-800 text-white">
       <div className="flex flex-col gap-4">
         <div className="w-full xl:h-[440px] sm:h-[220px] h-[200px] z-0">
           <LazyMap
@@ -384,7 +384,7 @@ function Filter({
       <div className="hidden sm:block">
         <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
           <div>
-            <div className=" rounded-sm w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center ">
+            <div className=" rounded-sm w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center bg-white text-black ">
               Only your favorite <FaHeart color="red" />
             </div>
             <h2 className="font-extrabold text-xl pb-4">Country</h2>
@@ -426,14 +426,14 @@ function Filter({
             <div className="pb-8">
               <h2 className={htwo}>Price range</h2>
               <div className="w-full flex gap-4 pb-4">
-                <div className=" border-2 border-black rounded-sm w-1/2 p-2">
+                <div className=" border-2 border-white rounded-sm w-1/2 p-2">
                   <p className="font-semibold text-sm">min</p>
                   <div className="flex items-center gap-1">
                     <TbCurrencyZloty size={15} />
                     <p>{priceRange[0]}</p>
                   </div>
                 </div>
-                <div className=" border-2 border-black rounded-sm w-1/2 p-2">
+                <div className=" border-2 border-white rounded-sm w-1/2 p-2">
                   <p className="font-semibold text-sm">max</p>
                   <div className="flex items-center gap-1">
                     <TbCurrencyZloty size={15} />
@@ -456,14 +456,14 @@ function Filter({
             <div className="pb-8">
               <p className={htwo}>Surface</p>
               <div className="w-full flex gap-4 pb-4">
-                <div className=" border-2 border-black rounded-sm w-1/2 p-2">
+                <div className=" border-2 border-white rounded-sm w-1/2 p-2">
                   <p className="font-semibold text-sm">min</p>
                   <div className="flex items-center gap-1">
                     <p className="text-xs">m2</p>
                     <p>{surfaceRange[0]}</p>
                   </div>
                 </div>
-                <div className=" border-2 border-black rounded-sm w-1/2 p-2">
+                <div className=" border-2 border-white rounded-sm w-1/2 p-2">
                   <p className="font-semibold text-sm">max</p>
                   <div className="flex items-center gap-1">
                     <p className="text-xs">m2</p>
@@ -486,13 +486,13 @@ function Filter({
             <div className="">
               <p className={htwo}>Number of bedrooms</p>
               <div className="w-full flex gap-4 pb-4">
-                <div className=" border-2 border-black rounded-sm w-1/2 p-2">
+                <div className=" border-2 border-white rounded-sm w-1/2 p-2">
                   <p className="font-semibold text-sm">min</p>
                   <div className="flex items-center gap-1">
                     <p>{bedRange[0]}</p>
                   </div>
                 </div>
-                <div className=" border-2 border-black rounded-sm w-1/2 p-2">
+                <div className=" border-2 border-white rounded-sm w-1/2 p-2">
                   <p className="font-semibold text-sm">max</p>
                   <div className="flex items-center gap-1">
                     <p>{bedRange[1]}</p>
@@ -631,8 +631,9 @@ function Filter({
                 <ModalBody>
                   <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
                     <div>
-                      <div className=" rounded-sm w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center ">
-                        Only your favorite <FaHeart color="red" />
+                      <div className=" rounded-sm w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center text-black ">
+                        <p className="text-black"> Only your favorite</p> <FaHeart color="blue" />
+                       
                       </div>
                       <h2 className="font-extrabold text-xl pb-4">Country</h2>
                       <div className={hfouth}>

@@ -41,8 +41,8 @@ export default function MainNavBar({ user }) {
         <Link href="/">
           <div className="flex gap-2 items-center">
             <div className="flex justify-center items-center gap-2">
-              <div className="w-8 h-8">
-              <Image src={b} width={50} height={50} alt="Logo" />
+              <div className="w-8 h-8 rounded-full">
+              <Image src={b} width={50} height={50} alt="Logo" className="rounded-full" />
               </div>
               <div>
               <h2 className="text-black text-2xl font-bold hidden sm:block ">Hoomge.com</h2>

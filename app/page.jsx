@@ -14,20 +14,20 @@ import { LuNewspaper } from "react-icons/lu";
 function Page() {
   const [selectedCountry, setSelectedCountry] = useState("France");
 
-  const subtitle = "font-extrabold text-xl text-center shadowI";
+  const subtitle = "font-extrabold text-4xl text-center text-white";
 
   return (
-    <div className="w-full mb-32">
-      <div className="w-full bgcolorP px-16 pb-8">
-        <h1 className="text-3xl text-white pt-8">
-          Existing or Project, Find Your Dream Apartment
+    <div className="w-full mb-32 bg-gray-800">
+      <div className="w-full px-16 pb-8">
+        <h1 className="text-6xl font-bold text-gray-100 mb-12 mt-32 font-montserrat text-center shadowI ">
+        Find Your Futur <br/> Dream Apartment
         </h1>
-        <h2 className="text-xl text-white pt-4">
-        Consult information about the residential building +  Search by number of bedrooms, size, country, city, price ...
+        <h2 className="text-xl text-white pt-4 text-center">
+        Search among 100 new properties and 13,500 listed apartments.
         </h2>
       
       </div>
-      <div className="px-64 pt-16 bgmain">
+      <div className="px-64 pt-16 ">
         <div className="flex flex-col justify-start items-start text-start gap-8">
           <div className="flex flex-col justify-center items-center w-full">
             <h2 className="font-bold">Select country</h2>
@@ -56,7 +56,7 @@ function Page() {
           </div>
          
           <div className="flex flex-col justify-start items-start w-full">
-            <h2 className={subtitle}>The Most Beautiful Existing Residences</h2>
+            <h2 className={subtitle}>The Most <span className="bg-gradient-to-r from-fuchsia-400 via-pink-500 to-sky-500 bg-clip-text text-transparent">Beautiful</span> Existing Residences</h2>
             <MostBeauty country={selectedCountry} />
           </div>
 
