@@ -5,6 +5,7 @@ import Maindata from "@/app/cproject/maindata";
 import { IoMdEyeOff } from "react-icons/io";
 import { IoEye } from "react-icons/io5";
 import { PiFlowerTulipBold } from "react-icons/pi";
+import Select from "@/app/cproject/select";
 
 export default function Projectb({ user }) {
   const supabase = createClient();
@@ -331,7 +332,7 @@ export default function Projectb({ user }) {
                             onChange={(e) =>
                               handleChange(e, projectIndex, itemIndex, "ref")
                             }
-                            className="w-full p-2 border rounded text-right"
+                            className="w-full p-2 border rounded text-white"
                           />
                         </td>
                         <td className="py-2 px-4 border-b text-right">
@@ -426,7 +427,7 @@ export default function Projectb({ user }) {
                             maxLength={25}
                           />
                         </td>
-                        <td className="py-2 px-4 border-b text-center flex">
+                        <td className="py-2 px-4 border-b text-center">
                           <button
                             onClick={() => handleSave(projectIndex, itemIndex)}
                             className="px-4 py-2 bg-blue-500 text-white rounded"
