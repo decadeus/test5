@@ -21,7 +21,7 @@ import { TbCurrencyZloty } from "react-icons/tb";
 import { FaEuroSign, FaHeart, FaRegHeart } from "react-icons/fa";
 import Map from "@/components/fullmap";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Avatar from "@/app/getimage/Ugetone";
+import Avatar from "@/app/getimage/project";
 import { IoGameControllerOutline } from "react-icons/io5";
 import { PiPersonSimpleSwimDuotone } from "react-icons/pi";
 import { IoIosFitness } from "react-icons/io";
@@ -30,16 +30,25 @@ import { MdOutlineDirectionsBike } from "react-icons/md";
 import { BiCctv } from "react-icons/bi";
 import { BiDoorOpen } from "react-icons/bi";
 import dynamic from "next/dynamic";
-import { TailSpin } from 'react-loader-spinner';
+import { TailSpin } from "react-loader-spinner";
+
+const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
 
 const LazyMap = dynamic(() => import("@/app/map/index"), {
   ssr: false,
   loading: () => (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
       <TailSpin
         color="IndianRed" // Couleur du spinner
-        height={80}     // Hauteur du spinner
-        width={80}      // Largeur du spinner
+        height={80} // Hauteur du spinner
+        width={80} // Largeur du spinner
         ariaLabel="loading" // Label accessible pour les lecteurs d'écran
       />
     </div>
@@ -66,6 +75,9 @@ function Page() {
   const [surfaceRange, setSurfaceRange] = useState([0, 200]);
   const [bedRange, setBedRange] = useState([0, 10]);
 
+  const [favorites, setFavorites] = useState([]);
+  const [showFavorites, setShowFavorites] = useState(false);
+
   const fetchProjects = async () => {
     const supabase = createClient();
     const { data, error } = await supabase
@@ -86,8 +98,14 @@ function Page() {
     fetchProjects();
   }, []);
 
+  useEffect(() => {
+    const storedFavorites =
+      JSON.parse(localStorage.getItem(NEW_FAVORITE_APARTMENTS_KEY)) || [];
+    setFavorites(storedFavorites);
+  }, []);
+
   const filteredProjects = useMemo(() => {
-    const filtered = originalProjects.filter(
+    let filtered = originalProjects.filter(
       (project) =>
         selectedCountries.includes(project.project.country) &&
         project.price >= priceRange[0] &&
@@ -105,7 +123,12 @@ function Page() {
         (!selectedCctv || project.project.cctv === selectedCctv) &&
         (!selectedEntrance || project.project.entrance === selectedEntrance)
     );
-    console.log("Filtered Projects Count:", filtered); // Log the count
+
+    if (showFavorites) {
+      filtered = filtered.filter((project) => favorites.includes(project.id));
+    }
+
+    console.log("Filtered Projects Count:", filtered.length); // Log the count
     return filtered;
   }, [
     originalProjects,
@@ -121,8 +144,9 @@ function Page() {
     selectedBike,
     selectedCctv,
     selectedEntrance,
+    showFavorites,
+    favorites,
   ]);
-
   useEffect(() => {
     setProjects(filteredProjects);
   }, [filteredProjects]);
@@ -184,6 +208,38 @@ function Page() {
   }
 
   const fiche = "grid grid-cols-2 grid-rows-1 gap-4";
+
+  const handleToggleFavorite = (item) => {
+    const itemId = item.id;
+    const isAlreadyFavorite = favorites.includes(itemId);
+
+    let newFavorites;
+
+    if (isAlreadyFavorite) {
+      // Remove item from favorites
+      newFavorites = favorites.filter((id) => id !== itemId);
+    } else {
+      // Add item to favorites
+      newFavorites = [...favorites, itemId];
+    }
+
+    setFavorites(newFavorites);
+    localStorage.setItem(
+      NEW_FAVORITE_APARTMENTS_KEY,
+      JSON.stringify(newFavorites)
+    );
+  };
+
+  const isFavorite = (item) => favorites.includes(item.id);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error fetching data: {error.message}</div>;
+  }
+
   return (
     <div className="flex flex-col w-full 2xl:px-72 xl:px-32 lg:px-16  md:px-8 sm:px-4 px-2   gap-16 pt-4 bg-gray-800 text-white">
       <div className="flex flex-col gap-4">
@@ -318,9 +374,17 @@ function Page() {
                           </div>
 
                           <div className="w-2/12  justify-end   hidden sm:flex">
-                            <div className="flex justify-end ">
-                              <FaHeart size={20} color="red" />
-                            </div>
+                            <button
+                              onClick={() => handleToggleFavorite(item)}
+                              style={{ marginLeft: "10px" }}
+                            >
+                              {isFavorite(item) ? (
+                                <FaHeart fill="red" size={20} />
+                              ) : (
+                                <FaRegHeart fill="red" size={20} />
+                              )}
+                              <p>{item.id} id</p>
+                            </button>
                           </div>
                         </div>
 
@@ -373,39 +437,33 @@ function Filter({
   onSurfaceRangeChange,
   bedRange,
   onBedRangeChange,
+  showFavorites,
+  setShowFavorites,
+  showFavoriteCheckbox,
+  onFavoriteChange
 }) {
   const htwo = "text-sm font-bold pb-4 ";
   const hthree = "text-sm";
   const hfouth = "flex flex-col gap-2";
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const handleToggleFavorites = () => {
+    setShowFavorites((prev) => !prev);
+  };
 
   return (
     <div className="z-10 pb-32">
       <div className="hidden sm:block">
         <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
-          <div>
-            <div className=" rounded-sm w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center bg-white text-black ">
-              Only your favorite <FaHeart color="red" />
+        <div className="w-full flex items-center gap-2 mb-4">
+        <div className="rounded-sm w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center bg-white text-black">
+              <p>Favorites</p> <FaHeart color={showFavorites ? "red" : "grey"} />
             </div>
-            <h2 className="font-extrabold text-xl pb-4">Country</h2>
-            <div className={hfouth}>
-              <CheckboxGroup
-                id="country"
-                value={selectedCountries}
-                onChange={onCountryChange}
-                color="secondary"
-                aria-label="Country"
-                className="flex flex-col gap-2 "
-              >
-                <Checkbox value="France" >
-                  <p className={hthree}>France</p>
-                </Checkbox>
-                <Checkbox value="Poland">
-                  <p className={hthree}>Poland</p>
-                </Checkbox>
-              </CheckboxGroup>
+            <div className="w-full flex justify-end mb-4">
+            <button onClick={handleToggleFavorites}>
+        {showFavorites ? "Hide Favorites" : "Show Favorites"}
+      </button>
             </div>
-          </div>
+            </div>
           <div>
             <h2 className="font-extrabold text-xl pb-4 ">Apartement</h2>
             <div className="pb-8">
@@ -632,8 +690,8 @@ function Filter({
                   <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
                     <div>
                       <div className=" rounded-sm w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center text-black ">
-                        <p className="text-black"> Only your favorite</p> <FaHeart color="blue" />
-                       
+                        <p className="text-black"> Only your favorite</p>{" "}
+                        <FaHeart color="blue" />
                       </div>
                       <h2 className="font-extrabold text-xl pb-4">Country</h2>
                       <div className={hfouth}>
@@ -864,7 +922,6 @@ function Filter({
                   </div>
                 </ModalBody>
                 <ModalFooter>
-                 
                   <Button color="primary" onPress={onClose}>
                     Search
                   </Button>

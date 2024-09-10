@@ -17,7 +17,7 @@ function Page() {
   const subtitle = "font-extrabold text-4xl text-center text-white";
 
   return (
-    <div className="w-full mb-32 bg-gray-800">
+    <div className="w-full pb-32 bg-gray-800">
       <div className="w-full px-16 pb-8">
         <h1 className="text-6xl font-bold text-gray-100 mb-12 mt-32 font-montserrat text-center shadowI ">
         Find Your Futur <br/> Dream Apartment
@@ -30,7 +30,7 @@ function Page() {
       <div className="px-64 pt-16 ">
         <div className="flex flex-col justify-start items-start text-start gap-8">
           <div className="flex flex-col justify-center items-center w-full">
-            <h2 className="font-bold">Select country</h2>
+            <h2 className="font-bold text-white">Select country</h2>
             <div className="w-full flex gap-4 mb-8 justify-center pt-4 ">
               <button
                 onClick={() => setSelectedCountry("France")}

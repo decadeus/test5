@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import Avatar from "@/app/getimage/Ugetone";
+import Avatar from "@/app/getimage/project";
 
 export default function Summer() {
   const [loading, setLoading] = useState(true);

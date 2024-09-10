@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Appart from "./appart";
-import Avatar from "@/app/getimage/Ugetone";
+import Avatar from "@/app/getimage/project";
 import GoogleMaps from "./googlemap";
 import Adresse from "./adresse";
 import IconeS from "@/app/components/Icone";

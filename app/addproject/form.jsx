@@ -64,7 +64,7 @@ export default function Form() {
   };
 
   return (
-    <div className="mt-8 w-[800px] mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="mt-8 w-[800px] mx-auto p-6 bg-white rounded-lg shadow-md z-0">
       <h1 className="font-bold text-2xl mb-4 text-center text-gray-800">
         Add Your Property Project for Free
       </h1>

@@ -6,7 +6,7 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import Avatar from "@/app/getimage/Ugetone";
+import Avatar from "@/app/getimage/project";
 import Link from "next/link";
 import a from "@/components/image/appart1.jpg";
 

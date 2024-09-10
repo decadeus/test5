@@ -33,7 +33,7 @@ export default async function RootLayout({ children }) {
       <Head>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
-      <body className=" text-foreground">
+      <body className=" text-foreground bg-gray-800">
         <Providers>
           <MainNavBar user={user}  />
           <main className="min-h-screen flex flex-col items-center text-black">

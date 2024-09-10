@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { createClient } from "@/utils/supabase/client";
-import Avatar from "@/app/getimage/Ugetone";
+import Avatar from "@/app/getimage/project";
 
 export default function MostBeauty({ country }) {
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ export default function MostBeauty({ country }) {
                 key={index}
                 className="flex flex-col w-full gap-4 mt-4 shadow-lg p-4 rounded-sm"
               >
-                <div className="h-36 w-64">
+                 <div className="relative h-40  w-[300px]">
                   <Avatar
                     url={item.mainpic_url}
                     width={270}
@@ -55,6 +55,7 @@ export default function MostBeauty({ country }) {
                 </div>
                 <div>
                   <p className="flex gap-2 items-center">{item.city}</p>
+                  <p className="flex gap-2 items-center">{item.name}</p>
                   <p className="flex gap-2 items-center font-bold">
                     {item.country}
                   </p>

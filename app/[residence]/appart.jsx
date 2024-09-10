@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import Avatar from "../getimage/Ugetone";
+import Avatar from "../getimage/project";
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";

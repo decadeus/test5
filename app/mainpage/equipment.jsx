@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { createClient } from "@/utils/supabase/client";
-import Avatar from "@/app/getimage/Ugetone";
+import Avatar from "@/app/getimage/project";
 
 export default function Equipment() {
   const [loading, setLoading] = useState(true);
