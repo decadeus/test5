@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MostBeauty from "@/app/mainpage/mostbeauty";
 import Summer from "@/app/mainpage/summer";
 import Equipment from "@/app/mainpage/equipment";
@@ -10,22 +10,63 @@ import { Button } from "@nextui-org/react";
 import { RiHome8Line } from "react-icons/ri";
 import { MdOutlinePoll } from "react-icons/md";
 import { LuNewspaper } from "react-icons/lu";
+import { createClient } from "@/utils/supabase/client";
 
 function Page() {
   const [selectedCountry, setSelectedCountry] = useState("France");
+  const [count, setCount] = useState(null);
+  const [countlist, setCountList] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const subtitle = "font-extrabold text-4xl text-center text-white";
 
+  useEffect(() => {
+    async function fetchCounts() {
+      const supabase = createClient();
+      try {
+        // Fetch count for 'project'
+        const { count: projectCount, error: projectError } = await supabase
+          .from('project')
+          .select('*', { count: 'exact' });
+
+        if (projectError) throw projectError;
+
+        setCount(projectCount);
+
+        // Fetch count for 'projectlist'
+        const { count: projectListCount, error: projectListError } = await supabase
+          .from('projectlist')
+          .select('*', { count: 'exact' });
+
+        if (projectListError) throw projectListError;
+
+        setCountList(projectListCount);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCounts();
+  }, []);
+
   return (
     <div className="w-full pb-32 bg-gray-800">
+      <div>
+        <h1 className="text-white">Number of Projects</h1>
+        {loading && <p>Loading...</p>}
+        {error && <p>Error: {error}</p>}
+        {count !== null && !loading && !error && <p>Total projects: {count}</p>}
+      </div>
       <div className="w-full px-16 pb-8">
         <h1 className="text-6xl font-bold text-gray-100 mb-12 mt-32 font-montserrat text-center shadowI ">
-        Find Your Futur <br/> Dream Apartment
+          Find Your Future <br /> Dream Apartment
         </h1>
         <h2 className="text-xl text-white pt-4 text-center">
-        Search among 100 new properties and 13,500 listed apartments.
+          Search among {count} new properties and {countlist} listed apartments.
         </h2>
-      
       </div>
       <div className="px-64 pt-16 ">
         <div className="flex flex-col justify-start items-start text-start gap-8">
@@ -54,22 +95,24 @@ function Page() {
               </button>
             </div>
           </div>
-         
           <div className="flex flex-col justify-start items-start w-full">
-            <h2 className={subtitle}>The Most <span className="bg-gradient-to-r from-fuchsia-400 via-pink-500 to-sky-500 bg-clip-text text-transparent">Beautiful</span> Existing Residences</h2>
+            <h2 className={subtitle}>
+              The Most{" "}
+              <span className="bg-gradient-to-r from-fuchsia-400 via-pink-500 to-sky-500 bg-clip-text text-transparent">
+                Beautiful
+              </span>{" "}
+              Existing Residences
+            </h2>
             <MostBeauty country={selectedCountry} />
           </div>
-
           <div>
-            <h2 className={subtitle}>
-            The latest arrivals on hoomge.com
-            </h2>
+            <h2 className={subtitle}>The latest arrivals on hoomge.com</h2>
           </div>
           <div className="w-full">
-          <Last />
+            <Last country={selectedCountry} />
           </div>
           <div
-            className="relative overflow-hidden rounded-sm w-full  "
+            className="relative overflow-hidden rounded-sm w-full"
             style={{ height: "500px" }}
           >
             <div
@@ -88,7 +131,7 @@ function Page() {
                 <h2 className={`${subtitle} text-white`}>
                   Deal Residences: Sea and Mountain to Enjoy Nature
                 </h2>
-                <Summer />
+                <Summer country={selectedCountry} />
               </div>
             </div>
           </div>
@@ -99,34 +142,34 @@ function Page() {
           <div className="w-full bgcolorS rounded-sm p-8 ">
             <div className="grid grid-cols-4 grid-rows-1 gap-3">
               <div className="text-xl text-white pl-4 flex justify-center items-center">
-                Your appartement get more value{" "}
+                Your apartment gets more value{" "}
               </div>
               <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-sm">
-                <div className="w-1/3  flex justify-center">
+                <div className="w-1/3 flex justify-center">
                   <RiHome8Line color="white" size="45" />
                 </div>
                 <div className="w-2/3">
-                  <p className="text-white  flex justify-center text-center font-thin">
+                  <p className="text-white flex justify-center text-center font-thin">
                     Advertisement for the sale/rental of your apartment
                   </p>
                 </div>
               </div>
               <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-sm">
-                <div className="w-1/3  flex justify-center">
+                <div className="w-1/3 flex justify-center">
                   <MdOutlinePoll color="white" size="45" />
                 </div>
                 <div className="w-2/3">
-                  <p className="text-white  flex justify-center text-center font-thin">
+                  <p className="text-white flex justify-center text-center font-thin">
                     Participate in surveys for the residence
                   </p>
                 </div>
               </div>
               <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-sm">
-                <div className="w-1/3  flex justify-center">
+                <div className="w-1/3 flex justify-center">
                   <LuNewspaper color="white" size="40" />
                 </div>
                 <div className="w-2/3">
-                  <p className="text-white  flex justify-center text-center font-thin">
+                  <p className="text-white flex justify-center text-center font-thin">
                     Residence information online
                   </p>
                 </div>
@@ -134,7 +177,7 @@ function Page() {
             </div>
           </div>
           <div
-            className="relative overflow-hidden rounded-sm w-full "
+            className="relative overflow-hidden rounded-sm w-full"
             style={{ height: "500px" }}
           >
             <div
@@ -155,7 +198,7 @@ function Page() {
                   for residents
                 </h2>
                 <Button className="bgmap hover:bg-blue-700 text-white rounded-sm borderI">
-                  List your properly
+                  List your property
                 </Button>
               </div>
             </div>

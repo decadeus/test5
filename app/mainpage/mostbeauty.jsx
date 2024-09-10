@@ -16,7 +16,8 @@ export default function MostBeauty({ country }) {
         .from("project")
         .select("*")
         .eq("country", country)
-        .eq("beau", true) // Filter by selected country
+        .eq("beau", true)
+        .limit(3); // Filter by selected country
 
       if (error) {
         setError(error);
@@ -43,7 +44,7 @@ export default function MostBeauty({ country }) {
             projects.map((item, index) => (
               <div
                 key={index}
-                className="flex flex-col w-full gap-4 mt-4 shadow-lg p-4 rounded-sm"
+                className="flex flex-col w-fit gap-4 mt-4 shadow-lg p-4 rounded-sm flex-wrap"
               >
                  <div className="relative h-40  w-[300px]">
                   <Avatar
@@ -53,13 +54,7 @@ export default function MostBeauty({ country }) {
                     className="rounded-sm"
                   />
                 </div>
-                <div>
-                  <p className="flex gap-2 items-center">{item.city}</p>
-                  <p className="flex gap-2 items-center">{item.name}</p>
-                  <p className="flex gap-2 items-center font-bold">
-                    {item.country}
-                  </p>
-                </div>
+              
               </div>
             ))
           )}

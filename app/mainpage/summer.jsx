@@ -4,7 +4,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 
-export default function Summer() {
+export default function Summer({country}) {
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState(null);
@@ -12,7 +12,11 @@ export default function Summer() {
   useEffect(() => {
     const fetchProjects = async () => {
       const supabase = createClient();
-      const { data, error } = await supabase.from("residence").select("*");
+      const { data, error } = await supabase.from("project")
+      .select("*")
+      .eq("country", country)
+      .eq("beau", true)
+      .limit(3); // Filter by selected country
 
       if (error) {
         setError(error);
@@ -24,7 +28,7 @@ export default function Summer() {
     };
 
     fetchProjects();
-  }, []);
+  }, [country]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -41,7 +45,7 @@ export default function Summer() {
                 key={index}
                 className="flex flex-col w-full gap-4 mt-4  rounded-sm "
               >
-                <div className="h-36 w-64">
+                <div className="relative h-40  w-[300px]">
                   <Avatar
                     url={item.mainpic_url}
                     width={270}
@@ -51,8 +55,12 @@ export default function Summer() {
                   />
                 </div>
                 <div className="">
-                <p className="flex gap-2 items-center text-white">{item.city}</p>
-                <p className="flex gap-2 items-center font-bold text-white">{item.country}</p>
+                  <p className="flex gap-2 items-center text-white">
+                    {item.city}
+                  </p>
+                  <p className="flex gap-2 items-center font-bold text-white">
+                    {item.country}
+                  </p>
                 </div>
               </div>
             ))

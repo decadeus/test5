@@ -4,7 +4,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 
-export default function Equipment() {
+export default function Equipment({country}) {
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState(null);
@@ -12,7 +12,11 @@ export default function Equipment() {
   useEffect(() => {
     const fetchProjects = async () => {
       const supabase = createClient();
-      const { data, error } = await supabase.from("residence").select("*");
+      const { data, error } = await supabase.from("project")
+      .select("*")
+      .eq("country", country)
+      .eq("beau", true)
+      .limit(3);
 
       if (error) {
         setError(error);
@@ -24,7 +28,7 @@ export default function Equipment() {
     };
 
     fetchProjects();
-  }, []);
+  }, [country]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -41,7 +45,7 @@ export default function Equipment() {
                 key={index}
                 className="flex flex-col w-full gap-4 mt-4  rounded-sm "
               >
-                <div className="h-36 w-64">
+               <div className="relative h-40  w-[300px]">
                   <Avatar
                     url={item.mainpic_url}
                     width={270}
