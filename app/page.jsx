@@ -54,12 +54,7 @@ function Page() {
 
   return (
     <div className="w-full pb-32 bg-gray-800">
-      <div>
-        <h1 className="text-white">Number of Projects</h1>
-        {loading && <p>Loading...</p>}
-        {error && <p>Error: {error}</p>}
-        {count !== null && !loading && !error && <p>Total projects: {count}</p>}
-      </div>
+     
       <div className="w-full px-16 pb-8">
         <h1 className="text-6xl font-bold text-gray-100 mb-12 mt-32 font-montserrat text-center shadowI ">
           Find Your Future <br /> Dream Apartment

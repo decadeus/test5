@@ -33,6 +33,7 @@ import dynamic from "next/dynamic";
 import { TailSpin } from "react-loader-spinner";
 
 const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
+const ITEMS_PER_PAGE = 5;
 
 const LazyMap = dynamic(() => import("@/app/map/index"), {
   ssr: false,
@@ -45,15 +46,11 @@ const LazyMap = dynamic(() => import("@/app/map/index"), {
         height: "100vh",
       }}
     >
-      <TailSpin
-        color="IndianRed" // Couleur du spinner
-        height={80} // Hauteur du spinner
-        width={80} // Largeur du spinner
-        ariaLabel="loading" // Label accessible pour les lecteurs d'écran
-      />
+      <TailSpin color="IndianRed" height={80} width={80} ariaLabel="loading" />
     </div>
   ),
 });
+
 function Page() {
   const [projects, setProjects] = useState([]);
   const [originalProjects, setOriginalProjects] = useState([]);
@@ -71,12 +68,12 @@ function Page() {
   const [selectedBike, setSelectedBike] = useState(false);
   const [selectedCctv, setSelectedCctv] = useState(false);
   const [selectedEntrance, setSelectedEntrance] = useState(false);
-  const [priceRange, setPriceRange] = useState([0, 1000000]); // Adjust max value based on your data
+  const [priceRange, setPriceRange] = useState([0, 1000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 200]);
   const [bedRange, setBedRange] = useState([0, 10]);
-
   const [favorites, setFavorites] = useState([]);
   const [showFavorites, setShowFavorites] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const fetchProjects = async () => {
     const supabase = createClient();
@@ -103,6 +100,23 @@ function Page() {
       JSON.parse(localStorage.getItem(NEW_FAVORITE_APARTMENTS_KEY)) || [];
     setFavorites(storedFavorites);
   }, []);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [
+    selectedCountries,
+    selectedGarden,
+    selectedSwim,
+    selectedFitness,
+    selectedChild,
+    selectedDisabled,
+    selectedBike,
+    selectedCctv,
+    selectedEntrance,
+    priceRange,
+    surfaceRange,
+    bedRange,
+    showFavorites,
+  ]);
 
   const filteredProjects = useMemo(() => {
     let filtered = originalProjects.filter(
@@ -128,7 +142,7 @@ function Page() {
       filtered = filtered.filter((project) => favorites.includes(project.id));
     }
 
-    console.log("Filtered Projects Count:", filtered.length); // Log the count
+    console.log("Filtered Projects Count:", filtered.length);
     return filtered;
   }, [
     originalProjects,
@@ -147,9 +161,12 @@ function Page() {
     showFavorites,
     favorites,
   ]);
+
   useEffect(() => {
-    setProjects(filteredProjects);
-  }, [filteredProjects]);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    setProjects(filteredProjects.slice(startIndex, endIndex));
+  }, [filteredProjects, currentPage]);
 
   const handleCountryChange = (selected) => {
     setSelectedCountries(selected);
@@ -199,6 +216,16 @@ function Page() {
     setSelectedEntrance(selected.includes("entrance"));
   };
 
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -209,20 +236,15 @@ function Page() {
 
   const fiche = "grid grid-cols-2 grid-rows-1 gap-4";
 
+  const handleFeatureChange = (feature) => {
+    setSelectedFeatures((prev) => ({ ...prev, [feature]: !prev[feature] }));
+  };
+
   const handleToggleFavorite = (item) => {
     const itemId = item.id;
-    const isAlreadyFavorite = favorites.includes(itemId);
-
-    let newFavorites;
-
-    if (isAlreadyFavorite) {
-      // Remove item from favorites
-      newFavorites = favorites.filter((id) => id !== itemId);
-    } else {
-      // Add item to favorites
-      newFavorites = [...favorites, itemId];
-    }
-
+    const newFavorites = favorites.includes(itemId)
+      ? favorites.filter((id) => id !== itemId)
+      : [...favorites, itemId];
     setFavorites(newFavorites);
     localStorage.setItem(
       NEW_FAVORITE_APARTMENTS_KEY,
@@ -232,16 +254,8 @@ function Page() {
 
   const isFavorite = (item) => favorites.includes(item.id);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error fetching data: {error.message}</div>;
-  }
-
   return (
-    <div className="flex flex-col w-full 2xl:px-72 xl:px-32 lg:px-16  md:px-8 sm:px-4 px-2   gap-16 pt-4 bg-gray-800 text-white">
+    <div className="flex flex-col w-full 2xl:px-72 xl:px-32 lg:px-16 md:px-8 sm:px-4 px-2 gap-16 pt-4 bg-gray-800 text-white">
       <div className="flex flex-col gap-4">
         <div className="w-full xl:h-[440px] sm:h-[220px] h-[200px] z-0">
           <LazyMap
@@ -253,13 +267,12 @@ function Page() {
               country: project?.country,
               city: project?.city,
               compagny: project?.compagny,
-
               mainpic_url: project?.mainpic_url,
             }))}
           />
         </div>
-        <div className="flex flex-col xl:flex-row lg:flex-row  w-full">
-          <div className="xl:w-1/3 lg:w-1/3  w-full">
+        <div className="flex flex-col xl:flex-row lg:flex-row w-full">
+          <div className="xl:w-1/3 lg:w-1/3 w-full">
             <div className="w-full">
               <Filter
                 selectedCountries={selectedCountries}
@@ -286,6 +299,8 @@ function Page() {
                 onSurfaceRangeChange={handleSurfaceRangeChange}
                 bedRange={bedRange}
                 onBedRangeChange={handleBedRangeChange}
+                showFavorites={showFavorites}
+                onFavoritesChange={setShowFavorites}
               />
             </div>
           </div>
@@ -296,13 +311,13 @@ function Page() {
                   Total Projects: {filteredProjects.length} apartments found
                 </p>
               </div>
-              <ScrollArea className="h-[1000px] w-full px-4">
-                {filteredProjects.map((item, index) => (
+              <ScrollArea className="h-[1200px] w-full px-4">
+                {projects.map((item, index) => (
                   <div
                     key={index}
                     className="flex flex-col w-full gap-4 mt-4 border shadow-lg rounded-sm pr-2"
                   >
-                    <div className="flex sm:flex-row flex-col  gap-4 w-full p-2">
+                    <div className="flex sm:flex-row flex-col gap-4 w-full p-2">
                       <div className="relative h-40 sm:w-1/3 w-[300px]">
                         <Avatar
                           url={item.project.mainpic_url}
@@ -373,18 +388,18 @@ function Page() {
                             </div>
                           </div>
 
-                          <div className="w-2/12  justify-end   hidden sm:flex">
-                            <button
-                              onClick={() => handleToggleFavorite(item)}
+                          <div className="w-2/12 justify-end hidden sm:flex">
+                            <Button
                               style={{ marginLeft: "10px" }}
+                              onClick={() => handleToggleFavorite(item)}
+                              className="bg-transparent  text-white hover:bg-opacity-10"
                             >
-                              {isFavorite(item) ? (
+                             {isFavorite(item) ? (
                                 <FaHeart fill="red" size={20} />
                               ) : (
                                 <FaRegHeart fill="red" size={20} />
                               )}
-                              <p>{item.id} id</p>
-                            </button>
+                            </Button>
                           </div>
                         </div>
 
@@ -393,7 +408,6 @@ function Page() {
                             The project
                           </button>
                           <div className="block sm:hidden">
-                            {" "}
                             <FaHeart size={20} color="red" />
                           </div>
                         </div>
@@ -401,6 +415,21 @@ function Page() {
                     </div>
                   </div>
                 ))}
+                <div className="flex justify-between items-center mt-4">
+                  <Button
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </Button>
+                  <span>{`Page ${currentPage} of ${totalPages}`}</span>
+                  <Button
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </Button>
+                </div>
               </ScrollArea>
             </div>
           </div>
@@ -438,32 +467,29 @@ function Filter({
   bedRange,
   onBedRangeChange,
   showFavorites,
-  setShowFavorites,
-  showFavoriteCheckbox,
-  onFavoriteChange
+  onFavoritesChange,
 }) {
   const htwo = "text-sm font-bold pb-4 ";
   const hthree = "text-sm";
   const hfouth = "flex flex-col gap-2";
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const handleToggleFavorites = () => {
-    setShowFavorites((prev) => !prev);
-  };
 
   return (
     <div className="z-10 pb-32">
       <div className="hidden sm:block">
         <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
-        <div className="w-full flex items-center gap-2 mb-4">
-        <div className="rounded-sm w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center bg-white text-black">
-              <p>Favorites</p> <FaHeart color={showFavorites ? "red" : "grey"} />
+          <div>
+            <div>
+              <h2 className="font-extrabold text-xl pb-4 ">Favorites</h2>
+              <Checkbox
+                isChecked={showFavorites}
+                onChange={(e) => onFavoritesChange(e.target.checked)}
+                color="secondary"
+              >
+                <p className={hthree}>Only favorite</p>
+              </Checkbox>
             </div>
-            <div className="w-full flex justify-end mb-4">
-            <button onClick={handleToggleFavorites}>
-        {showFavorites ? "Hide Favorites" : "Show Favorites"}
-      </button>
-            </div>
-            </div>
+          </div>
           <div>
             <h2 className="font-extrabold text-xl pb-4 ">Apartement</h2>
             <div className="pb-8">
