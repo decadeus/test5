@@ -255,11 +255,11 @@ function Page() {
   const isFavorite = (item) => favorites.includes(item.id);
 
   return (
-    <div className="flex flex-col w-full 2xl:px-72 xl:px-32 lg:px-16 md:px-8 sm:px-4 px-2 gap-16 pt-4 bg-gray-800 text-white">
+    <div className="flex flex-col w-full 2xl:px-72 xl:px-32 lg:px-16 md:px-8 sm:px-4 px-2 gap-16 pt-4 bgfull text-white">
       <div className="flex flex-col gap-4">
         <div className="w-full xl:h-[440px] sm:h-[220px] h-[200px] z-0">
           <LazyMap
-            classN="w-full xl:h-[440px] sm:h-[220px] h-[200px] rounded-sm"
+            classN="w-full xl:h-[440px] sm:h-[220px] h-[200px]"
             todos={filteredProjects.map(({ project }) => ({
               lat: project?.lat,
               lng: project?.lng,
@@ -268,6 +268,7 @@ function Page() {
               city: project?.city,
               compagny: project?.compagny,
               mainpic_url: project?.mainpic_url,
+              
             }))}
           />
         </div>

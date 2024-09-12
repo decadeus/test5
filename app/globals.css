@@ -8,6 +8,7 @@
 :root {
   --primary-color: #5b2c6f;
   --secondary-color: #bb8fce;
+  --full-bg: #334155;
 }
 /* styles.css */
 .bgcolorP {
@@ -44,3 +45,5 @@
     background: linear-gradient(338deg, rgba(161,159,236,0.1982186624649859) 35%, rgba(244,230,255,0.5) 100%);
 
   }
+
+  .bgfull {background-color: var(--full-bg);}

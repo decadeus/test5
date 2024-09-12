@@ -7,7 +7,7 @@ import Image from "next/legacy/image";
 export default function Page() {
   // Styles for a modern design
   const containerStyle =
-    "flex flex-col items-center bg-gray-800 w-full px-64 pt-32 pb-32";
+    "flex flex-col items-center bgfull w-full px-64 pt-32 pb-32";
   const headerStyle =
     "text-6xl font-bold text-gray-100 mb-8 font-montserrat text-center shadowI bg-transparent";
   const subheaderStyle = "text-lg text-gray-100 mb-8 font-montserrat mb-32";
