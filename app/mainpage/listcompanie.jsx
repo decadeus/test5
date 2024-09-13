@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { companies } from "@/utils/companies"; // Importation des entreprises
-import Image from "next/image"; // Importer l'élément Image de Next.js
+import { companies } from "@/utils/companies";
+import Image from "next/image";
 
 export default function ListCompanies() {
   const [loading, setLoading] = useState(true);
@@ -55,44 +55,46 @@ export default function ListCompanies() {
   };
 
   return (
-    <div className="w-full">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="w-full xl:px-4 md:px-8">
+      {/* Grille responsive avec toujours 2 colonnes */}
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {companies.map((company) => (
           <div
             key={company.id}
-            className="border rounded shadow text-center textfull group transition duration-300 ease-in-out hover:bg-white hover:text-black h-[220px] hover:border-black hover:border-2 hover:h-[220px] hover:rounded"
+            className="border rounded shadow text-center group transition duration-300 ease-in-out hover:bg-white hover:text-black h-[200px] sm:h-[240px] lg:h-[260px] xl:h-[280px] hover:border-black hover:border-2 hover:rounded"
           >
             <div className="flex flex-col justify-center items-center h-full w-full relative">
-              {/* Afficher l'image de l'entreprise en tant que cover */}
+              {/* Image de l'entreprise */}
               <div className="group-hover:hidden w-full h-full relative">
                 <Image
-                  src={`/companies/${company.pic}`} // Utilise le chemin relatif depuis /public
+                  src={`/companies/${company.pic}`}
                   alt={company.name}
                   fill
-                  className="object-cover rounded" // Utilisation de fill et object-cover pour la couverture complète
+                  className="object-cover rounded"
                 />
               </div>
-              {/* Afficher les détails lors du survol */}
+
+              {/* Détails lors du survol */}
               <div className="hidden group-hover:flex flex-col items-center justify-center absolute inset-0 bg-opacity-80 bg-white text-black">
-                <p className="text-xl">{company.name}</p>
-                <div className="flex gap-4 mt-8">
-                  <div className="flex flex-col items-center border-r-2 pr-4">
-                    <p className="font-bold">
+                <p className="text-lg sm:text-xl lg:text-2xl">{company.name}</p>
+                <div className="flex flex-col gap-2 sm:gap-4 mt-4 lg:mt-8 ">
+                  <div className="flex flex-col items-center xl:border-r-2 xl:pr-2 sm:pr-4">
+                    <p className="font-bold text-sm sm:text-base lg:text-lg">
                       {countProjectsForCompany(company.name)}
                     </p>
-                    <p>Projects</p>
+                    <p className="text-xs sm:text-sm">Projects</p>
                   </div>
-                  <div className="flex flex-col items-center pl-4 border-r-2 pr-4">
-                    <p className="font-bold">
+                  <div className="flex flex-col items-center xl:pl-2 sm:pl-4 xl:border-r-2 xl:pr-2 sm:pr-4">
+                    <p className="font-bold text-sm sm:text-base lg:text-lg">
                       {countDistinctCitiesForCompany(company.name)}
                     </p>
-                    <p>Cities</p>
+                    <p className="text-xs sm:text-sm">Cities</p>
                   </div>
-                  <div className="flex flex-col items-center pl-4">
-                    <p className="font-bold">
+                  <div className="flex flex-col items-center xl:pl-2 sm:pl-4">
+                    <p className="font-bold text-sm sm:text-base lg:text-lg">
                       {countProjectlistRowsForCompany(company.name)}
                     </p>
-                    <p>Apartements</p>
+                    <p className="text-xs sm:text-sm">Apartments</p>
                   </div>
                 </div>
               </div>
