@@ -311,148 +311,146 @@ function Page() {
                 </p>
               </div>
               <ScrollArea className="h-[1200px] w-full px-4 pb-4">
-  {projects.map((item, index) => (
-    <div
-      key={index}
-      className="flex flex-col w-full gap-4 mt-4 border shadow-lg rounded-sm pr-2"
-    >
-      <div className="flex sm:flex-row flex-col gap-4 w-full p-2">
-        <div className="relative h-40 sm:w-1/3 xl:w-[300px] w-full">
-          <Avatar
-            url={item.project.mainpic_url}
-            width={270}
-            height={196}
-            classn="rounded-sm"
-          />
-          {item.des && (
-            <div className="absolute bottom-2 right-2">
-              <p className="text-white bg-red-600 rounded-sm px-2 text-sm">
-                {item.des}
-              </p>
-            </div>
-          )}
-          <Button
-            style={{ position: 'absolute', top: '10px', right: '10px' }}
-            onClick={() => handleToggleFavorite(item)}
-            className="bg-transparent text-white hover:bg-opacity-10"
-          >
-            {isFavorite(item) ? (
-              <FaHeart fill="red" size={20} />
-            ) : (
-              <FaRegHeart fill="red" size={20} />
-            )}
-          </Button>
-        </div>
-        <div className="px-2 pt-2 flex flex-col w-full sm:w-2/3 justify-between ">
-          <div className="flex justify-between w-full">
-            <div className="w-5/12 flex flex-col justify-between">
-              <div className="flex flex-col gap-2">
-                <p className="font-bold text-md sm:text-xl">
-                  {item.project.name}
-                </p>
-                <div className="flex gap-2">
-                  <p className="font-semibold">
-                    {item.project.country}
-                  </p>
-                  <p>{item.project.city}</p>
+                {projects.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col w-full gap-4 mt-4 border shadow-lg rounded-sm pr-2"
+                  >
+                    <div className="flex sm:flex-row flex-col gap-4 w-full p-2">
+                      <div className="relative h-40 sm:w-1/3 xl:w-[300px] w-full">
+                        <Avatar
+                          url={item.project.mainpic_url}
+                          width={270}
+                          height={196}
+                          classn="rounded-sm"
+                        />
+                        {item.des && (
+                          <div className="absolute bottom-2 right-2">
+                            <p className="text-white bg-red-600 rounded-sm px-2 text-sm">
+                              {item.des}
+                            </p>
+                          </div>
+                        )}
+                        <Button
+                          style={{
+                            position: "absolute",
+                            top: "10px",
+                            right: "10px",
+                          }}
+                          onClick={() => handleToggleFavorite(item)}
+                          className="bg-transparent text-white hover:bg-opacity-10"
+                        >
+                          {isFavorite(item) ? (
+                            <FaHeart fill="red" size={20} />
+                          ) : (
+                            <FaRegHeart fill="red" size={20} />
+                          )}
+                        </Button>
+                      </div>
+                      <div className="px-2 pt-2 flex flex-col w-full sm:w-2/3 justify-between ">
+                        <div className="flex justify-between w-full">
+                          <div className="w-1/2 flex flex-col justify-between">
+                            <div className="flex flex-col xl:gap-2">
+                              <p className="font-bold text-md xl:text-xl text-md">
+                                {item.project.name}
+                              </p>
+                              <div className="flex gap-2">
+                                <p className="font-semibold">
+                                  {item.project.country}
+                                </p>
+                                <p>{item.project.city}</p>
+                              </div>
+                              <div className="flex gap-2">
+                                {item.project.swim && (
+                                  <PiPersonSimpleSwimDuotone />
+                                )}
+                                {item.project.child && (
+                                  <IoGameControllerOutline />
+                                )}
+                                {item.project.fitness && <IoIosFitness />}
+                                {item.project.disabled && <BiHandicap />}
+                                {item.project.bike && (
+                                  <MdOutlineDirectionsBike />
+                                )}
+                                {item.project.cctv && <BiCctv />}
+                                {item.project.entrance && <BiDoorOpen />}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="w-1/2 flex flex-col items-end justify-between">
+                            <div>
+                              {item.noprice || item.price === null ? (
+                                <p className="flex gap-1 items-center italic">
+                                  undefined
+                                </p>
+                              ) : (
+                                <p className="flex gap-1 items-center">
+                                  {item.pricetype === "PLN" ? (
+                                    <span className="flex">
+                                      {item.price} <TbCurrencyZloty size={20} />
+                                    </span>
+                                  ) : (
+                                    <span className="flex justify-center items-center">
+                                      {item.price} <FaEuroSign size={13} />
+                                    </span>
+                                  )}
+                                </p>
+                              )}
+                              <p>{item.surface} m²</p>
+                              <p>{item.bed} bedroom(s)</p>
+                            </div>
+                          </div>
+
+                          <div className="w-2/12 justify-end hidden sm:flex">
+                            <Button
+                              style={{ marginLeft: "10px" }}
+                              onClick={() => handleToggleFavorite(item)}
+                              className="bg-transparent text-white hover:bg-opacity-10"
+                            >
+                              {isFavorite(item) ? (
+                                <FaHeart fill="red" size={20} />
+                              ) : (
+                                <FaRegHeart fill="red" size={20} />
+                              )}
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="flex items-between justify-between h-[40px] w-full">
+                          
+
+                          <div className="rounded-sm flex justify-center items-center w-full ">
+                            <a
+                              href={item.project.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <button className="w-full secondary text-white hover:bg-blue-700 rounded-sm bgmap h-fit xl:px-16 px-2 py-1">
+                                See {item.project.compagny} project
+                              </button>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <div className="flex justify-between items-center mt-4">
+                  <Button
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </Button>
+                  <span>{`Page ${currentPage} of ${totalPages}`}</span>
+                  <Button
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </Button>
                 </div>
-                <div className="flex gap-2">
-                  {item.project.swim && (
-                    <PiPersonSimpleSwimDuotone />
-                  )}
-                  {item.project.child && (
-                    <IoGameControllerOutline />
-                  )}
-                  {item.project.fitness && <IoIosFitness />}
-                  {item.project.disabled && <BiHandicap />}
-                  {item.project.bike && (
-                    <MdOutlineDirectionsBike />
-                  )}
-                  {item.project.cctv && <BiCctv />}
-                  {item.project.entrance && <BiDoorOpen />}
-                </div>
-              </div>
-            </div>
-
-            <div className="w-5/12 flex flex-col items-end justify-between">
-              <div>
-                {item.noprice || item.price === null ? (
-                  <p className="flex gap-1 items-center italic">
-                    undefined
-                  </p>
-                ) : (
-                  <p className="flex gap-1 items-center">
-                    {item.pricetype === "PLN" ? (
-                      <span className="flex">
-                        {item.price} <TbCurrencyZloty size={20} />
-                      </span>
-                    ) : (
-                      <span className="flex justify-center items-center">
-                        {item.price} <FaEuroSign size={13} />
-                      </span>
-                    )}
-                  </p>
-                )}
-                <p>{item.surface} m²</p>
-                <p>{item.bed} bedroom(s)</p>
-              </div>
-            </div>
-
-            <div className="w-2/12 justify-end hidden sm:flex">
-              <Button
-                style={{ marginLeft: "10px" }}
-                onClick={() => handleToggleFavorite(item)}
-                className="bg-transparent text-white hover:bg-opacity-10"
-              >
-                {isFavorite(item) ? (
-                  <FaHeart fill="red" size={20} />
-                ) : (
-                  <FaRegHeart fill="red" size={20} />
-                )}
-              </Button>
-            </div>
-          </div>
-          <div className="flex items-between justify-between h-[40px] w-full">
-            <div className="w-1/2 flex justify-between items-between h-full">
-              <p className="font-semibold flex justify-center items-center">
-                {item.project.compagny}
-              </p>
-            </div>
-
-            <div className="w-1/2 rounded-sm flex justify-end items-center ">
-              <a
-                href={item.project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <button className="w-full secondary text-white hover:bg-blue-700 rounded-sm bgmap h-fit xl:px-16 px-2 py-1">
-                  The project
-                </button>
-              </a>
-             
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  ))}
-  <div className="flex justify-between items-center mt-4">
-    <Button
-      onClick={handlePreviousPage}
-      disabled={currentPage === 1}
-    >
-      Previous
-    </Button>
-    <span>{`Page ${currentPage} of ${totalPages}`}</span>
-    <Button
-      onClick={handleNextPage}
-      disabled={currentPage === totalPages}
-    >
-      Next
-    </Button>
-  </div>
-</ScrollArea>
-
+              </ScrollArea>
             </div>
           </div>
         </div>
@@ -731,15 +729,23 @@ function Filter({
           <ModalContent>
             {(onClose) => (
               <>
-                <ModalHeader className="flex flex-col gap-1">
+                <ModalHeader className="flex flex-col gap-1 border-b-2 border-black">
                   Filter
                 </ModalHeader>
                 <ModalBody>
                   <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
                     <div>
-                      <div className=" rounded-sm w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center text-white ">
-                        <p className="text-black"> Only your favorite</p>{" "}
-                        <FaHeart color="blue" />
+                      <div className="pb-8">
+                        <h2 className="font-extrabold text-xl pb-4 ">
+                          Favorites
+                        </h2>
+                        <Checkbox
+                          isChecked={showFavorites}
+                          onChange={(e) => onFavoritesChange(e.target.checked)}
+                          color="secondary"
+                        >
+                          <p className={hthree}>Only favorite</p>
+                        </Checkbox>
                       </div>
                       <h2 className="font-extrabold text-xl pb-4">Country</h2>
                       <div className={hfouth}>
