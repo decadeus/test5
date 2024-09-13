@@ -36,7 +36,7 @@ const MapComponent = ({ classN, todos }) => {
   }, [todos]);
 
   return (
-    <MapContainer center={center} zoom={5} className={classN}>
+    <MapContainer center={center} zoom={4} className={classN}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

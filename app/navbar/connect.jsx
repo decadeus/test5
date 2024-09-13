@@ -17,7 +17,7 @@ export default function Connect() {
         className="w-fit border pl-2 py-1 rounded-sm border-black"
       >
         <div className="flex gap-2 items-center  mr-4 text-black">
-          <IoMenu />
+          <p>Connect</p>
           <FaUser
             size={25}
             color="white"

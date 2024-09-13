@@ -339,6 +339,7 @@ function Page() {
                           }}
                           onClick={() => handleToggleFavorite(item)}
                           className="bg-transparent text-white hover:bg-opacity-10"
+                          aria-label="favorite"
                         >
                           {isFavorite(item) ? (
                             <FaHeart fill="red" size={20} />
@@ -407,6 +408,7 @@ function Page() {
                               style={{ marginLeft: "10px" }}
                               onClick={() => handleToggleFavorite(item)}
                               className="bg-transparent text-white hover:bg-opacity-10"
+                              aria-label="favorite"
                             >
                               {isFavorite(item) ? (
                                 <FaHeart fill="red" size={20} />
@@ -424,8 +426,9 @@ function Page() {
                               href={item.project.link}
                               target="_blank"
                               rel="noopener noreferrer"
+                              aria-label={item.project.compagny}
                             >
-                              <button className="w-full secondary text-white hover:bg-blue-700 rounded-sm bgmap h-fit xl:px-16 px-2 py-1">
+                              <button aria-label="compagny" className="w-full  text-white hover:bg-blue-700 rounded-sm bgmap h-fit xl:px-16 px-2 py-1 text-bold">
                                 See {item.project.compagny} project
                               </button>
                             </a>
@@ -505,6 +508,7 @@ function Filter({
                 isChecked={showFavorites}
                 onChange={(e) => onFavoritesChange(e.target.checked)}
                 color="secondary"
+                aria-label="favorite"
               >
                 <p className={hthree}>Only favorite</p>
               </Checkbox>
@@ -743,6 +747,7 @@ function Filter({
                           isChecked={showFavorites}
                           onChange={(e) => onFavoritesChange(e.target.checked)}
                           color="secondary"
+                          aria-label="favorite"
                         >
                           <p className={hthree}>Only favorite</p>
                         </Checkbox>
