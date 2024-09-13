@@ -228,7 +228,7 @@ function Page() {
 
           {/* Section List Companies */}
           <div className="flex flex-col justify-start items-start w-full">
-            <h2 className={subtitle}>Property Management Companies</h2>
+            <h2 className={subtitle_b}>Property Management Companies</h2>
             <ListCompanies />
           </div>
         </div>

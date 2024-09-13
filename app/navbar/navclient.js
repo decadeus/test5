@@ -18,7 +18,15 @@ const siteConfig = {
   noUser: [
     // { label: "Home", href: "/" },
     // { label: "Completed Residential Building", href: "/completed" },
-    { label: <div className="flex justify-center items-center gap-2"><IoSearch /> Search</div>, href: "/projects" },
+    { 
+      label: (
+        <div className="flex justify-center items-center gap-2">
+        <IoSearch className="text-2xl sm:text-sm md:text-base lg:text-xl xl:text-2xl" />
+        <span className="hidden sm:inline">Search</span>
+      </div>
+      ), 
+      href: "/projects" 
+    },
 
   ],
   Cproject: [
