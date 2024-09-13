@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { createClient } from "@/utils/supabase/client"; // Ensure the correct path to your Supabase client
 import Link from "next/link";
 import Image from "next/legacy/image";
@@ -36,17 +36,25 @@ export default function MainNavBar({ user }) {
   }, [user, supabase]);
 
   return (
-    <div className="w-full px-10  py-4 flex justify-between items-center bg-white  text-black  sticky top-0 z-50 opacity-90">
+    <div className="w-full py-4 flex justify-between items-center bg-white  text-black  sticky top-0 z-50 opacity-90 px-4 xl:px-8">
       <div className="flex justify-center items-center gap-2">
         <Link href="/">
           <div className="flex gap-2 items-center">
             <div className="flex justify-center items-center gap-2">
               <div className="w-8 h-8 rounded-full">
-              <Image src={b} width={50} height={50} alt="Logo" className="rounded-full" />
+                <Image
+                  src={b}
+                  width={50}
+                  height={50}
+                  alt="Logo"
+                  className="rounded-full"
+                />
               </div>
               <div>
-              <h2 className="text-black text-2xl font-bold hidden sm:block ">Hoomge.com</h2>
-            </div>
+                <h2 className="text-black text-2xl font-bold hidden sm:block ">
+                  Hoomge.com
+                </h2>
+              </div>
             </div>
           </div>
         </Link>
@@ -68,10 +76,13 @@ export default function MainNavBar({ user }) {
           </div>
         ) : (
           <div className="flex gap-4">
-          <div className="flex gap-8 items-center">
-            <Connect className="py-2" />
-          </div>
-          <div className="bg-gray-300 py-1 px-2 rounded-sm flex justify-center items-center"> <Link href="/addproject">Add your project</Link></div>
+            <div className="bg-gray-300 py-1 px-2 rounded-sm flex justify-center items-center">
+              {" "}
+              <Link href="/addproject">Add your project</Link>
+            </div>
+            <div className="flex gap-8 items-center">
+              <Connect className="py-2" />
+            </div>
           </div>
         )}
       </div>

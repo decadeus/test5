@@ -1,4 +1,4 @@
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -7,7 +7,7 @@ import { createClient } from "@/utils/supabase/server";
 import Head from "next/head";
 import Link from "next/link";
 import Foot from "@/app/footer/footer";
-import "@/app/globals.css"
+import "@/app/globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -29,20 +29,20 @@ export default async function RootLayout({ children }) {
     data: { user },
   } = await supabase.auth.getUser();
   return (
-    <html lang="en" className={GeistSans.className}>
-      <Head>
-        <meta name="robots" content="noindex, nofollow" />
-      </Head>
-      <body className=" text-foreground bgfull">
-        <Providers>
-          <MainNavBar user={user}  />
-          <main className="min-h-screen flex flex-col items-center text-black">
-            {children}
-            <SpeedInsights />
-          </main>
-          <Foot />
-        </Providers>
-      </body>
-    </html>
+    <html lang="en" >
+  <Head>
+    <meta name="robots" content="noindex, nofollow" />
+  </Head>
+  <body className="text-foreground bgfull w-full overflow-x-hidden">
+    <Providers>
+      <MainNavBar user={user} />
+      <main className="min-h-screen w-full flex flex-col items-center text-black px-4">
+        {children}
+        <SpeedInsights />
+      </main>
+      <Foot />
+    </Providers>
+  </body>
+</html>
   );
 }

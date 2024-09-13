@@ -4,6 +4,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 
+
 export default function MostBeauty({ country }) {
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
@@ -36,7 +37,7 @@ export default function MostBeauty({ country }) {
 
   return (
     <div>
-      <ScrollArea className="w-full whitespace-nowrap">
+      <ScrollArea className="w-full ">
         <div className="flex w-max space-x-4">
           {projects.length === 0 ? (
             <div>No projects found</div>

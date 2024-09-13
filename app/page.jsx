@@ -13,6 +13,7 @@ import { MdOutlinePoll } from "react-icons/md";
 import { LuNewspaper } from "react-icons/lu";
 import { createClient } from "@/utils/supabase/client";
 
+
 function Page() {
   const [selectedCountry, setSelectedCountry] = useState("France");
   const [count, setCount] = useState(null);
@@ -49,9 +50,9 @@ function Page() {
   }, []);
 
   return (
-    <div className="w-full pb-32 bgfull textfull">
-      <header className="w-full px-16 pb-8">
-        <h1 className="text-6xl font-bold textfull mb-12 mt-32 font-montserrat text-center shadowI">
+    <div className="w-full pb-8 xl:pb-32 bgfull textfull">
+      <header className="w-full px-4 xl:px-16 pb-8">
+        <h1 className="xl:text-6xl text-4xl font-bold textfull mb-12 mt-12 xl:mt-32 font-montserrat text-center shadowI">
           Find Your Future <br /> Dream Apartment
         </h1>
         <h2 className="text-xl textfull pt-4 text-center">
@@ -68,7 +69,7 @@ function Page() {
         </h2>
       </header>
 
-      <main className="px-64 pt-16">
+      <main className="px-4 xl:px-64 pt-16">
         <div className="flex flex-col justify-start items-start text-start gap-8">
           {/* Section pour sélectionner le pays */}
           <div className="flex flex-col justify-center items-center w-full">
@@ -108,7 +109,9 @@ function Page() {
               </span>{" "}
               Existing Residences
             </h2>
+            <div className="w-fit">
             <MostBeauty country={selectedCountry} />
+            </div>
           </div>
 
           {/* Section Last */}
