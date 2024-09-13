@@ -36,8 +36,8 @@ export default function MainNavBar({ user }) {
   }, [user, supabase]);
 
   return (
-    <div className="w-full py-4 flex justify-between items-center bg-white  text-black  sticky top-0 z-50 opacity-90 px-4 xl:px-8">
-      <div className="flex justify-center items-center gap-2">
+    <div className="w-full py-4 grid grid-cols-3 grid-rows-1 justify-between items-center bg-white  text-black  sticky top-0 z-50 opacity-90 px-4 xl:px-16 border-b-1 border-black">
+      <div className="flex justify-start items-center gap-2">
         <Link href="/">
           <div className="flex gap-2 items-center">
             <div className="flex justify-center items-center gap-2">
@@ -60,9 +60,12 @@ export default function MainNavBar({ user }) {
         </Link>
       </div>
 
-      <ListNav userId={user?.id} />
-
       <div>
+
+      <ListNav userId={user?.id} />
+      </div>
+
+      <div className="flex justify-end">
         {user ? (
           <div className="flex gap-2 items-center">
             <HelpAdmin />
