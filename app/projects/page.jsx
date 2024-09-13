@@ -255,10 +255,10 @@ function Page() {
 
   return (
     <div className="flex flex-col w-full 2xl:px-72 xl:px-32 lg:px-16 md:px-8 sm:px-4 px-2 gap-16 pt-4 bgfull text-black">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col xl:gap-4 gap-32">
         <div className="w-full xl:h-[440px] sm:h-[220px] h-[200px] z-0">
           <LazyMap
-            classN="w-full xl:h-[440px] sm:h-[220px] h-[200px]"
+            classN="w-full xl:h-[440px] h-[320px] "
             todos={filteredProjects.map(({ project }) => ({
               lat: project?.lat,
               lng: project?.lng,
@@ -271,7 +271,7 @@ function Page() {
           />
         </div>
         <div className="flex flex-col xl:flex-row lg:flex-row w-full">
-          <div className="xl:w-1/3 lg:w-1/3 w-full">
+          <div className="xl:w-1/3 lg:w-1/3 w-full ">
             <div className="w-full">
               <Filter
                 selectedCountries={selectedCountries}
@@ -310,140 +310,149 @@ function Page() {
                   Total Projects: {filteredProjects.length} apartments found
                 </p>
               </div>
-              <ScrollArea className="h-[1200px] w-full px-4">
-                {projects.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col w-full gap-4 mt-4 border shadow-lg rounded-sm pr-2"
-                  >
-                    <div className="flex sm:flex-row flex-col gap-4 w-full p-2">
-                      <div className="relative h-40 sm:w-1/3 w-[300px]">
-                        <Avatar
-                          url={item.project.mainpic_url}
-                          width={270}
-                          height={196}
-                          classn="rounded-sm"
-                        />
-                        {item.des && (
-                          <div className="absolute bottom-2 right-2">
-                            <p className="text-white bg-red-600 rounded-sm px-2 text-sm">
-                              {item.des}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                      <div className="px-2 pt-2 flex flex-col w-full sm:w-2/3 justify-between ">
-                        <div className="flex justify-between w-full">
-                          <div className="w-5/12 flex flex-col justify-between">
-                            <div className="flex flex-col gap-2">
-                              <p className="font-bold text-md sm:text-xl">
-                                {item.project.name}
-                              </p>
-                              <div className="flex gap-2">
-                                <p className="font-semibold">
-                                  {item.project.country}
-                                </p>
-
-                                <p>{item.project.city}</p>
-                              </div>
-                              <div className="flex gap-2">
-                                {item.project.swim && (
-                                  <PiPersonSimpleSwimDuotone />
-                                )}
-                                {item.project.child && (
-                                  <IoGameControllerOutline />
-                                )}
-                                {item.project.fitness && <IoIosFitness />}
-                                {item.project.disabled && <BiHandicap />}
-                                {item.project.bike && (
-                                  <MdOutlineDirectionsBike />
-                                )}
-                                {item.project.cctv && <BiCctv />}
-                                {item.project.entrance && <BiDoorOpen />}
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="w-5/12 flex flex-col items-end justify-between">
-                            <div>
-                              {item.noprice || item.price === null ? (
-                                <p className="flex gap-1 items-center italic">
-                                  undefined
-                                </p>
-                              ) : (
-                                <p className="flex gap-1 items-center">
-                                  {item.pricetype === "PLN" ? (
-                                    <span className="flex">
-                                      {item.price} <TbCurrencyZloty size={20} />
-                                    </span>
-                                  ) : (
-                                    <span className="flex justify-center items-center">
-                                      {item.price} <FaEuroSign size={13} />
-                                    </span>
-                                  )}
-                                </p>
-                              )}
-                              <p>{item.surface} m²</p>
-                              <p>{item.bed} bedroom(s)</p>
-                            </div>
-                          </div>
-
-                          <div className="w-2/12 justify-end hidden sm:flex">
-                            <Button
-                              style={{ marginLeft: "10px" }}
-                              onClick={() => handleToggleFavorite(item)}
-                              className="bg-transparent  text-white hover:bg-opacity-10"
-                            >
-                              {isFavorite(item) ? (
-                                <FaHeart fill="red" size={20} />
-                              ) : (
-                                <FaRegHeart fill="red" size={20} />
-                              )}
-                            </Button>
-                          </div>
-                        </div>
-                        <div className="flex items-between justify-between h-[40px]">
-                          <div className="w-1/2 flex justify-between items-between h-full">
-                            <p className="font-semibold flex justify-center items-center">
-                              {item.project.compagny}
-                            </p>
-                          </div>
-
-                          <div className="w-1/2 rounded-sm flex justify-center items-center ">
-                            <a
-                              href={item.project.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <button className="w-full secondary text-white hover:bg-blue-700 rounded-sm bgmap h-ful px-16 py-2">
-                                The project
-                              </button>
-                            </a>
-                            <div className="block sm:hidden">
-                              <FaHeart size={20} color="red" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                <div className="flex justify-between items-center mt-4">
-                  <Button
-                    onClick={handlePreviousPage}
-                    disabled={currentPage === 1}
-                  >
-                    Previous
-                  </Button>
-                  <span>{`Page ${currentPage} of ${totalPages}`}</span>
-                  <Button
-                    onClick={handleNextPage}
-                    disabled={currentPage === totalPages}
-                  >
-                    Next
-                  </Button>
+              <ScrollArea className="h-[1200px] w-full px-4 pb-4">
+  {projects.map((item, index) => (
+    <div
+      key={index}
+      className="flex flex-col w-full gap-4 mt-4 border shadow-lg rounded-sm pr-2"
+    >
+      <div className="flex sm:flex-row flex-col gap-4 w-full p-2">
+        <div className="relative h-40 sm:w-1/3 xl:w-[300px] w-full">
+          <Avatar
+            url={item.project.mainpic_url}
+            width={270}
+            height={196}
+            classn="rounded-sm"
+          />
+          {item.des && (
+            <div className="absolute bottom-2 right-2">
+              <p className="text-white bg-red-600 rounded-sm px-2 text-sm">
+                {item.des}
+              </p>
+            </div>
+          )}
+          <Button
+            style={{ position: 'absolute', top: '10px', right: '10px' }}
+            onClick={() => handleToggleFavorite(item)}
+            className="bg-transparent text-white hover:bg-opacity-10"
+          >
+            {isFavorite(item) ? (
+              <FaHeart fill="red" size={20} />
+            ) : (
+              <FaRegHeart fill="red" size={20} />
+            )}
+          </Button>
+        </div>
+        <div className="px-2 pt-2 flex flex-col w-full sm:w-2/3 justify-between ">
+          <div className="flex justify-between w-full">
+            <div className="w-5/12 flex flex-col justify-between">
+              <div className="flex flex-col gap-2">
+                <p className="font-bold text-md sm:text-xl">
+                  {item.project.name}
+                </p>
+                <div className="flex gap-2">
+                  <p className="font-semibold">
+                    {item.project.country}
+                  </p>
+                  <p>{item.project.city}</p>
                 </div>
-              </ScrollArea>
+                <div className="flex gap-2">
+                  {item.project.swim && (
+                    <PiPersonSimpleSwimDuotone />
+                  )}
+                  {item.project.child && (
+                    <IoGameControllerOutline />
+                  )}
+                  {item.project.fitness && <IoIosFitness />}
+                  {item.project.disabled && <BiHandicap />}
+                  {item.project.bike && (
+                    <MdOutlineDirectionsBike />
+                  )}
+                  {item.project.cctv && <BiCctv />}
+                  {item.project.entrance && <BiDoorOpen />}
+                </div>
+              </div>
+            </div>
+
+            <div className="w-5/12 flex flex-col items-end justify-between">
+              <div>
+                {item.noprice || item.price === null ? (
+                  <p className="flex gap-1 items-center italic">
+                    undefined
+                  </p>
+                ) : (
+                  <p className="flex gap-1 items-center">
+                    {item.pricetype === "PLN" ? (
+                      <span className="flex">
+                        {item.price} <TbCurrencyZloty size={20} />
+                      </span>
+                    ) : (
+                      <span className="flex justify-center items-center">
+                        {item.price} <FaEuroSign size={13} />
+                      </span>
+                    )}
+                  </p>
+                )}
+                <p>{item.surface} m²</p>
+                <p>{item.bed} bedroom(s)</p>
+              </div>
+            </div>
+
+            <div className="w-2/12 justify-end hidden sm:flex">
+              <Button
+                style={{ marginLeft: "10px" }}
+                onClick={() => handleToggleFavorite(item)}
+                className="bg-transparent text-white hover:bg-opacity-10"
+              >
+                {isFavorite(item) ? (
+                  <FaHeart fill="red" size={20} />
+                ) : (
+                  <FaRegHeart fill="red" size={20} />
+                )}
+              </Button>
+            </div>
+          </div>
+          <div className="flex items-between justify-between h-[40px] w-full">
+            <div className="w-1/2 flex justify-between items-between h-full">
+              <p className="font-semibold flex justify-center items-center">
+                {item.project.compagny}
+              </p>
+            </div>
+
+            <div className="w-1/2 rounded-sm flex justify-end items-center ">
+              <a
+                href={item.project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <button className="w-full secondary text-white hover:bg-blue-700 rounded-sm bgmap h-fit xl:px-16 px-2 py-1">
+                  The project
+                </button>
+              </a>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ))}
+  <div className="flex justify-between items-center mt-4">
+    <Button
+      onClick={handlePreviousPage}
+      disabled={currentPage === 1}
+    >
+      Previous
+    </Button>
+    <span>{`Page ${currentPage} of ${totalPages}`}</span>
+    <Button
+      onClick={handleNextPage}
+      disabled={currentPage === totalPages}
+    >
+      Next
+    </Button>
+  </div>
+</ScrollArea>
+
             </div>
           </div>
         </div>
@@ -488,7 +497,7 @@ function Filter({
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <div className="z-10 pb-32">
+    <div className="z-10 xl:pb-32">
       <div className="hidden sm:block">
         <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
           <div>
@@ -729,7 +738,7 @@ function Filter({
                   <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
                     <div>
                       <div className=" rounded-sm w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center text-white ">
-                        <p className="text-white"> Only your favorite</p>{" "}
+                        <p className="text-black"> Only your favorite</p>{" "}
                         <FaHeart color="blue" />
                       </div>
                       <h2 className="font-extrabold text-xl pb-4">Country</h2>
