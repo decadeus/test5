@@ -7,6 +7,7 @@ import Avatar from "@/app/getimage/project";
 import Link from "next/link";
 import a from "@/components/image/appart1.jpg";
 
+
 // Fonction pour créer une icône personnalisée
 const createCustomIcon = (iconUrl) => {
   return new window.L.Icon({
