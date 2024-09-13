@@ -142,7 +142,6 @@ function Page() {
       filtered = filtered.filter((project) => favorites.includes(project.id));
     }
 
-    console.log("Filtered Projects Count:", filtered.length);
     return filtered;
   }, [
     originalProjects,
