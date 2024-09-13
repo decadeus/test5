@@ -268,7 +268,6 @@ function Page() {
               city: project?.city,
               compagny: project?.compagny,
               mainpic_url: project?.mainpic_url,
-              
             }))}
           />
         </div>
@@ -334,7 +333,7 @@ function Page() {
                           </div>
                         )}
                       </div>
-                      <div className="px-2 pt-2 flex flex-col w-full sm:w-2/3">
+                      <div className="px-2 pt-2 flex flex-col w-full sm:w-2/3 justify-between ">
                         <div className="flex justify-between w-full">
                           <div className="w-5/12 flex flex-col justify-between">
                             <div className="flex flex-col gap-2">
@@ -345,6 +344,7 @@ function Page() {
                                 <p className="font-semibold">
                                   {item.project.country}
                                 </p>
+
                                 <p>{item.project.city}</p>
                               </div>
                               <div className="flex gap-2">
@@ -395,7 +395,7 @@ function Page() {
                               onClick={() => handleToggleFavorite(item)}
                               className="bg-transparent  text-white hover:bg-opacity-10"
                             >
-                             {isFavorite(item) ? (
+                              {isFavorite(item) ? (
                                 <FaHeart fill="red" size={20} />
                               ) : (
                                 <FaRegHeart fill="red" size={20} />
@@ -403,13 +403,20 @@ function Page() {
                             </Button>
                           </div>
                         </div>
+                        <div className="flex items-between justify-between h-[40px]">
+                          <div className="w-1/2 flex justify-between items-between h-full">
+                            <p className="font-semibold flex justify-center items-center">
+                              {item.project.compagny}
+                            </p>
+                          </div>
 
-                        <div className="mt-auto w-full rounded-sm flex justify-center items-center gap-8 pt-4">
-                          <button className="w-full py-1 secondary text-white hover:bg-blue-700 rounded-sm bgmap">
-                            The project
-                          </button>
-                          <div className="block sm:hidden">
-                            <FaHeart size={20} color="red" />
+                          <div className="w-1/2 rounded-sm flex justify-center items-center ">
+                            <button className="w-full secondary text-white hover:bg-blue-700 rounded-sm bgmap h-full">
+                              The project
+                            </button>
+                            <div className="block sm:hidden">
+                              <FaHeart size={20} color="red" />
+                            </div>
                           </div>
                         </div>
                       </div>

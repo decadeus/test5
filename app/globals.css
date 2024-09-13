@@ -8,7 +8,8 @@
 :root {
   --primary-color: #5b2c6f;
   --secondary-color: #bb8fce;
-  --full-bg: #334155;
+  --full-bg: #ffffff;
+  --full-text: #000000;
 }
 /* styles.css */
 .bgcolorP {
@@ -47,3 +48,5 @@
   }
 
   .bgfull {background-color: var(--full-bg);}
+
+  .textfull {color: var(--full-text);}

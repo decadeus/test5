@@ -4,6 +4,7 @@ import MostBeauty from "@/app/mainpage/mostbeauty";
 import Summer from "@/app/mainpage/summer";
 import Equipment from "@/app/mainpage/equipment";
 import Last from "@/app/mainpage/last";
+import ListCompanies from "@/app/mainpage/listcompanie";
 import image2 from "@/components/image/beach2.jpg";
 import image1 from "@/components/image/beach.jpg";
 import { Button } from "@nextui-org/react";
@@ -20,6 +21,7 @@ function Page() {
   const [error, setError] = useState(null);
 
   const subtitle = "font-extrabold text-4xl text-center text-white";
+  const subtitle_b = "font-extrabold text-4xl text-center text-black";
 
   useEffect(() => {
     async function fetchCounts() {
@@ -53,26 +55,26 @@ function Page() {
   }, []);
 
   return (
-    <div className="w-full pb-32 bgfull">
+    <div className="w-full pb-32 bgfull textfull">
      
       <div className="w-full px-16 pb-8">
-        <h1 className="text-6xl font-bold text-gray-100 mb-12 mt-32 font-montserrat text-center shadowI ">
+        <h1 className="text-6xl font-bold textfull mb-12 mt-32 font-montserrat text-center shadowI ">
           Find Your Future <br /> Dream Apartment
         </h1>
-        <h2 className="text-xl text-white pt-4 text-center">
+        <h2 className="text-xl textfull pt-4 text-center">
           Search among {count} new properties and {countlist} listed apartments.
         </h2>
       </div>
       <div className="px-64 pt-16 ">
         <div className="flex flex-col justify-start items-start text-start gap-8">
           <div className="flex flex-col justify-center items-center w-full">
-            <h2 className="font-bold text-white">Select country</h2>
+            <h2 className="font-bold textfull">Select country</h2>
             <div className="w-full flex gap-4 mb-8 justify-center pt-4 ">
               <button
                 onClick={() => setSelectedCountry("France")}
                 className={`px-4 py-2 rounded ${
                   selectedCountry === "France"
-                    ? "bgmap text-white borderI rounded-sm"
+                    ? "bgmap textfull borderI rounded-sm"
                     : "bg-gray-200 borderI rounded-sm"
                 }`}
               >
@@ -82,7 +84,7 @@ function Page() {
                 onClick={() => setSelectedCountry("Poland")}
                 className={`px-4 py-2 rounded ${
                   selectedCountry === "Poland"
-                    ? "bgmap text-white borderI rounded-sm"
+                    ? "bgmap textfull borderI rounded-sm"
                     : "bg-gray-200 borderI rounded-sm"
                 }`}
               >
@@ -91,7 +93,7 @@ function Page() {
             </div>
           </div>
           <div className="flex flex-col justify-start items-start w-full">
-            <h2 className={subtitle}>
+            <h2 className={subtitle_b}>
               The Most{" "}
               <span className="bg-gradient-to-r from-fuchsia-400 via-pink-500 to-sky-500 bg-clip-text text-transparent">
                 Beautiful
@@ -101,7 +103,7 @@ function Page() {
             <MostBeauty country={selectedCountry} />
           </div>
           <div>
-            <h2 className={subtitle}>The latest arrivals on hoomge.com</h2>
+            <h2 className={subtitle_b}>The latest arrivals on hoomge.com</h2>
           </div>
           <div className="w-full">
             <Last country={selectedCountry} />
@@ -136,7 +138,7 @@ function Page() {
           </div>
           <div className="w-full bgcolorS rounded-sm p-8 ">
             <div className="grid grid-cols-4 grid-rows-1 gap-3">
-              <div className="text-xl text-white pl-4 flex justify-center items-center">
+              <div className="text-xl textfull pl-4 flex justify-center items-center">
                 Your apartment gets more value{" "}
               </div>
               <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-sm">
@@ -198,6 +200,11 @@ function Page() {
               </div>
             </div>
           </div>
+          <div className="flex flex-col justify-start items-start w-full">
+            <h2 className={subtitle}>Property Management Companies</h2>
+           
+          </div>
+          <ListCompanies />
         </div>
       </div>
     </div>
