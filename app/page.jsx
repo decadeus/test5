@@ -27,20 +27,14 @@ function Page() {
     async function fetchCounts() {
       const supabase = createClient();
       try {
-        // Fetch count for 'project'
         const { count: projectCount, error: projectError } = await supabase
-          .from('project')
-          .select('*', { count: 'exact' });
-
+          .from("project")
+          .select("*", { count: "exact" });
         if (projectError) throw projectError;
-
         setCount(projectCount);
 
-        // Fetch count for 'projectlist'
-        const { count: projectListCount, error: projectListError } = await supabase
-          .from('projectlist')
-          .select('*', { count: 'exact' });
-
+        const { count: projectListCount, error: projectListError } =
+          await supabase.from("projectlist").select("*", { count: "exact" });
         if (projectListError) throw projectListError;
 
         setCountList(projectListCount);
@@ -56,17 +50,27 @@ function Page() {
 
   return (
     <div className="w-full pb-32 bgfull textfull">
-     
-      <div className="w-full px-16 pb-8">
-        <h1 className="text-6xl font-bold textfull mb-12 mt-32 font-montserrat text-center shadowI ">
+      <header className="w-full px-16 pb-8">
+        <h1 className="text-6xl font-bold textfull mb-12 mt-32 font-montserrat text-center shadowI">
           Find Your Future <br /> Dream Apartment
         </h1>
         <h2 className="text-xl textfull pt-4 text-center">
-          Search among {count} new properties and {countlist} listed apartments.
+          {loading ? (
+            <p>Chargement...</p>
+          ) : error ? (
+            <p className="text-red-500">Une erreur est survenue : {error}</p>
+          ) : (
+            <>
+              Search among <span className="font-bold">{count}</span> new properties
+              and <span className="font-bold">{countlist}</span> listed apartments.
+            </>
+          )}
         </h2>
-      </div>
-      <div className="px-64 pt-16 ">
+      </header>
+
+      <main className="px-64 pt-16">
         <div className="flex flex-col justify-start items-start text-start gap-8">
+          {/* Section pour sélectionner le pays */}
           <div className="flex flex-col justify-center items-center w-full">
             <h2 className="font-bold textfull">Select country</h2>
             <div className="w-full flex gap-4 mb-8 justify-center pt-4 ">
@@ -74,9 +78,10 @@ function Page() {
                 onClick={() => setSelectedCountry("France")}
                 className={`px-4 py-2 rounded ${
                   selectedCountry === "France"
-                    ? "bgmap textfull borderI rounded-sm"
+                    ? "bgmap borderI rounded-sm text-white"
                     : "bg-gray-200 borderI rounded-sm"
                 }`}
+                aria-pressed={selectedCountry === "France"}
               >
                 France
               </button>
@@ -84,14 +89,17 @@ function Page() {
                 onClick={() => setSelectedCountry("Poland")}
                 className={`px-4 py-2 rounded ${
                   selectedCountry === "Poland"
-                    ? "bgmap textfull borderI rounded-sm"
+                    ? "bgmap borderI rounded-sm text-white"
                     : "bg-gray-200 borderI rounded-sm"
                 }`}
+                aria-pressed={selectedCountry === "Poland"}
               >
                 Poland
               </button>
             </div>
           </div>
+
+          {/* Section Most Beauty */}
           <div className="flex flex-col justify-start items-start w-full">
             <h2 className={subtitle_b}>
               The Most{" "}
@@ -102,12 +110,16 @@ function Page() {
             </h2>
             <MostBeauty country={selectedCountry} />
           </div>
+
+          {/* Section Last */}
           <div>
             <h2 className={subtitle_b}>The latest arrivals on hoomge.com</h2>
           </div>
           <div className="w-full">
             <Last country={selectedCountry} />
           </div>
+
+          {/* Section Summer */}
           <div
             className="relative overflow-hidden rounded-sm w-full"
             style={{ height: "500px" }}
@@ -132,11 +144,17 @@ function Page() {
               </div>
             </div>
           </div>
+
+          {/* Section Equipment */}
           <div className="flex flex-col justify-start items-start w-full">
-            <h2 className={subtitle}>Residence with sports or relaxation facilities</h2>
+            <h2 className={subtitle}>
+              Residence with sports or relaxation facilities
+            </h2>
             <Equipment country={selectedCountry} />
           </div>
-          <div className="w-full bgcolorS rounded-sm p-8 ">
+
+          {/* Section Additional Features */}
+          <div className="w-full bgcolorS rounded-sm p-8">
             <div className="grid grid-cols-4 grid-rows-1 gap-3">
               <div className="text-xl textfull pl-4 flex justify-center items-center">
                 Your apartment gets more value{" "}
@@ -173,6 +191,8 @@ function Page() {
               </div>
             </div>
           </div>
+
+          {/* Section List Your Property */}
           <div
             className="relative overflow-hidden rounded-sm w-full"
             style={{ height: "500px" }}
@@ -200,13 +220,14 @@ function Page() {
               </div>
             </div>
           </div>
+
+          {/* Section List Companies */}
           <div className="flex flex-col justify-start items-start w-full">
             <h2 className={subtitle}>Property Management Companies</h2>
-           
+            <ListCompanies />
           </div>
-          <ListCompanies />
         </div>
-      </div>
+      </main>
     </div>
   );
 }

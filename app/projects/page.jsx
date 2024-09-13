@@ -255,7 +255,7 @@ function Page() {
   const isFavorite = (item) => favorites.includes(item.id);
 
   return (
-    <div className="flex flex-col w-full 2xl:px-72 xl:px-32 lg:px-16 md:px-8 sm:px-4 px-2 gap-16 pt-4 bgfull text-white">
+    <div className="flex flex-col w-full 2xl:px-72 xl:px-32 lg:px-16 md:px-8 sm:px-4 px-2 gap-16 pt-4 bgfull text-black">
       <div className="flex flex-col gap-4">
         <div className="w-full xl:h-[440px] sm:h-[220px] h-[200px] z-0">
           <LazyMap
@@ -411,9 +411,15 @@ function Page() {
                           </div>
 
                           <div className="w-1/2 rounded-sm flex justify-center items-center ">
-                            <button className="w-full secondary text-white hover:bg-blue-700 rounded-sm bgmap h-full">
-                              The project
-                            </button>
+                            <a
+                              href={item.project.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <button className="w-full secondary text-white hover:bg-blue-700 rounded-sm bgmap h-ful px-16 py-2">
+                                The project
+                              </button>
+                            </a>
                             <div className="block sm:hidden">
                               <FaHeart size={20} color="red" />
                             </div>
@@ -518,14 +524,14 @@ function Filter({
             <div className="pb-8">
               <h2 className={htwo}>Price range</h2>
               <div className="w-full flex gap-4 pb-4">
-                <div className=" border-2 border-white rounded-sm w-1/2 p-2">
+                <div className=" border-2 border-black rounded-sm w-1/2 p-2">
                   <p className="font-semibold text-sm">min</p>
                   <div className="flex items-center gap-1">
                     <TbCurrencyZloty size={15} />
                     <p>{priceRange[0]}</p>
                   </div>
                 </div>
-                <div className=" border-2 border-white rounded-sm w-1/2 p-2">
+                <div className=" border-2 border-black rounded-sm w-1/2 p-2">
                   <p className="font-semibold text-sm">max</p>
                   <div className="flex items-center gap-1">
                     <TbCurrencyZloty size={15} />
@@ -548,14 +554,14 @@ function Filter({
             <div className="pb-8">
               <p className={htwo}>Surface</p>
               <div className="w-full flex gap-4 pb-4">
-                <div className=" border-2 border-white rounded-sm w-1/2 p-2">
+                <div className=" border-2 border-black rounded-sm w-1/2 p-2">
                   <p className="font-semibold text-sm">min</p>
                   <div className="flex items-center gap-1">
                     <p className="text-xs">m2</p>
                     <p>{surfaceRange[0]}</p>
                   </div>
                 </div>
-                <div className=" border-2 border-white rounded-sm w-1/2 p-2">
+                <div className=" border-2 border-black rounded-sm w-1/2 p-2">
                   <p className="font-semibold text-sm">max</p>
                   <div className="flex items-center gap-1">
                     <p className="text-xs">m2</p>
@@ -578,13 +584,13 @@ function Filter({
             <div className="">
               <p className={htwo}>Number of bedrooms</p>
               <div className="w-full flex gap-4 pb-4">
-                <div className=" border-2 border-white rounded-sm w-1/2 p-2">
+                <div className=" border-2 border-black rounded-sm w-1/2 p-2">
                   <p className="font-semibold text-sm">min</p>
                   <div className="flex items-center gap-1">
                     <p>{bedRange[0]}</p>
                   </div>
                 </div>
-                <div className=" border-2 border-white rounded-sm w-1/2 p-2">
+                <div className=" border-2 border-black rounded-sm w-1/2 p-2">
                   <p className="font-semibold text-sm">max</p>
                   <div className="flex items-center gap-1">
                     <p>{bedRange[1]}</p>
@@ -723,8 +729,8 @@ function Filter({
                 <ModalBody>
                   <div className="flex flex-col w-full gap-8 pt-8 justify-evenly pr-8 ">
                     <div>
-                      <div className=" rounded-sm w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center text-black ">
-                        <p className="text-black"> Only your favorite</p>{" "}
+                      <div className=" rounded-sm w-fit px-4 py-1 mb-4 border-2 border-black flex gap-2 justify-center items-center text-white ">
+                        <p className="text-white"> Only your favorite</p>{" "}
                         <FaHeart color="blue" />
                       </div>
                       <h2 className="font-extrabold text-xl pb-4">Country</h2>

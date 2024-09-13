@@ -9,12 +9,12 @@ export default function Page() {
   const containerStyle =
     "flex flex-col items-center bgfull w-full px-64 pt-32 pb-32";
   const headerStyle =
-    "text-6xl font-bold text-gray-100 mb-8 font-montserrat text-center shadowI bg-transparent";
-  const subheaderStyle = "text-lg text-gray-100 mb-8 font-montserrat mb-32";
+    "text-6xl font-bold text-black mb-8 font-montserrat text-center shadowI bg-transparent";
+  const subheaderStyle = "text-lg text-black mb-8 font-montserrat mb-32";
   const stepContainerStyle =
     "flex flex-col md:flex-row items-center justify-center gap-6 mb-8 ";
   const stepStyle =
-    "bgcolorS text-white font-semibold p-4 rounded-full shadow-lg w-12 h-12 flex items-center justify-center text-2xl font-montserrat";
+    "bgcolorS text-black font-semibold p-4 rounded-full shadow-lg w-12 h-12 flex items-center justify-center text-2xl font-montserrat";
   const contentStyle =
     "bg-white shadow-lg rounded-sm p-6 w-full md:w-3/4 lg:w-1/2";
   const titleStyle = "text-2xl font-bold text-gray-800 mb-2";
@@ -35,8 +35,8 @@ export default function Page() {
       </p>
       <button className="bg-blue-500 text-white py-2 px-4 text-xl mb-16">Add your project</button>
       <div className="flex flex-col justify-start items-start w-full mb-16">
-        <p className="text-gray-300 mb-4">Building</p>
-        <h2 className="text-white text-5xl font-bold mb-8">
+        <p className="text-black mb-4">Building</p>
+        <h2 className="text-black text-5xl font-bold mb-8">
           Fill information about{" "}
           <span className="bg-gradient-to-r from-fuchsia-400 via-pink-500 to-sky-500 bg-clip-text text-transparent">
             the building{" "}
@@ -50,8 +50,8 @@ export default function Page() {
         </div>
       </div>
       <div className="flex flex-col justify-start items-start w-full mb-16">
-        <p className="text-gray-300 mb-4">Apartements</p>
-        <h2 className="text-white text-5xl font-bold mb-8">
+        <p className="text-black mb-4">Apartements</p>
+        <h2 className="text-black text-5xl font-bold mb-8">
           Fill information about{" "}
           <span className="bg-gradient-to-r from-fuchsia-400 via-pink-500 to-sky-500 bg-clip-text text-transparent">
             the apartements{" "}

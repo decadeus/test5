@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/client";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { IoSearch } from "react-icons/io5";
 
 const siteConfig = {
   navAdmin: [
@@ -17,7 +18,7 @@ const siteConfig = {
   noUser: [
     // { label: "Home", href: "/" },
     // { label: "Completed Residential Building", href: "/completed" },
-    { label: "Search", href: "/projects" },
+    { label: <div className="flex justify-center items-center gap-2"><IoSearch /> Search</div>, href: "/projects" },
 
   ],
   Cproject: [
