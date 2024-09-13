@@ -507,7 +507,7 @@ function Filter({
               <Checkbox
                 isChecked={showFavorites}
                 onChange={(e) => onFavoritesChange(e.target.checked)}
-                color="secondary"
+                color="bgmap"
                 aria-label="favorite"
               >
                 <p className={hthree}>Only favorite</p>
@@ -521,7 +521,7 @@ function Filter({
               <CheckboxGroup
                 value={selectedGarden ? ["garden"] : []}
                 onChange={onGardenChange}
-                color="secondary"
+               color="bgmap"
                 orientation="horizontal"
                 aria-label="Garden"
               >
@@ -556,7 +556,7 @@ function Filter({
                 value={priceRange}
                 onChange={onPriceRangeChange}
                 className="max-w-md"
-                color="secondary"
+                color="bgmap"
                 aria-label="Price range"
                 size="sm"
               />
@@ -586,7 +586,7 @@ function Filter({
                 value={surfaceRange}
                 onChange={onSurfaceRangeChange}
                 className="max-w-md"
-                color="secondary"
+               color="bgmap"
                 aria-label="Surface"
                 size="sm"
               />
@@ -614,7 +614,7 @@ function Filter({
                 value={bedRange}
                 onChange={onBedRangeChange}
                 className="max-w-md"
-                color="secondary"
+               color="bgmap"
                 aria-label="Number of bedrooms"
                 size="sm"
               />
@@ -631,7 +631,7 @@ function Filter({
                     id="swim"
                     value={selectedSwim ? ["swim"] : []}
                     onChange={onSwimChange}
-                    color="secondary"
+                   color="bgmap"
                     orientation="horizontal"
                     aria-label="Swim"
                   >
@@ -643,7 +643,7 @@ function Filter({
                     id="fitness"
                     value={selectedFitness ? ["fitness"] : []}
                     onChange={onFitnessChange}
-                    color="secondary"
+                    color="bgmap"
                     orientation="horizontal"
                     aria-label="Fitness"
                   >
@@ -655,7 +655,7 @@ function Filter({
                     id="child"
                     value={selectedChild ? ["child"] : []}
                     onChange={onChildChange}
-                    color="secondary"
+                  color="bgmap"
                     orientation="horizontal"
                     aria-label="Child"
                   >
@@ -667,7 +667,7 @@ function Filter({
                     id="disabled"
                     value={selectedDisabled ? ["disabled"] : []}
                     onChange={onDisabledChange}
-                    color="secondary"
+                   color="bgmap"
                     orientation="horizontal"
                     aria-label="Disabled"
                   >
@@ -679,7 +679,7 @@ function Filter({
                     id="bike"
                     value={selectedBike ? ["bike"] : []}
                     onChange={onBikeChange}
-                    color="secondary"
+                    color="bgmap"
                     orientation="horizontal"
                     aria-label="Bike"
                   >
@@ -691,7 +691,7 @@ function Filter({
                     id="cctv"
                     value={selectedCctv ? ["cctv"] : []}
                     onChange={onCctvChange}
-                    color="secondary"
+                   color="bgmap"
                     orientation="horizontal"
                     aria-label="Cctv"
                   >
@@ -703,7 +703,7 @@ function Filter({
                     id="entrance"
                     value={selectedEntrance ? ["entrance"] : []}
                     onChange={onEntranceChange}
-                    color="secondary"
+                   color="bgmap"
                     orientation="horizontal"
                     aria-label="Entrance"
                   >
@@ -746,7 +746,7 @@ function Filter({
                         <Checkbox
                           isChecked={showFavorites}
                           onChange={(e) => onFavoritesChange(e.target.checked)}
-                          color="secondary"
+                          color="bgmap"
                           aria-label="favorite"
                         >
                           <p className={hthree}>Only favorite</p>
@@ -758,7 +758,7 @@ function Filter({
                           id="country"
                           value={selectedCountries}
                           onChange={onCountryChange}
-                          color="pink"
+                         color="bgmap"
                           aria-label="Country"
                           className="flex flex-col gap-2 "
                         >
@@ -780,7 +780,7 @@ function Filter({
                         <CheckboxGroup
                           value={selectedGarden ? ["garden"] : []}
                           onChange={onGardenChange}
-                          color="secondary"
+                         color="bgmap"
                           orientation="horizontal"
                           aria-label="Garden"
                         >
@@ -815,7 +815,7 @@ function Filter({
                           value={priceRange}
                           onChange={onPriceRangeChange}
                           className="max-w-md"
-                          color="secondary"
+                        color="bgmap"
                           aria-label="Price range"
                           size="sm"
                         />
@@ -845,7 +845,7 @@ function Filter({
                           value={surfaceRange}
                           onChange={onSurfaceRangeChange}
                           className="max-w-md"
-                          color="secondary"
+                          color="bgmap"
                           aria-label="Surface"
                           size="sm"
                         />
@@ -873,7 +873,7 @@ function Filter({
                           value={bedRange}
                           onChange={onBedRangeChange}
                           className="max-w-md"
-                          color="secondary"
+                          color="bgmap"
                           aria-label="Number of bedrooms"
                           size="sm"
                         />
@@ -890,7 +890,7 @@ function Filter({
                               id="swim"
                               value={selectedSwim ? ["swim"] : []}
                               onChange={onSwimChange}
-                              color="secondary"
+                             color="bgmap"
                               orientation="horizontal"
                               aria-label="Swim"
                             >
@@ -902,7 +902,7 @@ function Filter({
                               id="fitness"
                               value={selectedFitness ? ["fitness"] : []}
                               onChange={onFitnessChange}
-                              color="secondary"
+                             color="bgmap"
                               orientation="horizontal"
                               aria-label="Fitness"
                             >
@@ -914,7 +914,7 @@ function Filter({
                               id="child"
                               value={selectedChild ? ["child"] : []}
                               onChange={onChildChange}
-                              color="secondary"
+                             color="bgmap"
                               orientation="horizontal"
                               aria-label="Child"
                             >
@@ -926,7 +926,7 @@ function Filter({
                               id="disabled"
                               value={selectedDisabled ? ["disabled"] : []}
                               onChange={onDisabledChange}
-                              color="secondary"
+                             color="bgmap"
                               orientation="horizontal"
                               aria-label="Disabled"
                             >
@@ -940,7 +940,7 @@ function Filter({
                               id="bike"
                               value={selectedBike ? ["bike"] : []}
                               onChange={onBikeChange}
-                              color="secondary"
+                             color="bgmap"
                               orientation="horizontal"
                               aria-label="Bike"
                             >
@@ -952,7 +952,7 @@ function Filter({
                               id="cctv"
                               value={selectedCctv ? ["cctv"] : []}
                               onChange={onCctvChange}
-                              color="secondary"
+                             color="bgmap"
                               orientation="horizontal"
                               aria-label="Cctv"
                             >
@@ -964,7 +964,7 @@ function Filter({
                               id="entrance"
                               value={selectedEntrance ? ["entrance"] : []}
                               onChange={onEntranceChange}
-                              color="secondary"
+                             color="bgmap"
                               orientation="horizontal"
                               aria-label="Entrance"
                             >
