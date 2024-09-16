@@ -78,7 +78,7 @@ export default function ListCompanies() {
               <div className="hidden group-hover:flex flex-col items-center justify-center absolute inset-0 bg-opacity-80 bg-white text-black">
                 <p className="text-lg sm:text-xl lg:text-2xl">{company.name}</p>
                 <div className="flex flex-col gap-2 sm:gap-4 mt-4 lg:mt-8 ">
-                  <div className="flex flex-col items-center xl:border-r-2 xl:pr-2 sm:pr-4">
+                  <div className="flex flex-col items-center xl:pl-2 sm:pl-4 xl:border-r-2 xl:pr-2 sm:pr-4">
                     <p className="font-bold text-sm sm:text-base lg:text-lg">
                       {countProjectsForCompany(company.name)}
                     </p>
@@ -90,7 +90,7 @@ export default function ListCompanies() {
                     </p>
                     <p className="text-xs sm:text-sm">Cities</p>
                   </div>
-                  <div className="flex flex-col items-center xl:pl-2 sm:pl-4">
+                  <div className="flex flex-col items-center xl:pl-2 sm:pl-4 xl:border-r-2 xl:pr-2 sm:pr-4">
                     <p className="font-bold text-sm sm:text-base lg:text-lg">
                       {countProjectlistRowsForCompany(company.name)}
                     </p>

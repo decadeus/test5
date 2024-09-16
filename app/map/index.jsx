@@ -7,18 +7,18 @@ import Avatar from "@/app/getimage/project";
 import Link from "next/link";
 import a from "@/components/image/appart1.jpg";
 
-
 // Fonction pour créer une icône personnalisée
 const createCustomIcon = (iconUrl) => {
   return new window.L.Icon({
     iconUrl: iconUrl,
-    iconSize: [25, 41],    // Taille de l'icône
-    iconAnchor: [12, 41],  // Point d'ancrage de l'icône (où elle pointe)
+    iconSize: [25, 41], // Taille de l'icône
+    iconAnchor: [12, 41], // Point d'ancrage de l'icône (où elle pointe)
     popupAnchor: [1, -34], // Position du popup par rapport à l'icône
-    shadowSize: [41, 41],  // Taille de l'ombre si nécessaire
+    shadowSize: [41, 41], // Taille de l'ombre si nécessaire
   });
 };
 
+// Fonction pour ajuster automatiquement les limites de la carte
 const getMapBounds = (todos) => {
   const bounds = new window.L.LatLngBounds([]);
   todos.forEach((todo) => {
@@ -28,11 +28,26 @@ const getMapBounds = (todos) => {
   return bounds;
 };
 
-const MapComponent = ({ classN, todos }) => {
-  const [center, setCenter] = useState([49.07957, 12.97848]); // Centre par défaut
+// Composant pour appliquer un zoom automatique
+const AutoZoom = ({ bounds }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, {
+        padding: [50, 50], // Ajoute un peu de marge autour des marqueurs
+      });
+    }
+  }, [map, bounds]);
+  return null;
+};
 
-  // Utilisation d'une icône locale (depuis le dossier public)
-  const redIconUrl = "/icons/marker-icon-red.png";  // Chemin vers l'icône dans le dossier public
+const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
+  const [center, setCenter] = useState([
+    mLat || 52.22767841358763,
+    mLng || 2.341876947781295,
+  ]);
+
+  const redIconUrl = "/icons/marker-icon-red.png";
   const customIcon = createCustomIcon(redIconUrl);
 
   useEffect(() => {
@@ -42,12 +57,22 @@ const MapComponent = ({ classN, todos }) => {
     }
   }, [todos]);
 
+  // Calcul des bornes avec un ajustement de ±5 pour la longitude
+  const bounds = getMapBounds(todos);
+  if (bounds.isValid()) {
+    bounds.pad(0.05); // Ajuster le zoom en ajoutant un padding global de 5%
+  }
+
   return (
     <MapContainer center={center} zoom={4} className={classN}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
+
+      {/* Application du zoom automatique */}
+      <AutoZoom bounds={bounds} />
+
       {todos
         .filter((todo) => todo.lat && todo.lng) // Vérification si lat et lng sont définis
         .map((todo) => (
@@ -68,9 +93,13 @@ const MapComponent = ({ classN, todos }) => {
                   />
                 </div>
                 <div className="px-8">
-                  <h2 className="font-extrabold text-xl text-gray-900 p-0 m-0">{todo.name}</h2>
+                  <h2 className="font-extrabold text-xl text-gray-900 p-0 m-0">
+                    {todo.name}
+                  </h2>
                   <div className="text-gray-700 text-sm">
-                    <p className="text-base font-semibold text-gray-800 p-0 m-0">By {todo.compagny}</p>
+                    <p className="text-base font-semibold text-gray-800 p-0 m-0">
+                      By {todo.compagny}
+                    </p>
                     <div className="flex gap-1 mt-1">
                       <span className="px-2 py-0.5 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded-full">
                         {todo.country}
@@ -90,7 +119,12 @@ const MapComponent = ({ classN, todos }) => {
                           viewBox="0 0 24 24"
                           xmlns="http://www.w3.org/2000/svg"
                         >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M14 5l7 7m0 0l-7 7m7-7H3"
+                          />
                         </svg>
                         View Project
                       </button>

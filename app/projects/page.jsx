@@ -253,22 +253,57 @@ function Page() {
 
   const isFavorite = (item) => favorites.includes(item.id);
 
+  const getLatLngExtremes = (projects) => {
+    const lats = projects.map(({ project }) => project?.lat).filter(lat => lat !== null && lat !== undefined);
+    const lngs = projects.map(({ project }) => project?.lng).filter(lng => lng !== null && lng !== undefined);
+  
+    const maxLat = Math.max(...lats);
+    const minLat = Math.min(...lats);
+    const maxLng = Math.max(...lngs);
+    const minLng = Math.min(...lngs);
+  
+    // Calcul de la moyenne des latitudes et longitudes
+    const mLat = (maxLat + minLat) / 2;
+    const mLng = (maxLng + minLng) / 2;
+  
+    // Retourner toutes les valeurs
+    return { maxLat, minLat, maxLng, minLng, mLat, mLng };
+  };
+  
+  // Appel de la fonction avec vos projets filtrés
+  const latLngExtremes = getLatLngExtremes(filteredProjects);
+  
+  // Afficher les valeurs extrêmes et les moyennes
+  console.log(`Max Latitude: ${latLngExtremes.maxLat}`);
+  console.log(`Moyenne Latitude: ${latLngExtremes.mLat}`);
+  console.log(`Min Latitude: ${latLngExtremes.minLat}`);
+  console.log(`Min Longitude: ${latLngExtremes.minLng}`);
+  console.log(`Moyenne Longitude: ${latLngExtremes.mLng}`);
+  console.log(`Max Longitude: ${latLngExtremes.maxLng}`);
+
+  
+
   return (
     <div className="flex flex-col w-full 2xl:px-72 xl:px-32 lg:px-16 md:px-8 sm:px-4 px-2 gap-16 pt-4 bgfull text-black">
       <div className="flex flex-col xl:gap-4 gap-32">
         <div className="w-full xl:h-[440px] sm:h-[220px] h-[200px] z-0">
-          <LazyMap
-            classN="w-full xl:h-[440px] h-[320px] "
-            todos={filteredProjects.map(({ project }) => ({
-              lat: project?.lat,
-              lng: project?.lng,
-              name: project?.name,
-              country: project?.country,
-              city: project?.city,
-              compagny: project?.compagny,
-              mainpic_url: project?.mainpic_url,
-            }))}
-          />
+        <LazyMap
+  classN="w-full xl:h-[440px] h-[320px]"
+  todos={filteredProjects.map(({ project }) => ({
+    lat: project?.lat,
+    lng: project?.lng,
+    name: project?.name,
+    country: project?.country,
+    city: project?.city,
+    compagny: project?.compagny,
+    mainpic_url: project?.mainpic_url,
+  }))}
+  maxLat={latLngExtremes.maxLat} // Passer maxLat
+  minLng={latLngExtremes.minLng}
+  mLng={latLngExtremes.mLng}
+  mLat={latLngExtremes.mLat} // Passer minLng
+/>
+
         </div>
         <div className="flex flex-col xl:flex-row lg:flex-row w-full">
           <div className="xl:w-1/3 lg:w-1/3 w-full ">
@@ -309,6 +344,7 @@ function Page() {
                 <p className="font-bold text-center">
                   Total Projects: {filteredProjects.length} apartments found
                 </p>
+              
               </div>
               <ScrollArea className="h-[1200px] w-full px-4 pb-4">
                 {projects.map((item, index) => (
@@ -398,25 +434,16 @@ function Page() {
                                   )}
                                 </p>
                               )}
+                              </div>
+                              <div>
                               <p>{item.surface} m²</p>
+                              </div>
+                              <div>
                               <p>{item.bed} bedroom(s)</p>
                             </div>
                           </div>
 
-                          <div className="w-2/12 justify-end hidden sm:flex">
-                            <Button
-                              style={{ marginLeft: "10px" }}
-                              onClick={() => handleToggleFavorite(item)}
-                              className="bg-transparent text-white hover:bg-opacity-10"
-                              aria-label="favorite"
-                            >
-                              {isFavorite(item) ? (
-                                <FaHeart fill="red" size={20} />
-                              ) : (
-                                <FaRegHeart fill="red" size={20} />
-                              )}
-                            </Button>
-                          </div>
+                          
                         </div>
                         <div className="flex items-between justify-between h-[40px] w-full">
                           

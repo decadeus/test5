@@ -46,7 +46,7 @@ export default function Login({ searchParams }: { searchParams: { message: strin
   };
 
   return (
-    <div className="flex justify-center items-center  bg-gray-100 mt-64">
+    <div className="flex justify-center items-center  bg-gray-100 xl:mt-64 mt-32">
       <form className="flex flex-col gap-4 p-8 bg-white border border-gray-300 rounded-lg shadow-md max-w-sm w-full">
         <h1 className="text-2xl font-semibold text-center text-gray-700 mb-6">Login</h1>
         
