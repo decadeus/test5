@@ -3,26 +3,30 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 import "leaflet-defaulticon-compatibility";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import L from "leaflet";
 import Avatar from "@/app/getimage/project";
 import Link from "next/link";
 import a from "@/components/image/appart1.jpg";
 
-// Fonction pour créer une icône personnalisée
-const createCustomIcon = (iconUrl) => {
-  return new window.L.Icon({
-    iconUrl: iconUrl,
-    iconSize: [25, 41], // Taille de l'icône
-    iconAnchor: [12, 41], // Point d'ancrage de l'icône (où elle pointe)
-    popupAnchor: [1, -34], // Position du popup par rapport à l'icône
-    shadowSize: [41, 41], // Taille de l'ombre si nécessaire
+// Fonction pour créer une icône texte personnalisée
+const createTextIcon = (text) => {
+  return new L.DivIcon({
+    html: `
+      <div class="custom-bubble">
+        <div class="bubble-content">${text}</div>
+        <div class="bubble-pointer"></div>
+      </div>
+    `,
+    iconSize: null, // Laisser iconSize null pour que la taille s'adapte automatiquement
+    className: "custom-text-icon" // Classe CSS pour personnaliser le style
   });
 };
 
 // Fonction pour ajuster automatiquement les limites de la carte
 const getMapBounds = (todos) => {
-  const bounds = new window.L.LatLngBounds([]);
+  const bounds = new L.LatLngBounds([]);
   todos.forEach((todo) => {
-    const latLng = new window.L.LatLng(todo.lat, todo.lng);
+    const latLng = new L.LatLng(todo.lat, todo.lng);
     bounds.extend(latLng);
   });
   return bounds;
@@ -46,9 +50,6 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
     mLat || 52.22767841358763,
     mLng || 2.341876947781295,
   ]);
-
-  const redIconUrl = "/icons/marker-icon-red.png";
-  const customIcon = createCustomIcon(redIconUrl);
 
   useEffect(() => {
     if (todos.length > 0) {
@@ -79,7 +80,7 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
           <Marker
             key={todo.id}
             position={[todo.lat, todo.lng]}
-            icon={customIcon} // Utilisation de l'icône rouge personnalisée
+            icon={createTextIcon(todo.name)} // Utilisation d'un texte comme icône
           >
             <Popup maxWidth={450} className="p-0 m-0">
               <div className="bg-white shadow-lg overflow-hidden w-full max-w-sm transition-transform duration-300 hover:scale-105">

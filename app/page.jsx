@@ -22,7 +22,10 @@ function Page() {
   const [error, setError] = useState(null);
 
   const subtitle = "font-extrabold xl:text-4xl text-2xl text-center text-white";
-  const subtitle_b = "font-extrabold text-2xl text-center text-black xl:text-4xl";
+  const subtitle_b = "font-bold text-4xl text-black xl:text-4xl text-left mb-12";
+
+  const grad = "bg-gradient-to-r from-fuchsia-400 via-rose-400 to-[var(--bgmap-color)] bg-clip-text text-transparent";
+
 
   useEffect(() => {
     async function fetchCounts() {
@@ -104,7 +107,7 @@ function Page() {
           <div className="flex flex-col justify-start items-start w-full">
             <h2 className={subtitle_b}>
               The Most{" "}
-              <span className="bg-gradient-to-r from-fuchsia-400 via-pink-500 to-sky-500 bg-clip-text text-transparent">
+              <span className={grad}>
                 Beautiful
               </span>{" "}
               Existing Residences
@@ -116,9 +119,9 @@ function Page() {
 
           {/* Section Last */}
           <div>
-            <h2 className={subtitle_b}>The latest <span className="bg-gradient-to-r from-fuchsia-400 via-pink-500 to-sky-500 bg-clip-text text-transparent">
+            <h2 className={subtitle_b}>The latest <span className={grad}>
                 arrivals
-              </span> on hoomge.com</h2>
+              </span>  <br />on hoomge.</h2>
           </div>
           <div className="w-full">
             <Last country={selectedCountry} />
@@ -141,8 +144,8 @@ function Page() {
             />
             <div className="absolute inset-0 bg-slate-900/40" />
             <div className="relative p-12 flex items-center h-full">
-              <div className="flex flex-col justify-start items-start">
-                <h2 className={`${subtitle} text-white`}>
+              <div className="flex flex-col justify-start items-start w-full">
+                <h2 className={`${subtitle} text-white mb-4`}>
                   Deal Residences: Sea and Mountain to Enjoy Nature
                 </h2>
                 <Summer country={selectedCountry} />
