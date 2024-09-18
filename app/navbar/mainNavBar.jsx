@@ -36,7 +36,7 @@ export default function MainNavBar({ user }) {
   }, [user, supabase]);
 
   return (
-    <div className="w-full py-4 grid grid-cols-3 grid-rows-1 justify-between items-center bg-white  text-black  sticky top-0 z-50 opacity-90 px-4 xl:px-16 border-b-1 border-black">
+    <div className="w-full py-4 grid grid-cols-3 grid-rows-1 justify-between items-center bgtext  text-white  z-50 opacity-90 px-4 xl:px-16 border-b-1 border-black">
       <div className="flex justify-start items-center gap-2">
         <Link href="/">
           <div className="flex gap-2 items-center">
@@ -51,7 +51,7 @@ export default function MainNavBar({ user }) {
                 />
               </div>
               <div>
-                <h2 className="text-black text-2xl font-bold hidden sm:block ">
+                <h2 className="text-white text-2xl font-bold hidden sm:block ">
                   Hoomge.com
                 </h2>
               </div>
@@ -79,7 +79,7 @@ export default function MainNavBar({ user }) {
           </div>
         ) : (
           <div className="flex gap-4 w-fit">
-            <div className="xl:bg-gray-300 py-1 xl:px-2 rounded-sm flex justify-center items-center w-fit">
+            <div className=" py-1 xl:px-2 rounded-sm flex justify-center items-center w-fit">
               <Link href="/addproject">
                 <span className="hidden sm:inline">Add your project</span>
               </Link>

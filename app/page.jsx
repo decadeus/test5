@@ -163,11 +163,12 @@ function Page() {
 
           {/* Section Additional Features */}
           <div className="w-full bgcolorS rounded-sm p-8">
-            <div className="xl:grid xl:grid-cols-4 xl:grid-rows-1 gap-3 flex flex-col ">
-              <div className="text-xl textfull xl:pl-4 flex justify-center items-center">
+          <div className="text-xl textfull xl:pl-4 flex justify-center items-center">
                 Your apartment gets more value{" "}
               </div>
-              <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-sm">
+            <div className="xl:grid xl:grid-cols-4 xl:grid-rows-1 gap-3 flex ">
+              
+              <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-sm flex-col">
                 <div className="w-1/3 flex justify-center">
                   <RiHome8Line color="white" size="45" />
                 </div>
@@ -177,7 +178,7 @@ function Page() {
                   </p>
                 </div>
               </div>
-              <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-sm">
+              <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-sm flex-col">
                 <div className="w-1/3 flex justify-center">
                   <MdOutlinePoll color="white" size="45" />
                 </div>
@@ -187,7 +188,7 @@ function Page() {
                   </p>
                 </div>
               </div>
-              <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-sm">
+              <div className="bgcolorP flex w-full items-center py-4 px-4 rounded-sm flex-col">
                 <div className="w-1/3 flex justify-center">
                   <LuNewspaper color="white" size="40" />
                 </div>

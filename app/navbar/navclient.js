@@ -21,8 +21,8 @@ const siteConfig = {
     { 
       label: (
         <div className="flex justify-center items-center gap-2">
-        <IoSearch className="text-2xl sm:text-sm md:text-base lg:text-xl xl:text-2xl" />
-        <span className="">Search</span>
+        <IoSearch color="white" className="text-2xl sm:text-sm md:text-base lg:text-xl xl:text-2xl" />
+        <span className="text-white">Search</span>
       </div>
       ), 
       href: "/projects" 
