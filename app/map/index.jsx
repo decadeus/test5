@@ -18,7 +18,7 @@ const createTextIcon = (text) => {
       </div>
     `,
     iconSize: null, // Laisser iconSize null pour que la taille s'adapte automatiquement
-    className: "custom-text-icon" // Classe CSS pour personnaliser le style
+    className: "custom-text-icon", // Classe CSS pour personnaliser le style
   });
 };
 
@@ -83,38 +83,38 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
             icon={createTextIcon(todo.name)} // Utilisation d'un texte comme icône
           >
             <Popup maxWidth={450} className="p-0 m-0">
-              <div className="bg-white shadow-lg overflow-hidden w-full max-w-sm transition-transform duration-300 hover:scale-105">
-                <div className="relative h-36 w-full bg-gradient-to-r from-indigo-500 to-blue-500">
+              <div className="bg-white shadow-md overflow-hidden w-full transition-transform duration-300 hover:scale-105 p-5 rounded-lg">
+                <div className="relative h-36 w-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-t-lg">
                   <Avatar
                     url={todo.mainpic_url || a}
                     width={350}
                     height={150}
-                    className="object-cover w-full h-full opacity-90 hover:opacity-100 transition-opacity duration-300"
+                    className="object-cover w-full h-full opacity-90 hover:opacity-100 transition-opacity duration-300 rounded-t-lg"
                     alt="Project Image"
                   />
                 </div>
-                <div className="px-8">
-                  <h2 className="font-extrabold text-xl text-gray-900 p-0 m-0">
+                <div className="px-5">
+                  <h2 className="font-bold text-2xl text-gray-900 ">
                     {todo.name}
                   </h2>
                   <div className="text-gray-700 text-sm">
-                    <p className="text-base font-semibold text-gray-800 p-0 m-0">
+                    <span className="text-base font-medium text-gray-800 ">
                       By {todo.compagny}
-                    </p>
-                    <div className="flex gap-1 mt-1">
-                      <span className="px-2 py-0.5 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded-full">
+                    </span>
+                    <div className="flex gap-2 ">
+                      <span className="pr-2 py-0.5 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded-full">
                         {todo.country}
                       </span>
-                      <span className="px-2 py-0.5 bg-gray-100 text-gray-800 text-xs font-semibold rounded-full">
+                      <span className="py-0.5 bg-gray-100 text-gray-800 text-xs font-semibold rounded-full">
                         {todo.city}
                       </span>
                     </div>
                   </div>
-                  <div className="mt-3 flex justify-center">
+                  <div className="mt-4 flex justify-center">
                     <Link href={`/project/${todo.id}`}>
-                      <button className="w-full py-1.5 px-3 flex items-center justify-center text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-full hover:from-purple-600 hover:to-blue-600 transition duration-300 shadow-md">
+                      <button className="w-full py-2 px-4 flex items-center justify-center text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-full hover:from-purple-600 hover:to-blue-600 transition duration-300 shadow-lg transform hover:scale-105">
                         <svg
-                          className="w-5 h-5 mr-1.5"
+                          className="w-5 h-5 mr-2"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
