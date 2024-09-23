@@ -22,7 +22,7 @@ import Avatar from "@/app/getimage/project";
 import dynamic from "next/dynamic";
 import { TailSpin } from "react-loader-spinner";
 import { projectIcons } from "@/lib/iconbuilding";
-import { countryData } from "@/utils/countryData";
+import fetchCountryData from "@/utils/listcountry";
 
 const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
 const ITEMS_PER_PAGE = 4;
@@ -74,6 +74,7 @@ function Page() {
   const [showFavorites, setShowFavorites] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState("bed");
+  const [countryData, setCountryData] = useState({}); // Ajoutez cet état
 
   const sort = [
     { key: "surface", label: "surface" },
@@ -123,6 +124,15 @@ function Page() {
     bedRange,
     showFavorites,
   ]);
+
+  useEffect(() => {
+    const loadCountryData = async () => {
+      const data = await fetchCountryData();
+      setCountryData(data);
+    };
+
+    loadCountryData();
+  }, []);
 
   useEffect(() => {
     if (selectedCountries.length === 0) {
@@ -331,6 +341,7 @@ function Page() {
     return { maxLat, minLat, maxLng, minLng, mLat, mLng };
   };
   const latLngExtremes = getLatLngExtremes(filteredProjects);
+
   return (
     <div className="flex flex-col w-full gap-4 pt-4 bgfull text-black mb-16">
       <h1 className="text-5xl colortest mb-8">Listing Apartements</h1>
@@ -611,10 +622,26 @@ function Filter({
   const [cities, setCities] = useState([]);
   const [editableCountry, setEditableCountry] = useState("");
   const [editableCity, setEditableCity] = useState("Select a city");
+  const [countryData, setCountryData] = useState({});
 
   const colorfilter = "text-gray-400 text-xs";
+  const bgtext = "text-blue-500"
 
   // Handle country change and reset the city selection to "Select a city"
+  useEffect(() => {
+    const loadCountryData = async () => {
+      try {
+        const data = await fetchCountryData();
+        setCountryData(data); // Stocker les données récupérées dans le state
+      } catch (error) {
+        console.error("Error fetching country data:", error);
+      }
+    };
+
+    loadCountryData();
+  }, []);
+
+  // Gérer le changement de pays et réinitialiser la sélection de ville
   useEffect(() => {
     if (editableCountry && countryData[editableCountry]) {
       setCities(countryData[editableCountry]);
@@ -623,12 +650,12 @@ function Filter({
       setCities([]);
       setEditableCity("Select a city");
     }
-  }, [editableCountry]);
+  }, [editableCountry, countryData]);
 
   const handleCountryChange = (e) => {
     const selectedCountry = e.target.value;
     setEditableCountry(selectedCountry);
-    onCountryChange([selectedCountry]); // Assuming single country selection
+    onCountryChange([selectedCountry]); // Supposons que vous sélectionnez un seul pays
   };
 
   const handleCityChange = (e) => {
@@ -768,32 +795,35 @@ function Filter({
         </div>
       </div>
       <div className="flex justify-center items-center w-7/12 gap-2">
-      <div className="flex pr-2 gap-2">
-        <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
-          <Checkbox
-            isChecked={showFavorites}
-            onChange={(e) => onFavoritesChange(e.target.checked)}
-            color="bgmap"
-            aria-label="favorite"
-            size="sm"
-          >
-            <p className={colorfilter}>Only favorite</p>
-          </Checkbox>
-        </div>
-        <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
-          <Checkbox
-            isChecked={selectedGarden}
-            onChange={(e) => onGardenChange(e.target.checked)}
-            color="bgmap"
-            aria-label="Garden"
-            size="sm"
-          >
-            <p className={colorfilter}>Only with garden</p>
-          </Checkbox>
-        </div>
+        <div className="flex pr-2 gap-2">
+          <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
+            <Checkbox
+              isChecked={showFavorites}
+              onChange={(e) => onFavoritesChange(e.target.checked)}
+              color="bgmap"
+              aria-label="favorite"
+              size="sm"
+            >
+              <p className={colorfilter}>Only favorite</p>
+            </Checkbox>
+          </div>
+          <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2 flex items-center">
+            <CheckboxGroup
+              value={selectedGarden ? ["garden"] : []}
+              onChange={onGardenChange}
+              color="bgmap"
+              orientation="horizontal"
+              aria-label="Garden"
+              size="sm"
+            >
+              <Checkbox value="garden">
+                <p className={colorfilter}>Only with garden</p>
+              </Checkbox>
+            </CheckboxGroup>
+          </div>
         </div>
 
-        <div className="flex gap-2 py-2 ">
+        <div className="flex gap-2 py-2">
           {modalData.map(
             ({
               label,
@@ -807,6 +837,7 @@ function Filter({
               id,
             }) => (
               <div key={id}>
+                {/* Button to open modal */}
                 <Button
                   onClick={() => setIsOpen(true)}
                   variant="light"
@@ -820,10 +851,12 @@ function Filter({
                     </p>
                   </div>
                 </Button>
+
+                {/* Modal with slider */}
                 <Modal isOpen={isOpen} onOpenChange={setIsOpen} id={id}>
                   <ModalContent>
                     {(onClose) => (
-                      <div>
+                      <div className="p-8">
                         <div className="w-full flex gap-4 pb-4">
                           <div className="border-2 border-black rounded-sm w-1/2 p-2">
                             <p className="font-semibold text-sm">Min</p>
@@ -835,8 +868,8 @@ function Filter({
                           </div>
                         </div>
                         <Slider
-                          min={min}
-                          max={max}
+                          minValue={min}
+                          maxValue={max}
                           step={step}
                           value={range}
                           onChange={onRangeChange}
@@ -853,22 +886,29 @@ function Filter({
             )
           )}
         </div>
-        <div className="flex gap-2 ">
-          <div>
-            <Button
-              onClick={() => onOpenChange(true)}
-              variant="light"
-              radius="none"
-              className="px-0"
-            >
-              <div className="flex  bg-white border-gray-300 border-1 rounded-sm text-xs px-2 py-2">
-                <p className={colorfilter}>Residence ({countChecked()})</p>
-              </div>
-            </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-              <ModalContent>
-                {(onClose) => (
-                  <div className="flex flex-col gap-2">
+
+        <div className="flex gap-2">
+          <div className="flex gap-2">
+            <div>
+              <Button
+                onClick={() => onOpenChange(true)}
+                variant="light"
+                radius="none"
+                className="px-0"
+              >
+                <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
+                  <p className={countChecked() > 0 ? bgtext : colorfilter}>
+                    Residence ({countChecked()})
+                  </p>
+                </div>
+              </Button>
+
+              <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                  <div className="flex flex-col gap-4 m-6 p-6 bg-white rounded-lg shadow-lg relative ">
+                    <h2 className="text-lg font-semibold mb-4">
+                      Select the facilities in the residence
+                    </h2>
                     {facilities.map(
                       ({ id, label, value, selected, onChange }) => (
                         <CheckboxGroup
@@ -880,21 +920,16 @@ function Filter({
                           orientation="horizontal"
                           aria-label={label}
                         >
-                          <Checkbox value={value}>
-                            <div className="flex items-center">
-                              <p className="mr-2">{label}</p>
-                              <span className="text-xs text-gray-500">
-                                ({countChecked([selected])})
-                              </span>
-                            </div>
+                          <Checkbox value={value} className="flex items-center">
+                            <p className="mr-2">{label}</p>
                           </Checkbox>
                         </CheckboxGroup>
                       )
                     )}
                   </div>
-                )}
-              </ModalContent>
-            </Modal>
+                </ModalContent>
+              </Modal>
+            </div>
           </div>
         </div>
       </div>
