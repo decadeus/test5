@@ -1,4 +1,3 @@
-// tailwind.config.js
 const { nextui } = require("@nextui-org/react");
 
 module.exports = {
@@ -9,30 +8,44 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        'spin-pause': {
+          '0%': { transform: 'rotate(0deg)' },
+          '33.33%': { transform: 'rotate(360deg)' }, // Full rotation at 33.33%
+          '100%': { transform: 'rotate(360deg)' },   // Fixed at 360deg for the remaining 66.67%
+        },
+      },
+      animation: {
+        'spin-pause': 'spin-pause 3s linear infinite', // 3s = 1s for rotation, 2s pause
+      },
       colors: {
         primary: {
           DEFAULT: "#2222c1",
           dark: "#004493",
         },
       },
+      fontFamily: {
+        kenia: ["var(--font-kenia)"],
+        satisfy: ["var(-font-satisfy)"] // Correctly place inside extend
+      },
     },
   },
   darkMode: "class",
   plugins: [
     nextui({
-      addCommonColors: true, // Ajoute les couleurs communes de NextUI
+      addCommonColors: true, // Adds common colors from NextUI
       themes: {
         light: {
           colors: {
             primary: {
-              DEFAULT: "#481878", // Utilise la couleur primaire définie
+              DEFAULT: "#481878", // Primary color for light theme
             },
           },
         },
         dark: {
           colors: {
             primary: {
-              DEFAULT: "#004493", // Utilise la couleur primaire définie pour le mode sombre
+              DEFAULT: "#004493", // Primary color for dark theme
             },
           },
         },
