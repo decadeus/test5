@@ -9,6 +9,7 @@ import { FaHeart } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 import * as ScrollArea from '@radix-ui/react-scroll-area';
+import { motion } from 'framer-motion'; 
 
 
 export default function Page() {
@@ -358,46 +359,108 @@ function Black({ projects }) {
   );
 }
 
+
 function Scroll({ projects = [] }) {
+  const [showCursor, setShowCursor] = useState(false);
+  const [cursorLink, setCursorLink] = useState('');
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      const cursor = document.querySelector('.cursor-circle');
+      if (cursor) {
+        const cursorWidth = 80; // Largeur du curseur
+        const cursorHeight = 80; // Hauteur du curseur
+        const offsetY = 20; // Déplacement vers le bas (ajustez cette valeur selon vos besoins)
+
+        // Ajustez la position du curseur pour le centrer et le décaler légèrement vers le bas
+        cursor.style.left = `${event.clientX - cursorWidth / 2}px`;
+        cursor.style.top = `${event.clientY - cursorHeight / 2 - offsetY}px`;
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   return (
-    <div className="flex justify-center mb-8 w-full overflow-x-auto ">
+    <div className="flex justify-center mb-8 w-full overflow-x-auto relative">
       <ScrollArea.Root className="ScrollAreaRoot" type="always">
-      <ScrollArea.Viewport className=" w-full">
+        <ScrollArea.Viewport className="w-full">
           <div className="flex gap-4 mb-4 px-8">
             {projects.map((item) => (
               <div
                 key={item.id} // Assurez-vous d'utiliser une clé unique
                 className="flex flex-col w-[300px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-300 hover:shadow-xl hover:shadow-slate-950"
->
-
-                <div className="w-full relative h-64">
-                  <Avatar
-                    url={item.mainpic_url}
-                    width={270}
-                    height={196}
-                    className="rounded-sm"
-                    alt={item.name} // Ajoutez du texte alternatif pour l'accessibilité
-                  />
-                </div>
-                <div className="-mt-8 z-40">
-                  <p className="text-white colortext font-satisfy text-xl font-extrabold ">
-                    {item.name}
-                  </p>
-                 
-                  <p className="text-white ">{item.adresse}</p>
-                  <p className="text-white">{item.city} , {item.country}</p>
-                  <p className="text-white">{item.compagny}</p>
-                </div>
+                onMouseEnter={() => {
+                  setShowCursor(true);
+                  setCursorLink(item.link);
+                }}
+                onMouseLeave={() => {
+                  setShowCursor(false);
+                  setCursorLink('');
+                }}
+              >
+                <a href={item.link} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
+                  <div className="w-full relative h-64">
+                    <Avatar
+                      url={item.mainpic_url}
+                      width={270}
+                      height={196}
+                      className="rounded-sm"
+                      alt={item.name} // Ajoutez du texte alternatif pour l'accessibilité
+                    />
+                  </div>
+                  <div className="-mt-8 z-40">
+                    <p className="text-white colortext font-satisfy text-xl font-extrabold ">
+                      {item.name}
+                    </p>
+                    <p className="text-white">{item.adresse}</p>
+                    <p className="text-white">{item.city}, {item.country}</p>
+                    <p className="text-white">{item.compagny}</p>
+                  </div>
+                </a>
               </div>
             ))}
           </div>
         </ScrollArea.Viewport>
 
-        <ScrollArea.Scrollbar className="ScrollAreaScrollbar" orientation="horizontal" >
+        <ScrollArea.Scrollbar className="ScrollAreaScrollbar" orientation="horizontal">
           <ScrollArea.Thumb className="ScrollAreaThumb" />
         </ScrollArea.Scrollbar>
         <ScrollArea.Corner className="ScrollAreaCorner" />
       </ScrollArea.Root>
+
+      {showCursor && cursorLink && (
+        <motion.a href={cursorLink} target="_blank" rel="noopener noreferrer">
+          <motion.div
+            className="cursor-circle"
+            initial={{ scale: 0 }} // État initial
+            animate={{ scale: 1 }} // État d'animation à l'apparition
+            exit={{ scale: 0 }} // État d'animation à la disparition
+            transition={{ duration: 0.3 }} // Durée de l'animation
+            style={{ 
+              position: 'fixed', 
+              pointerEvents: 'none', 
+              width: '80px', 
+              height: '80px', 
+              borderRadius: '50%', 
+              backgroundColor: 'rgba(255, 255, 255, 0.5)', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              fontWeight: 'bold', 
+              color: 'black',
+              fontSize: '12px',
+              textAlign: 'center', // Centre le texte
+              margin: 0
+            }}
+          >
+            See project
+          </motion.div>
+        </motion.a>
+      )}
     </div>
   );
 }

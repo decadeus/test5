@@ -172,3 +172,14 @@
 .ScrollAreaCorner {
   background: var(--black-a5);
 }
+
+.cursor-circle {
+  width: 100px; /* Taille du rond */
+  height: 100px; /* Taille du rond */
+  border-radius: 50%; /* Forme ronde */
+  background-color: rgba(255, 255, 255, 0.5); /* Couleur blanche semi-transparente */
+  position: fixed; /* Position fixe pour le suivre */
+  transform: translate(-50%, -50%); /* Centrer le curseur */
+  pointer-events: none; /* Ignore les événements de la souris */
+  transition: background-color 0.3s; /* Transition pour le changement de couleur */
+}
