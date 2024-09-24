@@ -18,7 +18,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
 
   const containerStyle =
-    "flex flex-col items-center bgfull w-full px-64 pt-32 pb-32";
+    "flex flex-col items-center bgfull w-full pt-32 pb-32";
   const headerStyle =
     "text-6xl font-bold text-black mb-8 font-montserrat text-center shadowI bg-transparent";
   const subheaderStyle = "text-lg text-black mb-8 font-montserrat mb-32";
@@ -177,8 +177,9 @@ export default function Page() {
 
         <Form />
       </div>
-      <div className="w-full flex justify-center">
-        <h1>Scroll</h1>
+      <div className="w-full flex flex-col justify-center bg-[#18191C] py-8">
+      <h2 className="font-macondo text-white text-4xl text-center">CECI EST UN TEST</h2>
+        
         <Scroll projects={projects} />
       </div>
     </>
@@ -218,7 +219,7 @@ function Step() {
 
   return (
     <>
-      <div className="flex gap-4 mb-12">
+      <div className="flex gap-4 mb-12 w-full">
         {stepContainerStyle.map(({ step, title, para }) => (
           <div
             key={step}
@@ -385,14 +386,15 @@ function Scroll({ projects = [] }) {
   }, []);
 
   return (
-    <div className="flex justify-center mb-8 w-full overflow-x-auto relative">
+    <div className="flex justify-center  w-full overflow-x-auto relative  py-8">
+      
       <ScrollArea.Root className="ScrollAreaRoot" type="always">
         <ScrollArea.Viewport className="w-full">
-          <div className="flex gap-4 mb-4 px-8">
+          <div className="flex gap-8 mb-4 px-8">
             {projects.map((item) => (
               <div
                 key={item.id} // Assurez-vous d'utiliser une clé unique
-                className="flex flex-col w-[300px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-300 hover:shadow-xl hover:shadow-slate-950"
+                className="flex flex-col w-[500px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-300 hover:shadow-xl hover:shadow-slate-950"
                 onMouseEnter={() => {
                   setShowCursor(true);
                   setCursorLink(item.link);
@@ -403,7 +405,7 @@ function Scroll({ projects = [] }) {
                 }}
               >
                 <a href={item.link} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
-                  <div className="w-full relative h-64">
+                <div className="w-full relative h-80">
                     <Avatar
                       url={item.mainpic_url}
                       width={270}
@@ -412,7 +414,7 @@ function Scroll({ projects = [] }) {
                       alt={item.name} // Ajoutez du texte alternatif pour l'accessibilité
                     />
                   </div>
-                  <div className="-mt-8 z-40">
+                  <div className="mt-4 ">
                     <p className="text-white colortext font-satisfy text-xl font-extrabold ">
                       {item.name}
                     </p>
@@ -440,13 +442,14 @@ function Scroll({ projects = [] }) {
             animate={{ scale: 1 }} // État d'animation à l'apparition
             exit={{ scale: 0 }} // État d'animation à la disparition
             transition={{ duration: 0.3 }} // Durée de l'animation
-            style={{ 
+            style={{
               position: 'fixed', 
               pointerEvents: 'none', 
               width: '80px', 
               height: '80px', 
               borderRadius: '50%', 
-              backgroundColor: 'rgba(255, 255, 255, 0.5)', 
+              backgroundColor: 'rgba(255, 255, 255, 0.2)', // Semi-transparent
+              backdropFilter: 'blur(8px)', // Ajout de l'effet blur
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center', 

@@ -26,7 +26,8 @@ module.exports = {
       },
       fontFamily: {
         kenia: ["var(--font-kenia)"],
-        satisfy: ["var(-font-satisfy)"] // Correctly place inside extend
+        satisfy: ["var(--font-satisfy)"],
+        macondo: ["var(--font-macondo)"] // Correctly place inside extend
       },
     },
   },

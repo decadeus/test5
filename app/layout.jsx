@@ -6,7 +6,7 @@ import MainNavBar from "@/app/navbar/mainNavBar";
 import { createClient } from "@/utils/supabase/server";
 import Head from "next/head";
 import Foot from "@/app/footer/footer";
-import { Kenia, Satisfy } from "next/font/google";
+import { Kenia, Satisfy, Macondo } from "next/font/google";
 
 // Default URL based on the environment
 const defaultUrl = process.env.VERCEL_URL
@@ -23,6 +23,12 @@ const kenia = Kenia({
 const satisfy = Satisfy({
   subsets: ["latin"],
   variable: "--font-satisfy",
+  weight: "400"
+});
+
+const macondo= Macondo({
+  subsets: ["latin"],
+  variable: "--font-macondo",
   weight: "400"
 });
 

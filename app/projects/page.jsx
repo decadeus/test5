@@ -344,7 +344,7 @@ function Page() {
 
   return (
     <div className="flex flex-col w-full gap-4 pt-4 bgfull text-black mb-16">
-      <h1 className="text-5xl colortest mb-8">Listing Apartements</h1>
+      <h1 className="text-7xl colortest mb-8 font-satisfy">Listing Apartements</h1>
       <div className="mb-16">
         <p className="text-gray-500">
           Add your project and list yours apartements{" "}

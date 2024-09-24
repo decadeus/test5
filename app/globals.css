@@ -18,6 +18,7 @@
   --color-text: #C9AF95;
   --font-kenia: 'Kenia', sans-serif;
   --font-satisfy: 'Satisfy', cursive;
+  --font-macondo: 'Macondo', cursive;
 
 }
 /* styles.css */
@@ -27,7 +28,11 @@
 
  .font-satisfy{
   font-family: var(--font-satisfy);
- } 
+ }
+ 
+ .font-macondo{
+  font-family: var(--font-macondo);
+ }
 .colortest {color: var(--color-test);}
 .colortext {color: var(--color-text);}
 .bgtext {background-color: var(--color-test);}
@@ -116,13 +121,13 @@
 
 /* Styles pour la racine de la scroll area */
 .ScrollAreaRoot {
-  width: 800px;
+  width: 1000px;
   height: fit-content;
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 2px 10px var(--black-a4);
   background-color: transparent;
-  --scrollbar-size: 10px;
+  --scrollbar-size: 6px;
 }
 
 .ScrollAreaViewport {
@@ -139,7 +144,7 @@
   /* disable browser handling of all panning and zooming gestures on touch devices */
   touch-action: none;
  
-  background: rgb(215, 215, 215);
+  background: rgb(0, 0, 0);
   transition: background 160ms ease-out;
   border-radius: 3px;
   
