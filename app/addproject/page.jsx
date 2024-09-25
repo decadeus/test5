@@ -8,54 +8,47 @@ import { FaArrowRight } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
-import * as ScrollArea from '@radix-ui/react-scroll-area';
-import { motion } from 'framer-motion'; 
-
+import * as ScrollArea from "@radix-ui/react-scroll-area";
+import { motion } from "framer-motion";
+import { FaLongArrowAltDown } from "react-icons/fa";
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const containerStyle =
-    "flex flex-col items-center bgfull w-full pt-32 pb-32";
+  const containerStyle = "flex flex-col items-center bgfull w-full pt-32 pb-32";
   const headerStyle =
     "text-6xl font-bold text-black mb-8 font-montserrat text-center shadowI bg-transparent";
   const subheaderStyle = "text-lg text-black mb-8 font-montserrat mb-32";
 
   const fetchProjects = async () => {
     const supabase = createClient();
-    const { data, error } = await supabase
-      .from("project")
-      .select("*")
-      .eq("beau", true);
+    const { data, error } = await supabase.from("project").select("*");
 
     if (error) {
       setError(error);
     } else {
-      setProjects(data); // Store data in state
+      setProjects(data);
     }
     setLoading(false);
   };
 
   useEffect(() => {
     fetchProjects();
-
     const revealText = (id, text, buildingText) => {
       const container = document.getElementById(id);
       container.innerHTML = "";
 
       for (let char of text) {
         const span = document.createElement("span");
-        span.className = "letter"; // Classe pour le style
+        span.className = "letter";
         span.style.display = "inline-block";
         span.style.opacity = "0";
         span.style.transition = "opacity 0.3s ease";
-        span.textContent = char === " " ? "\u00A0" : char; // Gérer les espaces
+        span.textContent = char === " " ? "\u00A0" : char;
         container.appendChild(span);
       }
-
-      // Ajouter le texte stylisé
       const buildingSpan = document.createElement("span");
       buildingSpan.className =
         "bg-gradient-to-r from-fuchsia-400 via-pink-500 to-sky-500 bg-clip-text text-transparent";
@@ -70,27 +63,21 @@ export default function Page() {
         if (rect.top < window.innerHeight && rect.bottom > 0) {
           letters.forEach((letter, index) => {
             setTimeout(() => {
-              letter.style.opacity = "1"; // Afficher avec une transition
-            }, index * 100); // Délai pour chaque lettre
+              letter.style.opacity = "1";
+            }, index * 100);
           });
-          window.removeEventListener("scroll", revealLetters); // Retirer l'écouteur après l'affichage
+          window.removeEventListener("scroll", revealLetters);
         }
       };
 
       window.addEventListener("scroll", revealLetters);
     };
-
-    // Appeler pour le premier titre
     revealText("building-text", "Fill information about ", "the building");
-
-    // Appeler pour le second titre
     revealText(
       "second-title-text",
       "Discover amazing features of ",
       "this project"
     );
-
-    // Appeler pour le troisième titre
     revealText("third-title-text", "Follow all new ", "projects");
   }, []);
 
@@ -103,6 +90,9 @@ export default function Page() {
           transition: opacity 0.3s ease; /* Transition douce */
         }
       `}</style>
+      <div className="w-full">
+        <Para />
+      </div>
       <div className={containerStyle}>
         <h1 className={headerStyle}>
           The Largest Collection of <br /> Residential Real Estate Projects
@@ -158,7 +148,7 @@ export default function Page() {
             <p className="flex items-center text-6xl">
               We{" "}
               <span className="px-2">
-                <FaHeart className="text-black  animate-spin-pause" />
+                <FaHeart className="colortext animate-spin-pause" />
               </span>{" "}
               go far
             </p>
@@ -178,14 +168,28 @@ export default function Page() {
         <Form />
       </div>
       <div className="w-full flex flex-col justify-center bg-[#18191C] py-8">
-      <h2 className="font-macondo text-white text-4xl text-center">CECI EST UN TEST</h2>
-        
-        <Scroll projects={projects} />
+        <h2 className="font-macondo text-white text-4xl text-center">
+          CECI EST UN TEST
+        </h2>
+
+        <Scroll projects={projects.filter(p => [10, 12, 13, 14].includes(p.id))} />
       </div>
+
+      <div className="w-full flex flex-col bg-[#18191C] py-8">
+      <h2 className="font-macondo text-white text-4xl text-center pb-8">
+          CECI EST UN TEST
+        </h2>
+        {projects
+          .filter((p) => [10, 12, 14].includes(p.id))
+          .map((project, index) => (
+            <Demi key={project.id} projects={project} index={index} />
+          ))}
+      </div>
+      
+
     </>
   );
 }
-
 function Step() {
   const stepContainerStyle = [
     {
@@ -316,7 +320,6 @@ function Step() {
           </div>
         ))}
       </div>
-      
     </>
   );
 }
@@ -325,7 +328,10 @@ function Black({ projects }) {
   return (
     <div className="flex flex-col w-full gap-2 mt-12">
       {projects.map((item) => (
-        <div key={item.id} className="bg-black flex justify-between h-80 w-full items-center">
+        <div
+          key={item.id}
+          className="bg-black flex justify-between h-80 w-full items-center"
+        >
           {/* Bloc 1: 3/12 */}
           <div className="w-3/12">
             <h3 className="text-gray-300 text-3xl pl-8">{item.compagny}</h3>
@@ -334,7 +340,7 @@ function Black({ projects }) {
           {/* Bloc 2: 6/12 */}
           <div className="relative h-72 w-6/12 flex flex-col text-center items-center">
             <div>
-              <p className="text-white pr-12 flex text-center text-5xl pb-4">
+              <p className="text-white pr-12 flex text-center text-5xl pb-4 font-satisfy colortext">
                 {item.name}
               </p>
             </div>
@@ -360,14 +366,13 @@ function Black({ projects }) {
   );
 }
 
-
 function Scroll({ projects = [] }) {
   const [showCursor, setShowCursor] = useState(false);
-  const [cursorLink, setCursorLink] = useState('');
+  const [cursorLink, setCursorLink] = useState("");
 
   useEffect(() => {
     const handleMouseMove = (event) => {
-      const cursor = document.querySelector('.cursor-circle');
+      const cursor = document.querySelector(".cursor-circle");
       if (cursor) {
         const cursorWidth = 80; // Largeur du curseur
         const cursorHeight = 80; // Hauteur du curseur
@@ -379,33 +384,37 @@ function Scroll({ projects = [] }) {
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
   return (
     <div className="flex justify-center  w-full overflow-x-auto relative  py-8">
-      
       <ScrollArea.Root className="ScrollAreaRoot" type="always">
         <ScrollArea.Viewport className="w-full">
           <div className="flex gap-8 mb-4 px-8">
             {projects.map((item) => (
               <div
                 key={item.id} // Assurez-vous d'utiliser une clé unique
-                className="flex flex-col w-[500px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-300 hover:shadow-xl hover:shadow-slate-950"
+                className="flex flex-col w-[450px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-300 hover:shadow-xl hover:shadow-slate-950"
                 onMouseEnter={() => {
                   setShowCursor(true);
                   setCursorLink(item.link);
                 }}
                 onMouseLeave={() => {
                   setShowCursor(false);
-                  setCursorLink('');
+                  setCursorLink("");
                 }}
               >
-                <a href={item.link} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
-                <div className="w-full relative h-80">
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full h-full"
+                >
+                  <div className="w-full relative h-80">
                     <Avatar
                       url={item.mainpic_url}
                       width={270}
@@ -415,11 +424,13 @@ function Scroll({ projects = [] }) {
                     />
                   </div>
                   <div className="mt-4 ">
-                    <p className="text-white colortext font-satisfy text-xl font-extrabold ">
+                    <p className="text-white colortext font-satisfy text-2xl font-extrabold ">
                       {item.name}
                     </p>
                     <p className="text-white">{item.adresse}</p>
-                    <p className="text-white">{item.city}, {item.country}</p>
+                    <p className="text-white">
+                      {item.city}, {item.country}
+                    </p>
                     <p className="text-white">{item.compagny}</p>
                   </div>
                 </a>
@@ -428,7 +439,10 @@ function Scroll({ projects = [] }) {
           </div>
         </ScrollArea.Viewport>
 
-        <ScrollArea.Scrollbar className="ScrollAreaScrollbar" orientation="horizontal">
+        <ScrollArea.Scrollbar
+          className="ScrollAreaScrollbar"
+          orientation="horizontal"
+        >
           <ScrollArea.Thumb className="ScrollAreaThumb" />
         </ScrollArea.Scrollbar>
         <ScrollArea.Corner className="ScrollAreaCorner" />
@@ -443,21 +457,21 @@ function Scroll({ projects = [] }) {
             exit={{ scale: 0 }} // État d'animation à la disparition
             transition={{ duration: 0.3 }} // Durée de l'animation
             style={{
-              position: 'fixed', 
-              pointerEvents: 'none', 
-              width: '80px', 
-              height: '80px', 
-              borderRadius: '50%', 
-              backgroundColor: 'rgba(255, 255, 255, 0.2)', // Semi-transparent
-              backdropFilter: 'blur(8px)', // Ajout de l'effet blur
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center', 
-              fontWeight: 'bold', 
-              color: 'black',
-              fontSize: '12px',
-              textAlign: 'center', // Centre le texte
-              margin: 0
+              position: "fixed",
+              pointerEvents: "none",
+              width: "80px",
+              height: "80px",
+              borderRadius: "50%",
+              backgroundColor: "rgba(255, 255, 255, 0.2)", // Semi-transparent
+              backdropFilter: "blur(8px)", // Ajout de l'effet blur
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              color: "black",
+              fontSize: "12px",
+              textAlign: "center", // Centre le texte
+              margin: 0,
             }}
           >
             See project
@@ -470,3 +484,111 @@ function Scroll({ projects = [] }) {
 
 // CSS styles remain the same...
 
+function Demi({ projects, index }) {
+  // Vérifier si l'index est pair ou impair pour changer l'ordre des blocs
+  const isEven = index % 2 === 0;
+
+  return (
+    <div className={`w-full flex ${isEven ? "" : "flex-row-reverse"}`}>
+      {/* Bloc A - Image */}
+      <div className="w-1/2 relative h-80">
+        {projects.mainpic_url && (
+          <Avatar
+            url={projects.mainpic_url}
+            width={270}
+            height={196}
+            className="rounded-sm"
+            alt={projects.name || "Project Image"}
+          />
+        )}
+      </div>
+
+      {/* Bloc B - Texte */}
+      <div className="w-1/2 flex flex-col bg-[#18191C] justify-center items-center">
+        <p className="text-white colortext font-satisfy text-2xl font-extrabold">
+          {projects.name || "Nom du projet non disponible"}
+        </p>
+        <p className="text-white">
+          {projects.adresse || "Adresse non disponible"}
+        </p>
+        <p className="text-white">
+          {projects.city
+            ? `${projects.city}, ${projects.country}`
+            : "Ville et pays non disponibles"}
+        </p>
+        <p className="text-white">
+          {projects.compagny || "Compagnie non disponible"}
+        </p>
+        {projects.link && (
+          <a
+            href={projects.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            
+          >
+            <p className="colortext">
+              Learn more about {projects.name || "ce projet"}
+            </p>
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+function Para() {
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const handleScroll = () => {
+    setScrollPosition(window.scrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return (
+    <div className="relative h-screen overflow-hidden">
+      {/* Image de fond fixée pour l'effet de parallaxe */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          transform: `translateY(${scrollPosition * 0.2}px)`, // Ajuste pour un mouvement plus fluide
+          transition: 'none', // Aucune transition pour éviter le mouvement après l'arrêt du scroll
+        }}
+      >
+        <Image
+          src="/buildwhite.jpg" // Assure-toi que l'image est dans le bon dossier public
+          alt="Background"
+          layout="fill"
+          objectFit="cover"
+          className="object-center" // Centre l'image
+        />
+      </div>
+
+      {/* Filtre blanc sur l'image de fond */}
+      <div className="absolute inset-0 bg-white opacity-60 z-10" />
+
+      {/* Contenu au-dessus de l'image */}
+      <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-32 pl-20">
+    <h1 className="text-3xl text-left">
+        FIND RESIDENTIAL <br /> BUILDING PROJECTS
+    </h1>
+    
+    <p className="text-left text-sm pt-4 flex items-center">SCROLL TO EXPLORE <FaLongArrowAltDown /> </p>
+</div>
+
+      {/* Ajout de contenu supplémentaire pour voir l'effet de parallaxe */}
+      <div className="h-screen bg-gray-200 flex items-center justify-center">
+        <h2 className="text-3xl">Contenu Additionnel</h2>
+      </div>
+      <div className="h-screen bg-gray-300 flex items-center justify-center">
+        <h2 className="text-3xl">Encore Plus de Contenu</h2>
+      </div>
+    </div>
+  );
+}
