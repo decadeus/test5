@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Advent+Pro&family=Bebas+Neue&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
-
+@import url("https://fonts.googleapis.com/css2?family=Advent+Pro&family=Bebas+Neue&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -10,114 +8,136 @@
 :root {
   --primary-color: #5b2c6f;
   --secondary-color: #bb8fce;
-  --full-bg: #F6F6F4;
+  --full-bg: #f6f6f4;
   --full-text: #000000;
   --bgmap-color: #04045b;
-  --bg-test: #C9AF95;
+  --bg-test: #c9af95;
   --color-test: #759ca2;
-  --color-text: #C9AF95;
-  --font-kenia: 'Kenia', sans-serif;
-  --font-satisfy: 'Satisfy', cursive;
-  --font-macondo: 'Macondo', cursive;
-
+  --color-text: #c9af95;
+  --font-kenia: "Kenia", sans-serif;
+  --font-satisfy: "Satisfy", cursive;
+  --font-macondo: "Macondo", cursive;
 }
 /* styles.css */
-.font-kenia {
-    font-family: var(--font-kenia);
-  }
 
- .font-satisfy{
+.maintextfull {
+  color: var(--full-bg);
+}
+.mainbgfull {
+  background-color: var(--color-text);
+  color: white;
+}
+.borderfull {
+  border-color: var(--color-text);
+}
+.font-kenia {
+  font-family: var(--font-kenia);
+}
+
+.font-satisfy {
   font-family: var(--font-satisfy);
- }
- 
- .font-macondo{
+}
+
+.font-macondo {
   font-family: var(--font-macondo);
- }
-.colortest {color: var(--color-test);}
-.colortext {color: var(--color-text);}
-.bgtext {background-color: var(--color-test);}
-.bgtest { background-color: var(--bg-test);}
+}
+.colortest {
+  color: var(--color-test);
+}
+.colortext {
+  color: var(--color-text);
+}
+.bgtext {
+  background-color: var(--color-test);
+}
+.bgtest {
+  background-color: var(--bg-test);
+}
 .bgcolorP {
-    background-color: var(--primary-color);
-  }
-.txcolorP{
-    color: var(--primary-color);
-  }
+  background-color: var(--primary-color);
+}
+.txcolorP {
+  color: var(--primary-color);
+}
 
 .bgcolorS {
-    background-color: var(--secondary-color);
-  }
-.txcolorS{
-    color: var(--secondary-color);
-  }
+  background-color: var(--secondary-color);
+}
+.txcolorS {
+  color: var(--secondary-color);
+}
 
-  .borderI{
-    border: 2px solid var(--primary-color);
-  }
+.borderI {
+  border: 2px solid var(--primary-color);
+}
 
-  .bgmap {
-    background-color: var(--bgmap-color);
-  }
+.bgmap {
+  background-color: var(--bgmap-color);
+}
 
-  .shadowI{
-    text-shadow: 8px 18px 53px rgb(197, 4, 245);
-  }
+.shadowI {
+  text-shadow: 8px 18px 53px rgb(197, 4, 245);
+}
 
-  .shadowW{
-    box-shadow: 8px 8px 100px 67px rgba(159, 1, 199, 0.1);
-  }
+.shadowW {
+  box-shadow: 8px 8px 100px 67px rgba(159, 1, 199, 0.1);
+}
 
-  .bgmain{
-    background: linear-gradient(338deg, rgba(161,159,236,0.1982186624649859) 35%, rgba(244,230,255,0.5) 100%);
+.bgmain {
+  background: linear-gradient(
+    338deg,
+    rgba(161, 159, 236, 0.1982186624649859) 35%,
+    rgba(244, 230, 255, 0.5) 100%
+  );
+}
 
-  }
+.bgfull {
+  background-color: var(--full-bg);
+}
 
-  .bgfull {background-color: var(--full-bg);}
+.textfull {
+  color: var(--full-text);
+}
 
-  .textfull {color: var(--full-text);}
+.custom-bubble {
+  position: relative;
+  display: inline-block;
+  background-color: var(--bg-test);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 14px;
+  white-space: nowrap;
+}
 
+.bubble-content {
+  position: relative;
+  z-index: 1;
+}
 
-  .custom-bubble {
-    position: relative;
-    display: inline-block;
-    background-color: var(--bg-test);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 16px;
-    text-align: center;
-    font-size: 14px;
-    white-space: nowrap;
-  }
-  
-  .bubble-content {
-    position: relative;
-    z-index: 1;
-  }
-  
-  .bubble-pointer {
-    position: absolute;
-    bottom: -10px; /* Positionne la queue sous la bulle */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid var(--bg-test); /* La couleur de la queue doit correspondre à celle de la bulle */
-  }
-  
+.bubble-pointer {
+  position: absolute;
+  bottom: -10px; /* Positionne la queue sous la bulle */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid var(--bg-test); /* La couleur de la queue doit correspondre à celle de la bulle */
+}
 
-  #building-text {
-    visibility: hidden; /* Masquer le texte au départ */
-  }
-  .letter {
-    display: inline-block; /* Pour pouvoir les révéler individuellement */
-    opacity: 0; /* Invisible au départ */
-    transition: opacity 0.3s ease; /* Transition douce */
-  }
+#building-text {
+  visibility: hidden; /* Masquer le texte au départ */
+}
+.letter {
+  display: inline-block; /* Pour pouvoir les révéler individuellement */
+  opacity: 0; /* Invisible au départ */
+  transition: opacity 0.3s ease; /* Transition douce */
+}
 
-  
-  /* ScrollArea.module.css ou globals.css */
+/* ScrollArea.module.css ou globals.css */
 
 /* Styles pour la racine de la scroll area */
 .ScrollAreaRoot {
@@ -143,14 +163,13 @@
 
   /* disable browser handling of all panning and zooming gestures on touch devices */
   touch-action: none;
- 
+
   background: rgb(0, 0, 0);
   transition: background 160ms ease-out;
   border-radius: 3px;
-  
 }
 
-.ScrollAreaScrollbar[data-orientation='horizontal'] {
+.ScrollAreaScrollbar[data-orientation="horizontal"] {
   flex-direction: column;
   height: var(--scrollbar-size);
 }
@@ -163,7 +182,7 @@
 }
 /* increase target size for touch devices https://www.w3.org/WAI/WCAG21/Understanding/target-size.html */
 .ScrollAreaThumb::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -182,7 +201,12 @@
   width: 100px; /* Taille du rond */
   height: 100px; /* Taille du rond */
   border-radius: 50%; /* Forme ronde */
-  background-color: rgba(255, 255, 255, 0.5); /* Couleur blanche semi-transparente */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.5
+  ); /* Couleur blanche semi-transparente */
   position: fixed; /* Position fixe pour le suivre */
   transform: translate(-50%, -50%); /* Centrer le curseur */
   pointer-events: none; /* Ignore les événements de la souris */
