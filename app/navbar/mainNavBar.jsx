@@ -36,7 +36,7 @@ export default function MainNavBar({ user }) {
   }, [user, supabase]);
 
   return (
-    <div className="w-full py-4 grid grid-cols-3 grid-rows-1 justify-between items-center mainbgfull  text-white  z-50 opacity-90 px-4 xl:px-16 ">
+    <div className="w-full py-4 grid grid-cols-3 grid-rows-1 justify-between items-center brownbg  text-white  z-50 opacity-90 px-4 xl:px-16 ">
       <div className="flex justify-start items-center gap-2">
         <Link href="/">
           <div className="flex gap-2 items-center">

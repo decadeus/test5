@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react"; // Ajout de useState et useEffect
+import { useState, useEffect, useRef } from "react"; // Ajout de useState et useEffect
 import d from "@/components/d.png";
 import e from "@/components/e.png";
 import Image from "next/legacy/image";
@@ -7,8 +7,10 @@ import { FaArrowRight, FaHeart, FaLongArrowAltDown } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-import { motion } from "framer-motion";
-import {texts} from "@/lib/language"; 
+
+import { texts } from "@/lib/language";
+import useCustomCursor from "@/components/useCustomCursor";
+import Link from "next/link"; // Adjust the path accordingly
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
@@ -46,54 +48,6 @@ export default function Page() {
     setLanguage(country === "Polska" ? "pl" : "fr"); // Change la langue en fonction du pays
   };
 
-  useEffect(() => {
-    const revealText = (id, text, buildingText) => {
-      const container = document.getElementById(id);
-      container.innerHTML = "";
-
-      for (let char of text) {
-        const span = document.createElement("span");
-        span.className = "letter";
-        span.style.display = "inline-block";
-        span.style.opacity = "0";
-        span.style.transition = "opacity 0.3s ease";
-        span.textContent = char === " " ? "\u00A0" : char;
-        container.appendChild(span);
-      }
-
-      const buildingSpan = document.createElement("span");
-      buildingSpan.className =
-        "bg-gradient-to-r from-fuchsia-400 via-pink-500 to-sky-500 bg-clip-text text-transparent";
-      buildingSpan.textContent = buildingText;
-
-      container.appendChild(buildingSpan);
-
-      const letters = document.querySelectorAll(`#${id} .letter`);
-
-      const revealLetters = () => {
-        const rect = container.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-          letters.forEach((letter, index) => {
-            setTimeout(() => {
-              letter.style.opacity = "1";
-            }, index * 100);
-          });
-          window.removeEventListener("scroll", revealLetters);
-        }
-      };
-
-      window.addEventListener("scroll", revealLetters);
-    };
-
-    revealText(
-      "second-title-text",
-      "Discover amazing features of ",
-      "this project"
-    );
-  }, []);
-
-
-
   return (
     <>
       <style jsx>{`
@@ -107,162 +61,106 @@ export default function Page() {
         <Para language={language} texts={texts} />
       </div>
 
-      <div className="flex justify-center mb-8 -mt-32 z-50">
+      <div className="flex justify-center  -mt-32 mb-32 z-50">
         <button
           onClick={() => handleCountryChange("France")}
           className={`flex justify-between items-center  gap-2 px-4 py-2 m-2  borderfull border-2 rounded ${
             selectedCountry === "France"
-              ? "mainbgfull text-white"
-              : "bg-white colortext"
+              ? "brownbg clearbg"
+              : "clearbg browntext"
           }`}
         >
-         <img src="/france-flag-round-circle-icon.svg" alt="Icon" width="20" height="20" /> France
+          <img
+            src="/france-flag-round-circle-icon.svg"
+            alt="Icon"
+            width="20"
+            height="20"
+          />{" "}
+          France
         </button>
         <button
           onClick={() => handleCountryChange("Polska")}
           className={`flex justify-between items-center  gap-2 px-4 py-2 m-2  borderfull border-2 rounded ${
             selectedCountry === "Polska"
-              ? "mainbgfull text-white"
-              : "bg-white colortext"
+              ? "brownbg clearbg"
+              : "clearbg browntext"
           }`}
         >
-          <img src="/monaco-flag-round-circle-icon.svg" alt="Icon" width="20" height="20" /> Polska
+          <img
+            src="/monaco-flag-round-circle-icon.svg"
+            alt="Icon"
+            width="20"
+            height="20"
+          />{" "}
+          Polska
         </button>
       </div>
-
-      <div className={containerStyle}>
-        <div className="flex flex-col justify-start items-start w-full mb-16">
-          <p className="text-black mb-4">Updates</p>
-          <h2 className="text-black text-5xl font-bold mb-8">
-            <span id="third-title-text"></span>
-          </h2>
+      <div className="flex h-[200px] mb-32 ">
+        <div className="flex justify-center items-center w-1/2 pr-16 pl-48 relative z-10 ">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <h1 className="text-[20rem] text-black opacity-5 transform translate-x-1/2 font-satisfy">
+              H
+            </h1>
+          </div>
+          <h1 className="text-4xl font-bold">{texts[language].title3}</h1>
         </div>
-
-        <div className="flex flex-col justify-start items-start w-full mb-16">
-          <h2 className="text-black text-5xl font-bold mb-8 text-wrap">
-            <span id="second-title-text"></span>
-          </h2>
-
-          <div className="flex items-center justify-center ">
-            <p className="flex items-center text-6xl">
-              We{" "}
-              <span className="px-2">
-                <FaHeart className="colortext animate-spin-pause" />
-              </span>{" "}
-              go far
-            </p>
-          </div>
-          <div className="relative w-[670px] shadowW">
-            <Image
-              src={e}
-              layout="fill"
-              objectFit="cover"
-              alt="Logo"
-              className=""
-            />
-          </div>
-          <Black projects={projects} />
+        <div className="flex flex-col justify-left  w-1/2 pl-16 pr-48 gap-4">
+          <h2 className="text-xl">{texts[language].title4}</h2>
+          <Link
+            href="/projects"
+            className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
+          >
+            {texts[language].link}
+          </Link>
         </div>
       </div>
 
-      <div className="w-full flex flex-col justify-center py-8">
+      <div className="w-full flex flex-col justify-center mb-32">
         <h2 className="font-macondo text-black text-4xl text-center">
-          {texts[language].title} {/* Utiliser le texte basé sur la langue */}
+          {texts[language].title2} {/* Utiliser le texte basé sur la langue */}
         </h2>
 
-        <Scroll
-          projects={projects.filter((p) => [10, 12, 13, 14].includes(p.id))}
-        />
+        <Scroll projects={projects} texts={texts} language={language} />
       </div>
 
-      <div className="w-full flex flex-col bg-[#18191C]  py-8 mb-4">
-        <h2 className="font-macondo maintextfull text-4xl text-center pb-8 ">
-          {texts[language].title} {/* Utiliser le texte basé sur la langue */}
+      <div className="w-full flex flex-col  py-8 mb-4">
+        <h2 className="font-macondo  text-4xl text-center pb-8 ">
+          {texts[language].title1} {/* Utiliser le texte basé sur la langue */}
         </h2>
         {projects
-          .filter((p) => [10, 12,13, 14].includes(p.id))
+          .filter((p) => [10, 12, 13, 14].includes(p.id))
           .map((project, index) => (
-            <Demi key={project.id} projects={project} index={index} texts={texts} language={language} />
+            <Demi
+              key={project.id}
+              projects={project}
+              index={index}
+              texts={texts}
+              language={language}
+            />
           ))}
       </div>
+      <ScrollingText />
     </>
   );
 }
 
-function Black({ projects }) {
-  return (
-    <div className="flex flex-col w-full gap-2 mt-12">
-      {projects.map((item) => (
-        <div
-          key={item.id}
-          className="bg-black flex justify-between h-80 w-full items-center"
-        >
-          {/* Bloc 1: 3/12 */}
-          <div className="w-3/12">
-            <h3 className="text-gray-300 text-3xl pl-8">{item.compagny}</h3>
-          </div>
-
-          {/* Bloc 2: 6/12 */}
-          <div className="relative h-72 w-6/12 flex flex-col text-center items-center">
-            <div>
-              <p className="maintextfull pr-12 flex text-center text-5xl pb-4 font-satisfy colortext">
-                {item.name}
-              </p>
-            </div>
-            <div className="w-full relative h-80">
-              <Avatar
-                url={item.mainpic_url}
-                width={270}
-                height={196}
-                classn="rounded-sm"
-              />
-            </div>
-          </div>
-
-          {/* Bloc 3: 3/12 */}
-          <div className="w-3/12 pl-4">
-            <p className="maintextfull pr-12 flex items-center text-base font-thin">
-              {item.Des}
-            </p>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function Scroll({ projects = [] }) {
-  const [showCursor, setShowCursor] = useState(false);
-  const [cursorLink, setCursorLink] = useState("");
-
-  useEffect(() => {
-    const handleMouseMove = (event) => {
-      const cursor = document.querySelector(".cursor-circle");
-      if (cursor) {
-        const cursorWidth = 80; // Largeur du curseur
-        const cursorHeight = 80; // Hauteur du curseur
-        const offsetY = 20; // Déplacement vers le bas (ajustez cette valeur selon vos besoins)
-
-        // Ajustez la position du curseur pour le centrer et le décaler légèrement vers le bas
-        cursor.style.left = `${event.clientX - cursorWidth / 2}px`;
-        cursor.style.top = `${event.clientY - cursorHeight / 2 - offsetY}px`;
-      }
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+function Scroll({ projects = [], index, texts, language }) {
+  const {
+    showCursor,
+    setShowCursor,
+    cursorLink,
+    setCursorLink,
+    CursorComponent,
+  } = useCustomCursor(texts[language].projet);
 
   return (
-    <div className="flex justify-center  w-full overflow-x-auto relative  py-8">
+    <div className="flex justify-center w-full overflow-x-auto relative py-8">
       <ScrollArea.Root className="ScrollAreaRoot" type="always">
         <ScrollArea.Viewport className="w-full">
           <div className="flex gap-8 mb-4 px-8">
             {projects.map((item) => (
               <div
-                key={item.id} // Assurez-vous d'utiliser une clé unique
+                key={item.id}
                 className="flex flex-col w-[450px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-300 hover:shadow-xl hover:shadow-slate-950"
                 onMouseEnter={() => {
                   setShowCursor(true);
@@ -285,18 +183,18 @@ function Scroll({ projects = [] }) {
                       width={270}
                       height={196}
                       className="rounded-sm"
-                      alt={item.name} // Ajoutez du texte alternatif pour l'accessibilité
+                      alt={item.name}
                     />
                   </div>
-                  <div className="mt-4 ">
-                    <p className="maintextfull colortext font-satisfy text-2xl font-extrabold ">
+                  <div className="mt-4">
+                    <p className="browntext font-satisfy text-2xl font-extrabold">
                       {item.name}
                     </p>
-                    <p className="maintextfull">{item.adresse}</p>
-                    <p className="maintextfull">
+                    <p className="cleartext">{item.adresse}</p>
+                    <p className="cleartext">
                       {item.city}, {item.country}
                     </p>
-                    <p className="maintextfull">{item.compagny}</p>
+                    <p className="cleartext">{item.compagny}</p>
                   </div>
                 </a>
               </div>
@@ -313,76 +211,73 @@ function Scroll({ projects = [] }) {
         <ScrollArea.Corner className="ScrollAreaCorner" />
       </ScrollArea.Root>
 
-      {showCursor && cursorLink && (
-        <motion.a href={cursorLink} target="_blank" rel="noopener noreferrer">
-          <motion.div
-            className="cursor-circle"
-            initial={{ scale: 0 }} // État initial
-            animate={{ scale: 1 }} // État d'animation à l'apparition
-            exit={{ scale: 0 }} // État d'animation à la disparition
-            transition={{ duration: 0.3 }} // Durée de l'animation
-            style={{
-              position: "fixed",
-              pointerEvents: "none",
-              width: "80px",
-              height: "80px",
-              borderRadius: "50%",
-              backgroundColor: "rgba(255, 255, 255, 0.2)", // Semi-transparent
-              backdropFilter: "blur(8px)", // Ajout de l'effet blur
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: "bold",
-              color: "black",
-              fontSize: "12px",
-              textAlign: "center", // Centre le texte
-              margin: 0,
-            }}
-          >
-            See project
-          </motion.div>
-        </motion.a>
-      )}
+      <CursorComponent />
     </div>
   );
 }
 
-function Demi({ projects, index ,texts, language }) {
-  // Vérifier si l'index est pair ou impair pour changer l'ordre des blocs
+function Demi({ projects, index, texts, language }) {
+  const {
+    showCursor,
+    setShowCursor,
+    cursorLink,
+    setCursorLink,
+    CursorComponent,
+  } = useCustomCursor(texts[language].projet); // Pass the cursor text here
+
   const isEven = index % 2 === 0;
 
   return (
-    <div className={`w-full flex ${isEven ? "" : "flex-row-reverse"}`}>
-      {/* Bloc A - Image */}
-      <div className="w-1/2 relative h-80">
-        {projects.mainpic_url && (
-          <Avatar
-            url={projects.mainpic_url}
-            width={270}
-            height={196}
-            className="rounded-sm"
-            alt={projects.name || "Project Image"}
-          />
-        )}
+    <div
+      className={`w-full flex ${
+        isEven ? "" : "flex-row-reverse darktext clearbg"
+      }`}
+    >
+      <div
+        className="w-1/2 relative h-80"
+        onMouseEnter={() => {
+          setShowCursor(true);
+          setCursorLink(projects.link);
+        }}
+        onMouseLeave={() => {
+          setShowCursor(false);
+          setCursorLink("");
+        }}
+      >
+        <a
+          href={projects.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full h-full"
+        >
+          {projects.mainpic_url && (
+            <Avatar
+              url={projects.mainpic_url}
+              width={270}
+              height={196}
+              className="rounded-sm"
+              alt={projects.name || "Project Image"}
+            />
+          )}
+        </a>
       </div>
 
-      {/* Bloc B - Texte */}
-      <div className="w-1/2 flex flex-col bg-[#18191C] justify-center items-center">
-        <p className="maintextfull colortext font-satisfy text-4xl font-extrabold pb-8">
+      <div className="w-1/2 flex flex-col full justify-center items-center">
+        <p className="font-satisfy text-4xl font-extrabold pb-8 browntext ">
           {projects.name}
         </p>
-        <p className="maintextfull px-12 pb-8">{projects.Des}</p>
+        <p className="px-12 pb-8 ">{projects.Des}</p>
 
         {projects.link && (
           <a href={projects.link} target="_blank" rel="noopener noreferrer">
-            
-            <p className="colortext hover:underline">
+            <p className="browntext hover:underline">
               {texts[language].voir} <span>{projects.name}</span>
             </p>
-          
           </a>
         )}
       </div>
+
+      <CursorComponent />
     </div>
   );
 }
@@ -445,3 +340,74 @@ function Para({ language, texts }) {
     </div>
   );
 }
+
+const ScrollingText = () => {
+  const announcements = [
+    "Eiffage",
+    "Bouygues",
+    "Marvipol",
+    "Ronson",
+    "Develia",
+    "Archicom",
+    "Budlex",
+    "Profbud",
+    "Vinci",
+    "Procivis",
+    "Icade",
+    "Bassac",
+  ];
+
+  return (
+    <div className="scrolling-text-container">
+      <div
+        className="scrolling-text-inner"
+        style={{
+          "--marquee-speed": "20s",
+        }}
+        role="marquee"
+      >
+        <div className={"scrolling-text"}>
+          {/* Dupliquer le contenu pour créer un effet de continuité */}
+          {announcements.map((text, index) => (
+            <div key={index} className="scrolling-text-item">
+              {text}
+            </div>
+          ))}
+          {/* Répétition du contenu pour assurer un défilement continu */}
+          {announcements.map((text, index) => (
+            <div
+              key={index + announcements.length}
+              className="scrolling-text-item"
+            >
+              {text}
+            </div>
+          ))}
+          {announcements.map((text, index) => (
+            <div
+              key={index + announcements.length}
+              className="scrolling-text-item"
+            >
+              {text}
+            </div>
+          ))}
+          {announcements.map((text, index) => (
+            <div
+              key={index + announcements.length}
+              className="scrolling-text-item"
+            >
+              {text}
+            </div>
+          ))}
+          {announcements.map((text, index) => (
+            <div
+              key={index + announcements.length}
+              className="scrolling-text-item"
+            >
+              {text}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};

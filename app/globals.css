@@ -8,17 +8,25 @@
 :root {
   --primary-color: #5b2c6f;
   --secondary-color: #bb8fce;
-  --full-bg: #f6f6f4;
-  --full-text: #000000;
+  --clear: #f6f6f4;
+  --dark: #000000;
   --bgmap-color: #04045b;
-  --bg-test: #c9af95;
+  --brown: #c9af95;
   --color-test: #759ca2;
-  --color-text: #c9af95;
+ 
   --font-kenia: "Kenia", sans-serif;
   --font-satisfy: "Satisfy", cursive;
   --font-macondo: "Macondo", cursive;
 }
 /* styles.css */
+
+.clearbg{ background-color: var(--clear) }
+.cleartext { color: var(--clear)}
+.darkbg { background-color: var(--dark) }
+.darktext { color: var(--dark) }
+.brownbg{background-color: var(--brown)}
+.browntext{color: var(--brown)}
+.brownborder{border-color: var(--brown)}
 
 .maintextfull {
   color: var(--full-bg);
@@ -176,7 +184,7 @@
 
 .ScrollAreaThumb {
   flex: 1;
-  background: var(--color-text);
+  background: var(--brown);
   border-radius: 3px;
   position: relative;
 }
@@ -212,3 +220,39 @@
   pointer-events: none; /* Ignore les événements de la souris */
   transition: background-color 0.3s; /* Transition pour le changement de couleur */
 }
+
+
+
+.scrolling-text-container {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.scrolling-text-inner {
+  display: inline-block;
+  animation: scroll var(--marquee-speed) linear infinite; /* Utilisation de la variable pour la vitesse */
+}
+
+.scrolling-text {
+  display: inline-flex;
+
+
+}
+
+.scrolling-text-item {
+  padding-right: 2rem;
+  color: gray;
+  font-size: 50px;
+  opacity: 10%; /* Espace entre les items */
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0); /* Commence à gauche */
+  }
+  100% {
+    transform: translateX(-50%); /* Défile jusqu'à -50% de la largeur pour boucler */
+  }
+}
+

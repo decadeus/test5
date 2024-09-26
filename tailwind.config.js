@@ -14,9 +14,13 @@ module.exports = {
           '33.33%': { transform: 'rotate(360deg)' }, // Full rotation at 33.33%
           '100%': { transform: 'rotate(360deg)' },   // Fixed at 360deg for the remaining 66.67%
         },
+       
+       
       },
       animation: {
-        'spin-pause': 'spin-pause 3s linear infinite', // 3s = 1s for rotation, 2s pause
+        'spin-pause': 'spin-pause 3s linear infinite',
+       
+       
       },
       colors: {
         primary: {
