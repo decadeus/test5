@@ -14,13 +14,13 @@ export default function Connect() {
       <Link
        href="/login"
       
-        className="w-fit border pl-2 py-1 rounded-sm border-black"
+        className="w-fit border pl-2 py-1 rounded-sm border-white"
       >
-        <div className="flex gap-2 items-center  mr-4 text-black">
+        <div className="flex gap-2 items-center  mr-4 text-white">
           <p>Connect</p>
           <FaUser
             size={25}
-            color="black"
+            color="white"
             className="rounded-full  p-1"
           />
         </div>
