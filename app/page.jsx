@@ -64,7 +64,7 @@ export default function Page() {
         <Para language={language} texts={texts} />
       </div>
 
-      <div className="flex justify-center  -mt-32 mb-32 z-50">
+      <div className="flex justify-center  -mt-32 xl:mb-32 lg:mb-28 md:mb-20 sm:mb-20  z-50">
         <button
           onClick={() => handleCountryChange("France")}
           className={`flex justify-between items-center  gap-2 px-4 py-2 m-2   border-2 rounded brownborder  ${
@@ -98,7 +98,7 @@ export default function Page() {
           Polska
         </button>
       </div>
-      <div className="flex h-[200px] mb-40 ">
+      <div className="flex h-[200px] xl:mb-32 lg:mb-28 md:mb-20 sm:mb-10 ">
         <div className="flex justify-center items-center w-1/2 pr-16 xl:pl-48 lg:pl-28 md:pl-10 sm:pl-4 relative z-10 ">
           <div className="absolute inset-0 flex items-center justify-center">
             <h1 className="text-[20rem] text-black opacity-5 transform translate-x-1/2 font-satisfy">
@@ -108,7 +108,7 @@ export default function Page() {
           <h1 className="text-4xl font-bold">{texts[language].title3}</h1>
         </div>
         <div className="flex flex-col justify-left  w-1/2 pl-16 pr-48 lg:pr-28 md:pr-10 sm:pr-4 gap-4">
-          <h2 className="text-xl">{texts[language].title4}</h2>
+          <h2 className="xl:text-2xl lg:text-xl md:text-lg sm:text-md">{texts[language].title4}</h2>
           <Link
             href="/projects"
             className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
@@ -118,7 +118,7 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="w-full flex flex-col justify-center mb-32">
+      <div className="w-full flex flex-col justify-center xl:mb-32 lg:mb-28 md:mb-20 sm:mb-10 ">
         <h2 className="font-macondo text-black text-4xl text-center">
           {texts[language].title2} {/* Utiliser le texte basé sur la langue */}
         </h2>
@@ -512,7 +512,7 @@ function ScrollImage({ projects, language, texts }) {
       onMouseEnter={handleMouseEnter} // Ajoutez le gestionnaire d'entrée de souris
       onMouseLeave={handleMouseLeave} // Ajoutez le gestionnaire de sortie de souris
     >
-      <div className="relative xl:w-[350px] lg:w-[230px] md:w-[200px] xl:h-80 lg:h-40 md:h-32 shadow-lg shadow-black hover:shadow hover:transition-shadow duration-1000">
+      <div className="relative xl:w-[350px] lg:w-[320px] md:w-[230px] sm:w-[200px] xl:h-80 lg:h-[200px] md:h-[150px] sm:h-[130px] shadow-lg shadow-black hover:shadow hover:transition-shadow duration-1000">
         <a
           href={projects.link}
           target="_blank"
