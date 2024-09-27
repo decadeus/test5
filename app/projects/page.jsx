@@ -24,6 +24,7 @@ import { TailSpin } from "react-loader-spinner";
 import { projectIcons } from "@/lib/iconbuilding";
 import { countryData } from "@/utils/countryData";
 import Link from "next/link";
+import Loading from "@/app/loading";
 
 
 const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
@@ -101,6 +102,8 @@ function Page() {
   useEffect(() => {
     fetchProjects();
   }, [sortKey]);
+
+
 
   useEffect(() => {
     const storedFavorites =
@@ -291,8 +294,9 @@ function Page() {
   const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
+  
 
   if (error) {
     return <div>Error fetching data: {error.message}</div>;
@@ -333,6 +337,8 @@ function Page() {
     return { maxLat, minLat, maxLng, minLng, mLat, mLng };
   };
   const latLngExtremes = getLatLngExtremes(filteredProjects);
+
+
   return (
     <div className="flex flex-col w-full gap-4 pt-4 bgfull text-black mb-16">
       <h1 className="text-5xl colortest  font-satisfy pl-4">Listing Apartements</h1>
@@ -926,3 +932,5 @@ function Filter({
     </div>
   );
 }
+
+

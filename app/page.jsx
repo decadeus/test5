@@ -1,16 +1,16 @@
 "use client";
 import { useState, useEffect, useRef } from "react"; // Ajout de useState et useEffect
-import d from "@/components/d.png";
-import e from "@/components/e.png";
+
 import Image from "next/legacy/image";
-import { FaArrowRight, FaHeart, FaLongArrowAltDown } from "react-icons/fa";
+import {  FaLongArrowAltDown } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 
 import { texts } from "@/lib/language";
 import useCustomCursor from "@/components/useCustomCursor";
-import Link from "next/link"; // Adjust the path accordingly
+import Link from "next/link"; 
+import Loading from "@/app/loading";
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
@@ -563,16 +563,3 @@ function ScrollImage({ projects, language, texts }) {
     </div>
   );
 }
-const Loading = () => {
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
-    {/* Conteneur du spinner */}
-    <div className="relative flex items-center justify-center h-52 w-52">
-      {/* Texte centré, taille doublée */}
-      <span className="absolute text-4xl font-bold text-brown font-satisfy">Hoomge</span>
-      {/* Cercle tournant */}
-      <div className="animate-spin rounded-full h-full w-full border-t-4 border-b-4 brownborder"></div>
-    </div>
-  </div>
-  );
-};
