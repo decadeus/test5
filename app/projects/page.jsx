@@ -22,7 +22,9 @@ import Avatar from "@/app/getimage/project";
 import dynamic from "next/dynamic";
 import { TailSpin } from "react-loader-spinner";
 import { projectIcons } from "@/lib/iconbuilding";
-import fetchCountryData from "@/utils/listcountry";
+import { countryData } from "@/utils/countryData";
+import Link from "next/link";
+
 
 const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
 const ITEMS_PER_PAGE = 4;
@@ -74,7 +76,6 @@ function Page() {
   const [showFavorites, setShowFavorites] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState("bed");
-  const [countryData, setCountryData] = useState({}); // Ajoutez cet état
 
   const sort = [
     { key: "surface", label: "surface" },
@@ -124,15 +125,6 @@ function Page() {
     bedRange,
     showFavorites,
   ]);
-
-  useEffect(() => {
-    const loadCountryData = async () => {
-      const data = await fetchCountryData();
-      setCountryData(data);
-    };
-
-    loadCountryData();
-  }, []);
 
   useEffect(() => {
     if (selectedCountries.length === 0) {
@@ -341,19 +333,22 @@ function Page() {
     return { maxLat, minLat, maxLng, minLng, mLat, mLng };
   };
   const latLngExtremes = getLatLngExtremes(filteredProjects);
-
   return (
-    <div className="flex flex-col w-full gap-4 pt-4 bgfull text-black mb-16 px-4">
-      <h1 className="text-5xl colortest mb-8 font-satisfy">Listing Apartements</h1>
-      <div className="mb-16">
-        <p className="text-gray-500">
-          Add your project and list yours apartements{" "}
-        </p>
+    <div className="flex flex-col w-full gap-4 pt-4 bgfull text-black mb-16">
+      <h1 className="text-5xl colortest  font-satisfy pl-4">Listing Apartements</h1>
+      <div className="pl-4">
+        
+        <div className="flex  w-full my-8 ">
+          
+          <Link
+            href="/projects"
+            className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
+          >
+            Sign up to list your project
+          </Link>
+        </div>
 
-        <button className="bgtest w-fit px-2 py-1 rounded-sm text-white text-sm">
-          {" "}
-          Sign up to list your project
-        </button>
+       
       </div>
       <div className="flex flex-col xl:gap-4 gap-4">
         <div className="w-full">
@@ -482,71 +477,90 @@ function Page() {
                             )}
                           </Button>
                         </div>
+                        <div className="relative group transition duration-300">
+                          {/* Le div principal qui subit le flou */}
+                          <div className="transition duration-300 group-hover:blur-sm">
+                            <div className="px-2 pt-2 flex flex-col w-full sm:w-2/3 justify-between pb-2">
+                              <div className="flex justify-between w-full">
+                                <div className="w-full flex flex-col items-start justify-between text-gray-500">
+                                  <p className="text-md">{item.project.name}</p>
+                                  <div className="mb-2">
+                                    {item.noprice || item.price === null ? (
+                                      <p className="flex gap-1 items-center italic text-xl">
+                                        undefined
+                                      </p>
+                                    ) : (
+                                      <p className="flex gap-1 items-center font-bold text-xl">
+                                        {item.pricetype === "PLN" ? (
+                                          <span className="flex">
+                                            {item.price}{" "}
+                                            <TbCurrencyZloty size={20} />
+                                          </span>
+                                        ) : (
+                                          <span className="flex justify-center items-center text-xl">
+                                            {item.price}{" "}
+                                            <FaEuroSign size={13} />
+                                          </span>
+                                        )}
+                                      </p>
+                                    )}
+                                  </div>
+                                  <ProjectIconsDisplay project={item.project} />
+                                  <div className="flex flex-col gap-2 text-xs text-gray-500 ">
+                                    <div className="flex gap-2">
+                                      <div>
+                                        <p>{item.surface} m²</p>
+                                      </div>
+                                      <div>
+                                        <p>{item.bed} beds</p>
+                                      </div>
+                                    </div>
+                                    <p>{item.project.adresse}</p>
+                                  </div>
 
-                        {/* Div qui reçoit l'effet de survol */}
-                        <div className="relative">
-                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+                                  <div className="flex gap-2 text-xs text-gray-500">
+                                    <p className="font-semibold">
+                                      {item.project.country}
+                                    </p>
+                                    <p>{item.project.city}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Le bouton qui apparaît uniquement lors du survol */}
+                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <a
                               href={item.project.link}
                               target="_blank"
                               rel="noopener noreferrer"
-                              aria-label={item.project.compagny}
+                              aria-label={item.project.company}
                             >
                               <button
-                                aria-label="compagny"
-                                className="text-white hover:bg-amber-700 rounded-sm bgtest  h-fit xl:px-16 px-4 py-2 font-bold"
+                                aria-label="company"
+                                className="rounded-full border-black border-2"
+                                style={{
+                                 
+                                 
+                                  width: '80px',
+                                  height: '80px',
+                                  borderRadius: '50%',
+                                  backgroundColor: "rgba(255, 255, 255, 0.2)",
+                                  backdropFilter: "blur(8px)", // Couleur blanche et opaque
+                                  display: 'flex', // Utiliser flexbox pour centrer le texte
+                                  alignItems: 'center', // Centrer verticalement
+                                  justifyContent: 'center', // Centrer horizontalement
+                                  pointerEvents: 'none', // Ignorer les événements de souris
+                                  transition: 'opacity 0.2s',
+                                  textAlign: "center",
+                                  
+                                }}
+                              
                               >
-                                See {item.project.compagny} project
+                                See {item.project.company} project
                               </button>
                             </a>
-                          </div>
-
-                          <div className="px-2 pt-2 flex flex-col w-full sm:w-2/3 justify-between pb-2">
-                            <div className="flex justify-between w-full">
-                              <div className="w-full flex flex-col items-start justify-between text-gray-500">
-                                <p className="text-md">{item.project.name}</p>
-                                <div className="mb-2">
-                                  {item.noprice || item.price === null ? (
-                                    <p className="flex gap-1 items-center italic colortest text-xl">
-                                      undefined
-                                    </p>
-                                  ) : (
-                                    <p className="flex gap-1 items-center colortest font-bold text-xl">
-                                      {item.pricetype === "PLN" ? (
-                                        <span className="flex">
-                                          {item.price}{" "}
-                                          <TbCurrencyZloty size={20} />
-                                        </span>
-                                      ) : (
-                                        <span className="flex justify-center items-center colortest text-xl">
-                                          {item.price} <FaEuroSign size={13} />
-                                        </span>
-                                      )}
-                                    </p>
-                                  )}
-                                </div>
-                                <ProjectIconsDisplay project={item.project} />
-                                <div className="flex flex-col gap-2 text-xs text-gray-500 ">
-                                  <div className="flex gap-2">
-                                    <div>
-                                      <p>{item.surface} m²</p>
-                                    </div>
-                                    <div>
-                                      <p>{item.bed} beds</p>
-                                    </div>
-                                  </div>
-
-                                  <p>{item.project.adresse}</p>
-                                </div>
-
-                                <div className="flex gap-2 text-xs text-gray-500">
-                                  <p className="font-semibold">
-                                    {item.project.country}
-                                  </p>
-                                  <p>{item.project.city}</p>
-                                </div>
-                              </div>
-                            </div>
                           </div>
                         </div>
                       </div>
@@ -622,26 +636,10 @@ function Filter({
   const [cities, setCities] = useState([]);
   const [editableCountry, setEditableCountry] = useState("");
   const [editableCity, setEditableCity] = useState("Select a city");
-  const [countryData, setCountryData] = useState({});
 
   const colorfilter = "text-gray-400 text-xs";
-  const bgtext = "text-blue-500"
 
   // Handle country change and reset the city selection to "Select a city"
-  useEffect(() => {
-    const loadCountryData = async () => {
-      try {
-        const data = await fetchCountryData();
-        setCountryData(data); // Stocker les données récupérées dans le state
-      } catch (error) {
-        console.error("Error fetching country data:", error);
-      }
-    };
-
-    loadCountryData();
-  }, []);
-
-  // Gérer le changement de pays et réinitialiser la sélection de ville
   useEffect(() => {
     if (editableCountry && countryData[editableCountry]) {
       setCities(countryData[editableCountry]);
@@ -650,12 +648,12 @@ function Filter({
       setCities([]);
       setEditableCity("Select a city");
     }
-  }, [editableCountry, countryData]);
+  }, [editableCountry]);
 
   const handleCountryChange = (e) => {
     const selectedCountry = e.target.value;
     setEditableCountry(selectedCountry);
-    onCountryChange([selectedCountry]); // Supposons que vous sélectionnez un seul pays
+    onCountryChange([selectedCountry]); // Assuming single country selection
   };
 
   const handleCityChange = (e) => {
@@ -758,7 +756,7 @@ function Filter({
   ];
 
   return (
-    <div className="flex items-center w-full ">
+    <div className="flex items-center w-full pl-4 ">
       <div className="flex justify-center items-center w-5/12 gap-2">
         <div className="flex flex-col w-1/2">
           <select
@@ -807,23 +805,20 @@ function Filter({
               <p className={colorfilter}>Only favorite</p>
             </Checkbox>
           </div>
-          <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2 flex items-center">
-            <CheckboxGroup
-              value={selectedGarden ? ["garden"] : []}
-              onChange={onGardenChange}
+          <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
+            <Checkbox
+              isChecked={selectedGarden}
+              onChange={(e) => onGardenChange(e.target.checked)}
               color="bgmap"
-              orientation="horizontal"
               aria-label="Garden"
               size="sm"
             >
-              <Checkbox value="garden">
-                <p className={colorfilter}>Only with garden</p>
-              </Checkbox>
-            </CheckboxGroup>
+              <p className={colorfilter}>Only with garden</p>
+            </Checkbox>
           </div>
         </div>
 
-        <div className="flex gap-2 py-2">
+        <div className="flex gap-2 py-2 ">
           {modalData.map(
             ({
               label,
@@ -837,7 +832,6 @@ function Filter({
               id,
             }) => (
               <div key={id}>
-                {/* Button to open modal */}
                 <Button
                   onClick={() => setIsOpen(true)}
                   variant="light"
@@ -851,12 +845,10 @@ function Filter({
                     </p>
                   </div>
                 </Button>
-
-                {/* Modal with slider */}
                 <Modal isOpen={isOpen} onOpenChange={setIsOpen} id={id}>
                   <ModalContent>
                     {(onClose) => (
-                      <div className="p-8">
+                      <div>
                         <div className="w-full flex gap-4 pb-4">
                           <div className="border-2 border-black rounded-sm w-1/2 p-2">
                             <p className="font-semibold text-sm">Min</p>
@@ -868,8 +860,8 @@ function Filter({
                           </div>
                         </div>
                         <Slider
-                          minValue={min}
-                          maxValue={max}
+                          min={min}
+                          max={max}
                           step={step}
                           value={range}
                           onChange={onRangeChange}
@@ -886,29 +878,22 @@ function Filter({
             )
           )}
         </div>
-
-        <div className="flex gap-2">
-          <div className="flex gap-2">
-            <div>
-              <Button
-                onClick={() => onOpenChange(true)}
-                variant="light"
-                radius="none"
-                className="px-0"
-              >
-                <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
-                  <p className={countChecked() > 0 ? bgtext : colorfilter}>
-                    Residence ({countChecked()})
-                  </p>
-                </div>
-              </Button>
-
-              <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                <ModalContent>
-                  <div className="flex flex-col gap-4 m-6 p-6 bg-white rounded-lg shadow-lg relative ">
-                    <h2 className="text-lg font-semibold mb-4">
-                      Select the facilities in the residence
-                    </h2>
+        <div className="flex gap-2 ">
+          <div>
+            <Button
+              onClick={() => onOpenChange(true)}
+              variant="light"
+              radius="none"
+              className="px-0"
+            >
+              <div className="flex  bg-white border-gray-300 border-1 rounded-sm text-xs px-2 py-2">
+                <p className={colorfilter}>Residence ({countChecked()})</p>
+              </div>
+            </Button>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+              <ModalContent>
+                {(onClose) => (
+                  <div className="flex flex-col gap-2">
                     {facilities.map(
                       ({ id, label, value, selected, onChange }) => (
                         <CheckboxGroup
@@ -920,16 +905,21 @@ function Filter({
                           orientation="horizontal"
                           aria-label={label}
                         >
-                          <Checkbox value={value} className="flex items-center">
-                            <p className="mr-2">{label}</p>
+                          <Checkbox value={value}>
+                            <div className="flex items-center">
+                              <p className="mr-2">{label}</p>
+                              <span className="text-xs text-gray-500">
+                                ({countChecked([selected])})
+                              </span>
+                            </div>
                           </Checkbox>
                         </CheckboxGroup>
                       )
                     )}
                   </div>
-                </ModalContent>
-              </Modal>
-            </div>
+                )}
+              </ModalContent>
+            </Modal>
           </div>
         </div>
       </div>

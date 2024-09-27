@@ -156,12 +156,14 @@
   box-shadow: 0 2px 10px var(--black-a4);
   background-color: transparent;
   --scrollbar-size: 6px;
+   padding-top: 10px;
 }
 
 .ScrollAreaViewport {
   width: 100%;
   height: 100%;
   border-radius: inherit;
+ 
 }
 
 .ScrollAreaScrollbar {
@@ -175,11 +177,13 @@
   background: rgb(0, 0, 0);
   transition: background 160ms ease-out;
   border-radius: 3px;
+  
 }
 
 .ScrollAreaScrollbar[data-orientation="horizontal"] {
   flex-direction: column;
   height: var(--scrollbar-size);
+  
 }
 
 .ScrollAreaThumb {
@@ -245,6 +249,47 @@
   color: gray;
   font-size: 50px;
   opacity: 10%; /* Espace entre les items */
+}
+
+.cursor-follow {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.2); /* Couleur du rond */
+  border-radius: 50%;
+  pointer-events: none; /* Empêche d'interférer avec les clics */
+  transform: translate(-50%, -50%); /* Centrer le rond sur le curseur */
+  z-index: 9999; /* Au-dessus des autres éléments */
+}
+
+
+.custom-bubble {
+  position: relative;
+  display: inline-block;
+  background-color: #c9af95;;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.bubble-content {
+  position: relative;
+  z-index: 1;
+}
+
+.bubble-pointer {
+  position: absolute;
+  bottom: -10px; /* Positionne la queue sous la bulle */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #c9af95;; /* La couleur de la queue doit correspondre à celle de la bulle */
 }
 
 @keyframes scroll {

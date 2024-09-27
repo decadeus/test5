@@ -16,13 +16,15 @@ export default function Page() {
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedCountry, setSelectedCountry] = useState("France");
-  const [language, setLanguage] = useState("fr");
+  const [selectedCountry, setSelectedCountry] = useState("Polska");
+  const [language, setLanguage] = useState("pl");
 
   const containerStyle = "flex flex-col items-center bgfull w-full pt-32 pb-32";
   const headerStyle =
     "text-6xl font-bold text-black mb-8 font-montserrat text-center shadowI bg-transparent";
   const subheaderStyle = "text-lg text-black mb-8 font-montserrat mb-32";
+
+  
 
   const fetchProjects = async () => {
     const supabase = createClient();
@@ -95,7 +97,7 @@ export default function Page() {
           Polska
         </button>
       </div>
-      <div className="flex h-[200px] mb-32 ">
+      <div className="flex h-[200px] mb-40 ">
         <div className="flex justify-center items-center w-1/2 pr-16 pl-48 relative z-10 ">
           <div className="absolute inset-0 flex items-center justify-center">
             <h1 className="text-[20rem] text-black opacity-5 transform translate-x-1/2 font-satisfy">
@@ -116,14 +118,35 @@ export default function Page() {
       </div>
 
       <div className="w-full flex flex-col justify-center mb-32">
+        
+        
         <h2 className="font-macondo text-black text-4xl text-center">
           {texts[language].title2} {/* Utiliser le texte basé sur la langue */}
         </h2>
 
         <Scroll projects={projects} texts={texts} language={language} />
       </div>
+      <div className=""></div>
+      <div className="w-full flex-col  py-8 mb-16">
+        <h2 className="font-macondo  text-4xl text-center pb-8 ">
+          {texts[language].title1} {/* Utiliser le texte basé sur la langue */}
+        </h2>
+        <div className="flex gap-4 justify-center w-full">
+          {projects
+            .filter((p) => [10, 12, 13, 14].includes(p.id))
+            .map((project, index) => (
+              <ScrollImage
+                key={project.id}
+                projects={project}
+                index={index}
+                texts={texts}
+                language={language}
+              />
+            ))}
+        </div>
+      </div>
 
-      <div className="w-full flex flex-col  py-8 mb-4">
+      <div className="w-full flex flex-col  py-8 mb-8">
         <h2 className="font-macondo  text-4xl text-center pb-8 ">
           {texts[language].title1} {/* Utiliser le texte basé sur la langue */}
         </h2>
@@ -138,8 +161,19 @@ export default function Page() {
               language={language}
             />
           ))}
+         
       </div>
+      <div className="flex justify-center  w-full my-8 ">
+          
+          <Link
+            href="/projects"
+            className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
+          >
+            {texts[language].link}
+          </Link>
+        </div>
       <ScrollingText />
+      
     </>
   );
 }
@@ -157,11 +191,11 @@ function Scroll({ projects = [], index, texts, language }) {
     <div className="flex justify-center w-full overflow-x-auto relative py-8">
       <ScrollArea.Root className="ScrollAreaRoot" type="always">
         <ScrollArea.Viewport className="w-full">
-          <div className="flex gap-8 mb-4 px-8">
+          <div className="flex gap-8 mb-4  ">
             {projects.map((item) => (
               <div
                 key={item.id}
-                className="flex flex-col w-[450px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-300 hover:shadow-xl hover:shadow-slate-950"
+                className="flex flex-col w-[450px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-1000 hover:shadow-xl hover:shadow-slate-950 hover:transition-shadow ease-in-out mb-4"
                 onMouseEnter={() => {
                   setShowCursor(true);
                   setCursorLink(item.link);
@@ -362,7 +396,7 @@ const ScrollingText = () => {
       <div
         className="scrolling-text-inner"
         style={{
-          "--marquee-speed": "20s",
+          "--marquee-speed": "50s",
         }}
         role="marquee"
       >
@@ -411,3 +445,117 @@ const ScrollingText = () => {
     </div>
   );
 };
+
+function ScrollImage({ projects, language, texts }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isCircleVisible, setIsCircleVisible] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const imageRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsVisible(entry.isIntersecting);
+        });
+      },
+      {
+        threshold: 0.1,
+      }
+    );
+
+    if (imageRef.current) {
+      observer.observe(imageRef.current);
+    }
+
+    return () => {
+      if (imageRef.current) {
+        observer.unobserve(imageRef.current);
+      }
+      observer.disconnect(); // Assurez-vous de déconnecter l'observateur
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      if (isCircleVisible) {
+        const { left, top } = imageRef.current.getBoundingClientRect();
+        setMousePosition({ x: event.clientX - left, y: event.clientY - top });
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [isCircleVisible]);
+
+  const handleMouseEnter = () => {
+    setIsCircleVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsCircleVisible(false);
+  };
+
+  return (
+    <div
+      ref={imageRef}
+      className={`transition-all duration-1000 ease-in-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+      }`}
+      style={{
+        backgroundColor: isVisible ? 'transparent' : '#f0f0f0',
+        position: 'relative', // Assurez-vous que le conteneur est en position relative
+      }}
+      onMouseEnter={handleMouseEnter} // Ajoutez le gestionnaire d'entrée de souris
+      onMouseLeave={handleMouseLeave} // Ajoutez le gestionnaire de sortie de souris
+    >
+      <div className="relative w-[350px] h-80 shadow-lg shadow-black hover:shadow hover:transition-shadow duration-1000">
+        <a
+          href={projects.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full h-full"
+        >
+          {projects.mainpic_url && (
+            <Avatar
+              url={projects.mainpic_url}
+              width={270}
+              height={196}
+              className="rounded-sm"
+              alt={projects.name || 'Project Image'}
+            />
+          )}
+        </a>
+        
+        {/* Cercle au-dessus du pointeur */}
+        {isCircleVisible && (
+          <div
+            style={{
+              position: 'absolute',
+              top: mousePosition.y - 60, // Ajustez pour centrer le cercle
+              left: mousePosition.x - 40, // Ajustez pour centrer le cercle
+              width: '80px',
+              height: '80px',
+              borderRadius: '50%',
+              backgroundColor: "rgba(255, 255, 255, 0.2)",
+              backdropFilter: "blur(8px)", // Couleur blanche et opaque
+              display: 'flex', // Utiliser flexbox pour centrer le texte
+              alignItems: 'center', // Centrer verticalement
+              justifyContent: 'center', // Centrer horizontalement
+              pointerEvents: 'none', // Ignorer les événements de souris
+              transition: 'opacity 0.2s',
+              textAlign: "center",
+            }}
+          >
+            <span style={{ color: 'white', fontWeight: 'bolder', fontSize: '16px' }}>
+            {texts[language].projet}
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
