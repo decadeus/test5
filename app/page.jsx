@@ -2,14 +2,14 @@
 import { useState, useEffect, useRef } from "react"; // Ajout de useState et useEffect
 
 import Image from "next/legacy/image";
-import {  FaLongArrowAltDown } from "react-icons/fa";
+import { FaLongArrowAltDown } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 
 import { texts } from "@/lib/language";
 import useCustomCursor from "@/components/useCustomCursor";
-import Link from "next/link"; 
+import Link from "next/link";
 import Loading from "@/app/loading";
 
 export default function Page() {
@@ -23,8 +23,6 @@ export default function Page() {
   const headerStyle =
     "text-6xl font-bold text-black mb-8 font-montserrat text-center shadowI bg-transparent";
   const subheaderStyle = "text-lg text-black mb-8 font-montserrat mb-32";
-
-  
 
   const fetchProjects = async () => {
     const supabase = createClient();
@@ -49,7 +47,6 @@ export default function Page() {
     setSelectedCountry(country);
     setLanguage(country === "Polska" ? "pl" : "fr"); // Change la langue en fonction du pays
   };
-
 
   if (loading) {
     return <Loading />;
@@ -102,7 +99,7 @@ export default function Page() {
         </button>
       </div>
       <div className="flex h-[200px] mb-40 ">
-        <div className="flex justify-center items-center w-1/2 pr-16 pl-48 relative z-10 ">
+        <div className="flex justify-center items-center w-1/2 pr-16 xl:pl-48 lg:pl-28 md:pl-10 sm:pl-4 relative z-10 ">
           <div className="absolute inset-0 flex items-center justify-center">
             <h1 className="text-[20rem] text-black opacity-5 transform translate-x-1/2 font-satisfy">
               H
@@ -110,7 +107,7 @@ export default function Page() {
           </div>
           <h1 className="text-4xl font-bold">{texts[language].title3}</h1>
         </div>
-        <div className="flex flex-col justify-left  w-1/2 pl-16 pr-48 gap-4">
+        <div className="flex flex-col justify-left  w-1/2 pl-16 pr-48 lg:pr-28 md:pr-10 sm:pr-4 gap-4">
           <h2 className="text-xl">{texts[language].title4}</h2>
           <Link
             href="/projects"
@@ -122,8 +119,6 @@ export default function Page() {
       </div>
 
       <div className="w-full flex flex-col justify-center mb-32">
-        
-        
         <h2 className="font-macondo text-black text-4xl text-center">
           {texts[language].title2} {/* Utiliser le texte basé sur la langue */}
         </h2>
@@ -165,19 +160,16 @@ export default function Page() {
               language={language}
             />
           ))}
-         
       </div>
       <div className="flex justify-center  w-full my-8 ">
-          
-          <Link
-            href="/projects"
-            className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
-          >
-            {texts[language].link}
-          </Link>
-        </div>
+        <Link
+          href="/projects"
+          className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
+        >
+          {texts[language].link}
+        </Link>
+      </div>
       <ScrollingText />
-      
     </>
   );
 }
@@ -192,65 +184,66 @@ function Scroll({ projects = [], index, texts, language }) {
   } = useCustomCursor(texts[language].projet);
 
   return (
-    <div className="flex justify-center w-full overflow-x-auto relative py-8">
-      <ScrollArea.Root className="ScrollAreaRoot" type="always">
-        <ScrollArea.Viewport className="w-full">
-          <div className="flex gap-8 mb-4  ">
-            {projects.map((item) => (
-              <div
-                key={item.id}
-                className="flex flex-col w-[450px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-1000 hover:shadow-xl hover:shadow-slate-950 hover:transition-shadow ease-in-out mb-4"
-                onMouseEnter={() => {
-                  setShowCursor(true);
-                  setCursorLink(item.link);
-                }}
-                onMouseLeave={() => {
-                  setShowCursor(false);
-                  setCursorLink("");
-                }}
-              >
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full h-full"
-                >
-                  <div className="w-full relative h-80">
-                    <Avatar
-                      url={item.mainpic_url}
-                      width={270}
-                      height={196}
-                      className="rounded-sm"
-                      alt={item.name}
-                    />
-                  </div>
-                  <div className="mt-4">
-                    <p className="browntext font-satisfy text-2xl font-extrabold">
-                      {item.name}
-                    </p>
-                    <p className="cleartext">{item.adresse}</p>
-                    <p className="cleartext">
-                      {item.city}, {item.country}
-                    </p>
-                    <p className="cleartext">{item.compagny}</p>
-                  </div>
-                </a>
+    <div className="flex justify-center mx-auto w-full xl:[1100px] lg:w-[800px] md:w-[600px] sm:w-[550px] overflow-x-auto relative py-8">
+  <ScrollArea.Root className="ScrollAreaRoot" type="always">
+    <ScrollArea.Viewport className="w-full">
+      <div className="flex gap-8 mb-4">
+        {projects.map((item) => (
+          <div
+            key={item.id}
+            className="flex flex-col xl:w-[450px] lg:w-[250px] md:w-[250px] sm:w-[200px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-1000 hover:shadow-xl hover:shadow-slate-950 hover:transition-shadow ease-in-out mb-4"
+            onMouseEnter={() => {
+              setShowCursor(true);
+              setCursorLink(item.link);
+            }}
+            onMouseLeave={() => {
+              setShowCursor(false);
+              setCursorLink("");
+            }}
+          >
+            <a
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full h-full"
+            >
+              <div className="w-full relative xl:h-80 lg:h-40 md:h-28 sm:h-24">
+                <Avatar
+                  url={item.mainpic_url}
+                  width={270}
+                  height={196}
+                  className="rounded-sm"
+                  alt={item.name}
+                />
               </div>
-            ))}
+              <div className="mt-4">
+                <p className="browntext font-satisfy text-2xl lg:text-xl font-extrabold sm:text-lg">
+                  {item.name}
+                </p>
+                <p className="cleartext md:text-md sm:text-[12px]">{item.adresse}</p>
+                <p className="cleartext sm:text-[12px]">
+                  {item.city}, {item.country}
+                </p>
+                <p className="cleartext sm:text-[12px]">{item.compagny}</p>
+              </div>
+            </a>
           </div>
-        </ScrollArea.Viewport>
+        ))}
+      </div>
+    </ScrollArea.Viewport>
 
-        <ScrollArea.Scrollbar
-          className="ScrollAreaScrollbar"
-          orientation="horizontal"
-        >
-          <ScrollArea.Thumb className="ScrollAreaThumb" />
-        </ScrollArea.Scrollbar>
-        <ScrollArea.Corner className="ScrollAreaCorner" />
-      </ScrollArea.Root>
+    <ScrollArea.Scrollbar
+      className="ScrollAreaScrollbar"
+      orientation="horizontal"
+    >
+      <ScrollArea.Thumb className="ScrollAreaThumb" />
+    </ScrollArea.Scrollbar>
+    <ScrollArea.Corner className="ScrollAreaCorner" />
+  </ScrollArea.Root>
 
-      <CursorComponent />
-    </div>
+  <CursorComponent />
+</div>
+
   );
 }
 
@@ -482,16 +475,19 @@ function ScrollImage({ projects, language, texts }) {
 
   useEffect(() => {
     const handleMouseMove = (event) => {
-      if (isCircleVisible) {
+      if (isCircleVisible && imageRef.current) {
         const { left, top } = imageRef.current.getBoundingClientRect();
-        setMousePosition({ x: event.clientX - left, y: event.clientY - top });
+        setMousePosition({
+          x: event.clientX - left,
+          y: event.clientY - top,
+        });
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    
+    window.addEventListener("mousemove", handleMouseMove);
+
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, [isCircleVisible]);
 
@@ -507,16 +503,16 @@ function ScrollImage({ projects, language, texts }) {
     <div
       ref={imageRef}
       className={`transition-all duration-1000 ease-in-out ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
       }`}
       style={{
-        backgroundColor: isVisible ? 'transparent' : '#f0f0f0',
-        position: 'relative', // Assurez-vous que le conteneur est en position relative
+        backgroundColor: isVisible ? "transparent" : "#f0f0f0",
+        position: "relative", // Assurez-vous que le conteneur est en position relative
       }}
       onMouseEnter={handleMouseEnter} // Ajoutez le gestionnaire d'entrée de souris
       onMouseLeave={handleMouseLeave} // Ajoutez le gestionnaire de sortie de souris
     >
-      <div className="relative w-[350px] h-80 shadow-lg shadow-black hover:shadow hover:transition-shadow duration-1000">
+      <div className="relative xl:w-[350px] lg:w-[230px] md:w-[200px] xl:h-80 lg:h-40 md:h-32 shadow-lg shadow-black hover:shadow hover:transition-shadow duration-1000">
         <a
           href={projects.link}
           target="_blank"
@@ -529,33 +525,36 @@ function ScrollImage({ projects, language, texts }) {
               width={270}
               height={196}
               className="rounded-sm"
-              alt={projects.name || 'Project Image'}
+              alt={projects.name || "Project Image"}
             />
           )}
         </a>
-        
+
         {/* Cercle au-dessus du pointeur */}
         {isCircleVisible && (
           <div
             style={{
-              position: 'absolute',
-              top: mousePosition.y - 60, // Ajustez pour centrer le cercle
-              left: mousePosition.x - 40, // Ajustez pour centrer le cercle
-              width: '80px',
-              height: '80px',
-              borderRadius: '50%',
+              position: "absolute",
+              top: `${mousePosition.y}px`,
+              left: `${mousePosition.x}px`,
+              width: "80px",
+              height: "80px",
+              borderRadius: "50%",
               backgroundColor: "rgba(255, 255, 255, 0.2)",
-              backdropFilter: "blur(8px)", // Couleur blanche et opaque
-              display: 'flex', // Utiliser flexbox pour centrer le texte
-              alignItems: 'center', // Centrer verticalement
-              justifyContent: 'center', // Centrer horizontalement
-              pointerEvents: 'none', // Ignorer les événements de souris
-              transition: 'opacity 0.2s',
+              backdropFilter: "blur(8px)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              pointerEvents: "none",
+              transition: "opacity 0.2s",
               textAlign: "center",
+              transform: "translate(-50%, -50%)", // Centrer le cercle
             }}
           >
-            <span style={{ color: 'white', fontWeight: 'bolder', fontSize: '16px' }}>
-            {texts[language].projet}
+            <span
+              style={{ color: "white", fontWeight: "bolder", fontSize: "16px" }}
+            >
+              {texts[language].projet}
             </span>
           </div>
         )}
