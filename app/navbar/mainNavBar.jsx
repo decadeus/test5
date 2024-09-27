@@ -36,7 +36,7 @@ export default function MainNavBar({ user }) {
   }, [user, supabase]);
 
   return (
-    <div className="w-full py-4 grid grid-cols-3 grid-rows-1 justify-between items-center brownbg  text-white  z-50 opacity-90 px-4 xl:px-16 ">
+    <div className="w-full py-4 grid grid-cols-3 grid-rows-1 justify-between items-center brownbg  text-black z-50 opacity-90 px-4 xl:px-16 ">
       <div className="flex justify-start items-center gap-2">
         <Link href="/">
           <div className="flex gap-2 items-center">
@@ -51,7 +51,7 @@ export default function MainNavBar({ user }) {
                 />
               </div>
               <div>
-                <h2 className="text-white text-2xl font-bold hidden sm:block ">
+                <h2 className="text-black text-2xl font-bold hidden sm:block ">
                   Hoomge.com
                 </h2>
               </div>
