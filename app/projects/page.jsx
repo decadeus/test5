@@ -385,11 +385,11 @@ function Page() {
 
         <div className="flex flex-col  xl:flex-row lg:flex-row w-full">
           <div className="sm:w-1/2 w-full ">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-4 px-2">
               <p className="text-xs text-center text-gray-500">
                 Total: {filteredProjects.length} apartments found
               </p>
-              <div className="flex items-center">
+              <div className="flex sm:flex-row flex-col sm:items-center items-end sm:w-full w-1/2">
                 <label
                   className="text-xs mr-2 w-[300px] text-right text-gray-500"
                   htmlFor="sort-select"
@@ -416,7 +416,7 @@ function Page() {
                 </select>
               </div>
             </div>
-            <div className="w-full sm:h-[650px] h-[200px] z-0">
+            <div className="w-full sm:h-[650px] h-[200px] z-0 mb-4">
               <LazyMap
                 classN="w-full sm:h-[650px] h-[200px] z-0"
                 todos={filteredProjects.map(({ project }) => ({
@@ -924,10 +924,10 @@ function Filter({
       </div>
       <div className="block sm:hidden">
         {" "}
-        <div className=" flex items-center w-full pl-4 ">
-          <Button onPress={onOpen}>Open Modal</Button>
+        <div className=" flex items-center justify-center w-full">
+          <Button onPress={onOpen}>Filter</Button>
           <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-            <ModalContent>
+            <ModalContent className="overflow-y-auto max-h-[calc(100vh-10rem)]">
               {(onClose) => (
                 <>
                   <ModalHeader className="flex flex-col gap-1">
@@ -1061,24 +1061,7 @@ function Filter({
                           )
                         )}
                       </div>
-                      <div className="flex gap-2 ">
-                        <div>
-                          <Button
-                            onClick={() => onOpenChange(true)}
-                            variant="light"
-                            radius="none"
-                            className="px-0"
-                          >
-                            <div className="flex  bg-white border-gray-300 border-1 rounded-sm text-xs px-2 py-2">
-                              <p className={colorfilter}>
-                                Residence ({countChecked()})
-                              </p>
-                            </div>
-                          </Button>
-                          <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                            <ModalContent>
-                              {(onClose) => (
-                                <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-2">
                                   {facilities.map(
                                     ({
                                       id,
@@ -1108,11 +1091,6 @@ function Filter({
                                     )
                                   )}
                                 </div>
-                              )}
-                            </ModalContent>
-                          </Modal>
-                        </div>
-                      </div>
                     </div>
                   </ModalBody>
                   <ModalFooter>
