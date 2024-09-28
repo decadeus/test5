@@ -130,7 +130,7 @@ export default function Page() {
         <h2 className="font-macondo  text-4xl text-center pb-8 ">
           {texts[language].title1} {/* Utiliser le texte basé sur la langue */}
         </h2>
-        <div className="flex gap-4 justify-center w-full">
+        <div className="flex sm:gap-4 gap-8 justify-center items-center w-full flex-col md:flex-row">
           {projects
             .filter((p) => [10, 12, 13, 14].includes(p.id))
             .map((project, index) => (
@@ -191,7 +191,7 @@ function Scroll({ projects = [], index, texts, language }) {
         {projects.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col xl:w-[450px] lg:w-[250px] md:w-[250px] sm:w-[200px] w-[200px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-1000 hover:shadow-xl hover:shadow-slate-950 hover:transition-shadow ease-in-out mb-4"
+            className="flex flex-col xl:w-[450px] lg:w-[250px] md:w-[250px] sm:w-[200px] w-[250px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-1000 hover:shadow-xl hover:shadow-slate-950 hover:transition-shadow ease-in-out mb-4"
             onMouseEnter={() => {
               setShowCursor(true);
               setCursorLink(item.link);
@@ -454,6 +454,7 @@ function ScrollImage({ projects, language, texts }) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const imageRef = useRef(null);
 
+  // Observer pour l'animation d'entrée
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -474,10 +475,11 @@ function ScrollImage({ projects, language, texts }) {
       if (imageRef.current) {
         observer.unobserve(imageRef.current);
       }
-      observer.disconnect(); // Assurez-vous de déconnecter l'observateur
+      observer.disconnect();
     };
   }, []);
 
+  // Suivi de la position de la souris
   useEffect(() => {
     const handleMouseMove = (event) => {
       if (isCircleVisible && imageRef.current) {
@@ -507,62 +509,69 @@ function ScrollImage({ projects, language, texts }) {
   return (
     <div
       ref={imageRef}
-      className={`transition-all duration-1000 ease-in-out ${
+      className={`transition-all duration-1000 ease-in-out   ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
       }`}
       style={{
         backgroundColor: isVisible ? "transparent" : "#f0f0f0",
-        position: "relative", // Assurez-vous que le conteneur est en position relative
+        position: "relative",
       }}
-      onMouseEnter={handleMouseEnter} // Ajoutez le gestionnaire d'entrée de souris
-      onMouseLeave={handleMouseLeave} // Ajoutez le gestionnaire de sortie de souris
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      <div className="relative xl:w-[350px] lg:w-[320px] md:w-[230px] sm:w-[200px] xl:h-80 lg:h-[200px] md:h-[150px] sm:h-[130px] shadow-lg shadow-black hover:shadow hover:transition-shadow duration-1000">
-        <a
-          href={projects.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-full h-full"
-        >
-          {projects.mainpic_url && (
-            <Avatar
-              url={projects.mainpic_url}
-              width={270}
-              height={196}
-              className="rounded-sm"
-              alt={projects.name || "Project Image"}
-            />
-          )}
-        </a>
-
-        {/* Cercle au-dessus du pointeur */}
-        {isCircleVisible && (
-          <div
-            style={{
-              position: "absolute",
-              top: `${mousePosition.y}px`,
-              left: `${mousePosition.x}px`,
-              width: "80px",
-              height: "80px",
-              borderRadius: "50%",
-              backgroundColor: "rgba(255, 255, 255, 0.2)",
-              backdropFilter: "blur(8px)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              pointerEvents: "none",
-              transition: "opacity 0.2s",
-              textAlign: "center",
-              transform: "translate(-50%, -50%)", // Centrer le cercle
-            }}
+      <div className="items-center justify-center space-y-4 md:space-y-0 md:space-x-4 ">
+        <div className="relative  sm:w-[350px] sm:h-[250px] w-[350px] h-[200px] shadow-lg shadow-black hover:shadow transition-shadow duration-1000">
+          <a
+            href={projects.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full h-full"
           >
-            <span
-              style={{ color: "white", fontWeight: "bolder", fontSize: "16px" }}
+            {projects.mainpic_url && (
+              <Avatar
+                url={projects.mainpic_url}
+                width={270}
+                height={196}
+                className="rounded-sm w-full h-auto"
+                alt={projects.name || "Project Image"}
+              />
+            )}
+          </a>
+
+          {/* Cercle au-dessus du pointeur */}
+          {isCircleVisible && (
+            <div
+              style={{
+                position: "absolute",
+                top: `${mousePosition.y}px`,
+                left: `${mousePosition.x}px`,
+                width: "80px",
+                height: "80px",
+                borderRadius: "50%",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                backdropFilter: "blur(8px)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                pointerEvents: "none",
+                transition: "opacity 0.2s",
+                textAlign: "center",
+                transform: "translate(-50%, -50%)",
+              }}
             >
-              {texts[language].projet}
-            </span>
-          </div>
-        )}
+              <span
+                style={{
+                  color: "white",
+                  fontWeight: "bolder",
+                  fontSize: "16px",
+                }}
+              >
+                {texts[language].projet}
+              </span>
+            </div>
+          )}
+        </div>
+        {/* Autres éléments flexibles en colonne */}
       </div>
     </div>
   );
