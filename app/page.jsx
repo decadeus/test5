@@ -98,17 +98,17 @@ export default function Page() {
           Polska
         </button>
       </div>
-      <div className="flex h-[200px] xl:mb-32 lg:mb-28 md:mb-20 sm:mb-10 ">
-        <div className="flex justify-center items-center w-1/2 pr-16 xl:pl-48 lg:pl-28 md:pl-10 sm:pl-4 relative z-10 ">
+      <div className="flex-col sm:flex sm:flex-row h-[200px] sm:mt-[0]  mt-[100px] mb-[100px] ">
+        <div className="flex justify-center items-center sm:w-1/2  sm:pl-4 relative z-10 ">
           <div className="absolute inset-0 flex items-center justify-center">
-            <h1 className="text-[20rem] text-black opacity-5 transform translate-x-1/2 font-satisfy">
+            <h1 className="text-[20rem] text-black opacity-5 transform font-satisfy">
               H
             </h1>
           </div>
-          <h1 className="text-4xl font-bold">{texts[language].title3}</h1>
+          <h1 className="sm:text-4xl text-2xl font-bold px-4 text-center pb-[20px]">{texts[language].title3}</h1>
         </div>
-        <div className="flex flex-col justify-left  w-1/2 pl-16 pr-48 lg:pr-28 md:pr-10 sm:pr-4 gap-4">
-          <h2 className="xl:text-2xl lg:text-xl md:text-lg sm:text-md">{texts[language].title4}</h2>
+        <div className="flex flex-col sm:justify-center sm:items-center sm:w-1/2 px-4 sm:pr-48 gap-4">
+          <h2 className="sm:text-md ">{texts[language].title4}</h2>
           <Link
             href="/projects"
             className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
@@ -184,14 +184,14 @@ function Scroll({ projects = [], index, texts, language }) {
   } = useCustomCursor(texts[language].projet);
 
   return (
-    <div className="flex justify-center mx-auto w-full xl:[1100px] lg:w-[800px] md:w-[600px] sm:w-[550px] overflow-x-auto relative py-8">
+    <div className="flex justify-center mx-auto  xl:[1100px] lg:w-[800px] md:w-[600px] sm:w-[550px] w-[350px] overflow-x-auto relative py-8">
   <ScrollArea.Root className="ScrollAreaRoot" type="always">
     <ScrollArea.Viewport className="w-full">
       <div className="flex gap-8 mb-4">
         {projects.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col xl:w-[450px] lg:w-[250px] md:w-[250px] sm:w-[200px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-1000 hover:shadow-xl hover:shadow-slate-950 hover:transition-shadow ease-in-out mb-4"
+            className="flex flex-col xl:w-[450px] lg:w-[250px] md:w-[250px] sm:w-[200px] w-[200px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-1000 hover:shadow-xl hover:shadow-slate-950 hover:transition-shadow ease-in-out mb-4"
             onMouseEnter={() => {
               setShowCursor(true);
               setCursorLink(item.link);
@@ -207,7 +207,7 @@ function Scroll({ projects = [], index, texts, language }) {
               rel="noopener noreferrer"
               className="block w-full h-full"
             >
-              <div className="w-full relative xl:h-80 lg:h-40 md:h-28 sm:h-24">
+              <div className="w-full relative xl:h-80 lg:h-40 md:h-28 sm:h-24 h-[150px]">
                 <Avatar
                   url={item.mainpic_url}
                   width={270}
@@ -217,7 +217,7 @@ function Scroll({ projects = [], index, texts, language }) {
                 />
               </div>
               <div className="mt-4">
-                <p className="browntext font-satisfy text-2xl lg:text-xl font-extrabold sm:text-lg">
+                <p className="browntext font-satisfy  lg:text-xl font-extrabold sm:text-lg text-md">
                   {item.name}
                 </p>
                 <p className="cleartext md:text-md sm:text-[12px]">{item.adresse}</p>
