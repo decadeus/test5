@@ -64,7 +64,7 @@ export default function Page() {
         <Para language={language} texts={texts} />
       </div>
 
-      <div className="flex justify-center  -mt-[200px] xl:mb-[100px] lg:mb-28 md:mb-20 sm:mb-20 mb-[200px]   z-50">
+      <div className="flex justify-center  -mt-[300px]  sm:-mt-[200px] sm:mb-[200px] mb-[200px] z-50">
         <button
           onClick={() => handleCountryChange("France")}
           className={`flex justify-between items-center  gap-2 px-4 py-2 m-2   border-2 rounded brownborder  ${
