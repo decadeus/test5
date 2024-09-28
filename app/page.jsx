@@ -19,33 +19,38 @@ export default function Page() {
   const [selectedCountry, setSelectedCountry] = useState("Polska");
   const [language, setLanguage] = useState("pl");
 
-  const containerStyle = "flex flex-col items-center bgfull w-full pt-32 pb-32";
-  const headerStyle =
-    "text-6xl font-bold text-black mb-8 font-montserrat text-center shadowI bg-transparent";
-  const subheaderStyle = "text-lg text-black mb-8 font-montserrat mb-32";
+  const MIN_LOADING_TIME = 1000; // 1 seconde en millisecondes
 
   const fetchProjects = async () => {
+    const startTime = Date.now(); // Prend le temps de début du fetch
     const supabase = createClient();
     const { data, error } = await supabase
       .from("project")
       .select("*")
       .eq("country", selectedCountry);
 
+    const elapsedTime = Date.now() - startTime; // Temps écoulé pendant le fetch
+
     if (error) {
       setError(error);
     } else {
       setProjects(data);
     }
-    setLoading(false);
+
+    const remainingTime = Math.max(MIN_LOADING_TIME - elapsedTime, 0); // Calcul du temps restant
+
+    setTimeout(() => {
+      setLoading(false);
+    }, remainingTime); // Attendre pour atteindre au moins 1 seconde
   };
 
   useEffect(() => {
     fetchProjects();
-  }, [selectedCountry]); // Re-fetch projects when selectedCountry changes
+  }, [selectedCountry]);
 
   const handleCountryChange = (country) => {
     setSelectedCountry(country);
-    setLanguage(country === "Polska" ? "pl" : "fr"); // Change la langue en fonction du pays
+    setLanguage(country === "Polska" ? "pl" : "fr");
   };
 
   if (loading) {
