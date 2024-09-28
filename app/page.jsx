@@ -241,7 +241,9 @@ function Scroll({ projects = [], index, texts, language }) {
     <ScrollArea.Corner className="ScrollAreaCorner" />
   </ScrollArea.Root>
 
-  <CursorComponent />
+  <div className="hidden sm:block">
+        <CursorComponent />
+      </div>
 </div>
 
   );
@@ -321,7 +323,6 @@ function Demi({ projects, index, texts, language }) {
 
 
 function Para({ language, texts }) {
-  // Ajoutez texts comme prop
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const handleScroll = () => {
@@ -336,50 +337,55 @@ function Para({ language, texts }) {
   }, []);
 
   return (
-    <div className="relative h-screen overflow-hidden">
-      {/* Image de fond fixée pour l'effet de parallaxe */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          transform: `translateY(${scrollPosition * 0.2}px)`, // Ajuste pour un mouvement plus fluide
-          transition: "none", // Aucune transition pour éviter le mouvement après l'arrêt du scroll
-        }}
-      >
-        <Image
-          src="/buildwhite.jpg" // Assure-toi que l'image est dans le bon dossier public
-          alt="Background"
-          layout="fill"
-          objectFit="cover"
-          className="object-center"
-          quality={20}// Centre l'image
-        />
-      </div>
+    <>
+      {/* Préchargement de l'image pour améliorer le LCP */}
+      <link rel="preload" href="/buildwhite.jpg" as="image" />
 
-      {/* Filtre blanc sur l'image de fond */}
-      <div className="absolute inset-0 bg-white opacity-60 z-10" />
+      <div className="relative h-screen overflow-hidden">
+        {/* Image de fond fixée pour l'effet de parallaxe */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            transform: `translateY(${scrollPosition * 0.2}px)`,
+            transition: "none",
+          }}
+        >
+          <Image
+            src="/buildwhite.jpg"
+            alt="Background"
+            layout="fill"
+            objectFit="cover"
+            priority={true} // Priorité élevée pour l'image de fond pour un rendu rapide
+            quality={50} // Ajuste la qualité pour trouver un bon compromis entre performance et qualité
+            className="object-center"
+          />
+        </div>
 
-      {/* Contenu au-dessus de l'image */}
-      <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-80 pl-20">
-        <h1 className="text-3xl text-left">
-          {texts[language].main} {/* Utiliser le texte basé sur la langue */}
-        </h1>
+        {/* Filtre blanc sur l'image de fond */}
+        <div className="absolute inset-0 bg-white opacity-60 z-10" />
 
-        <p className="text-left text-sm pt-4 flex items-center">
-          {texts[language].submain} <FaLongArrowAltDown />{" "}
-        </p>
-      </div>
+        {/* Contenu au-dessus de l'image */}
+        <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-80 pl-20">
+          <h1 className="text-3xl text-left">
+            {texts[language].main} {/* Utiliser le texte basé sur la langue */}
+          </h1>
 
-      {/* Ajout de contenu supplémentaire pour voir l'effet de parallaxe */}
-      <div className="h-screen bg-gray-200 flex items-center justify-center">
-        <h2 className="text-3xl">Contenu Additionnel</h2>
+          <p className="text-left text-sm pt-4 flex items-center">
+            {texts[language].submain} <FaLongArrowAltDown />
+          </p>
+        </div>
+
+        {/* Ajout de contenu supplémentaire pour voir l'effet de parallaxe */}
+        <div className="h-screen bg-gray-200 flex items-center justify-center">
+          <h2 className="text-3xl">Contenu Additionnel</h2>
+        </div>
+        <div className="h-screen bg-gray-300 flex items-center justify-center">
+          <h2 className="text-3xl">Encore Plus de Contenu</h2>
+        </div>
       </div>
-      <div className="h-screen bg-gray-300 flex items-center justify-center">
-        <h2 className="text-3xl">Encore Plus de Contenu</h2>
-      </div>
-    </div>
+    </>
   );
 }
-
 const ScrollingText = () => {
   const announcements = [
     "Eiffage",
