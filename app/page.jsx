@@ -334,7 +334,7 @@ function Para({ language, texts, selectedCountry }) {
       </div>
 
       {/* Boutons placés en bas */}
-      <div className="absolute bottom-20 xl:bottom-20 lg:bottom-20 md:bottom-20 sm:bottom-20 left-0 w-full z-20 flex justify-center pb-8">
+      <div className="absolute bottom-[200px] xl:bottom-20 lg:bottom-20 md:bottom-20 sm:bottom-20 left-0 w-full z-20 flex justify-center pb-8">
         <button
           onClick={() => handleCountryChange("France")}
           className={`flex justify-between items-center gap-2 px-4 py-2 m-2 border-2 rounded brownborder ${
