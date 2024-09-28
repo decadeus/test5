@@ -348,7 +348,8 @@ function Para({ language, texts }) {
           alt="Background"
           layout="fill"
           objectFit="cover"
-          className="object-center" // Centre l'image
+          className="object-center"
+          quality={20}// Centre l'image
         />
       </div>
 
