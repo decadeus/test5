@@ -312,7 +312,9 @@ function Demi({ projects, index, texts, language }) {
         )}
       </div>
 
-      <CursorComponent />
+      <div className="hidden sm:block">
+        <CursorComponent />
+      </div>
     </div>
   );
 }
