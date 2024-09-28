@@ -106,7 +106,7 @@ export default function Page() {
       <div className="flex-col sm:flex sm:flex-row h-[200px] sm:mt-[0]  mt-[100px] mb-[100px] ">
         <div className="flex justify-center items-center sm:w-1/2  sm:pl-4 relative z-10 ">
           <div className="absolute inset-0 flex items-center justify-center">
-            <h1 className="text-[20rem] text-black opacity-5 transform font-satisfy">
+            <h1 className="text-[20rem] text-black opacity-5 transform font-satisfy pb-8">
               H
             </h1>
           </div>
@@ -189,14 +189,14 @@ function Scroll({ projects = [], index, texts, language }) {
   } = useCustomCursor(texts[language].projet);
 
   return (
-    <div className="flex justify-center mx-auto  xl:[1100px] lg:w-[800px] md:w-[600px] sm:w-[550px] w-[350px] overflow-x-auto relative py-8">
+    <div className="flex justify-center mx-auto  xl:w-[1100px] lg:w-[950px] md:w-[700px] sm:w-[550px] w-[350px] overflow-x-auto relative py-8">
   <ScrollArea.Root className="ScrollAreaRoot" type="always">
     <ScrollArea.Viewport className="w-full">
       <div className="flex gap-8 mb-4">
         {projects.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col xl:w-[450px] lg:w-[250px] md:w-[250px] sm:w-[200px] w-[250px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-1000 hover:shadow-xl hover:shadow-slate-950 hover:transition-shadow ease-in-out mb-4"
+            className="flex flex-col xl:w-[450px] lg:w-[350px] md:w-[250px] sm:w-[200px] w-[250px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-1000 hover:shadow-xl hover:shadow-slate-950 hover:transition-shadow ease-in-out mb-4"
             onMouseEnter={() => {
               setShowCursor(true);
               setCursorLink(item.link);
@@ -212,7 +212,7 @@ function Scroll({ projects = [], index, texts, language }) {
               rel="noopener noreferrer"
               className="block w-full h-full"
             >
-              <div className="w-full relative xl:h-80 lg:h-40 md:h-28 sm:h-24 h-[150px]">
+              <div className="w-full relative xl:h-80 lg:h-[200px] md:h-28 sm:h-24 h-[150px]">
                 <Avatar
                   url={item.mainpic_url}
                   width={270}
@@ -222,14 +222,14 @@ function Scroll({ projects = [], index, texts, language }) {
                 />
               </div>
               <div className="mt-4">
-                <p className="browntext font-satisfy  lg:text-xl font-extrabold sm:text-lg text-md">
+                <p className="browntext font-satisfy  lg:text-3xl font-extrabold sm:text-lg text-2xl">
                   {item.name}
                 </p>
                 <p className="cleartext md:text-md sm:text-[12px]">{item.adresse}</p>
                 <p className="cleartext sm:text-[12px]">
                   {item.city}, {item.country}
                 </p>
-                <p className="cleartext sm:text-[12px]">{item.compagny}</p>
+                <p className="cleartext sm:text-[18px] font-bold">{item.compagny}</p>
               </div>
             </a>
           </div>
@@ -534,7 +534,7 @@ function ScrollImage({ projects, language, texts }) {
       onMouseLeave={handleMouseLeave}
     >
       <div className="items-center justify-center space-y-4 md:space-y-0 md:space-x-4 ">
-        <div className="relative  sm:w-[350px] sm:h-[250px] w-[350px] h-[200px] shadow-lg shadow-black hover:shadow transition-shadow duration-1000">
+        <div className="relative lg:w-[350px] md:w-[250px] sm:w-[200px] sm:h-[250px] w-[350px] h-[200px] shadow-lg shadow-black hover:shadow transition-shadow duration-1000">
           <a
             href={projects.link}
             target="_blank"
@@ -552,7 +552,7 @@ function ScrollImage({ projects, language, texts }) {
             )}
           </a>
 
-          {/* Cercle au-dessus du pointeur */}
+          <div className="hidden sm:block">
           {isCircleVisible && (
             <div
               style={{
@@ -584,6 +584,7 @@ function ScrollImage({ projects, language, texts }) {
               </span>
             </div>
           )}
+        </div>
         </div>
         {/* Autres éléments flexibles en colonne */}
       </div>
