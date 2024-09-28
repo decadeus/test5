@@ -45,20 +45,11 @@ export default function Page() {
           transition: opacity 0.3s ease; /* Transition douce */
         }
       `}</style>
-      <div className="w-full">
-        <Para />
-      </div>
+     
       <div className={containerStyle}>
-        <h1 className={headerStyle}>
-          The Largest Collection of <br /> Residential Real Estate Projects
-        </h1>
-        <p className={subheaderStyle}>
-          List Your Residential Apartments for Sale in Minutes, Completely Free.
-        </p>
-        <button className="bg-blue-500 text-white py-2 px-4 text-xl mb-16 font-satisfy">
-          Add your project
-        </button>
+       <div className="px-8">
         <Step />
+        </div>
         <div id="ici">
 
         <Form />
@@ -210,58 +201,3 @@ function Step() {
 
 
 
-function Para() {
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  const handleScroll = () => {
-    setScrollPosition(window.scrollY);
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  return (
-    <div className="relative h-screen overflow-hidden">
-      {/* Image de fond fixée pour l'effet de parallaxe */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          transform: `translateY(${scrollPosition * 0.2}px)`, // Ajuste pour un mouvement plus fluide
-          transition: 'none', // Aucune transition pour éviter le mouvement après l'arrêt du scroll
-        }}
-      >
-        <Image
-          src="/buildwhite.jpg" // Assure-toi que l'image est dans le bon dossier public
-          alt="Background"
-          layout="fill"
-          objectFit="cover"
-          className="object-center" // Centre l'image
-        />
-      </div>
-
-      {/* Filtre blanc sur l'image de fond */}
-      <div className="absolute inset-0 bg-white opacity-60 z-10" />
-
-      {/* Contenu au-dessus de l'image */}
-      <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-32 pl-20">
-    <h1 className="text-3xl text-left">
-        FIND RESIDENTIAL <br /> BUILDING PROJECTS
-    </h1>
-    
-    <p className="text-left text-sm pt-4 flex items-center">SCROLL TO EXPLORE <FaLongArrowAltDown /> </p>
-</div>
-
-      {/* Ajout de contenu supplémentaire pour voir l'effet de parallaxe */}
-      <div className="h-screen bg-gray-200 flex items-center justify-center">
-        <h2 className="text-3xl">Contenu Additionnel</h2>
-      </div>
-      <div className="h-screen bg-gray-300 flex items-center justify-center">
-        <h2 className="text-3xl">Encore Plus de Contenu</h2>
-      </div>
-    </div>
-  );
-}

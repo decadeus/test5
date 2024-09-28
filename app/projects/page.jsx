@@ -26,7 +26,6 @@ import { countryData } from "@/utils/countryData";
 import Link from "next/link";
 import Loading from "@/app/loading";
 
-
 const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
 const ITEMS_PER_PAGE = 4;
 
@@ -102,8 +101,6 @@ function Page() {
   useEffect(() => {
     fetchProjects();
   }, [sortKey]);
-
-
 
   useEffect(() => {
     const storedFavorites =
@@ -296,7 +293,6 @@ function Page() {
   if (loading) {
     return <Loading />;
   }
-  
 
   if (error) {
     return <div>Error fetching data: {error.message}</div>;
@@ -338,14 +334,13 @@ function Page() {
   };
   const latLngExtremes = getLatLngExtremes(filteredProjects);
 
-
   return (
     <div className="flex flex-col w-full gap-4 pt-4 bgfull text-black mb-16">
-      <h1 className="text-5xl colortest  font-satisfy pl-4">Listing Apartements</h1>
+      <h1 className="text-5xl colortest  font-satisfy pl-4">
+        Listing Apartements
+      </h1>
       <div className="pl-4">
-        
         <div className="flex  w-full my-8 ">
-          
           <Link
             href="/projects"
             className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
@@ -353,8 +348,6 @@ function Page() {
             Sign up to list your project
           </Link>
         </div>
-
-       
       </div>
       <div className="flex flex-col xl:gap-4 gap-4">
         <div className="w-full">
@@ -390,8 +383,8 @@ function Page() {
           />
         </div>
 
-        <div className="flex flex-col xl:flex-row lg:flex-row w-full">
-          <div className="w-1/2 ">
+        <div className="flex flex-col  xl:flex-row lg:flex-row w-full">
+          <div className="sm:w-1/2 w-full ">
             <div className="flex justify-between items-center mb-4">
               <p className="text-xs text-center text-gray-500">
                 Total: {filteredProjects.length} apartments found
@@ -423,9 +416,9 @@ function Page() {
                 </select>
               </div>
             </div>
-            <div className="w-full h-[650px] z-0">
+            <div className="w-full sm:h-[650px] h-[200px] z-0">
               <LazyMap
-                classN="w-full h-[650px] z-0"
+                classN="w-full sm:h-[650px] h-[200px] z-0"
                 todos={filteredProjects.map(({ project }) => ({
                   lat: project?.lat,
                   lng: project?.lng,
@@ -442,14 +435,14 @@ function Page() {
               />
             </div>
           </div>
-          <div className="w-1/2">
+          <div className="sm:w-1/2 w-full ">
             <div className="w-full flex flex-wrap">
-              <ScrollArea className="h-fit w-full pl-4 pb-4">
-                <div className="relative flex flex-wrap gap-2">
+              <ScrollArea className="h-fit w-full sm:pl-4 sm:pb-4">
+                <div className="relative flex flex-wrap sm:gap-2 gap-4 justify-center">
                   {projects.map((item, index) => (
                     <div
                       key={index}
-                      className="relative flex flex-col w-full md:w-[48%] gap-4 border shadow-lg rounded-sm group"
+                      className="relative flex flex-col justify-center w-[90%] md:w-[48%] gap-4 border shadow-lg rounded-sm group"
                     >
                       <div className="flex flex-col w-full gap-4 ">
                         <div className="relative h-40 w-full">
@@ -547,22 +540,18 @@ function Page() {
                                 aria-label="company"
                                 className="rounded-full border-black border-2"
                                 style={{
-                                 
-                                 
-                                  width: '80px',
-                                  height: '80px',
-                                  borderRadius: '50%',
+                                  width: "80px",
+                                  height: "80px",
+                                  borderRadius: "50%",
                                   backgroundColor: "rgba(255, 255, 255, 0.2)",
                                   backdropFilter: "blur(8px)", // Couleur blanche et opaque
-                                  display: 'flex', // Utiliser flexbox pour centrer le texte
-                                  alignItems: 'center', // Centrer verticalement
-                                  justifyContent: 'center', // Centrer horizontalement
-                                  pointerEvents: 'none', // Ignorer les événements de souris
-                                  transition: 'opacity 0.2s',
+                                  display: "flex", // Utiliser flexbox pour centrer le texte
+                                  alignItems: "center", // Centrer verticalement
+                                  justifyContent: "center", // Centrer horizontalement
+                                  pointerEvents: "none", // Ignorer les événements de souris
+                                  transition: "opacity 0.2s",
                                   textAlign: "center",
-                                  
                                 }}
-                              
                               >
                                 See {item.project.company} project
                               </button>
@@ -762,175 +751,384 @@ function Filter({
   ];
 
   return (
-    <div className="flex items-center w-full pl-4 ">
-      <div className="flex justify-center items-center w-5/12 gap-2">
-        <div className="flex flex-col w-1/2">
-          <select
-            value={editableCountry}
-            onChange={handleCountryChange}
-            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
-          >
-            <option value="" className="text-red-300">
-              Select a country
-            </option>
-            {Object.keys(countryData).map((country) => (
-              <option key={country} value={country} className="text-black">
-                {country}
-              </option>
-            ))}
-          </select>
-        </div>
+    <div>
+      <div className="hidden sm:block">
+        <div className=" flex items-center w-full pl-4 ">
+          <div className="flex justify-center items-center w-5/12 gap-2">
+            <div className="flex flex-col w-1/2">
+              <select
+                value={editableCountry}
+                onChange={handleCountryChange}
+                className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
+              >
+                <option value="" className="text-red-300">
+                  Select a country
+                </option>
+                {Object.keys(countryData).map((country) => (
+                  <option key={country} value={country} className="text-black">
+                    {country}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-        <div className="flex flex-col w-1/2">
-          <select
-            value={editableCity}
-            onChange={handleCityChange}
-            className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
-          >
-            <option value="Select a city" className="text-red-300">
-              Select a city
-            </option>
-            {cities.map((city, index) => (
-              <option key={index} value={city} className="text-black">
-                {city}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-      <div className="flex justify-center items-center w-7/12 gap-2">
-        <div className="flex pr-2 gap-2">
-          <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
-            <Checkbox
-              isChecked={showFavorites}
-              onChange={(e) => onFavoritesChange(e.target.checked)}
-              color="bgmap"
-              aria-label="favorite"
-              size="sm"
-            >
-              <p className={colorfilter}>Only favorite</p>
-            </Checkbox>
+            <div className="flex flex-col w-1/2">
+              <select
+                value={editableCity}
+                onChange={handleCityChange}
+                className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
+              >
+                <option value="Select a city" className="text-red-300">
+                  Select a city
+                </option>
+                {cities.map((city, index) => (
+                  <option key={index} value={city} className="text-black">
+                    {city}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-          <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
-            <Checkbox
-              isChecked={selectedGarden}
-              onChange={(e) => onGardenChange(e.target.checked)}
-              color="bgmap"
-              aria-label="Garden"
-              size="sm"
-            >
-              <p className={colorfilter}>Only with garden</p>
-            </Checkbox>
-          </div>
-        </div>
+          <div className="flex justify-center items-center w-7/12 gap-2">
+            <div className="flex pr-2 gap-2">
+              <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
+                <Checkbox
+                  isChecked={showFavorites}
+                  onChange={(e) => onFavoritesChange(e.target.checked)}
+                  color="bgmap"
+                  aria-label="favorite"
+                  size="sm"
+                >
+                  <p className={colorfilter}>Only favorite</p>
+                </Checkbox>
+              </div>
+              <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
+                <Checkbox
+                  isChecked={selectedGarden}
+                  onChange={(e) => onGardenChange(e.target.checked)}
+                  color="bgmap"
+                  aria-label="Garden"
+                  size="sm"
+                >
+                  <p className={colorfilter}>Only with garden</p>
+                </Checkbox>
+              </div>
+            </div>
 
-        <div className="flex gap-2 py-2 ">
-          {modalData.map(
-            ({
-              label,
-              range,
-              onRangeChange,
-              min,
-              max,
-              step,
-              isOpen,
-              setIsOpen,
-              id,
-            }) => (
-              <div key={id}>
+            <div className="flex gap-2 py-2 ">
+              {modalData.map(
+                ({
+                  label,
+                  range,
+                  onRangeChange,
+                  min,
+                  max,
+                  step,
+                  isOpen,
+                  setIsOpen,
+                  id,
+                }) => (
+                  <div key={id}>
+                    <Button
+                      onClick={() => setIsOpen(true)}
+                      variant="light"
+                      radius="none"
+                      className="px-0"
+                    >
+                      <div className="flex gap-1 bg-white border-gray-300 border-1 rounded-sm text-xs px-2 py-2">
+                        <p className={colorfilter}>{label}</p>
+                        <p className={colorfilter}>
+                          ({range[0]} - {range[1]})
+                        </p>
+                      </div>
+                    </Button>
+                    <Modal isOpen={isOpen} onOpenChange={setIsOpen} id={id}>
+                      <ModalContent>
+                        {(onClose) => (
+                          <div>
+                            <div className="w-full flex gap-4 pb-4">
+                              <div className="border-2 border-black rounded-sm w-1/2 p-2">
+                                <p className="font-semibold text-sm">Min</p>
+                                <p>{range[0]}</p>
+                              </div>
+                              <div className="border-2 border-black rounded-sm w-1/2 p-2">
+                                <p className="font-semibold text-sm">Max</p>
+                                <p>{range[1]}</p>
+                              </div>
+                            </div>
+                            <Slider
+                              min={min}
+                              max={max}
+                              step={step}
+                              value={range}
+                              onChange={onRangeChange}
+                              className="max-w-md"
+                              color="bgmap"
+                              aria-label={label}
+                              size="sm"
+                            />
+                          </div>
+                        )}
+                      </ModalContent>
+                    </Modal>
+                  </div>
+                )
+              )}
+            </div>
+            <div className="flex gap-2 ">
+              <div>
                 <Button
-                  onClick={() => setIsOpen(true)}
+                  onClick={() => onOpenChange(true)}
                   variant="light"
                   radius="none"
                   className="px-0"
                 >
-                  <div className="flex gap-1 bg-white border-gray-300 border-1 rounded-sm text-xs px-2 py-2">
-                    <p className={colorfilter}>{label}</p>
-                    <p className={colorfilter}>
-                      ({range[0]} - {range[1]})
-                    </p>
+                  <div className="flex  bg-white border-gray-300 border-1 rounded-sm text-xs px-2 py-2">
+                    <p className={colorfilter}>Residence ({countChecked()})</p>
                   </div>
                 </Button>
-                <Modal isOpen={isOpen} onOpenChange={setIsOpen} id={id}>
+                <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                   <ModalContent>
                     {(onClose) => (
-                      <div>
-                        <div className="w-full flex gap-4 pb-4">
-                          <div className="border-2 border-black rounded-sm w-1/2 p-2">
-                            <p className="font-semibold text-sm">Min</p>
-                            <p>{range[0]}</p>
-                          </div>
-                          <div className="border-2 border-black rounded-sm w-1/2 p-2">
-                            <p className="font-semibold text-sm">Max</p>
-                            <p>{range[1]}</p>
-                          </div>
-                        </div>
-                        <Slider
-                          min={min}
-                          max={max}
-                          step={step}
-                          value={range}
-                          onChange={onRangeChange}
-                          className="max-w-md"
-                          color="bgmap"
-                          aria-label={label}
-                          size="sm"
-                        />
+                      <div className="flex flex-col gap-2">
+                        {facilities.map(
+                          ({ id, label, value, selected, onChange }) => (
+                            <CheckboxGroup
+                              key={id}
+                              id={id}
+                              value={selected ? [value] : []}
+                              onChange={onChange}
+                              color="bgmap"
+                              orientation="horizontal"
+                              aria-label={label}
+                            >
+                              <Checkbox value={value}>
+                                <div className="flex items-center">
+                                  <p className="mr-2">{label}</p>
+                                  <span className="text-xs text-gray-500">
+                                    ({countChecked([selected])})
+                                  </span>
+                                </div>
+                              </Checkbox>
+                            </CheckboxGroup>
+                          )
+                        )}
                       </div>
                     )}
                   </ModalContent>
                 </Modal>
               </div>
-            )
-          )}
-        </div>
-        <div className="flex gap-2 ">
-          <div>
-            <Button
-              onClick={() => onOpenChange(true)}
-              variant="light"
-              radius="none"
-              className="px-0"
-            >
-              <div className="flex  bg-white border-gray-300 border-1 rounded-sm text-xs px-2 py-2">
-                <p className={colorfilter}>Residence ({countChecked()})</p>
-              </div>
-            </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-              <ModalContent>
-                {(onClose) => (
-                  <div className="flex flex-col gap-2">
-                    {facilities.map(
-                      ({ id, label, value, selected, onChange }) => (
-                        <CheckboxGroup
-                          key={id}
-                          id={id}
-                          value={selected ? [value] : []}
-                          onChange={onChange}
-                          color="bgmap"
-                          orientation="horizontal"
-                          aria-label={label}
-                        >
-                          <Checkbox value={value}>
-                            <div className="flex items-center">
-                              <p className="mr-2">{label}</p>
-                              <span className="text-xs text-gray-500">
-                                ({countChecked([selected])})
-                              </span>
-                            </div>
-                          </Checkbox>
-                        </CheckboxGroup>
-                      )
-                    )}
-                  </div>
-                )}
-              </ModalContent>
-            </Modal>
+            </div>
           </div>
+        </div>
+      </div>
+      <div className="block sm:hidden">
+        {" "}
+        <div className=" flex items-center w-full pl-4 ">
+          <Button onPress={onOpen}>Open Modal</Button>
+          <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalContent>
+              {(onClose) => (
+                <>
+                  <ModalHeader className="flex flex-col gap-1">
+                    Modal Title
+                  </ModalHeader>
+                  <ModalBody>
+                    <div className="flex justify-center items-center w-5/12 gap-2">
+                      <div className="flex flex-col w-1/2">
+                        <select
+                          value={editableCountry}
+                          onChange={handleCountryChange}
+                          className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
+                        >
+                          <option value="" className="text-red-300">
+                            Select a country
+                          </option>
+                          {Object.keys(countryData).map((country) => (
+                            <option
+                              key={country}
+                              value={country}
+                              className="text-black"
+                            >
+                              {country}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="flex flex-col w-1/2">
+                        <select
+                          value={editableCity}
+                          onChange={handleCityChange}
+                          className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
+                        >
+                          <option
+                            value="Select a city"
+                            className="text-red-300"
+                          >
+                            Select a city
+                          </option>
+                          {cities.map((city, index) => (
+                            <option
+                              key={index}
+                              value={city}
+                              className="text-black"
+                            >
+                              {city}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="flex flex-col justify-center items-center w-full gap-2">
+                      <div className="flex flex-col pr-2 gap-2 w-full">
+                        <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
+                          <Checkbox
+                            isChecked={showFavorites}
+                            onChange={(e) =>
+                              onFavoritesChange(e.target.checked)
+                            }
+                            color="bgmap"
+                            aria-label="favorite"
+                            size="sm"
+                          >
+                            <p className={colorfilter}>Only favorite</p>
+                          </Checkbox>
+                        </div>
+                        <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
+                          <Checkbox
+                            isChecked={selectedGarden}
+                            onChange={(e) => onGardenChange(e.target.checked)}
+                            color="bgmap"
+                            aria-label="Garden"
+                            size="sm"
+                          >
+                            <p className={colorfilter}>Only with garden</p>
+                          </Checkbox>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-2 py-2 w-full">
+                        {modalData.map(
+                          ({
+                            label,
+                            range,
+                            onRangeChange,
+                            min,
+                            max,
+                            step,
+                            isOpen,
+                            setIsOpen,
+                            id,
+                          }) => (
+                            <div key={id}>
+                              {/* Bouton avec le titre et la plage */}
+                              <div className="flex gap-1 bg-white border-gray-300 border-1 rounded-sm text-xs px-2 py-2">
+                                <p className={colorfilter}>{label}</p>
+                                <p className={colorfilter}>
+                                  ({range[0]} - {range[1]})
+                                </p>
+                              </div>
+
+                              {/* Slider sous le titre */}
+                              <div className="w-full mt-4">
+                                <div className="flex gap-4 pb-4">
+                                  {/* Affichage des valeurs Min et Max */}
+                                  <div className="border-2 border-black rounded-sm w-1/2 p-2">
+                                    <p className="font-semibold text-sm">Min</p>
+                                    <p>{range[0]}</p>
+                                  </div>
+                                  <div className="border-2 border-black rounded-sm w-1/2 p-2">
+                                    <p className="font-semibold text-sm">Max</p>
+                                    <p>{range[1]}</p>
+                                  </div>
+                                </div>
+
+                                {/* Slider */}
+                                <Slider
+                                  min={min}
+                                  max={max}
+                                  step={step}
+                                  value={range}
+                                  onChange={onRangeChange}
+                                  className="max-w-md"
+                                  color="bgmap"
+                                  aria-label={label}
+                                  size="sm"
+                                />
+                              </div>
+                            </div>
+                          )
+                        )}
+                      </div>
+                      <div className="flex gap-2 ">
+                        <div>
+                          <Button
+                            onClick={() => onOpenChange(true)}
+                            variant="light"
+                            radius="none"
+                            className="px-0"
+                          >
+                            <div className="flex  bg-white border-gray-300 border-1 rounded-sm text-xs px-2 py-2">
+                              <p className={colorfilter}>
+                                Residence ({countChecked()})
+                              </p>
+                            </div>
+                          </Button>
+                          <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                            <ModalContent>
+                              {(onClose) => (
+                                <div className="flex flex-col gap-2">
+                                  {facilities.map(
+                                    ({
+                                      id,
+                                      label,
+                                      value,
+                                      selected,
+                                      onChange,
+                                    }) => (
+                                      <CheckboxGroup
+                                        key={id}
+                                        id={id}
+                                        value={selected ? [value] : []}
+                                        onChange={onChange}
+                                        color="bgmap"
+                                        orientation="horizontal"
+                                        aria-label={label}
+                                      >
+                                        <Checkbox value={value}>
+                                          <div className="flex items-center">
+                                            <p className="mr-2">{label}</p>
+                                            <span className="text-xs text-gray-500">
+                                              ({countChecked([selected])})
+                                            </span>
+                                          </div>
+                                        </Checkbox>
+                                      </CheckboxGroup>
+                                    )
+                                  )}
+                                </div>
+                              )}
+                            </ModalContent>
+                          </Modal>
+                        </div>
+                      </div>
+                    </div>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="danger" variant="light" onPress={onClose}>
+                      Close
+                    </Button>
+                    <Button color="primary" onPress={onClose}>
+                      Action
+                    </Button>
+                  </ModalFooter>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
         </div>
       </div>
     </div>
   );
 }
-
-
