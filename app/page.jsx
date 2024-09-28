@@ -323,7 +323,7 @@ function Para({ language, texts, selectedCountry }) {
       <div className="absolute inset-0 bg-white opacity-60 z-10" />
 
       {/* Contenu au-dessus de l'image */}
-      <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-80 pl-20">
+      <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-[500px] pl-20">
         <h1 className="text-3xl text-left">
           {texts[language].main} {/* Utiliser le texte basé sur la langue */}
         </h1>
