@@ -61,43 +61,10 @@ export default function Page() {
         }
       `}</style>
       <div className="w-full maintextfull">
-        <Para language={language} texts={texts} />
+        <Para language={language} texts={texts} selectedCountry={selectedCountry} />
       </div>
 
-      <div className="flex justify-center  -mt-32 xl:mb-32 lg:mb-28 md:mb-20 sm:mb-20  z-50">
-        <button
-          onClick={() => handleCountryChange("France")}
-          className={`flex justify-between items-center  gap-2 px-4 py-2 m-2   border-2 rounded brownborder  ${
-            selectedCountry === "France"
-              ? "brownbg text-white  "
-              : "clearbg browntext"
-          }`}
-        >
-          <img
-            src="/france-flag-round-circle-icon.svg"
-            alt="Icon"
-            width="20"
-            height="20"
-          />{" "}
-          France
-        </button>
-        <button
-          onClick={() => handleCountryChange("Polska")}
-          className={`flex justify-between items-center  gap-2 px-4 py-2 m-2  border-2 rounded brownborder  ${
-            selectedCountry === "Polska"
-              ? "brownbg text-white "
-              : "clearbg browntext"
-          }`}
-        >
-          <img
-            src="/monaco-flag-round-circle-icon.svg"
-            alt="Icon"
-            width="20"
-            height="20"
-          />{" "}
-          Polska
-        </button>
-      </div>
+    
       <div className="flex h-[200px] xl:mb-32 lg:mb-28 md:mb-20 sm:mb-10 ">
         <div className="flex justify-center items-center w-1/2 pr-16 xl:pl-48 lg:pl-28 md:pl-10 sm:pl-4 relative z-10 ">
           <div className="absolute inset-0 flex items-center justify-center">
@@ -247,25 +214,26 @@ function Scroll({ projects = [], index, texts, language }) {
   );
 }
 
-function Demi({ projects, index, texts, language }) {
+function Demi({ projects, index, texts, language}) {
   const {
     showCursor,
     setShowCursor,
     cursorLink,
     setCursorLink,
     CursorComponent,
-  } = useCustomCursor(texts[language].projet); // Pass the cursor text here
+  } = useCustomCursor(texts[language].projet); // Custom cursor setup
 
   const isEven = index % 2 === 0;
 
   return (
     <div
-      className={`w-full flex ${
-        isEven ? "" : "flex-row-reverse darktext clearbg"
-      }`}
+      className={`w-full flex flex-col sm:flex-row ${
+        isEven ? "" : "sm:flex-row-reverse"
+      } darktext clearbg`}
     >
+      {/* Image Container */}
       <div
-        className="w-1/2 relative h-80"
+        className="sm:w-1/2 w-full relative h-64 sm:h-80"
         onMouseEnter={() => {
           setShowCursor(true);
           setCursorLink(projects.link);
@@ -286,18 +254,21 @@ function Demi({ projects, index, texts, language }) {
               url={projects.mainpic_url}
               width={270}
               height={196}
-              className="rounded-sm"
+              className="rounded-sm object-cover w-full h-full"
               alt={projects.name || "Project Image"}
             />
           )}
         </a>
       </div>
 
-      <div className="w-1/2 flex flex-col full justify-center items-center">
-        <p className="font-satisfy text-4xl font-extrabold pb-8 browntext ">
+      {/* Text Container */}
+      <div className="sm:w-1/2 w-full flex flex-col justify-center items-center px-4 sm:px-12 py-8 sm:py-0">
+        <p className="font-satisfy text-4xl font-extrabold pb-4 sm:pb-8 browntext text-center sm:text-left">
           {projects.name}
         </p>
-        <p className="px-12 pb-8 ">{projects.Des}</p>
+        <p className="text-center sm:text-left pb-4 sm:pb-8">
+          {projects.Des}
+        </p>
 
         {projects.link && (
           <a href={projects.link} target="_blank" rel="noopener noreferrer">
@@ -313,7 +284,8 @@ function Demi({ projects, index, texts, language }) {
   );
 }
 
-function Para({ language, texts }) {
+
+function Para({ language, texts, selectedCountry }) {
   // Ajoutez texts comme prop
   const [scrollPosition, setScrollPosition] = useState(0);
 
@@ -351,7 +323,7 @@ function Para({ language, texts }) {
       <div className="absolute inset-0 bg-white opacity-60 z-10" />
 
       {/* Contenu au-dessus de l'image */}
-      <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-60 pl-20">
+      <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-80 pl-20">
         <h1 className="text-3xl text-left">
           {texts[language].main} {/* Utiliser le texte basé sur la langue */}
         </h1>
@@ -361,16 +333,47 @@ function Para({ language, texts }) {
         </p>
       </div>
 
-      {/* Ajout de contenu supplémentaire pour voir l'effet de parallaxe */}
-      <div className="h-screen bg-gray-200 flex items-center justify-center">
-        <h2 className="text-3xl">Contenu Additionnel</h2>
+      {/* Boutons placés en bas */}
+      <div className="absolute bottom-20 xl:bottom-20 lg:bottom-20 md:bottom-20 sm:bottom-20 left-0 w-full z-20 flex justify-center pb-8">
+        <button
+          onClick={() => handleCountryChange("France")}
+          className={`flex justify-between items-center gap-2 px-4 py-2 m-2 border-2 rounded brownborder ${
+            selectedCountry === "France"
+              ? "brownbg text-white"
+              : "clearbg browntext"
+          }`}
+        >
+          <img
+            src="/france-flag-round-circle-icon.svg"
+            alt="Icon"
+            width="20"
+            height="20"
+          />{" "}
+          France
+        </button>
+        <button
+          onClick={() => handleCountryChange("Polska")}
+          className={`flex justify-between items-center gap-2 px-4 py-2 m-2 border-2 rounded brownborder ${
+            selectedCountry === "Polska"
+              ? "brownbg text-white"
+              : "clearbg browntext"
+          }`}
+        >
+          <img
+            src="/monaco-flag-round-circle-icon.svg"
+            alt="Icon"
+            width="20"
+            height="20"
+          />{" "}
+          Polska
+        </button>
       </div>
-      <div className="h-screen bg-gray-300 flex items-center justify-center">
-        <h2 className="text-3xl">Encore Plus de Contenu</h2>
-      </div>
+
+     
     </div>
   );
 }
+
 
 const ScrollingText = () => {
   const announcements = [
