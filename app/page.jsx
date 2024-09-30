@@ -17,7 +17,7 @@ import { useLanguage } from "./LanguageContext";
 export default function Page() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCountry, setSelectedCountry] = useState("Polska");
+  const [selectedCountry, setSelectedCountry] = useState("France");
   const { language, changeLanguage } = useLanguage(); // Access the language context
 
   const MIN_LOADING_TIME = 1000;
@@ -95,7 +95,7 @@ export default function Page() {
             width="20"
             height="20"
           />{" "}
-          France
+          {texts[language].countryFr}
         </button>
         <button
           onClick={() => handleCountryChange("Polska")}
@@ -111,7 +111,7 @@ export default function Page() {
             width="20"
             height="20"
           />{" "}
-          Polska
+         {texts[language].countryPl}
         </button>
       </div>
       <div className="flex-col sm:flex sm:flex-row h-[200px] sm:mt-[0]  mt-[100px] mb-[100px] ">

@@ -36,6 +36,18 @@ export default function LanguageSelector() {
           height="20"
         />
       </button>
+      <button
+        onClick={() => handleLanguageChange("en")}
+        className={` flex justify-between items-center  gap-2 px-4   border-2 rounded brownborder
+          /> `}
+      >
+        <img
+          src="/united-kingdom.png"
+          alt="Icon"
+          width="20"
+          height="20"
+        />
+      </button>
     </div>
   );
 }

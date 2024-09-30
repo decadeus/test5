@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
+import { useLanguage } from "@/app/LanguageContext"; // Import the context hook
+import { texts } from "@/lib/language";
 
 const siteConfig = {
   navAdmin: [
@@ -16,23 +18,19 @@ const siteConfig = {
     { label: "Your Apartment", href: "/appartement" },
   ],
   noUser: [
-    // { label: "Home", href: "/" },
-    // { label: "Completed Residential Building", href: "/completed" },
     { 
       label: (
         <div className="flex justify-center items-center gap-2">
-        <IoSearch color="white" className="text-2xl sm:text-sm md:text-base lg:text-xl xl:text-2xl" />
-        <span className="text-white">Search</span>
-      </div>
+          <IoSearch color="white" className="text-2xl sm:text-sm md:text-base lg:text-xl xl:text-2xl" />
+          <span className="text-white">{texts.pl.link}</span> {/* Fallback language */}
+        </div>
       ), 
       href: "/projects" 
     },
-
   ],
   Cproject: [
     { label: "Home", href: "/" },
     { label: "project", href: "/cproject" },
- 
   ],
 };
 
@@ -41,6 +39,7 @@ export default function ListNav({ userId }) {
   const pathname = usePathname();
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState(null);
+  const { language } = useLanguage(); // Get language from context
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -64,23 +63,22 @@ export default function ListNav({ userId }) {
   }, [userId, supabase]);
 
   if (error) {
-    return null;
+    return null; // Handle errors gracefully
   }
 
   const renderNavItems = (items) =>
     items.map((item) => {
-        const isActive = pathname === item.href;
+      const isActive = pathname === item.href;
       return (
-     
         <li key={item.href} className="mr-16 last:mr-0 sm:text-xl text-md">
-          <Link href={item.href} className={isActive ? " text-black " : "text-black"}>
+          <Link href={item.href} className={isActive ? "text-black" : "text-black"}>
             {item.label}
           </Link>
         </li>
-       
       );
     });
 
+  // Dynamically create nav items based on user profile rules
   let navItems;
   if (profile?.rules === "Admin") {
     navItems = siteConfig.navAdmin;
@@ -89,7 +87,15 @@ export default function ListNav({ userId }) {
   } else if (profile?.rules === "Cproject") {
     navItems = siteConfig.Cproject;
   } else {
-    navItems = siteConfig.noUser;
+    navItems = siteConfig.noUser.map(item => ({
+      ...item,
+      label: (
+        <div className="flex justify-center items-center gap-2">
+          <IoSearch color="white" className="text-2xl sm:text-sm md:text-base lg:text-xl xl:text-2xl" />
+          <span className="text-white">{texts[language].search}</span> {/* Use the correct language */}
+        </div>
+      )
+    }));
   }
 
   return (

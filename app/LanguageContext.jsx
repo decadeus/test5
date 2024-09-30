@@ -6,10 +6,10 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState("pl");
+  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
-    const storedLanguage = localStorage.getItem("selectedLanguage") || "pl";
+    const storedLanguage = localStorage.getItem("selectedLanguage") || "en";
     setLanguage(storedLanguage);
   }, []);
 
