@@ -1,3 +1,4 @@
+// RootLayout.js
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GeistSans } from "geist/font/sans"; // Ensure you're using this font where necessary
 import "./globals.css";
@@ -7,6 +8,7 @@ import { createClient } from "@/utils/supabase/server";
 import Head from "next/head";
 import Foot from "@/app/footer/footer";
 import { Kenia, Satisfy, Macondo } from "next/font/google";
+import { LanguageProvider } from "@/app/LanguageContext"; // Import your LanguageProvider
 
 // Default URL based on the environment
 const defaultUrl = process.env.VERCEL_URL
@@ -59,12 +61,14 @@ export default async function RootLayout({ children }) {
       </Head>
       <body className="text-foreground bgfull w-full overflow-x-hidden">
         <Providers>
-          <MainNavBar user={user} />
-          <main className="min-h-screen w-full flex flex-col items-center text-black ">
-            {children}
-            <SpeedInsights />
-          </main>
-          <Foot />
+          <LanguageProvider> {/* Wrap your application in the LanguageProvider */}
+            <MainNavBar user={user} />
+            <main className="min-h-screen w-full flex flex-col items-center text-black ">
+              {children}
+              <SpeedInsights />
+            </main>
+            <Foot />
+          </LanguageProvider>
         </Providers>
       </body>
     </html>

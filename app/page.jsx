@@ -6,42 +6,47 @@ import { FaLongArrowAltDown } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
+import LanguageSelector from "@/app/LanguageSelector";
 
 import { texts } from "@/lib/language";
 import useCustomCursor from "@/components/useCustomCursor";
 import Link from "next/link";
 import Loading from "@/app/loading";
+import { useLanguage } from "./LanguageContext";
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState("Polska");
-  const [language, setLanguage] = useState("pl");
+  const { language, changeLanguage } = useLanguage(); // Access the language context
 
-  const MIN_LOADING_TIME = 1000; // 1 seconde en millisecondes
+  const MIN_LOADING_TIME = 1000;
+
+  useEffect(() => {
+    // Initialize the language from localStorage or default to 'pl'
+    const storedLanguage = localStorage.getItem("selectedLanguage");
+    if (storedLanguage) {
+      changeLanguage(storedLanguage); // Update the language in context
+    }
+  }, [changeLanguage]); // Ensure changeLanguage is included in dependencies
 
   const fetchProjects = async () => {
-    const startTime = Date.now(); // Prend le temps de début du fetch
+    const startTime = Date.now();
     const supabase = createClient();
     const { data, error } = await supabase
       .from("project")
       .select("*")
       .eq("country", selectedCountry);
 
-    const elapsedTime = Date.now() - startTime; // Temps écoulé pendant le fetch
-
-    if (error) {
-      setError(error);
-    } else {
-      setProjects(data);
-    }
-
-    const remainingTime = Math.max(MIN_LOADING_TIME - elapsedTime, 0); // Calcul du temps restant
+    const elapsedTime = Date.now() - startTime;
+    const remainingTime = Math.max(MIN_LOADING_TIME - elapsedTime, 0);
 
     setTimeout(() => {
       setLoading(false);
-    }, remainingTime); // Attendre pour atteindre au moins 1 seconde
+      if (!error) {
+        setProjects(data);
+      }
+    }, remainingTime);
   };
 
   useEffect(() => {
@@ -50,12 +55,13 @@ export default function Page() {
 
   const handleCountryChange = (country) => {
     setSelectedCountry(country);
-    setLanguage(country === "Polska" ? "pl" : "fr");
   };
 
   if (loading) {
     return <Loading />;
   }
+
+
   return (
     <>
       <style jsx>{`
@@ -67,6 +73,11 @@ export default function Page() {
       `}</style>
       <div className="w-full maintextfull">
         <Para language={language} texts={texts} />
+      </div>
+
+      <div className="flex justify-center  -mt-[300px]  sm:-mt-[200px] sm:mb-[200px] mb-[200px] z-50">
+     
+       
       </div>
 
       <div className="flex justify-center  -mt-[300px]  sm:-mt-[200px] sm:mb-[200px] mb-[200px] z-50">
@@ -110,7 +121,9 @@ export default function Page() {
               H
             </h1>
           </div>
-          <h1 className="sm:text-4xl text-2xl font-bold px-4 text-center pb-[20px]">{texts[language].title3}</h1>
+          <h1 className="sm:text-4xl text-2xl font-bold px-4 text-center pb-[20px]">
+            {texts[language].title3}
+          </h1>
         </div>
         <div className="flex flex-col sm:justify-center sm:items-center sm:w-1/2 px-4 sm:pr-48 gap-4">
           <h2 className="sm:text-md ">{texts[language].title4}</h2>
@@ -190,67 +203,70 @@ function Scroll({ projects = [], index, texts, language }) {
 
   return (
     <div className="flex justify-center mx-auto  xl:w-[1100px] lg:w-[950px] md:w-[700px] sm:w-[550px] w-[350px] overflow-x-auto relative py-8">
-  <ScrollArea.Root className="ScrollAreaRoot" type="always">
-    <ScrollArea.Viewport className="w-full">
-      <div className="flex gap-8 mb-4">
-        {projects.map((item) => (
-          <div
-            key={item.id}
-            className="flex flex-col xl:w-[450px] lg:w-[350px] md:w-[250px] sm:w-[200px] w-[250px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-1000 hover:shadow-xl hover:shadow-slate-950 hover:transition-shadow ease-in-out mb-4"
-            onMouseEnter={() => {
-              setShowCursor(true);
-              setCursorLink(item.link);
-            }}
-            onMouseLeave={() => {
-              setShowCursor(false);
-              setCursorLink("");
-            }}
-          >
-            <a
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full h-full"
-            >
-              <div className="w-full relative xl:h-80 lg:h-[200px] md:h-28 sm:h-24 h-[150px]">
-                <Avatar
-                  url={item.mainpic_url}
-                  width={270}
-                  height={196}
-                  className="rounded-sm"
-                  alt={item.name}
-                />
+      <ScrollArea.Root className="ScrollAreaRoot" type="always">
+        <ScrollArea.Viewport className="w-full">
+          <div className="flex gap-8 mb-4">
+            {projects.map((item) => (
+              <div
+                key={item.id}
+                className="flex flex-col xl:w-[450px] lg:w-[350px] md:w-[250px] sm:w-[200px] w-[250px] gap-4 mt-4 shadow-lg p-4 rounded-sm bg-black transition-shadow duration-1000 hover:shadow-xl hover:shadow-slate-950 hover:transition-shadow ease-in-out mb-4"
+                onMouseEnter={() => {
+                  setShowCursor(true);
+                  setCursorLink(item.link);
+                }}
+                onMouseLeave={() => {
+                  setShowCursor(false);
+                  setCursorLink("");
+                }}
+              >
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full h-full"
+                >
+                  <div className="w-full relative xl:h-80 lg:h-[200px] md:h-28 sm:h-24 h-[150px]">
+                    <Avatar
+                      url={item.mainpic_url}
+                      width={270}
+                      height={196}
+                      className="rounded-sm"
+                      alt={item.name}
+                    />
+                  </div>
+                  <div className="mt-4">
+                    <p className="browntext font-satisfy  lg:text-3xl font-extrabold sm:text-lg text-2xl">
+                      {item.name}
+                    </p>
+                    <p className="cleartext md:text-md sm:text-[12px]">
+                      {item.adresse}
+                    </p>
+                    <p className="cleartext sm:text-[12px]">
+                      {item.city}, {item.country}
+                    </p>
+                    <p className="cleartext sm:text-[18px] font-bold">
+                      {item.compagny}
+                    </p>
+                  </div>
+                </a>
               </div>
-              <div className="mt-4">
-                <p className="browntext font-satisfy  lg:text-3xl font-extrabold sm:text-lg text-2xl">
-                  {item.name}
-                </p>
-                <p className="cleartext md:text-md sm:text-[12px]">{item.adresse}</p>
-                <p className="cleartext sm:text-[12px]">
-                  {item.city}, {item.country}
-                </p>
-                <p className="cleartext sm:text-[18px] font-bold">{item.compagny}</p>
-              </div>
-            </a>
+            ))}
           </div>
-        ))}
-      </div>
-    </ScrollArea.Viewport>
+        </ScrollArea.Viewport>
 
-    <ScrollArea.Scrollbar
-      className="ScrollAreaScrollbar"
-      orientation="horizontal"
-    >
-      <ScrollArea.Thumb className="ScrollAreaThumb" />
-    </ScrollArea.Scrollbar>
-    <ScrollArea.Corner className="ScrollAreaCorner" />
-  </ScrollArea.Root>
+        <ScrollArea.Scrollbar
+          className="ScrollAreaScrollbar"
+          orientation="horizontal"
+        >
+          <ScrollArea.Thumb className="ScrollAreaThumb" />
+        </ScrollArea.Scrollbar>
+        <ScrollArea.Corner className="ScrollAreaCorner" />
+      </ScrollArea.Root>
 
-  <div className="hidden sm:block">
+      <div className="hidden sm:block">
         <CursorComponent />
       </div>
-</div>
-
+    </div>
   );
 }
 
@@ -306,9 +322,7 @@ function Demi({ projects, index, texts, language }) {
         <p className="font-satisfy text-4xl font-extrabold pb-4 sm:pb-8 browntext text-center sm:text-left">
           {projects.name}
         </p>
-        <p className="text-center sm:text-left pb-4 sm:pb-8">
-          {projects.Des}
-        </p>
+        <p className="text-center sm:text-left pb-4 sm:pb-8">{projects.Des}</p>
 
         {projects.link && (
           <a href={projects.link} target="_blank" rel="noopener noreferrer">
@@ -325,7 +339,6 @@ function Demi({ projects, index, texts, language }) {
     </div>
   );
 }
-
 
 function Para({ language, texts }) {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -553,38 +566,38 @@ function ScrollImage({ projects, language, texts }) {
           </a>
 
           <div className="hidden sm:block">
-          {isCircleVisible && (
-            <div
-              style={{
-                position: "absolute",
-                top: `${mousePosition.y}px`,
-                left: `${mousePosition.x}px`,
-                width: "80px",
-                height: "80px",
-                borderRadius: "50%",
-                backgroundColor: "rgba(255, 255, 255, 0.2)",
-                backdropFilter: "blur(8px)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                pointerEvents: "none",
-                transition: "opacity 0.2s",
-                textAlign: "center",
-                transform: "translate(-50%, -50%)",
-              }}
-            >
-              <span
+            {isCircleVisible && (
+              <div
                 style={{
-                  color: "white",
-                  fontWeight: "bolder",
-                  fontSize: "16px",
+                  position: "absolute",
+                  top: `${mousePosition.y}px`,
+                  left: `${mousePosition.x}px`,
+                  width: "80px",
+                  height: "80px",
+                  borderRadius: "50%",
+                  backgroundColor: "rgba(255, 255, 255, 0.2)",
+                  backdropFilter: "blur(8px)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  pointerEvents: "none",
+                  transition: "opacity 0.2s",
+                  textAlign: "center",
+                  transform: "translate(-50%, -50%)",
                 }}
               >
-                {texts[language].projet}
-              </span>
-            </div>
-          )}
-        </div>
+                <span
+                  style={{
+                    color: "white",
+                    fontWeight: "bolder",
+                    fontSize: "16px",
+                  }}
+                >
+                  {texts[language].projet}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
         {/* Autres éléments flexibles en colonne */}
       </div>

@@ -1,91 +1,45 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import { useLanguage } from "@/app/LanguageContext"; // Use the language context
+import { texts } from "@/lib/language";
+import React, { useMemo } from "react";
 import Form from "@/app/addproject/form";
-import d from "@/components/d.png";
-import e from "@/components/e.png";
-import Image from "next/legacy/image";
 import { FaArrowRight } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa";
-import { createClient } from "@/utils/supabase/client";
-import Avatar from "@/app/getimage/project";
-import * as ScrollArea from "@radix-ui/react-scroll-area";
-import { motion } from "framer-motion";
-import { FaLongArrowAltDown } from "react-icons/fa";
 
-export default function Page() {
-  const [projects, setProjects] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-
+export default function MainPage() {
+  const { language } = useLanguage(); // Use the language context
   const containerStyle = "flex flex-col items-center bgfull w-full pt-32 pb-32";
   const headerStyle =
     "text-6xl font-bold text-black mb-8 font-montserrat text-center shadowI bg-transparent";
   const subheaderStyle = "text-lg text-black mb-8 font-montserrat mb-32";
 
-  const fetchProjects = async () => {
-    const supabase = createClient();
-    const { data, error } = await supabase.from("project").select("*");
-
-    if (error) {
-      setError(error);
-    } else {
-      setProjects(data);
-    }
-    setLoading(false);
-  };
-
- 
-
-  return (
-    <>
-      <style jsx>{`
-        .letter {
-          display: inline-block; /* Pour pouvoir les révéler individuellement */
-          opacity: 0; /* Invisible au départ */
-          transition: opacity 0.3s ease; /* Transition douce */
-        }
-      `}</style>
-     
-      <div className={containerStyle}>
-       <div className="px-8">
-        <Step />
-        </div>
-        <div id="ici">
-
-        <Form />
-        </div>
-      </div>
-    
-
-     
-      
-
-    </>
-  );
-}
-function Step() {
-  const stepContainerStyle = [
+  // Use useMemo to compute stepContainerStyle only when language changes
+  const stepContainerStyle = useMemo(() => [
     {
-      step: "1",
-      title: "Fill the form",
-      para: "Fill in the information about the building and the apartments",
+      step: texts[language].step1,
+      title: texts[language].title1,
+      para: texts[language].description1,
+      nb: 1,
     },
     {
-      step: "2",
-      title: "Template 2",
-      para: "Fill in the information about the building and the apartments",
+      step: texts[language].step2,
+      title: texts[language].title2,
+      para: texts[language].description2,
+      nb: 2,
     },
     {
-      step: "3",
-      title: "Template 3",
-      para: "Fill in the information about the building and the apartments",
+      step: texts[language].step3,
+      title: texts[language].title3,
+      para: texts[language].description3,
+      nb: 3,
     },
     {
-      step: "4",
-      title: "Template 4",
-      para: "Fill in the information about the building and the apartments",
+      step: texts[language].step4,
+      title: texts[language].title4,
+      para: texts[language].description4,
+      nb: 4,
     },
-  ];
+  ], [language]); // Only recalculate if `language` changes
 
   const scrollToSection = () => {
     const section = document.getElementById("ici");
@@ -95,89 +49,17 @@ function Step() {
   };
 
   return (
-    <>
+    <div className={containerStyle}>
+      <h1 className={headerStyle}>{texts[language].link}</h1>
+      <p className={subheaderStyle}>{texts[language].subHeader}</p>
+
       <div className="flex gap-4 mb-12 w-full">
-        {stepContainerStyle.map(({ step, title, para }) => (
+        {stepContainerStyle.map(({ step, title, para, nb }, index) => (
           <div
             key={step}
             className="relative text-white bg-gray-800 hover:bg-black p-4 rounded-bl-2xl rounded-tl-2xl rounded-br-2xl hover:-translate-y-4 transition-transform duration-300 ease-in-out group"
           >
-            <div className="absolute top-[20px] left-1/4 transform -translate-x-1/2 transition-transform duration-1000 ease-in-out group-hover:rotate-180">
-              <svg
-                width="70"
-                height="70"
-                viewBox="0 0 200 200"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <line
-                  x1="100"
-                  y1="100"
-                  x2="100"
-                  y2="10"
-                  stroke="white"
-                  strokeWidth="4"
-                />
-                <line
-                  x1="100"
-                  y1="100"
-                  x2="164.64"
-                  y2="35.36"
-                  stroke="white"
-                  strokeWidth="12"
-                />
-                <line
-                  x1="100"
-                  y1="100"
-                  x2="190"
-                  y2="100"
-                  stroke="white"
-                  strokeWidth="4"
-                />
-                <line
-                  x1="100"
-                  y1="100"
-                  x2="164.64"
-                  y2="164.64"
-                  stroke="white"
-                  strokeWidth="12"
-                />
-                <line
-                  x1="100"
-                  y1="100"
-                  x2="100"
-                  y2="190"
-                  stroke="white"
-                  strokeWidth="4"
-                />
-                <line
-                  x1="100"
-                  y1="100"
-                  x2="35.36"
-                  y2="164.64"
-                  stroke="white"
-                  strokeWidth="12"
-                />
-                <line
-                  x1="100"
-                  y1="100"
-                  x2="10"
-                  y2="100"
-                  stroke="white"
-                  strokeWidth="4"
-                />
-                <line
-                  x1="100"
-                  y1="100"
-                  x2="35.36"
-                  y2="35.36"
-                  stroke="white"
-                  strokeWidth="12"
-                />
-                <circle cx="100" cy="100" r="8" fill="white" />
-              </svg>
-            </div>
-
-            <p className="colortext mt-24">STEP {step}</p>
+            <p className="colortext mt-24">{step} {nb}</p>
             <h1 className="text-2xl mt-4">{title}</h1>
             <p className="mt-4">{para}</p>
             <div className="my-4">
@@ -193,11 +75,11 @@ function Step() {
           </div>
         ))}
       </div>
-    </>
+
+      {/* Include the form component if needed */}
+      <div id="ici">
+        <Form />
+      </div>
+    </div>
   );
 }
-
-
-
-
-

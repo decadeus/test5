@@ -8,11 +8,26 @@ import { Tooltip } from "@nextui-org/react";
 import Text from "@/app/navbar/text";
 import ListNav from "@/app/navbar/navclient";
 import { useEffect, useState } from "react";
+import LanguageSelector from "@/app/LanguageSelector";
 
 export default function MainNavBar({ user }) {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState(null);
   const supabase = createClient();
+  const [language, setLanguage] = useState("pl");
+
+  useEffect(() => {
+    // Initialize the language from localStorage or default to 'pl'
+    const storedLanguage = localStorage.getItem("selectedLanguage");
+    if (storedLanguage) {
+      setLanguage(storedLanguage);
+    }
+  }, []);
+
+  const handleLanguageChange = (lang) => {
+    setLanguage(lang);
+  };
+  
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -36,7 +51,7 @@ export default function MainNavBar({ user }) {
   }, [user, supabase]);
 
   return (
-    <div className="w-full py-4 grid grid-cols-3 grid-rows-1 justify-between items-center brownbg  text-white z-50 opacity-90 px-4 xl:px-16 ">
+    <div className="flex justify-between items-center brownbg  text-white z-50 opacity-90 px-4 py-4 xl:px-16 w-full">
       <div className="flex justify-start items-center gap-2">
         <Link href="/">
           <div className="flex gap-2 items-center">
@@ -59,6 +74,8 @@ export default function MainNavBar({ user }) {
           </div>
         </Link>
       </div>
+
+      <LanguageSelector defaultLanguage={language} onLanguageChange={handleLanguageChange} />
 
       <div>
 

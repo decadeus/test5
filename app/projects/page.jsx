@@ -754,7 +754,7 @@ function Filter({
     <div>
       <div className="hidden sm:block">
         <div className=" flex items-center w-full pl-4 ">
-          <div className="flex justify-center items-center w-5/12 gap-2">
+          <div className="flex xl:flex-row sm:flex-col justify-center items-center w-5/12 gap-2">
             <div className="flex flex-col w-1/2">
               <select
                 value={editableCountry}
@@ -790,7 +790,7 @@ function Filter({
             </div>
           </div>
           <div className="flex justify-center items-center w-7/12 gap-2">
-            <div className="flex pr-2 gap-2">
+            <div className="flex xl-flex-row sm:flex-col pr-2 gap-2">
               <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
                 <Checkbox
                   isChecked={showFavorites}
@@ -934,7 +934,7 @@ function Filter({
                     Modal Title
                   </ModalHeader>
                   <ModalBody>
-                    <div className="flex justify-center items-center w-5/12 gap-2">
+                    <div className="xl:flex-row sm:flex-col flex justify-center items-center w-5/12 gap-2">
                       <div className="flex flex-col w-1/2">
                         <select
                           value={editableCountry}
