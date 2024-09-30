@@ -25,6 +25,8 @@ import { projectIcons } from "@/lib/iconbuilding";
 import { countryData } from "@/utils/countryData";
 import Link from "next/link";
 import Loading from "@/app/loading";
+import { useLanguage } from "@/app/LanguageContext"; // Import the context hook
+import { texts } from "@/lib/language";
 
 const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
 const ITEMS_PER_PAGE = 4;
@@ -76,6 +78,7 @@ function Page() {
   const [showFavorites, setShowFavorites] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState("bed");
+  const { language } = useLanguage();
 
   const sort = [
     { key: "surface", label: "surface" },
@@ -380,6 +383,7 @@ function Page() {
             onBedRangeChange={handleBedRangeChange}
             showFavorites={showFavorites}
             onFavoritesChange={setShowFavorites}
+            language={language}
           />
         </div>
 
@@ -620,6 +624,7 @@ function Filter({
   onBedRangeChange,
   showFavorites,
   onFavoritesChange,
+  language,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isSurfaceModalOpen, setIsSurfaceModalOpen] = useState(false);
@@ -716,7 +721,7 @@ function Filter({
 
   const modalData = [
     {
-      label: "Price",
+      label: texts[language].price,
       range: priceRange,
       onRangeChange: onPriceRangeChange,
       min: 0,
@@ -727,7 +732,7 @@ function Filter({
       id: "price-modal",
     },
     {
-      label: "Surface",
+      label: texts[language].surface,
       range: surfaceRange,
       onRangeChange: onSurfaceRangeChange,
       min: 0,
@@ -738,7 +743,7 @@ function Filter({
       id: "surface-modal",
     },
     {
-      label: "Beds",
+      label: texts[language].chambre,
       range: bedRange,
       onRangeChange: onBedRangeChange,
       min: 0,
@@ -754,7 +759,7 @@ function Filter({
     <div>
       <div className="hidden sm:block">
         <div className=" flex items-center w-full pl-4 ">
-          <div className="flex xl:flex-row sm:flex-col justify-center items-center w-5/12 gap-2">
+          <div className="flex md:flex-row sm:flex-col  justify-center items-center w-3/12 gap-2">
             <div className="flex flex-col w-1/2">
               <select
                 value={editableCountry}
@@ -762,7 +767,7 @@ function Filter({
                 className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
               >
                 <option value="" className="text-red-300">
-                  Select a country
+                  {texts[language].selectacountry}
                 </option>
                 {Object.keys(countryData).map((country) => (
                   <option key={country} value={country} className="text-black">
@@ -779,7 +784,7 @@ function Filter({
                 className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
               >
                 <option value="Select a city" className="text-red-300">
-                  Select a city
+                  {texts[language].selectacity}
                 </option>
                 {cities.map((city, index) => (
                   <option key={index} value={city} className="text-black">
@@ -789,8 +794,8 @@ function Filter({
               </select>
             </div>
           </div>
-          <div className="flex justify-center items-center w-7/12 gap-2">
-            <div className="flex xl-flex-row sm:flex-col pr-2 gap-2">
+          <div className="flex justify-center items-center w-9/12 gap-2 ">
+            <div className="flex md:flex-row sm:flex-col pr-2 gap-2 ">
               <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
                 <Checkbox
                   isChecked={showFavorites}
@@ -799,7 +804,7 @@ function Filter({
                   aria-label="favorite"
                   size="sm"
                 >
-                  <p className={colorfilter}>Only favorite</p>
+                  <p className={colorfilter}>{texts[language].onlyfavorite}</p>
                 </Checkbox>
               </div>
               <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
@@ -810,12 +815,14 @@ function Filter({
                   aria-label="Garden"
                   size="sm"
                 >
-                  <p className={colorfilter}>Only with garden</p>
+                  <p className={colorfilter}>
+                    {texts[language].onlywithgarden}
+                  </p>
                 </Checkbox>
               </div>
             </div>
 
-            <div className="flex gap-2 py-2 ">
+            <div className="flex gap-2 py-2 sm:flex-wrap ">
               {modalData.map(
                 ({
                   label,
@@ -884,36 +891,38 @@ function Filter({
                   className="px-0"
                 >
                   <div className="flex  bg-white border-gray-300 border-1 rounded-sm text-xs px-2 py-2">
-                    <p className={colorfilter}>Residence ({countChecked()})</p>
+                    <p className={colorfilter}>
+                      {texts[language].residence} ({countChecked()})
+                    </p>
                   </div>
                 </Button>
                 <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                   <ModalContent>
                     {(onClose) => (
-                      <div className="flex flex-col gap-2">
-                        {facilities.map(
-                          ({ id, label, value, selected, onChange }) => (
-                            <CheckboxGroup
-                              key={id}
-                              id={id}
-                              value={selected ? [value] : []}
-                              onChange={onChange}
-                              color="bgmap"
-                              orientation="horizontal"
-                              aria-label={label}
-                            >
-                              <Checkbox value={value}>
-                                <div className="flex items-center">
-                                  <p className="mr-2">{label}</p>
-                                  <span className="text-xs text-gray-500">
-                                    ({countChecked([selected])})
-                                  </span>
-                                </div>
-                              </Checkbox>
-                            </CheckboxGroup>
-                          )
-                        )}
-                      </div>
+                     <div className="flex flex-col gap-2">
+                     {facilities.map(
+                       ({ id, label, value, selected, onChange }) => (
+                         <CheckboxGroup
+                           key={id}
+                           id={id}
+                           value={selected ? [value] : []}
+                           onChange={onChange}
+                           color="bgmap"
+                           orientation="horizontal"
+                           aria-label={label}
+                         >
+                           <Checkbox value={value}>
+                             <div className="flex items-center">
+                               <p className="mr-2">{label}</p>
+                               <span className="text-xs text-gray-500">
+                                 ({countChecked([selected])})
+                               </span>
+                             </div>
+                           </Checkbox>
+                         </CheckboxGroup>
+                       )
+                     )}
+                   </div>
                     )}
                   </ModalContent>
                 </Modal>
@@ -922,191 +931,7 @@ function Filter({
           </div>
         </div>
       </div>
-      <div className="block sm:hidden">
-        {" "}
-        <div className=" flex items-center justify-center w-full">
-          <Button onPress={onOpen}>Filter</Button>
-          <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-            <ModalContent className="overflow-y-auto max-h-[calc(100vh-10rem)]">
-              {(onClose) => (
-                <>
-                  <ModalHeader className="flex flex-col gap-1">
-                    Modal Title
-                  </ModalHeader>
-                  <ModalBody>
-                    <div className="xl:flex-row sm:flex-col flex justify-center items-center w-5/12 gap-2">
-                      <div className="flex flex-col w-1/2">
-                        <select
-                          value={editableCountry}
-                          onChange={handleCountryChange}
-                          className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
-                        >
-                          <option value="" className="text-red-300">
-                            Select a country
-                          </option>
-                          {Object.keys(countryData).map((country) => (
-                            <option
-                              key={country}
-                              value={country}
-                              className="text-black"
-                            >
-                              {country}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div className="flex flex-col w-1/2">
-                        <select
-                          value={editableCity}
-                          onChange={handleCityChange}
-                          className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
-                        >
-                          <option
-                            value="Select a city"
-                            className="text-red-300"
-                          >
-                            Select a city
-                          </option>
-                          {cities.map((city, index) => (
-                            <option
-                              key={index}
-                              value={city}
-                              className="text-black"
-                            >
-                              {city}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="flex flex-col justify-center items-center w-full gap-2">
-                      <div className="flex flex-col pr-2 gap-2 w-full">
-                        <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
-                          <Checkbox
-                            isChecked={showFavorites}
-                            onChange={(e) =>
-                              onFavoritesChange(e.target.checked)
-                            }
-                            color="bgmap"
-                            aria-label="favorite"
-                            size="sm"
-                          >
-                            <p className={colorfilter}>Only favorite</p>
-                          </Checkbox>
-                        </div>
-                        <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
-                          <Checkbox
-                            isChecked={selectedGarden}
-                            onChange={(e) => onGardenChange(e.target.checked)}
-                            color="bgmap"
-                            aria-label="Garden"
-                            size="sm"
-                          >
-                            <p className={colorfilter}>Only with garden</p>
-                          </Checkbox>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col gap-2 py-2 w-full">
-                        {modalData.map(
-                          ({
-                            label,
-                            range,
-                            onRangeChange,
-                            min,
-                            max,
-                            step,
-                            isOpen,
-                            setIsOpen,
-                            id,
-                          }) => (
-                            <div key={id}>
-                              {/* Bouton avec le titre et la plage */}
-                              <div className="flex gap-1 bg-white border-gray-300 border-1 rounded-sm text-xs px-2 py-2">
-                                <p className={colorfilter}>{label}</p>
-                                <p className={colorfilter}>
-                                  ({range[0]} - {range[1]})
-                                </p>
-                              </div>
-
-                              {/* Slider sous le titre */}
-                              <div className="w-full mt-4">
-                                <div className="flex gap-4 pb-4">
-                                  {/* Affichage des valeurs Min et Max */}
-                                  <div className="border-2 border-black rounded-sm w-1/2 p-2">
-                                    <p className="font-semibold text-sm">Min</p>
-                                    <p>{range[0]}</p>
-                                  </div>
-                                  <div className="border-2 border-black rounded-sm w-1/2 p-2">
-                                    <p className="font-semibold text-sm">Max</p>
-                                    <p>{range[1]}</p>
-                                  </div>
-                                </div>
-
-                                {/* Slider */}
-                                <Slider
-                                  min={min}
-                                  max={max}
-                                  step={step}
-                                  value={range}
-                                  onChange={onRangeChange}
-                                  className="max-w-md"
-                                  color="bgmap"
-                                  aria-label={label}
-                                  size="sm"
-                                />
-                              </div>
-                            </div>
-                          )
-                        )}
-                      </div>
-                      <div className="flex flex-col gap-2">
-                                  {facilities.map(
-                                    ({
-                                      id,
-                                      label,
-                                      value,
-                                      selected,
-                                      onChange,
-                                    }) => (
-                                      <CheckboxGroup
-                                        key={id}
-                                        id={id}
-                                        value={selected ? [value] : []}
-                                        onChange={onChange}
-                                        color="bgmap"
-                                        orientation="horizontal"
-                                        aria-label={label}
-                                      >
-                                        <Checkbox value={value}>
-                                          <div className="flex items-center">
-                                            <p className="mr-2">{label}</p>
-                                            <span className="text-xs text-gray-500">
-                                              ({countChecked([selected])})
-                                            </span>
-                                          </div>
-                                        </Checkbox>
-                                      </CheckboxGroup>
-                                    )
-                                  )}
-                                </div>
-                    </div>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="danger" variant="light" onPress={onClose}>
-                      Close
-                    </Button>
-                    <Button color="primary" onPress={onClose}>
-                      Action
-                    </Button>
-                  </ModalFooter>
-                </>
-              )}
-            </ModalContent>
-          </Modal>
-        </div>
-      </div>
+      
     </div>
   );
 }

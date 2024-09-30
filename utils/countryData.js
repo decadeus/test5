@@ -628,7 +628,7 @@ export const countryData = {
       "Port-Louis",
       "Sainte-Foy-la-Grande",
     ],
-    Poland: [
+    Polska: [
       "Aleksandrów Kujawski",
       "Aleksandrów Łódzki",
       "Alwernia",
