@@ -26,13 +26,13 @@ const LangSwitcher: React.FC = () => {
     <div className='flex items-center justify-center z-50'>
       <div className='relative'>
         <Button
-          className='text-destructive inline-flex w-full items-center justify-between gap-3'
+          className='text-destructive inline-flex w-full items-center justify-between gap-3 rounded-full'
           size='small'
           onClick={() => setIsOptionsExpanded(!isOptionsExpanded)}
           onBlur={() => setIsOptionsExpanded(false)}
         >
-          Language
-          <FiGlobe />
+        
+          <FiGlobe color='blue' size={20} />
         </Button>
         {isOptionsExpanded && (
   <div className='absolute right-0 mt-2 w-full origin-top-right rounded-md bg-green-300 shadow-lg z-50 '>

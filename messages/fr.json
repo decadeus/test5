@@ -11,5 +11,24 @@
         "TitleBeau": "Les plus belles résidences",
         "TitleVacance": "Les endroits magnifiques",
         "EnSavoirPlus": "En savoir plus"
+    },
+    "Filtre":{
+        "Ajouter": "Ajouter à la liste vos projets",
+        "ListeDesAppartements": "Liste des appartements",
+        "SelectionnezUnPays": "Sélectionnez un pays",
+        "SelectionnezUneVille": "Sélectionnez une ville",
+        "Prix": "Prix",
+        "Surface": "Surface",
+        "Chambres": "Chambre",
+        "AvecJardin": "Avec jardin",
+        "MesFavoris": "Mes favoris",
+        "Residence": "Résidence",
+        "AppartementTrouve": "Appartement trouvé",
+        "TrierPar": "Trier par",
+        "precedent":"Précédent",
+        "suivant":"Suivant",
+        "VoirPlus":"Voir plus"
+
+        
     }
 }

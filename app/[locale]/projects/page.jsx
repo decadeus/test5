@@ -25,6 +25,7 @@ import { projectIcons } from "@/lib/iconbuilding";
 import { countryData } from "@/utils/countryData";
 import Link from "next/link";
 import Loading from "@/app/[locale]/loading";
+import { useTranslations} from "next-intl";
 
 
 const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
@@ -77,6 +78,7 @@ function Page() {
   const [showFavorites, setShowFavorites] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState("bed");
+  const f = useTranslations("Filtre");
   
 
   const sort = [
@@ -339,7 +341,7 @@ function Page() {
   return (
     <div className="flex flex-col w-full gap-4 pt-4 bgfull text-black mb-16">
       <h1 className="text-5xl colortest  font-satisfy pl-4">
-        Listing Apartements
+      {f("ListeDesAppartements")}
       </h1>
       <div className="pl-4">
         <div className="flex  w-full my-8 ">
@@ -347,7 +349,7 @@ function Page() {
             href="/projects"
             className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
           >
-            Sign up to list your project
+            {f("Ajouter")}
           </Link>
         </div>
       </div>
@@ -382,6 +384,7 @@ function Page() {
             onBedRangeChange={handleBedRangeChange}
             showFavorites={showFavorites}
             onFavoritesChange={setShowFavorites}
+            f={f}
           
           />
         </div>
@@ -390,14 +393,14 @@ function Page() {
           <div className="sm:w-1/2 w-full ">
             <div className="flex justify-between items-center mb-4 px-2">
               <p className="text-xs text-center text-gray-500">
-                Total: {filteredProjects.length} apartments found
+                Total: {filteredProjects.length} {f("AppartementTrouve")}
               </p>
               <div className="flex sm:flex-row flex-col sm:items-center items-end sm:w-full w-1/2">
                 <label
                   className="text-xs mr-2 w-[300px] text-right text-gray-500"
                   htmlFor="sort-select"
                 >
-                  Sort by (high to low)
+                  {f("TrierPar")} (high to low)
                 </label>
                 <select
                   id="sort-select"
@@ -556,7 +559,7 @@ function Page() {
                                   textAlign: "center",
                                 }}
                               >
-                                See {item.project.company} project
+                                 {f("VoirPlus")}
                               </button>
                             </a>
                           </div>
@@ -572,7 +575,7 @@ function Page() {
                     disabled={currentPage === 1}
                     className="text-gray-500 border bg-white border-gray-400 hover:bg-gray-400 hover:text-white"
                   >
-                    Previous
+                    {f("precedent")}
                   </Button>
                   <span>{`Page ${currentPage} of ${totalPages}`}</span>
                   <Button
@@ -580,7 +583,7 @@ function Page() {
                     disabled={currentPage === totalPages}
                     className="text-gray-500 border bg-white border-gray-400 hover:bg-gray-400 hover:text-white"
                   >
-                    Next
+                    {f("suivant")}
                   </Button>
                 </div>
               </ScrollArea>
@@ -623,6 +626,7 @@ function Filter({
   onBedRangeChange,
   showFavorites,
   onFavoritesChange,
+  f
  
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -720,7 +724,7 @@ function Filter({
 
   const modalData = [
     {
-      label: "price",
+      label: (f("Prix")),
       range: priceRange,
       onRangeChange: onPriceRangeChange,
       min: 0,
@@ -731,7 +735,7 @@ function Filter({
       id: "price-modal",
     },
     {
-      label: "price",
+      label: (f("Surface")),
       range: surfaceRange,
       onRangeChange: onSurfaceRangeChange,
       min: 0,
@@ -742,7 +746,7 @@ function Filter({
       id: "surface-modal",
     },
     {
-      label: "price",
+      label: (f("Chambres")),
       range: bedRange,
       onRangeChange: onBedRangeChange,
       min: 0,
@@ -766,7 +770,7 @@ function Filter({
                 className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
               >
                 <option value="" className="text-red-300">
-                Sélectionnez un pays
+                {f("SelectionnezUnPays")}
                 </option>
                 {Object.keys(countryData).map((country) => (
                   <option key={country} value={country} className="text-black">
@@ -783,7 +787,7 @@ function Filter({
                 className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
               >
                 <option value="Select a city" className="text-red-300">
-                Sélectionnez une ville
+                {f("SelectionnezUneVille")}
                 </option>
                 {cities.map((city, index) => (
                   <option key={index} value={city} className="text-black">
@@ -803,7 +807,7 @@ function Filter({
                   aria-label="favorite"
                   size="sm"
                 >
-                  <p className={colorfilter}>Voir les favoris</p>
+                  <p className={colorfilter}>{f("MesFavoris")}</p>
                 </Checkbox>
               </div>
               <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
@@ -815,7 +819,7 @@ function Filter({
                   size="sm"
                 >
                   <p className={colorfilter}>
-                  Avec jardin
+                  {f("AvecJardin")}
                   </p>
                 </Checkbox>
               </div>
@@ -891,7 +895,7 @@ function Filter({
                 >
                   <div className="flex  bg-white border-gray-300 border-1 rounded-sm text-xs px-2 py-2">
                     <p className={colorfilter}>
-                    Résidence ({countChecked()})
+                    {f("Residence")}({countChecked()})
                     </p>
                   </div>
                 </Button>

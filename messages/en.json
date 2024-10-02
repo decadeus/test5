@@ -13,7 +13,7 @@
         "EnSavoirPlus": "Learn more"
     },
     "Filtre":{
-        "ajouter": "Ajouter un projet",
+        "Ajouter":"Sign up list your project",
         "ListeDesAppartements": "List of apartments",
         "SelectionnezUnPays": "Select a country",
         "SelectionnezUneVille": "Select a city",
@@ -24,7 +24,10 @@
         "MesFavoris": "My favorites",
         "Residence": "Residence",
         "AppartementTrouve": "Apartment found",
-        "TrierPar": "Sort by"
+        "TrierPar": "Sort by",
+        "precedent":"Previous",
+        "suivant":"Next",
+        "VoirPlus":"See more"
 
 
     }
