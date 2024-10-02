@@ -5,8 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
-import { useLanguage } from "@/app/LanguageContext"; // Import the context hook
-import { texts } from "@/lib/language";
+
 
 const siteConfig = {
   navAdmin: [
@@ -22,7 +21,7 @@ const siteConfig = {
       label: (
         <div className="flex justify-center items-center gap-2">
           <IoSearch color="white" className="text-2xl sm:text-sm md:text-base lg:text-xl xl:text-2xl" />
-          <span className="text-white">{texts.pl.link}</span> {/* Fallback language */}
+          <span className="text-white">Voir tous les projects</span> {/* Fallback language */}
         </div>
       ), 
       href: "/projects" 
@@ -39,7 +38,7 @@ export default function ListNav({ userId }) {
   const pathname = usePathname();
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState(null);
-  const { language } = useLanguage(); // Get language from context
+   // Get language from context
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -92,7 +91,7 @@ export default function ListNav({ userId }) {
       label: (
         <div className="flex justify-center items-center gap-2">
           <IoSearch color="white" className="text-2xl sm:text-sm md:text-base lg:text-xl xl:text-2xl" />
-          <span className="text-white">{texts[language].search}</span> {/* Use the correct language */}
+          <span className="text-white">Rechercher</span> {/* Use the correct language */}
         </div>
       )
     }));

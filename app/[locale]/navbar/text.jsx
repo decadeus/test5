@@ -12,7 +12,7 @@ import {
   Divider,
 } from "@nextui-org/react";
 import Avatar from "@/app/getimage/getone";
-import UAvatar from "../getimage/getone"; // Use the original Avatar component
+import UAvatar from "@/app/getimage/getone"; // Use the original Avatar component
 import { createClient } from "@/utils/supabase/client";
 
 export default function Text({ user }) {

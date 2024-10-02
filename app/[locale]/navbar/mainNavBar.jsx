@@ -5,18 +5,17 @@ import Image from "next/legacy/image";
 import b from "@/components/b.png";
 import Connect from "./connect";
 import { Tooltip } from "@nextui-org/react";
-import Text from "@/app/navbar/text";
-import ListNav from "@/app/navbar/navclient";
+import Text from "./text";
+import ListNav from "./navclient";
 import { useEffect, useState } from "react";
-import LanguageSelector from "@/app/LanguageSelector";
-import { useLanguage } from "@/app/LanguageContext"; // Import the context hook
-import { texts } from "@/lib/language";
+
+
 
 export default function MainNavBar({ user }) {
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState(null);
     const supabase = createClient();
-    const { language, setLanguage } = useLanguage(); // Get language and setter from context
+    // Get language and setter from context
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -69,7 +68,7 @@ export default function MainNavBar({ user }) {
                 </Link>
             </div>
 
-            <LanguageSelector defaultLanguage={language} onLanguageChange={handleLanguageChange} />
+            
 
             <div>
                 <ListNav userId={user?.id} />
@@ -91,7 +90,7 @@ export default function MainNavBar({ user }) {
                     <div className="flex gap-4 w-fit">
                         <div className="py-1 xl:px-2 rounded-sm flex justify-center items-center w-fit">
                             <Link href="/addproject">
-                                <span className="hidden sm:inline">{texts[language].add}</span>
+                                <span className="hidden sm:inline">Ajouter un projet</span>
                             </Link>
                         </div>
 

@@ -1,27 +1,10 @@
 {
-    "Homepage": {
-        "link": "Voir tous les projects",
-        "title1": "Francais",
-        "title2": "Ils viennent de rejoindre Hoomge",
-        "title3": "Recherchez le futur appartement de vos rêves"
+    "Homepage":{
+        "title": "Bienvenue sur la page d'accueil",
+        "content": "Ceci est le contenu de la page d'accueil"
     },
-    "title4": "Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement et les services dans l'immeuble.",
-    "main": "Découvrez les projets résidentiels",
-    "submain": "Faites défiler pour explorer",
-    "voir": "En savoir plus ",
-    "projet": "Voir le projet",
-    "step": "Etape",
-    "countryFr": "France",
-    "countryPl": "Pologne",
-    "search": "Rechercher",
-    "connect": "Se connecter",
-    "add": "Ajouter un projet",
-    "selectacountry": "Sélectionnez un pays",
-    "selectacity": "Sélectionnez une ville",
-    "onlyfavorite": "Voir les favoris",
-    "onlywithgarden": "Avec jardin",
-    "price": "Prix",
-    "surface": "Surface",
-    "chambre": "Chambre",
-    "residence": "Résidence"
+    "SecondePage": {
+        "title": "Bienvenue sur la SecondePage",
+        "content": "Ceci est le contenu de la SecondePage"
+    }
 }

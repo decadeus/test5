@@ -24,14 +24,13 @@ import { TailSpin } from "react-loader-spinner";
 import { projectIcons } from "@/lib/iconbuilding";
 import { countryData } from "@/utils/countryData";
 import Link from "next/link";
-import Loading from "@/app/loading";
-import { useLanguage } from "@/app/LanguageContext"; // Import the context hook
-import { texts } from "@/lib/language";
+import Loading from "@/app/[locale]/loading";
+
 
 const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
 const ITEMS_PER_PAGE = 4;
 
-const LazyMap = dynamic(() => import("@/app/map/index"), {
+const LazyMap = dynamic(() => import("@/app/[locale]/map/index"), {
   ssr: false,
   loading: () => (
     <div
@@ -78,7 +77,7 @@ function Page() {
   const [showFavorites, setShowFavorites] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState("bed");
-  const { language } = useLanguage();
+  
 
   const sort = [
     { key: "surface", label: "surface" },
@@ -383,7 +382,7 @@ function Page() {
             onBedRangeChange={handleBedRangeChange}
             showFavorites={showFavorites}
             onFavoritesChange={setShowFavorites}
-            language={language}
+          
           />
         </div>
 
@@ -624,7 +623,7 @@ function Filter({
   onBedRangeChange,
   showFavorites,
   onFavoritesChange,
-  language,
+ 
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isSurfaceModalOpen, setIsSurfaceModalOpen] = useState(false);
@@ -721,7 +720,7 @@ function Filter({
 
   const modalData = [
     {
-      label: texts[language].price,
+      label: "price",
       range: priceRange,
       onRangeChange: onPriceRangeChange,
       min: 0,
@@ -732,7 +731,7 @@ function Filter({
       id: "price-modal",
     },
     {
-      label: texts[language].surface,
+      label: "price",
       range: surfaceRange,
       onRangeChange: onSurfaceRangeChange,
       min: 0,
@@ -743,7 +742,7 @@ function Filter({
       id: "surface-modal",
     },
     {
-      label: texts[language].chambre,
+      label: "price",
       range: bedRange,
       onRangeChange: onBedRangeChange,
       min: 0,
@@ -767,7 +766,7 @@ function Filter({
                 className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
               >
                 <option value="" className="text-red-300">
-                  {texts[language].selectacountry}
+                Sélectionnez un pays
                 </option>
                 {Object.keys(countryData).map((country) => (
                   <option key={country} value={country} className="text-black">
@@ -784,7 +783,7 @@ function Filter({
                 className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs"
               >
                 <option value="Select a city" className="text-red-300">
-                  {texts[language].selectacity}
+                Sélectionnez une ville
                 </option>
                 {cities.map((city, index) => (
                   <option key={index} value={city} className="text-black">
@@ -804,7 +803,7 @@ function Filter({
                   aria-label="favorite"
                   size="sm"
                 >
-                  <p className={colorfilter}>{texts[language].onlyfavorite}</p>
+                  <p className={colorfilter}>Voir les favoris</p>
                 </Checkbox>
               </div>
               <div className="bg-white border-gray-300 border-1 rounded-sm text-sm px-2 py-2">
@@ -816,7 +815,7 @@ function Filter({
                   size="sm"
                 >
                   <p className={colorfilter}>
-                    {texts[language].onlywithgarden}
+                  Avec jardin
                   </p>
                 </Checkbox>
               </div>
@@ -892,7 +891,7 @@ function Filter({
                 >
                   <div className="flex  bg-white border-gray-300 border-1 rounded-sm text-xs px-2 py-2">
                     <p className={colorfilter}>
-                      {texts[language].residence} ({countChecked()})
+                    Résidence ({countChecked()})
                     </p>
                   </div>
                 </Button>

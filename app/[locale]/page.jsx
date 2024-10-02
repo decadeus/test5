@@ -6,29 +6,23 @@ import { FaLongArrowAltDown } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-import LanguageSelector from "@/app/LanguageSelector";
 
-import { texts } from "@/lib/language";
+
+
 import useCustomCursor from "@/components/useCustomCursor";
 import Link from "next/link";
-import Loading from "@/app/loading";
-import { useLanguage } from "./LanguageContext";
+import Loading from "./loading";
+
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState("France");
-  const { language, changeLanguage } = useLanguage(); // Access the language context
+
 
   const MIN_LOADING_TIME = 1000;
 
-  useEffect(() => {
-    // Initialize the language from localStorage or default to 'pl'
-    const storedLanguage = localStorage.getItem("selectedLanguage");
-    if (storedLanguage) {
-      changeLanguage(storedLanguage); // Update the language in context
-    }
-  }, [changeLanguage]); // Ensure changeLanguage is included in dependencies
+  // Ensure changeLanguage is included in dependencies
 
   const fetchProjects = async () => {
     const startTime = Date.now();
@@ -72,7 +66,7 @@ export default function Page() {
         }
       `}</style>
       <div className="w-full maintextfull">
-        <Para language={language} texts={texts} />
+        <Para />
       </div>
 
       <div className="flex justify-center  -mt-[300px]  sm:-mt-[200px] sm:mb-[200px] mb-[200px] z-50">
@@ -95,7 +89,7 @@ export default function Page() {
             width="20"
             height="20"
           />{" "}
-          {texts[language].countryFr}
+          "France"
         </button>
         <button
           onClick={() => handleCountryChange("Polska")}
@@ -111,7 +105,7 @@ export default function Page() {
             width="20"
             height="20"
           />{" "}
-         {texts[language].countryPl}
+         "Pologne"
         </button>
       </div>
       <div className="flex-col sm:flex sm:flex-row h-[200px] sm:mt-[0]  mt-[100px] mb-[100px] ">
@@ -122,31 +116,31 @@ export default function Page() {
             </h1>
           </div>
           <h1 className="sm:text-4xl text-2xl font-bold px-4 text-center pb-[20px]">
-            {texts[language].title3}
+          "Recherchez le futur appartement de vos rêves"
           </h1>
         </div>
         <div className="flex flex-col sm:justify-center sm:items-center sm:w-1/2 px-4 sm:pr-48 gap-4">
-          <h2 className="sm:text-md ">{texts[language].title4}</h2>
+          <h2 className="sm:text-md ">"Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement et les services dans l'immeuble."</h2>
           <Link
             href="/projects"
             className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
           >
-            {texts[language].link}
+            "Voir tous les projects"
           </Link>
         </div>
       </div>
 
       <div className="w-full flex flex-col justify-center xl:mb-32 lg:mb-28 md:mb-20 sm:mb-10 ">
         <h2 className="font-macondo text-black text-4xl text-center">
-          {texts[language].title2} {/* Utiliser le texte basé sur la langue */}
+        "Ils viennent de rejoindre Hoomge"
         </h2>
 
-        <Scroll projects={projects} texts={texts} language={language} />
+        <Scroll projects={projects}  />
       </div>
       <div className=""></div>
       <div className="w-full flex-col  py-8 mb-16">
         <h2 className="font-macondo  text-4xl text-center pb-8 ">
-          {texts[language].title1} {/* Utiliser le texte basé sur la langue */}
+        "Les plus belles résidences"
         </h2>
         <div className="flex sm:gap-4 gap-8 justify-center items-center w-full flex-col md:flex-row">
           {projects
@@ -156,8 +150,7 @@ export default function Page() {
                 key={project.id}
                 projects={project}
                 index={index}
-                texts={texts}
-                language={language}
+                
               />
             ))}
         </div>
@@ -165,7 +158,7 @@ export default function Page() {
 
       <div className="w-full flex flex-col  py-8 mb-8">
         <h2 className="font-macondo  text-4xl text-center pb-8 ">
-          {texts[language].title1} {/* Utiliser le texte basé sur la langue */}
+        "Les plus belles résidences" {/* Utiliser le texte basé sur la langue */}
         </h2>
         {projects
           .filter((p) => [10, 12, 13, 14].includes(p.id))
@@ -174,8 +167,7 @@ export default function Page() {
               key={project.id}
               projects={project}
               index={index}
-              texts={texts}
-              language={language}
+             
             />
           ))}
       </div>
@@ -184,7 +176,7 @@ export default function Page() {
           href="/projects"
           className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
         >
-          {texts[language].link}
+          "Voir tous les projects"
         </Link>
       </div>
       <ScrollingText />
@@ -192,14 +184,14 @@ export default function Page() {
   );
 }
 
-function Scroll({ projects = [], index, texts, language }) {
+function Scroll({ projects = [], index, }) {
   const {
     showCursor,
     setShowCursor,
     cursorLink,
     setCursorLink,
     CursorComponent,
-  } = useCustomCursor(texts[language].projet);
+  } = useCustomCursor("Voir le projet");
 
   return (
     <div className="flex justify-center mx-auto  xl:w-[1100px] lg:w-[950px] md:w-[700px] sm:w-[550px] w-[350px] overflow-x-auto relative py-8">
@@ -270,14 +262,14 @@ function Scroll({ projects = [], index, texts, language }) {
   );
 }
 
-function Demi({ projects, index, texts, language }) {
+function Demi({ projects, index }) {
   const {
     showCursor,
     setShowCursor,
     cursorLink,
     setCursorLink,
     CursorComponent,
-  } = useCustomCursor(texts[language].projet); // Custom cursor setup
+  } = useCustomCursor("Voir le projet"); // Custom cursor setup
 
   const isEven = index % 2 === 0;
 
@@ -327,7 +319,7 @@ function Demi({ projects, index, texts, language }) {
         {projects.link && (
           <a href={projects.link} target="_blank" rel="noopener noreferrer">
             <p className="browntext hover:underline">
-              {texts[language].voir} <span>{projects.name}</span>
+            "En savoir plus " <span>{projects.name}</span>
             </p>
           </a>
         )}
@@ -340,7 +332,7 @@ function Demi({ projects, index, texts, language }) {
   );
 }
 
-function Para({ language, texts }) {
+function Para({texts }) {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const handleScroll = () => {
@@ -385,11 +377,11 @@ function Para({ language, texts }) {
         {/* Contenu au-dessus de l'image */}
         <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-80 pl-20">
           <h1 className="text-3xl text-left">
-            {texts[language].main} {/* Utiliser le texte basé sur la langue */}
+          Découvrez les projets résidentiels
           </h1>
 
           <p className="text-left text-sm pt-4 flex items-center">
-            {texts[language].submain} <FaLongArrowAltDown />
+          "Faites défiler pour explorer" <FaLongArrowAltDown />
           </p>
         </div>
 
@@ -475,7 +467,7 @@ const ScrollingText = () => {
   );
 };
 
-function ScrollImage({ projects, language, texts }) {
+function ScrollImage({ projects,  }) {
   const [isVisible, setIsVisible] = useState(false);
   const [isCircleVisible, setIsCircleVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });

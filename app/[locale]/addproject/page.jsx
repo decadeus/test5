@@ -1,13 +1,12 @@
 "use client";
 
-import { useLanguage } from "@/app/LanguageContext"; // Use the language context
 import { texts } from "@/lib/language";
 import React, { useMemo } from "react";
-import Form from "@/app/addproject/form";
+import Form from "./form";
 import { FaArrowRight } from "react-icons/fa";
 
 export default function MainPage() {
-  const { language } = useLanguage(); // Use the language context
+  
   const containerStyle = "flex flex-col items-center bgfull w-full pt-32 pb-32";
   const headerStyle =
     "text-6xl font-bold text-black mb-8 font-montserrat text-center shadowI bg-transparent";
@@ -16,30 +15,30 @@ export default function MainPage() {
   // Use useMemo to compute stepContainerStyle only when language changes
   const stepContainerStyle = useMemo(() => [
     {
-      step: texts[language].step1,
-      title: texts[language].title1,
-      para: texts[language].description1,
+      step: "Etape",
+      title: "Ils viennent de rejoindre Hoomge",
+      para: "Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement et les services dans l'immeuble.",
       nb: 1,
     },
     {
-      step: texts[language].step2,
-      title: texts[language].title2,
-      para: texts[language].description2,
+      step: "Etape",
+      title: "Ils viennent de rejoindre Hoomge",
+      para: "Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement et les services dans l'immeuble.",
       nb: 2,
     },
     {
-      step: texts[language].step3,
-      title: texts[language].title3,
-      para: texts[language].description3,
+      step: "Ils viennent de rejoindre Hoomge",
+      title: "Ils viennent de rejoindre Hoomge",
+      para: "Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement et les services dans l'immeuble.",
       nb: 3,
     },
     {
-      step: texts[language].step4,
-      title: texts[language].title4,
-      para: texts[language].description4,
+      step: "Ils viennent de rejoindre Hoomge",
+      title: "Ils viennent de rejoindre Hoomge",
+      para: "Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement et les services dans l'immeuble.",
       nb: 4,
     },
-  ], [language]); // Only recalculate if `language` changes
+  ], []); // Only recalculate if `language` changes
 
   const scrollToSection = () => {
     const section = document.getElementById("ici");
@@ -50,8 +49,8 @@ export default function MainPage() {
 
   return (
     <div className={containerStyle}>
-      <h1 className={headerStyle}>{texts[language].link}</h1>
-      <p className={subheaderStyle}>{texts[language].subHeader}</p>
+      <h1 className={headerStyle}>Voir tous les projects</h1>
+      <p className={subheaderStyle}>"Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement et les services dans l'immeuble."</p>
 
       <div className="flex gap-4 mb-12 w-full">
         {stepContainerStyle.map(({ step, title, para, nb }, index) => (
