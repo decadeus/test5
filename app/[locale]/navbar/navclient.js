@@ -2,7 +2,7 @@
 
 import { createClient } from "@/utils/supabase/client";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 

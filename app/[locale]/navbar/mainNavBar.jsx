@@ -1,6 +1,6 @@
 "use client";
 import { createClient } from "@/utils/supabase/client"; // Ensure the correct path to your Supabase client
-import Link from "next/link";
+import { Link } from "@/navigation";
 import Image from "next/legacy/image";
 import b from "@/components/b.png";
 import Connect from "./connect";
@@ -8,6 +8,7 @@ import { Tooltip } from "@nextui-org/react";
 import Text from "./text";
 import ListNav from "./navclient";
 import { useEffect, useState } from "react";
+import LangSwitcher from '../components/LangSwitcher'
 
 
 
@@ -67,8 +68,9 @@ export default function MainNavBar({ user }) {
                     </div>
                 </Link>
             </div>
-
-            
+<div className="z-50">
+            <LangSwitcher />
+            </div>
 
             <div>
                 <ListNav userId={user?.id} />

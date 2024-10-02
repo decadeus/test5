@@ -1,10 +1,15 @@
 {
-    "Homepage":{
-        "title": "Bienvenue sur la page d'accueil",
-        "content": "Ceci est le contenu de la page d'accueil"
-    },
-    "SecondePage": {
-        "title": "Bienvenue sur la SecondePage",
-        "content": "Ceci est le contenu de la SecondePage"
+    "Homepage": {
+        "title": "Recherchez le futur appartement de vos rêves",
+        "subtitle": "Découvrez les projets résidentiels",
+        "defiler": "Faites défiler pour explorer",
+        "France": "France",
+        "Pologne": "Pologne",
+        "Description": "Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement et les services dans l'immeuble.",
+        "Tous": "Voir tous les projets",
+        "TitleNew": "Ils viennent de rejoindre Hoomge",
+        "TitleBeau": "Les plus belles résidences",
+        "TitleVacance": "Les endroits magnifiques",
+        "EnSavoirPlus": "En savoir plus"
     }
 }

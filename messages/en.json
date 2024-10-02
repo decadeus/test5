@@ -1,10 +1,31 @@
 {
     "Homepage": {
-        "title": "Welcome in the homepage",
-        "content": "This is the content of the homepage"
+        "title": "Search for your dream apartment",
+        "subtitle": "Discover residential projects",
+        "defiler": "Scroll to explore",
+        "France": "France",
+        "Pologne": "Poland",
+        "Description": "Thanks to the numerous listings of real estate projects, find the property that suits you by using the search filters according to the apartment and the services in the building.",
+        "Tous": "View all projects",
+        "TitleNew": "They just joined Hoomge",
+        "TitleBeau": "The most beautiful residences",
+        "TitleVacance": "The beautiful places",
+        "EnSavoirPlus": "Learn more"
     },
-    "SecondePage": {
-        "title": "Welcome in the SecondePage",
-        "content": "This is the content of the SecondePage"
+    "Filtre":{
+        "ajouter": "Ajouter un projet",
+        "ListeDesAppartements": "List of apartments",
+        "SelectionnezUnPays": "Select a country",
+        "SelectionnezUneVille": "Select a city",
+        "Prix": "Price",
+        "Surface": "Surface",
+        "Chambres": "Bedroom",
+        "AvecJardin": "With garden",
+        "MesFavoris": "My favorites",
+        "Residence": "Residence",
+        "AppartementTrouve": "Apartment found",
+        "TrierPar": "Sort by"
+
+
     }
 }

@@ -1,8 +1,9 @@
 "use client"; // Indicates that this component is a client component
 
 import React from "react";
-import Link from "next/link";
+
 import { FaUser } from "react-icons/fa";
+import { Link } from "@/navigation";
  // Import the texts for different languages
 
 export default function Connect() {

@@ -6,23 +6,20 @@ import { FaLongArrowAltDown } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-
-
-
 import useCustomCursor from "@/components/useCustomCursor";
 import Link from "next/link";
 import Loading from "./loading";
-
+import { useTranslations} from "next-intl";
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState("France");
-
+  const t = useTranslations("Homepage");
 
   const MIN_LOADING_TIME = 1000;
 
-  // Ensure changeLanguage is included in dependencies
+
 
   const fetchProjects = async () => {
     const startTime = Date.now();
@@ -55,7 +52,6 @@ export default function Page() {
     return <Loading />;
   }
 
-
   return (
     <>
       <style jsx>{`
@@ -66,13 +62,10 @@ export default function Page() {
         }
       `}</style>
       <div className="w-full maintextfull">
-        <Para />
+        <Para t={t} />
       </div>
+    
 
-      <div className="flex justify-center  -mt-[300px]  sm:-mt-[200px] sm:mb-[200px] mb-[200px] z-50">
-     
-       
-      </div>
 
       <div className="flex justify-center  -mt-[300px]  sm:-mt-[200px] sm:mb-[200px] mb-[200px] z-50">
         <button
@@ -89,7 +82,7 @@ export default function Page() {
             width="20"
             height="20"
           />{" "}
-          "France"
+          {t("France")}
         </button>
         <button
           onClick={() => handleCountryChange("Polska")}
@@ -105,7 +98,7 @@ export default function Page() {
             width="20"
             height="20"
           />{" "}
-         "Pologne"
+          {t("Pologne")}
         </button>
       </div>
       <div className="flex-col sm:flex sm:flex-row h-[200px] sm:mt-[0]  mt-[100px] mb-[100px] ">
@@ -115,60 +108,54 @@ export default function Page() {
               H
             </h1>
           </div>
+        
           <h1 className="sm:text-4xl text-2xl font-bold px-4 text-center pb-[20px]">
-          "Recherchez le futur appartement de vos rêves"
+          {t("title")}
           </h1>
         </div>
         <div className="flex flex-col sm:justify-center sm:items-center sm:w-1/2 px-4 sm:pr-48 gap-4">
-          <h2 className="sm:text-md ">"Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement et les services dans l'immeuble."</h2>
+          <h2 className="sm:text-md ">
+          {t("Description")}
+          </h2>
           <Link
             href="/projects"
             className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
           >
-            "Voir tous les projects"
+            {t("Tous")}
           </Link>
         </div>
       </div>
 
       <div className="w-full flex flex-col justify-center xl:mb-32 lg:mb-28 md:mb-20 sm:mb-10 ">
         <h2 className="font-macondo text-black text-4xl text-center">
-        "Ils viennent de rejoindre Hoomge"
+        {t("TitleNew")}
         </h2>
 
-        <Scroll projects={projects}  />
+        <Scroll projects={projects} t={t} />
       </div>
       <div className=""></div>
       <div className="w-full flex-col  py-8 mb-16">
         <h2 className="font-macondo  text-4xl text-center pb-8 ">
-        "Les plus belles résidences"
+        {t("TitleBeau")}
         </h2>
         <div className="flex sm:gap-4 gap-8 justify-center items-center w-full flex-col md:flex-row">
           {projects
             .filter((p) => [10, 12, 13, 14].includes(p.id))
             .map((project, index) => (
-              <ScrollImage
-                key={project.id}
-                projects={project}
-                index={index}
-                
-              />
+              <ScrollImage key={project.id} projects={project} index={index} t={t} />
             ))}
         </div>
       </div>
 
       <div className="w-full flex flex-col  py-8 mb-8">
         <h2 className="font-macondo  text-4xl text-center pb-8 ">
-        "Les plus belles résidences" {/* Utiliser le texte basé sur la langue */}
+        {t("TitleVacance")}
+          {/* Utiliser le texte basé sur la langue */}
         </h2>
         {projects
           .filter((p) => [10, 12, 13, 14].includes(p.id))
           .map((project, index) => (
-            <Demi
-              key={project.id}
-              projects={project}
-              index={index}
-             
-            />
+            <Demi key={project.id} projects={project} index={index} t={t} />
           ))}
       </div>
       <div className="flex justify-center  w-full my-8 ">
@@ -176,7 +163,7 @@ export default function Page() {
           href="/projects"
           className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
         >
-          "Voir tous les projects"
+          {t("Tous")}
         </Link>
       </div>
       <ScrollingText />
@@ -184,14 +171,14 @@ export default function Page() {
   );
 }
 
-function Scroll({ projects = [], index, }) {
+function Scroll({ projects = [], index, t }) {
   const {
     showCursor,
     setShowCursor,
     cursorLink,
     setCursorLink,
     CursorComponent,
-  } = useCustomCursor("Voir le projet");
+  } = useCustomCursor(t("EnSavoirPlus"));
 
   return (
     <div className="flex justify-center mx-auto  xl:w-[1100px] lg:w-[950px] md:w-[700px] sm:w-[550px] w-[350px] overflow-x-auto relative py-8">
@@ -262,14 +249,14 @@ function Scroll({ projects = [], index, }) {
   );
 }
 
-function Demi({ projects, index }) {
+function Demi({ projects, index, t }) {
   const {
     showCursor,
     setShowCursor,
     cursorLink,
     setCursorLink,
     CursorComponent,
-  } = useCustomCursor("Voir le projet"); // Custom cursor setup
+  } = useCustomCursor(t("EnSavoirPlus")); // Custom cursor setup
 
   const isEven = index % 2 === 0;
 
@@ -319,7 +306,7 @@ function Demi({ projects, index }) {
         {projects.link && (
           <a href={projects.link} target="_blank" rel="noopener noreferrer">
             <p className="browntext hover:underline">
-            "En savoir plus " <span>{projects.name}</span>
+            {t("EnSavoirPlus")} <span>{projects.name}</span>
             </p>
           </a>
         )}
@@ -332,7 +319,7 @@ function Demi({ projects, index }) {
   );
 }
 
-function Para({texts }) {
+function Para({ t }) {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const handleScroll = () => {
@@ -377,21 +364,15 @@ function Para({texts }) {
         {/* Contenu au-dessus de l'image */}
         <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-80 pl-20">
           <h1 className="text-3xl text-left">
-          Découvrez les projets résidentiels
+          {t("subtitle")}
           </h1>
 
           <p className="text-left text-sm pt-4 flex items-center">
-          "Faites défiler pour explorer" <FaLongArrowAltDown />
+          {t("defiler")} <FaLongArrowAltDown />
           </p>
         </div>
 
-        {/* Ajout de contenu supplémentaire pour voir l'effet de parallaxe */}
-        <div className="h-screen bg-gray-200 flex items-center justify-center">
-          <h2 className="text-3xl">Contenu Additionnel</h2>
-        </div>
-        <div className="h-screen bg-gray-300 flex items-center justify-center">
-          <h2 className="text-3xl">Encore Plus de Contenu</h2>
-        </div>
+       
       </div>
     </>
   );
@@ -467,7 +448,7 @@ const ScrollingText = () => {
   );
 };
 
-function ScrollImage({ projects,  }) {
+function ScrollImage({ projects, t }) {
   const [isVisible, setIsVisible] = useState(false);
   const [isCircleVisible, setIsCircleVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -585,7 +566,7 @@ function ScrollImage({ projects,  }) {
                     fontSize: "16px",
                   }}
                 >
-                  {texts[language].projet}
+                  {t("EnSavoirPlus")}
                 </span>
               </div>
             )}
