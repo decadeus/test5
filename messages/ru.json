@@ -30,5 +30,12 @@
         "suivant": "Следующий",
         "VoirPlus": "Смотреть больше"
 
+    },
+    "Nav": {
+        "Ajouter": "Добавить",
+        "Rechercher": "Поиск",
+        "Connexion": "Соединение",
+        "Accueil": "Главная"
+
     }
 }
