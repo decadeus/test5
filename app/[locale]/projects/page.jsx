@@ -345,7 +345,7 @@ function Page() {
         <div className="flex  w-full my-8 ">
           <Link
             href="/projects"
-            className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
+            className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500 mx-8"
           >
             {f("Ajouter")}
           </Link>
