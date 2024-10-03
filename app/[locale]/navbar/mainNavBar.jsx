@@ -10,6 +10,7 @@ import ListNav from "./navclient";
 import { useEffect, useState } from "react";
 import LangSwitcher from "../components/LangSwitcher";
 import { FiPlusCircle } from "react-icons/fi";
+import { FaRegBuilding } from "react-icons/fa";
 
 export default function MainNavBar({ user }) {
   const [profile, setProfile] = useState(null);
@@ -58,7 +59,7 @@ export default function MainNavBar({ user }) {
                   />
                 </div>
                 <div>
-                  <h2 className="text-white text-2xl font-bold hidden sm:block">
+                  <h2 className="text-white text-lg font-bold hidden sm:block">
                     Hoomge.com
                   </h2>
                 </div>
@@ -90,10 +91,11 @@ export default function MainNavBar({ user }) {
 
         {/* Main navigation for large screens */}
         <div className="hidden xl:flex gap-12 items-center">
-          <ListNav userId={user?.id} closeMenu={closeMenu} /> {/* Pass the closeMenu function */}
-          <div className="py-1 px-4 bg-green-500 hover:bg-green-600 rounded-lg text-white transition-colors duration-300">
+          <ListNav userId={user?.id} closeMenu={closeMenu} /> 
+          
+          <div className="py-1 px-4  rounded-lg text-white transition-colors duration-300">
             <Link href="/addproject" onClick={closeMenu}>
-              <span className="text-sm sm:text-sm md:text-base lg:text-xl xl:text-xl">
+              <span className="text-sm sm:text-lg ">
                 Ajouter un projet
               </span>
             </Link>
@@ -128,7 +130,14 @@ export default function MainNavBar({ user }) {
           menuOpen ? "translate-x-0" : "-translate-x-full"
         } fixed top-8 left-0 w-full h-full bg-black bg-opacity-90 text-white flex flex-col justify-center space-y-10 transition-transform duration-300 ease-in-out xl:hidden z-40 pl-10`}
       >
-        <ListNav userId={user?.id} closeMenu={closeMenu} /> {/* Pass the closeMenu function */}
+        <div className="flex items-center text-white">
+          <Link href="/" onClick={closeMenu}>
+            <span className="flex items-center gap-2 text-2xl">
+              <FaRegBuilding  size={26} /> Accueil
+            </span>
+          </Link>
+        </div>
+        <ListNav userId={user?.id} onClick={closeMenu} /> {/* Pass the closeMenu function */}
         <div className="flex items-center text-white">
           <Link href="/addproject" onClick={closeMenu}>
             <span className="flex items-center gap-2 text-2xl">

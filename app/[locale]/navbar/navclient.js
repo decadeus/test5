@@ -90,8 +90,16 @@ export default function ListNav({ userId }) {
       ...item,
       label: (
         <div className="flex items-center gap-2">
-          <IoSearch color="white" size={30} />
-          <span className="text-white text-2xl">Rechercher</span> {/* Use the correct language */}
+          <div className="block sm:hidden">
+      {/* Taille d'icône de 20 pour les petites tailles d'écran (non responsive) */}
+      <IoSearch color="white" size={30} />
+    </div>
+    
+    <div className="hidden sm:block">
+      {/* Taille d'icône de 30 pour les écrans plus larges (responsive) */}
+      <IoSearch color="white" size={20} />
+    </div>
+          <span className="text-white text-2xl sm:text-lg">Rechercher</span> {/* Use the correct language */}
         </div>
       )
     }));

@@ -32,8 +32,16 @@ const LangSwitcher: React.FC = () => {
           onBlur={() => setIsOptionsExpanded(false)}
         >
         
-          <FiGlobe  size={26} />
-          <p className="text-2xl">Language</p>
+        <div className="block sm:hidden">
+      {/* Taille d'icône de 20 pour les petites tailles d'écran (non responsive) */}
+      <FiGlobe color="white" size={30} />
+    </div>
+    
+    <div className="hidden sm:block">
+      {/* Taille d'icône de 30 pour les écrans plus larges (responsive) */}
+      <FiGlobe color="white" size={20} />
+    </div>
+          <p className="text-2xl sm:text-lg">Language</p>
         </Button>
         {isOptionsExpanded && (
   <div className='absolute right-0 mt-2 w-full origin-top-right rounded-md bg-green-300 shadow-lg z-50 '>
