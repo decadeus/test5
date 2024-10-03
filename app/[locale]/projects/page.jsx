@@ -387,7 +387,7 @@ function Page() {
         </div>
 
         <div className="flex flex-col  xl:flex-row lg:flex-row w-full">
-          <div className="sm:w-1/2 w-full ">
+          <div className="lg:w-1/2 w-full ">
             <div className="flex justify-between items-center mb-4 px-2">
               <p className="flex text-xs text-center text-gray-500 w-full">
                 Total: {filteredProjects.length} {f("AppartementTrouve")}
@@ -438,14 +438,14 @@ function Page() {
               />
             </div>
           </div>
-          <div className="sm:w-1/2 w-full ">
+          <div className="lg:w-1/2 w-full ">
             <div className="w-full flex flex-wrap">
               <ScrollArea className="h-fit w-full sm:pl-4 sm:pb-4">
                 <div className="relative flex flex-wrap sm:gap-2 gap-4 justify-center">
                   {projects.map((item, index) => (
                     <div
                       key={index}
-                      className="relative flex flex-col justify-center w-[90%] md:w-[48%] gap-4 border shadow-lg rounded-sm group"
+                      className="relative flex flex-col justify-center w-[90%] sm:w-[48%] gap-4 border shadow-lg rounded-sm group"
                     >
                       <div className="flex flex-col w-full gap-4 ">
                         <div className="relative h-40 w-full">
@@ -566,7 +566,7 @@ function Page() {
                   ))}
                 </div>
 
-                <div className="flex justify-between items-center mt-4 text-gray-500">
+                <div className="flex justify-between items-center mt-4 text-gray-500 px-4">
                   <Button
                     onClick={handlePreviousPage}
                     disabled={currentPage === 1}
@@ -757,7 +757,7 @@ function Filter({
 
   return (
     <div>
-      <div className="hidden sm:block">
+      <div className="hidden lg:block">
         <div className=" flex items-center w-full pl-4 ">
           <div className="flex md:flex-row sm:flex-col  justify-center items-center w-3/12 gap-2">
             <div className="flex flex-col w-1/2">
@@ -929,22 +929,22 @@ function Filter({
           </div>
         </div>
       </div>
-      <div className="sm:hidden block">
-        <div className="w-full flex justify-center">
-  <Button
-    onPress={onOpen}
-    className=" mb-4  bg-gray-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200 w-fit"
-  >
-    Filtre
-  </Button>
+      <div className="lg:hidden block">
+  <div className="w-full flex justify-center">
+    <Button
+      onPress={onOpen}
+      className="mb-4 bg-gray-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200 w-fit"
+    >
+      Filtre
+    </Button>
   </div>
   <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
     <ModalContent>
       {(onClose) => (
         <>
-          <ModalBody className="bg-gray-50 p-6 rounded-lg shadow-lg">
+          <ModalBody className="bg-gray-50 p-6 rounded-lg shadow-lg max-h-[70vh] overflow-y-auto">
             <div className="flex flex-col w-full">
-              <h2 className="text-lg font-bold mb-4 text-gray-700">Filtres de recherche</h2>
+              
 
               {/* Container for the select inputs */}
               <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
@@ -959,7 +959,11 @@ function Filter({
                       {f("SelectionnezUnPays")}
                     </option>
                     {Object.keys(countryData).map((country) => (
-                      <option key={country} value={country} className="text-black">
+                      <option
+                        key={country}
+                        value={country}
+                        className="text-black"
+                      >
                         {country}
                       </option>
                     ))}
@@ -995,7 +999,9 @@ function Filter({
                     aria-label="favorite"
                     size="sm"
                   >
-                    <span className="ml-2 text-gray-600">{f("MesFavoris")}</span>
+                    <span className="ml-2 text-gray-600">
+                      {f("MesFavoris")}
+                    </span>
                   </Checkbox>
                 </div>
 
@@ -1007,7 +1013,9 @@ function Filter({
                     aria-label="Garden"
                     size="sm"
                   >
-                    <span className="ml-2 text-gray-600">{f("AvecJardin")}</span>
+                    <span className="ml-2 text-gray-600">
+                      {f("AvecJardin")}
+                    </span>
                   </Checkbox>
                 </div>
               </div>
@@ -1040,11 +1048,17 @@ function Filter({
                           </p>
                         </div>
                       </Button>
-                      <Modal isOpen={isOpen} onOpenChange={setIsOpen} id={id}>
+                      <Modal
+                        isOpen={isOpen}
+                        onOpenChange={setIsOpen}
+                        id={id}
+                      >
                         <ModalContent>
                           {(onClose) => (
                             <div className="flex flex-col p-4 bg-white rounded-lg shadow-lg">
-                              <h3 className="font-semibold text-lg mb-4">{label}</h3>
+                              <h3 className="font-semibold text-lg mb-4">
+                                {label}
+                              </h3>
                               <div className="flex justify-between mb-2">
                                 <div className="border-2 border-gray-300 rounded-md w-1/2 p-2 bg-gray-100">
                                   <p className="font-semibold text-sm">Min</p>
@@ -1078,26 +1092,23 @@ function Filter({
               {/* Directly display the list of checkboxes for residence */}
               <div className="flex flex-col">
                 <h3 className="font-semibold text-lg mb-2">Résidences</h3>
-                {facilities.map(
-                  ({ id, label, value, selected, onChange }) => (
-                    <CheckboxGroup
-                      key={id}
-                      id={id}
-                      value={selected ? [value] : []}
-                      onChange={onChange}
-                      color="bgmap"
-                      orientation="vertical"
-                      aria-label={label}
-                    >
-                      <Checkbox value={value}>
-                        <div className="flex items-center">
-                          <span className="mr-2 text-gray-700">{label}</span>
-                        
-                        </div>
-                      </Checkbox>
-                    </CheckboxGroup>
-                  )
-                )}
+                {facilities.map(({ id, label, value, selected, onChange }) => (
+                  <CheckboxGroup
+                    key={id}
+                    id={id}
+                    value={selected ? [value] : []}
+                    onChange={onChange}
+                    color="bgmap"
+                    orientation="vertical"
+                    aria-label={label}
+                  >
+                    <Checkbox value={value}>
+                      <div className="flex items-center">
+                        <span className="mr-2 text-gray-700">{label}</span>
+                      </div>
+                    </Checkbox>
+                  </CheckboxGroup>
+                ))}
               </div>
             </div>
           </ModalBody>
@@ -1114,9 +1125,6 @@ function Filter({
     </ModalContent>
   </Modal>
 </div>
-
-
-
 
     </div>
   );
