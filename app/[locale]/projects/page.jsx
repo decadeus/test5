@@ -337,7 +337,7 @@ function Page() {
   const latLngExtremes = getLatLngExtremes(filteredProjects);
 
   return (
-    <div className="flex flex-col w-full gap-4 sm:pt-4 t-32 bgfull text-black mb-16">
+    <div className="flex flex-col w-full gap-4 sm:pt-4 mt-32 bgfull text-black mb-16">
       <h1 className="text-5xl colortest  font-satisfy pl-4">
         {f("ListeDesAppartements")}
       </h1>
@@ -929,12 +929,14 @@ function Filter({
         </div>
       </div>
       <div className="sm:hidden block">
+        <div className="w-full flex justify-center">
   <Button
     onPress={onOpen}
-    className="mb-4 w-full bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
+    className=" mb-4  bg-gray-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200 w-fit"
   >
-    Ouvrir le Modal
+    Filtre
   </Button>
+  </div>
   <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
     <ModalContent>
       {(onClose) => (
@@ -1072,50 +1074,29 @@ function Filter({
                 )}
               </div>
 
-              {/* Button for residence */}
+              {/* Directly display the list of checkboxes for residence */}
               <div className="flex flex-col">
-                <Button
-                  onClick={() => onOpenChange(true)}
-                  variant="light"
-                  radius="none"
-                  className="bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
-                >
-                  <div className="flex justify-center p-3">
-                    <p className="text-xs">
-                      {f("Residence")} ({countChecked()})
-                    </p>
-                  </div>
-                </Button>
-                <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                  <ModalContent>
-                    {(onClose) => (
-                      <div className="flex flex-col gap-2 p-4">
-                        {facilities.map(
-                          ({ id, label, value, selected, onChange }) => (
-                            <CheckboxGroup
-                              key={id}
-                              id={id}
-                              value={selected ? [value] : []}
-                              onChange={onChange}
-                              color="bgmap"
-                              orientation="horizontal"
-                              aria-label={label}
-                            >
-                              <Checkbox value={value}>
-                                <div className="flex items-center">
-                                  <span className="mr-2 text-gray-700">{label}</span>
-                                  <span className="text-xs text-gray-500">
-                                    ({countChecked([selected])})
-                                  </span>
-                                </div>
-                              </Checkbox>
-                            </CheckboxGroup>
-                          )
-                        )}
-                      </div>
-                    )}
-                  </ModalContent>
-                </Modal>
+                <h3 className="font-semibold text-lg mb-2">Résidences</h3>
+                {facilities.map(
+                  ({ id, label, value, selected, onChange }) => (
+                    <CheckboxGroup
+                      key={id}
+                      id={id}
+                      value={selected ? [value] : []}
+                      onChange={onChange}
+                      color="bgmap"
+                      orientation="vertical"
+                      aria-label={label}
+                    >
+                      <Checkbox value={value}>
+                        <div className="flex items-center">
+                          <span className="mr-2 text-gray-700">{label}</span>
+                        
+                        </div>
+                      </Checkbox>
+                    </CheckboxGroup>
+                  )
+                )}
               </div>
             </div>
           </ModalBody>
@@ -1132,6 +1113,7 @@ function Filter({
     </ModalContent>
   </Modal>
 </div>
+
 
 
 
