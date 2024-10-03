@@ -24,7 +24,7 @@ const LangSwitcher: React.FC = () => {
   ]
 
   return (
-    <div className='flex items-center justify-center z-50'>
+    <div className='flex items-center justify-center '>
       <div className='relative'>
         <Button
           className='text-destructive inline-flex w-full items-center justify-between gap-3 rounded-full'
@@ -47,7 +47,7 @@ const LangSwitcher: React.FC = () => {
         {isOptionsExpanded && (
   <div className='absolute right-0 mt-2 w-full origin-top-right rounded-md shadow-lg z-50 '>
     <div
-      className='py-1'
+      className=''
       role='menu'
       aria-orientation='vertical'
       aria-labelledby='options-menu'
@@ -63,7 +63,7 @@ const LangSwitcher: React.FC = () => {
               onMouseDown={e => {
                 e.preventDefault()
               }}
-              className={`block w-full px-4 py-2 text-left text-sm hover:bg-gray-300 ${
+              className={`block w-full px-4 py-2 text-left text-sm bg-white hover:bg-gray-300 ${
                 pathname === `/${lang.code}`
                   ? 'bg-gray-500 text-white hover:bg-gray-300 hover:text-white'
                   : 'text-secondary'

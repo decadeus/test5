@@ -12,6 +12,7 @@ import LangSwitcher from "../components/LangSwitcher";
 import { FiPlusCircle } from "react-icons/fi";
 import { FaRegBuilding } from "react-icons/fa";
 import { useTranslations } from "next-intl";
+import { IoSearch } from "react-icons/io5";
 
 export default function MainNavBar({ user }) {
   const [profile, setProfile] = useState(null);
@@ -93,7 +94,13 @@ export default function MainNavBar({ user }) {
 
         {/* Main navigation for large screens */}
         <div className="hidden xl:flex gap-12 items-center">
-          <ListNav userId={user?.id} closeMenu={closeMenu} /> 
+        <div className="py-1 px-4  rounded-lg text-white transition-colors duration-300">
+            <Link href="/projects" onClick={closeMenu}>
+              <span className="text-sm sm:text-lg flex items-center gap-2">
+              <IoSearch size={22} />{n("Rechercher")}
+              </span>
+            </Link>
+          </div>
           
           <div className="py-1 px-4  rounded-lg text-white transition-colors duration-300">
             <Link href="/addproject" onClick={closeMenu}>
@@ -139,7 +146,13 @@ export default function MainNavBar({ user }) {
             </span>
           </Link>
         </div>
-        <ListNav userId={user?.id} onClick={closeMenu} /> {/* Pass the closeMenu function */}
+        <div className="flex items-center text-white">
+          <Link href="/projects" onClick={closeMenu}>
+            <span className="flex items-center gap-2 text-2xl">
+              <IoSearch size={26} /> {n("Rechercher")}
+            </span>
+          </Link>
+        </div>{/* Pass the closeMenu function */}
         <div className="flex items-center text-white">
           <Link href="/addproject" onClick={closeMenu}>
             <span className="flex items-center gap-2 text-2xl">

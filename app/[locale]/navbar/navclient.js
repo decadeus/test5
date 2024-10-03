@@ -7,25 +7,26 @@ import { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { useTranslations } from "next-intl";
 
-
 const siteConfig = {
   navAdmin: [
     { label: "Residence", href: "/residences" },
     { label: "Users", href: "/utilisateurs" },
     { label: "Display", href: "/addpdf" },
   ],
-  navProprio: [
-    { label: "Your Apartment", href: "/appartement" },
-  ],
+  navProprio: [{ label: "Your Apartment", href: "/appartement" }],
   noUser: [
-    { 
+    {
       label: (
         <div className="flex justify-center items-center gap-2">
-          <IoSearch color="white" className="text-2xl sm:text-sm md:text-base lg:text-xl xl:text-2xl" />
-          <span className="text-white">Voir tous les projects</span> {/* Fallback language */}
+          <IoSearch
+            color="white"
+            className="text-2xl sm:text-sm md:text-base lg:text-xl xl:text-2xl"
+          />
+          <span className="text-white">Voir tous les projects</span>{" "}
+          {/* Fallback language */}
         </div>
-      ), 
-      href: "/projects" 
+      ),
+      href: "/projects",
     },
   ],
   Cproject: [
@@ -40,7 +41,7 @@ export default function ListNav({ userId }) {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState(null);
   const n = useTranslations("Nav");
-   // Get language from context
+  // Get language from context
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -72,7 +73,10 @@ export default function ListNav({ userId }) {
       const isActive = pathname === item.href;
       return (
         <li key={item.href} className="mr-16 last:mr-0 sm:text-xl text-md">
-          <Link href={item.href} className={isActive ? "text-black" : "text-black"}>
+          <Link
+            href={item.href}
+            className={isActive ? "text-black" : "text-black"}
+          >
             {item.label}
           </Link>
         </li>
@@ -88,28 +92,34 @@ export default function ListNav({ userId }) {
   } else if (profile?.rules === "Cproject") {
     navItems = siteConfig.Cproject;
   } else {
-    navItems = siteConfig.noUser.map(item => ({
+    navItems = siteConfig.noUser.map((item) => ({
       ...item,
       label: (
         <div className="flex items-center gap-2">
           <div className="block lg:hidden">
-      {/* Taille d'icône de 20 pour les petites tailles d'écran (non responsive) */}
-      <IoSearch color="white" size={30} />
-    </div>
-    
-    <div className="hidden lg:block">
-      {/* Taille d'icône de 30 pour les écrans plus larges (responsive) */}
-      <IoSearch color="white" size={20} />
-    </div>
-          <span className="text-white text-2xl lg:text-lg">{n("Rechercher")}</span> {/* Use the correct language */}
+            {/* Taille d'icône de 20 pour les petites tailles d'écran (non responsive) */}
+            <IoSearch color="white" size={30} />
+          </div>
+          <div className="hidden lg:block">
+            {/* Taille d'icône de 30 pour les écrans plus larges (responsive) */}
+            <IoSearch color="white" size={20} />
+          </div>
+          <span className="text-white text-2xl lg:text-lg">
+            {n("Rechercher")}
+          </span>{" "}
+          {/* Use the correct language */}
         </div>
-      )
+      ),
     }));
   }
 
   return (
     <div className="flex text-center  items-center">
-      <ul className={`flex gap-${profile?.rules === "Admin" ? '8' : '4'} ${profile?.rules === "Proprio" ? 'hidden lg:flex justify-start' : ''}`}>
+      <ul
+        className={`flex gap-${profile?.rules === "Admin" ? "8" : "4"} ${
+          profile?.rules === "Proprio" ? "hidden lg:flex justify-start" : ""
+        }`}
+      >
         {renderNavItems(navItems)}
       </ul>
     </div>
