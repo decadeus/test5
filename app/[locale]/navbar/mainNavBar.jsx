@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client"; // Ensure the correct path to your Supabase client
+import { createClient } from "@/utils/supabase/client"; 
 import { Link } from "@/navigation";
 import Image from "next/legacy/image";
 import b from "@/components/b.png";
@@ -14,7 +14,7 @@ import { FiPlusCircle } from "react-icons/fi";
 export default function MainNavBar({ user }) {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState(null);
-  const [menuOpen, setMenuOpen] = useState(false); // State for burger menu
+  const [menuOpen, setMenuOpen] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
@@ -38,12 +38,15 @@ export default function MainNavBar({ user }) {
     fetchProfile();
   }, [user, supabase]);
 
+  // Function to close the menu when a link is clicked
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <div className="relative z-50">
       <div className="flex justify-between items-center brownbg text-white px-4 py-4 xl:px-16 w-full fixed top-0 left-0 z-50 shadow-md">
         <div className="flex justify-start items-center gap-2">
           <Link href="/">
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center" onClick={closeMenu}>
               <div className="flex justify-center items-center gap-2">
                 <div className="w-8 h-8 rounded-full">
                   <Image
@@ -87,15 +90,14 @@ export default function MainNavBar({ user }) {
 
         {/* Main navigation for large screens */}
         <div className="hidden xl:flex gap-12 items-center">
-          <ListNav userId={user?.id} />
+          <ListNav userId={user?.id} closeMenu={closeMenu} /> {/* Pass the closeMenu function */}
           <div className="py-1 px-4 bg-green-500 hover:bg-green-600 rounded-lg text-white transition-colors duration-300">
-            <Link href="/addproject">
+            <Link href="/addproject" onClick={closeMenu}>
               <span className="text-sm sm:text-sm md:text-base lg:text-xl xl:text-xl">
                 Ajouter un projet
               </span>
             </Link>
           </div>
-   
         </div>
 
         {/* User/Connect Section */}
@@ -126,15 +128,16 @@ export default function MainNavBar({ user }) {
           menuOpen ? "translate-x-0" : "-translate-x-full"
         } fixed top-8 left-0 w-full h-full bg-black bg-opacity-90 text-white flex flex-col justify-center space-y-10 transition-transform duration-300 ease-in-out xl:hidden z-40 pl-10`}
       >
-        <ListNav userId={user?.id} />
-        <div className="flex  items-center text-white">
-          <Link href="/addproject">
-            <span className="flex  items-center gap-2 text-2xl"> <FiPlusCircle size={26} /> Ajouter un projet</span>
+        <ListNav userId={user?.id} closeMenu={closeMenu} /> {/* Pass the closeMenu function */}
+        <div className="flex items-center text-white">
+          <Link href="/addproject" onClick={closeMenu}>
+            <span className="flex items-center gap-2 text-2xl">
+              <FiPlusCircle size={26} /> Ajouter un projet
+            </span>
           </Link>
         </div>
-        <div className="flex  items-center ">
-        <LangSwitcher />
-      
+        <div className="flex items-center">
+          <LangSwitcher />
         </div>
 
         {user ? (
@@ -146,16 +149,16 @@ export default function MainNavBar({ user }) {
             </div>
           </div>
         ) : (
-            <div className="flex gap-2">
+          <div className="flex gap-2">
             <Connect />
             <p className="text-white text-2xl">Connection</p>
-            </div>
+          </div>
         )}
 
         {/* Close Menu Button */}
         <button
           className="absolute top-6 right-6 text-white"
-          onClick={() => setMenuOpen(false)}
+          onClick={closeMenu}
         >
           <svg
             className="w-8 h-8"
