@@ -339,7 +339,7 @@ function Page() {
   const latLngExtremes = getLatLngExtremes(filteredProjects);
 
   return (
-    <div className="flex flex-col w-full gap-4 pt-4 bgfull text-black mb-16">
+    <div className="flex flex-col w-full gap-4 sm:pt-4 mt-32 bgfull text-black mb-16">
       <h1 className="text-5xl colortest  font-satisfy pl-4">
       {f("ListeDesAppartements")}
       </h1>
