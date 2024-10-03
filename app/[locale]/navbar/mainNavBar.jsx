@@ -46,7 +46,7 @@ export default function MainNavBar({ user }) {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <div className="relative z-50">
+    <div className="relative ">
       <div className="flex justify-between items-center brownbg text-white px-4 py-4 xl:px-16 w-full fixed top-0 left-0 z-50 shadow-md">
         <div className="flex justify-start items-center gap-2">
           <Link href="/">
@@ -137,7 +137,7 @@ export default function MainNavBar({ user }) {
       <div
         className={`${
           menuOpen ? "translate-x-0" : "-translate-x-full"
-        } fixed top-8 left-0 w-full h-full bg-black bg-opacity-90 text-white flex flex-col justify-center space-y-10 transition-transform duration-300 ease-in-out lg:hidden z-40 pl-10`}
+        } fixed top-8 left-0 w-full h-full bg-black bg-opacity-90 text-white flex flex-col justify-center space-y-10 transition-transform duration-300 ease-in-out lg:hidden z-50 pl-10`}
       >
         <div className="flex items-center text-white">
           <Link href="/" onClick={closeMenu}>
