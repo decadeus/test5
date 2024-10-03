@@ -19,6 +19,7 @@ const LangSwitcher: React.FC = () => {
     { country: 'English', code: 'en' },
     { country: 'Français', code: 'fr' },
     { country: 'Polska', code: 'pl' },
+    { country: 'Deutsch', code: 'de' },
    
   ]
 
@@ -32,19 +33,19 @@ const LangSwitcher: React.FC = () => {
           onBlur={() => setIsOptionsExpanded(false)}
         >
         
-        <div className="block sm:hidden">
+        <div className="block lg:hidden">
       {/* Taille d'icône de 20 pour les petites tailles d'écran (non responsive) */}
       <FiGlobe color="white" size={30} />
     </div>
     
-    <div className="hidden sm:block">
+    <div className="hidden lg:block">
       {/* Taille d'icône de 30 pour les écrans plus larges (responsive) */}
       <FiGlobe color="white" size={20} />
     </div>
-          <p className="text-2xl sm:text-lg">Language</p>
+          <p className="text-2xl lg:text-lg">Language</p>
         </Button>
         {isOptionsExpanded && (
-  <div className='absolute right-0 mt-2 w-full origin-top-right rounded-md bg-green-300 shadow-lg z-50 '>
+  <div className='absolute right-0 mt-2 w-full origin-top-right rounded-md shadow-lg z-50 '>
     <div
       className='py-1'
       role='menu'
@@ -62,9 +63,9 @@ const LangSwitcher: React.FC = () => {
               onMouseDown={e => {
                 e.preventDefault()
               }}
-              className={`block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 ${
+              className={`block w-full px-4 py-2 text-left text-sm hover:bg-gray-300 ${
                 pathname === `/${lang.code}`
-                  ? 'bg-green-200 text-primary hover:bg-gray-200'
+                  ? 'bg-gray-500 text-white hover:bg-gray-300 hover:text-white'
                   : 'text-secondary'
               }`}
             >

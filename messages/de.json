@@ -1,0 +1,40 @@
+{
+    "Homepage":{
+        "title":"Suchen Sie nach Ihrer Traumwohnung",
+        "subtitle":"Entdecken Sie Wohnprojekte",
+        "defiler":"Scrollen Sie, um zu erkunden",
+
+        "France":"Frankreich",
+        "Pologne":"Polen",
+        "Description":"Dank der zahlreichen Immobilienprojektlisten finden Sie die Immobilie, die zu Ihnen passt, indem Sie die Suchfilter gemäß der Wohnung und der Dienstleistungen im Gebäude verwenden.",
+        "Tous":"Alle Projekte anzeigen",
+        "TitleNew":"Sie sind gerade Hoomge beigetreten",
+        "TitleBeau":"Die schönsten Residenzen",
+        "TitleVacance":"Die schönen Orte",
+        "EnSavoirPlus":"Erfahren Sie mehr"
+    },
+    "Filtre":{
+        "Ajouter":"Melden Sie sich an, um Ihr Projekt zu listen",
+        "ListeDesAppartements":"Liste der Wohnungen",
+        "SelectionnezUnPays":"Wählen Sie ein Land",
+        "SelectionnezUneVille":"Wählen Sie eine Stadt",
+        "Prix":"Preis",
+        "Surface":"Oberfläche",
+        "Chambres":"Schlafzimmer",
+        "AvecJardin":"Mit Garten",
+        "MesFavoris":"Meine Favoriten",
+        "Residence":"Aufenthalt",
+        "AppartementTrouve":"gefundene Wohnung",
+        "TrierPar":"Sortieren nach",
+        "precedent":"Vorherige",
+        "suivant":"Nächster",
+        "VoirPlus":"Mehr sehen"
+    },
+    "Nav":{
+        "Ajouter":"Hinzufügen",
+        "Rechercher":"Suche",
+        "Connexion":"Verbindung",
+        "Accueil":"Zuhause"
+    }
+
+}

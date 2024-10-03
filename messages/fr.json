@@ -12,7 +12,7 @@
         "TitleVacance": "Les endroits magnifiques",
         "EnSavoirPlus": "En savoir plus"
     },
-    "Filtre":{
+    "Filtre": {
         "Ajouter": "Ajouter à la liste vos projets",
         "ListeDesAppartements": "Liste des appartements",
         "SelectionnezUnPays": "Sélectionnez un pays",
@@ -23,12 +23,16 @@
         "AvecJardin": "Avec jardin",
         "MesFavoris": "Mes favoris",
         "Residence": "Résidence",
-        "AppartementTrouve": "Appartement trouvé",
+        "AppartementTrouve": "appartements trouvés",
         "TrierPar": "Trier par",
-        "precedent":"Précédent",
-        "suivant":"Suivant",
-        "VoirPlus":"Voir plus"
-
-        
+        "precedent": "Précédent",
+        "suivant": "Suivant",
+        "VoirPlus": "Voir plus"
+    },
+    "Nav":{
+        "Ajouter":"Ajouter",
+        "Rechercher":"Rechercher",
+        "Connexion":"Connexion",
+        "Accueil":"Accueil"
     }
 }

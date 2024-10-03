@@ -11,12 +11,14 @@ import { useEffect, useState } from "react";
 import LangSwitcher from "../components/LangSwitcher";
 import { FiPlusCircle } from "react-icons/fi";
 import { FaRegBuilding } from "react-icons/fa";
+import { useTranslations } from "next-intl";
 
 export default function MainNavBar({ user }) {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const supabase = createClient();
+  const n = useTranslations("Nav");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -96,7 +98,7 @@ export default function MainNavBar({ user }) {
           <div className="py-1 px-4  rounded-lg text-white transition-colors duration-300">
             <Link href="/addproject" onClick={closeMenu}>
               <span className="text-sm sm:text-lg ">
-                Ajouter un projet
+              {n("Ajouter")}
               </span>
             </Link>
           </div>
@@ -128,12 +130,12 @@ export default function MainNavBar({ user }) {
       <div
         className={`${
           menuOpen ? "translate-x-0" : "-translate-x-full"
-        } fixed top-8 left-0 w-full h-full bg-black bg-opacity-90 text-white flex flex-col justify-center space-y-10 transition-transform duration-300 ease-in-out xl:hidden z-40 pl-10`}
+        } fixed top-8 left-0 w-full h-full bg-black bg-opacity-90 text-white flex flex-col justify-center space-y-10 transition-transform duration-300 ease-in-out lg:hidden z-40 pl-10`}
       >
         <div className="flex items-center text-white">
           <Link href="/" onClick={closeMenu}>
             <span className="flex items-center gap-2 text-2xl">
-              <FaRegBuilding  size={26} /> Accueil
+              <FaRegBuilding  size={26} /> {n("Accueil")}
             </span>
           </Link>
         </div>
@@ -141,11 +143,11 @@ export default function MainNavBar({ user }) {
         <div className="flex items-center text-white">
           <Link href="/addproject" onClick={closeMenu}>
             <span className="flex items-center gap-2 text-2xl">
-              <FiPlusCircle size={26} /> Ajouter un projet
+              <FiPlusCircle size={26} /> {n("Ajouter")}
             </span>
           </Link>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center ">
           <LangSwitcher />
         </div>
 
@@ -160,7 +162,7 @@ export default function MainNavBar({ user }) {
         ) : (
           <div className="flex gap-2">
             <Connect />
-            <p className="text-white text-2xl">Connection</p>
+            <p className="text-white text-2xl">{n("Connexion")}</p>
           </div>
         )}
 

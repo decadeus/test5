@@ -11,5 +11,29 @@
         "TitleBeau": "Najpiękniejsze rezydencje",
         "TitleVacance": "Piękne miejsca",
         "EnSavoirPlus": "Dowiedz się więcej"
+    },
+    "Filtre": {
+        "Ajouter": "Dodaj do listy swoje projekty",
+        "ListeDesAppartements": "Lista mieszkań",
+        "SelectionnezUnPays": "Wybierz kraj",
+        "SelectionnezUneVille": "Wybierz miasto",
+        "Prix": "Cena",
+        "Surface": "Powierzchnia",
+        "Chambres": "Pokój",
+        "AvecJardin": "Z ogrodem",
+        "MesFavoris": "Moje ulubione",
+        "Residence": "Rezydencja",
+        "AppartementTrouve": "znalezionych mieszkań",
+        "TrierPar": "Sortuj według",
+        "precedent": "Poprzedni",
+        "suivant": "Następny",
+        "VoirPlus": "Zobacz więcej"
+    },
+    "Nav": {
+        "Ajouter": "Dodaj",
+        "Rechercher": "Szukaj",
+        "Connexion": "Połączenie",
+        "Accueil": "Strona główna"
     }
+
 }

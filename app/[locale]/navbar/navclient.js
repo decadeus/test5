@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Link } from "@/navigation";
 import { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
+import { useTranslations } from "next-intl";
 
 
 const siteConfig = {
@@ -38,6 +39,7 @@ export default function ListNav({ userId }) {
   const pathname = usePathname();
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState(null);
+  const n = useTranslations("Nav");
    // Get language from context
 
   useEffect(() => {
@@ -90,16 +92,16 @@ export default function ListNav({ userId }) {
       ...item,
       label: (
         <div className="flex items-center gap-2">
-          <div className="block sm:hidden">
+          <div className="block lg:hidden">
       {/* Taille d'icône de 20 pour les petites tailles d'écran (non responsive) */}
       <IoSearch color="white" size={30} />
     </div>
     
-    <div className="hidden sm:block">
+    <div className="hidden lg:block">
       {/* Taille d'icône de 30 pour les écrans plus larges (responsive) */}
       <IoSearch color="white" size={20} />
     </div>
-          <span className="text-white text-2xl sm:text-lg">Rechercher</span> {/* Use the correct language */}
+          <span className="text-white text-2xl lg:text-lg">{n("Rechercher")}</span> {/* Use the correct language */}
         </div>
       )
     }));

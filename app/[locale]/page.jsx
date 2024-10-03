@@ -9,7 +9,7 @@ import * as ScrollArea from "@radix-ui/react-scroll-area";
 import useCustomCursor from "@/components/useCustomCursor";
 import Link from "next/link";
 import Loading from "./loading";
-import { useTranslations } from "next-intl";
+import { useTranslations} from "next-intl";
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
@@ -18,6 +18,8 @@ export default function Page() {
   const t = useTranslations("Homepage");
 
   const MIN_LOADING_TIME = 1000;
+
+
 
   const fetchProjects = async () => {
     const startTime = Date.now();
@@ -60,9 +62,45 @@ export default function Page() {
         }
       `}</style>
       <div className="w-full maintextfull">
-        <Para t={t} selectedCountry={selectedCountry} />
+        <Para t={t} />
       </div>
+    
 
+
+      <div className="flex justify-center  -mt-[300px]  sm:-mt-[200px] sm:mb-[200px] mb-[200px] z-50">
+        <button
+          onClick={() => handleCountryChange("France")}
+          className={`flex justify-between items-center  gap-2 px-4 py-2 m-2   border-2 rounded brownborder  ${
+            selectedCountry === "France"
+              ? "brownbg text-white  "
+              : "clearbg browntext"
+          }`}
+        >
+          <img
+            src="/france-flag-round-circle-icon.svg"
+            alt="Icon"
+            width="20"
+            height="20"
+          />{" "}
+          {t("France")}
+        </button>
+        <button
+          onClick={() => handleCountryChange("Polska")}
+          className={`flex justify-between items-center  gap-2 px-4 py-2 m-2  border-2 rounded brownborder  ${
+            selectedCountry === "Polska"
+              ? "brownbg text-white "
+              : "clearbg browntext"
+          }`}
+        >
+          <img
+            src="/monaco-flag-round-circle-icon.svg"
+            alt="Icon"
+            width="20"
+            height="20"
+          />{" "}
+          {t("Pologne")}
+        </button>
+      </div>
       <div className="flex-col sm:flex sm:flex-row h-[200px] sm:mt-[0]  mt-[100px] mb-[100px] ">
         <div className="flex justify-center items-center sm:w-1/2  sm:pl-4 relative z-10 ">
           <div className="absolute inset-0 flex items-center justify-center">
@@ -70,13 +108,15 @@ export default function Page() {
               H
             </h1>
           </div>
-
+        
           <h1 className="sm:text-4xl text-2xl font-bold px-4 text-center pb-[20px]">
-            {t("title")}
+          {t("title")}
           </h1>
         </div>
         <div className="flex flex-col sm:justify-center sm:items-center sm:w-1/2 px-4 sm:pr-48 gap-4">
-          <h2 className="sm:text-md ">{t("Description")}</h2>
+          <h2 className="sm:text-md ">
+          {t("Description")}
+          </h2>
           <Link
             href="/projects"
             className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
@@ -88,7 +128,7 @@ export default function Page() {
 
       <div className="w-full flex flex-col justify-center xl:mb-32 lg:mb-28 md:mb-20 sm:mb-10 ">
         <h2 className="font-macondo text-black text-4xl text-center">
-          {t("TitleNew")}
+        {t("TitleNew")}
         </h2>
 
         <Scroll projects={projects} t={t} />
@@ -96,25 +136,20 @@ export default function Page() {
       <div className=""></div>
       <div className="w-full flex-col  py-8 mb-16">
         <h2 className="font-macondo  text-4xl text-center pb-8 ">
-          {t("TitleBeau")}
+        {t("TitleBeau")}
         </h2>
         <div className="flex sm:gap-4 gap-8 justify-center items-center w-full flex-col md:flex-row">
           {projects
             .filter((p) => [10, 12, 13, 14].includes(p.id))
             .map((project, index) => (
-              <ScrollImage
-                key={project.id}
-                projects={project}
-                index={index}
-                t={t}
-              />
+              <ScrollImage key={project.id} projects={project} index={index} t={t} />
             ))}
         </div>
       </div>
 
       <div className="w-full flex flex-col  py-8 mb-8">
         <h2 className="font-macondo  text-4xl text-center pb-8 ">
-          {t("TitleVacance")}
+        {t("TitleVacance")}
           {/* Utiliser le texte basé sur la langue */}
         </h2>
         {projects
@@ -271,7 +306,7 @@ function Demi({ projects, index, t }) {
         {projects.link && (
           <a href={projects.link} target="_blank" rel="noopener noreferrer">
             <p className="browntext hover:underline">
-              {t("EnSavoirPlus")} <span>{projects.name}</span>
+            {t("EnSavoirPlus")} <span>{projects.name}</span>
             </p>
           </a>
         )}
@@ -284,7 +319,7 @@ function Demi({ projects, index, t }) {
   );
 }
 
-function Para({ t, selectedCountry }) {
+function Para({ t }) {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const handleScroll = () => {
@@ -327,49 +362,17 @@ function Para({ t, selectedCountry }) {
         <div className="absolute inset-0 bg-white opacity-60 z-10" />
 
         {/* Contenu au-dessus de l'image */}
-        <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-80 mt-[200px]">
-          <div className="flex flex-col justify-center items-center w-full">
-          <h1 className="text-3xl text-left">{t("subtitle")}</h1>
+        <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-80 pl-20">
+          <h1 className="text-3xl text-left">
+          {t("subtitle")}
+          </h1>
 
           <p className="text-left text-sm pt-4 flex items-center">
-            {t("defiler")} <FaLongArrowAltDown />
+          {t("defiler")} <FaLongArrowAltDown />
           </p>
-          </div>
-          <div className="relative flex  items-center  justify-center text-black h-fit  pt-32 w-full ">
-            <button
-              onClick={() => handleCountryChange("France")}
-              className={`flex justify-between items-center  gap-2 px-4 py-2 m-2   border-2 rounded brownborder  ${
-                selectedCountry === "France"
-                  ? "brownbg text-white  "
-                  : "clearbg browntext"
-              }`}
-            >
-              <img
-                src="/france-flag-round-circle-icon.svg"
-                alt="Icon"
-                width="20"
-                height="20"
-              />{" "}
-              {t("France")}
-            </button>
-            <button
-              onClick={() => handleCountryChange("Polska")}
-              className={`flex justify-between items-center  gap-2 px-4 py-2 m-2  border-2 rounded brownborder  ${
-                selectedCountry === "Polska"
-                  ? "brownbg text-white "
-                  : "clearbg browntext"
-              }`}
-            >
-              <img
-                src="/monaco-flag-round-circle-icon.svg"
-                alt="Icon"
-                width="20"
-                height="20"
-              />{" "}
-              {t("Pologne")}
-            </button>
-          </div>
         </div>
+
+       
       </div>
     </>
   );

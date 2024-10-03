@@ -30,5 +30,12 @@
         "VoirPlus":"See more"
 
 
+    },
+    "Nav":{
+        "Ajouter":"Add",
+        "Rechercher":"Search",
+        "Connexion":"Connection",
+        "Accueil":"Home"
+
     }
 }

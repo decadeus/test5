@@ -389,7 +389,7 @@ function Page() {
         <div className="flex flex-col  xl:flex-row lg:flex-row w-full">
           <div className="sm:w-1/2 w-full ">
             <div className="flex justify-between items-center mb-4 px-2">
-              <p className="text-xs text-center text-gray-500">
+              <p className="flex text-xs text-center text-gray-500 w-full">
                 Total: {filteredProjects.length} {f("AppartementTrouve")}
               </p>
               <div className="flex sm:flex-row flex-col sm:items-center items-end sm:w-full w-1/2">
@@ -623,6 +623,7 @@ function Filter({
   onBedRangeChange,
   showFavorites,
   onFavoritesChange,
+
   f,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
