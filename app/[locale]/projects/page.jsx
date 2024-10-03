@@ -929,21 +929,28 @@ function Filter({
         </div>
       </div>
       <div className="sm:hidden block">
-  <Button onPress={onOpen}>Open Modal</Button>
+  <Button
+    onPress={onOpen}
+    className="mb-4 w-full bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
+  >
+    Ouvrir le Modal
+  </Button>
   <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
     <ModalContent>
       {(onClose) => (
         <>
-          <ModalBody>
-            <div className="flex flex-col w-full p-4">
+          <ModalBody className="bg-gray-50 p-6 rounded-lg shadow-lg">
+            <div className="flex flex-col w-full">
+              <h2 className="text-lg font-bold mb-4 text-gray-700">Filtres de recherche</h2>
+
               {/* Container for the select inputs */}
-              <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-2">
+              <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
                 {/* Country Select */}
                 <div className="w-full md:w-1/2">
                   <select
                     value={editableCountry}
                     onChange={handleCountryChange}
-                    className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs w-full"
+                    className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600 text-sm w-full shadow-sm hover:shadow-md transition duration-150"
                   >
                     <option value="" className="text-red-300">
                       {f("SelectionnezUnPays")}
@@ -961,7 +968,7 @@ function Filter({
                   <select
                     value={editableCity}
                     onChange={handleCityChange}
-                    className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs w-full"
+                    className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600 text-sm w-full shadow-sm hover:shadow-md transition duration-150"
                   >
                     <option value="Select a city" className="text-red-300">
                       {f("SelectionnezUneVille")}
@@ -976,8 +983,8 @@ function Filter({
               </div>
 
               {/* Checkboxes for filtering options */}
-              <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-2">
-                <div className="bg-white border border-gray-300 rounded-sm text-sm px-2 py-2 w-full md:w-auto">
+              <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
+                <div className="flex items-center">
                   <Checkbox
                     isChecked={showFavorites}
                     onChange={(e) => onFavoritesChange(e.target.checked)}
@@ -985,11 +992,11 @@ function Filter({
                     aria-label="favorite"
                     size="sm"
                   >
-                    <p className={colorfilter}>{f("MesFavoris")}</p>
+                    <span className="ml-2 text-gray-600">{f("MesFavoris")}</span>
                   </Checkbox>
                 </div>
 
-                <div className="bg-white border border-gray-300 rounded-sm text-sm px-2 py-2 w-full md:w-auto">
+                <div className="flex items-center">
                   <Checkbox
                     isChecked={selectedGarden}
                     onChange={(e) => onGardenChange(e.target.checked)}
@@ -997,13 +1004,13 @@ function Filter({
                     aria-label="Garden"
                     size="sm"
                   >
-                    <p className={colorfilter}>{f("AvecJardin")}</p>
+                    <span className="ml-2 text-gray-600">{f("AvecJardin")}</span>
                   </Checkbox>
                 </div>
               </div>
 
               {/* Slider modals */}
-              <div className="flex flex-wrap justify-between gap-2 mb-4">
+              <div className="flex flex-wrap justify-between gap-4 mb-4">
                 {modalData.map(
                   ({
                     label,
@@ -1021,11 +1028,11 @@ function Filter({
                         onClick={() => setIsOpen(true)}
                         variant="light"
                         radius="none"
-                        className="px-0"
+                        className="bg-white border border-gray-300 rounded-md p-3 text-sm font-medium text-blue-600 hover:bg-blue-100 transition duration-150"
                       >
-                        <div className="flex gap-1 bg-white border border-gray-300 rounded-sm text-xs px-2 py-2">
-                          <p className={colorfilter}>{label}</p>
-                          <p className={colorfilter}>
+                        <div className="flex justify-between">
+                          <p className="text-gray-700">{label}</p>
+                          <p className="text-gray-500">
                             ({range[0]} - {range[1]})
                           </p>
                         </div>
@@ -1033,13 +1040,14 @@ function Filter({
                       <Modal isOpen={isOpen} onOpenChange={setIsOpen} id={id}>
                         <ModalContent>
                           {(onClose) => (
-                            <div className="flex flex-col">
+                            <div className="flex flex-col p-4 bg-white rounded-lg shadow-lg">
+                              <h3 className="font-semibold text-lg mb-4">{label}</h3>
                               <div className="flex justify-between mb-2">
-                                <div className="border-2 border-black rounded-sm w-1/2 p-2">
+                                <div className="border-2 border-gray-300 rounded-md w-1/2 p-2 bg-gray-100">
                                   <p className="font-semibold text-sm">Min</p>
                                   <p>{range[0]}</p>
                                 </div>
-                                <div className="border-2 border-black rounded-sm w-1/2 p-2">
+                                <div className="border-2 border-gray-300 rounded-md w-1/2 p-2 bg-gray-100">
                                   <p className="font-semibold text-sm">Max</p>
                                   <p>{range[1]}</p>
                                 </div>
@@ -1050,7 +1058,7 @@ function Filter({
                                 step={step}
                                 value={range}
                                 onChange={onRangeChange}
-                                className="max-w-md"
+                                className="max-w-md mt-4"
                                 color="bgmap"
                                 aria-label={label}
                                 size="sm"
@@ -1070,18 +1078,18 @@ function Filter({
                   onClick={() => onOpenChange(true)}
                   variant="light"
                   radius="none"
-                  className="px-0 mb-2"
+                  className="bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
                 >
-                  <div className="flex bg-white border border-gray-300 rounded-sm text-xs px-2 py-2">
-                    <p className={colorfilter}>
-                      {f("Residence")}({countChecked()})
+                  <div className="flex justify-center p-3">
+                    <p className="text-xs">
+                      {f("Residence")} ({countChecked()})
                     </p>
                   </div>
                 </Button>
                 <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                   <ModalContent>
                     {(onClose) => (
-                      <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-2 p-4">
                         {facilities.map(
                           ({ id, label, value, selected, onChange }) => (
                             <CheckboxGroup
@@ -1095,7 +1103,7 @@ function Filter({
                             >
                               <Checkbox value={value}>
                                 <div className="flex items-center">
-                                  <p className="mr-2">{label}</p>
+                                  <span className="mr-2 text-gray-700">{label}</span>
                                   <span className="text-xs text-gray-500">
                                     ({countChecked([selected])})
                                   </span>
@@ -1113,7 +1121,7 @@ function Filter({
           </ModalBody>
           <ModalFooter>
             <Button color="danger" variant="light" onPress={onClose}>
-              Close
+              Fermer
             </Button>
             <Button color="primary" onPress={onClose}>
               Action
@@ -1124,6 +1132,8 @@ function Filter({
     </ModalContent>
   </Modal>
 </div>
+
+
 
     </div>
   );
