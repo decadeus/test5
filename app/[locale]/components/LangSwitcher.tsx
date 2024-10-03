@@ -32,7 +32,8 @@ const LangSwitcher: React.FC = () => {
           onBlur={() => setIsOptionsExpanded(false)}
         >
         
-          <FiGlobe color='blue' size={20} />
+          <FiGlobe  size={26} />
+          <p className="text-2xl">Language</p>
         </Button>
         {isOptionsExpanded && (
   <div className='absolute right-0 mt-2 w-full origin-top-right rounded-md bg-green-300 shadow-lg z-50 '>

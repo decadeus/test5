@@ -89,16 +89,16 @@ export default function ListNav({ userId }) {
     navItems = siteConfig.noUser.map(item => ({
       ...item,
       label: (
-        <div className="flex justify-center items-center gap-2">
-          <IoSearch color="white" className="text-2xl sm:text-sm md:text-base lg:text-xl xl:text-2xl" />
-          <span className="text-white">Rechercher</span> {/* Use the correct language */}
+        <div className="flex items-center gap-2">
+          <IoSearch color="white" size={30} />
+          <span className="text-white text-2xl">Rechercher</span> {/* Use the correct language */}
         </div>
       )
     }));
   }
 
   return (
-    <div className="flex text-center justify-center items-center">
+    <div className="flex text-center  items-center">
       <ul className={`flex gap-${profile?.rules === "Admin" ? '8' : '4'} ${profile?.rules === "Proprio" ? 'hidden lg:flex justify-start' : ''}`}>
         {renderNavItems(navItems)}
       </ul>

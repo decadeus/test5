@@ -9,6 +9,7 @@ import Text from "./text";
 import ListNav from "./navclient";
 import { useEffect, useState } from "react";
 import LangSwitcher from "../components/LangSwitcher";
+import { FiPlusCircle } from "react-icons/fi";
 
 export default function MainNavBar({ user }) {
   const [profile, setProfile] = useState(null);
@@ -94,7 +95,7 @@ export default function MainNavBar({ user }) {
               </span>
             </Link>
           </div>
-          <LangSwitcher />
+   
         </div>
 
         {/* User/Connect Section */}
@@ -123,15 +124,18 @@ export default function MainNavBar({ user }) {
       <div
         className={`${
           menuOpen ? "translate-x-0" : "-translate-x-full"
-        } fixed top-0 left-0 w-full h-full bg-black bg-opacity-90 text-white flex flex-col items-center justify-center space-y-6 transition-transform duration-300 ease-in-out xl:hidden z-40`}
+        } fixed top-8 left-0 w-full h-full bg-black bg-opacity-90 text-white flex flex-col justify-center space-y-10 transition-transform duration-300 ease-in-out xl:hidden z-40 pl-10`}
       >
         <ListNav userId={user?.id} />
-        <div className="py-2 px-4 bg-green-500 hover:bg-green-600 rounded-lg text-white">
+        <div className="flex  items-center text-white">
           <Link href="/addproject">
-            <span className="text-lg">Ajouter un projet</span>
+            <span className="flex  items-center gap-2 text-2xl"> <FiPlusCircle size={26} /> Ajouter un projet</span>
           </Link>
         </div>
+        <div className="flex  items-center ">
         <LangSwitcher />
+      
+        </div>
 
         {user ? (
           <div className="text-center space-y-4">
@@ -142,7 +146,10 @@ export default function MainNavBar({ user }) {
             </div>
           </div>
         ) : (
-          <Connect className="py-2 text-lg" />
+            <div className="flex gap-2">
+            <Connect />
+            <p className="text-white text-2xl">Connection</p>
+            </div>
         )}
 
         {/* Close Menu Button */}
