@@ -7,7 +7,7 @@ import { FaArrowRight } from "react-icons/fa";
 
 export default function MainPage() {
   
-  const containerStyle = "flex flex-col items-center bgfull w-full pt-32 pb-32";
+  const containerStyle = "flex flex-col items-center bgfull w-full pt-32 pb-32 px-4";
   const headerStyle =
     "text-6xl font-bold text-black mb-8 font-montserrat text-center shadowI bg-transparent";
   const subheaderStyle = "text-lg text-black mb-8 font-montserrat mb-32";
@@ -52,13 +52,13 @@ export default function MainPage() {
       <h1 className={headerStyle}>Voir tous les projects</h1>
       <p className={subheaderStyle}>"Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement et les services dans l'immeuble."</p>
 
-      <div className="flex gap-4 mb-12 w-full">
+      <div className="lg:flex-row flex flex-col gap-4  w-full">
         {stepContainerStyle.map(({ step, title, para, nb }, index) => (
           <div
             key={step}
             className="relative text-white bg-gray-800 hover:bg-black p-4 rounded-bl-2xl rounded-tl-2xl rounded-br-2xl hover:-translate-y-4 transition-transform duration-300 ease-in-out group"
           >
-            <p className="colortext mt-24">{step} {nb}</p>
+            <p className="colortext lg:pt-24 pt-8">{step} {nb}</p>
             <h1 className="text-2xl mt-4">{title}</h1>
             <p className="mt-4">{para}</p>
             <div className="my-4">

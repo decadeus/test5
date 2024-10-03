@@ -20,6 +20,7 @@ const LangSwitcher: React.FC = () => {
     { country: 'Français', code: 'fr' },
     { country: 'Polska', code: 'pl' },
     { country: 'Deutsch', code: 'de' },
+    { country: 'Русский', code: 'ru' },
    
   ]
 
