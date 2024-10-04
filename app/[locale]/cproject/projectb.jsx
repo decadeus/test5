@@ -262,7 +262,6 @@ export default function Projectb({ user }) {
                     <input
                       type="number"
                       value={newItem.floor}
-                      min={0}
                       onChange={(e) => handleNewChange(e, "floor")}
                       className="p-2 border rounded w-[60px] text-center text-black"
                       placeholder=""
@@ -346,6 +345,7 @@ export default function Projectb({ user }) {
                           <input
                             type="number"
                             value={item.bed}
+                            min={0}
                             onChange={(e) =>
                               handleChange(e, projectIndex, itemIndex, "bed")
                             }
@@ -356,6 +356,7 @@ export default function Projectb({ user }) {
                           <input
                             type="number"
                             value={item.floor}
+                            min={0}
                             onChange={(e) =>
                               handleChange(e, projectIndex, itemIndex, "floor")
                             }
@@ -366,6 +367,7 @@ export default function Projectb({ user }) {
                           <input
                             type="number"
                             value={item.surface}
+                            min={0}
                             onChange={(e) =>
                               handleChange(
                                 e,

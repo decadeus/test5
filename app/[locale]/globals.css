@@ -293,6 +293,45 @@
   border-top: 10px solid #c9af95;; /* La couleur de la queue doit correspondre à celle de la bulle */
 }
 
+/* // Modal modify projet */
+
+.fixed {
+  position: fixed;
+}
+
+.inset-0 {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.bg-black {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.bg-opacity-50 {
+  opacity: 0.5;
+}
+
+.bg-white {
+  background-color: white;
+}
+
+.p-4 {
+  padding: 16px; /* Ajustez la valeur selon vos besoins */
+}
+
+.rounded {
+  border-radius: 0.25rem; /* Ajustez la valeur selon vos besoins */
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* Ajustez la valeur selon vos besoins */
+}
+
+
+
 @keyframes scroll {
   0% {
     transform: translateX(0); /* Commence à gauche */
