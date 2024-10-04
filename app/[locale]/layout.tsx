@@ -8,6 +8,7 @@ import { createClient } from "@/utils/supabase/server";
 import Head from "next/head";
 import Foot from "../footer/footer";
 import { Kenia, Satisfy, Macondo } from "next/font/google";
+import { Analytics } from '@vercel/analytics/react';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -61,6 +62,7 @@ export default async function RootLayout({
             <MainNavBar user={user} />
             <main className="min-h-screen w-full flex flex-col items-center text-black ">
               {children}
+              <Analytics />
               <SpeedInsights />
             </main>
             <Foot />
