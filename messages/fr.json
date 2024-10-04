@@ -33,6 +33,42 @@
         "Ajouter":"Ajouter",
         "Rechercher":"Rechercher",
         "Connexion":"Connexion",
-        "Accueil":"Accueil"
+        "Accueil":"Accueil",
+        "VosProjets":"Vos projets"
+    },
+    "Projet":{
+        "Modifier":"Modifier les informations du projet",
+        "Compagnie":"Compagnie",
+        "NomProjet":"Nom du projet",
+        "Pays":"Pays",
+        "Ville":"Ville",
+        "Latitude":"Latitude",
+        "Longitude":"Longitude",
+        "Monnaie":"Monnaie",
+        "LienProjet":"Lien du projet",
+        "ProjetEnLigne":"Votre projet est",
+        "Link":"Lien du projet",
+        
+        "Piscine":"Piscine",
+        "VideoSurveillance":"Vidéo surveillance",
+        "GardienAccueil":"Gardien d'accueil",
+        "SalleDeSport":"Salle de sport",
+        "AcccesHandicape":"Accès handicapé",
+        "StockageVelo":"Stockage vélo",
+        "LieuJeuxEnfant":"Lieu de jeux pour enfants",
+        "ImmeubleClos":"Immeuble clos",
+        "Sauvegarder":"Sauvegarder",
+        "Chambres":"Chambres",
+        "Etages":"Etages",
+        "Surface":"Surface",
+        "Prix":"Prix",
+        "CacherLePrix":"Cacher le prix",
+        "jardin":"Jardin",
+        "InfoSpecial":"Info spéciale",
+        "Ajouter":"Ajouter",
+        "Modifier2":"Modifier",
+        "Supprimer":"Supprimer",
+        "Action":"Action",
+        "NombreAppartement":"Nombre d'appartements"
     }
 }

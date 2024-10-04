@@ -1,5 +1,5 @@
-"use client";
-import { createClient } from "@/utils/supabase/client"; 
+'use client'
+import { createClient } from "@/utils/supabase/client";
 import { Link } from "@/navigation";
 import Image from "next/legacy/image";
 import b from "@/components/b.png";
@@ -13,6 +13,7 @@ import { FiPlusCircle } from "react-icons/fi";
 import { FaRegBuilding } from "react-icons/fa";
 import { useTranslations } from "next-intl";
 import { IoSearch } from "react-icons/io5";
+import { FaNetworkWired } from "react-icons/fa";
 
 export default function MainNavBar({ user }) {
   const [profile, setProfile] = useState(null);
@@ -94,30 +95,47 @@ export default function MainNavBar({ user }) {
 
         {/* Main navigation for large screens */}
         <div className="hidden xl:flex gap-12 items-center">
-        <div className="py-1 px-4  rounded-lg text-white transition-colors duration-300">
+          <div className="py-1 px-4  rounded-lg text-white transition-colors duration-300">
             <Link href="/projects" onClick={closeMenu}>
               <span className="text-sm sm:text-lg flex items-center gap-2">
-              <IoSearch size={22} />{n("Rechercher")}
+                <IoSearch size={22} />
+                {n("Rechercher")}
               </span>
             </Link>
           </div>
-          
-          <div className="py-1 px-4  rounded-lg text-white transition-colors duration-300">
-            <Link href="/addproject" onClick={closeMenu}>
-              <span className="text-sm sm:text-lg ">
-              {n("Ajouter")}
-              </span>
-            </Link>
-          </div>
+
+          {!user && (
+            <div className="py-1 px-4  rounded-lg text-white transition-colors duration-300 flex justify-center items-center gap-12">
+              <Link href="/addproject" onClick={closeMenu}>
+                <span className="text-sm sm:text-lg ">{n("Ajouter")}</span>
+              </Link>
+              <div className="flex items-center ">
+          <LangSwitcher />
+        </div>
+            </div>
+            
+          )}
+
+          {/* Grouping the /cproject link and LangSwitcher */}
+          {user && (
+            <div className="flex items-center gap-8">
+              <div className="flex items-center text-white">
+                <Link href="/cproject" onClick={closeMenu}>
+                  <span className="flex items-center gap-2 text-lg">
+                    <FaNetworkWired size={22} /> {n("VosProjets")}
+                  </span>
+                </Link>
+              </div>
+              <LangSwitcher />
+            </div>
+          )}
         </div>
 
         {/* User/Connect Section */}
         <div className="hidden xl:flex items-center gap-4">
           {user ? (
             <div className="flex gap-2 items-center">
-              <HelpAdmin />
               <div className="flex flex-col text-center">
-                <p className="font-bold">{profile?.username}</p>
                 <p>{user.email}</p>
               </div>
               <div className="w-[50px] h-[50px]">
@@ -126,7 +144,6 @@ export default function MainNavBar({ user }) {
             </div>
           ) : (
             <div className="flex gap-4 w-fit">
-              <LangSwitcher />
               <Connect className="py-2" />
             </div>
           )}
@@ -142,7 +159,7 @@ export default function MainNavBar({ user }) {
         <div className="flex items-center text-white">
           <Link href="/" onClick={closeMenu}>
             <span className="flex items-center gap-2 text-2xl">
-              <FaRegBuilding  size={26} /> {n("Accueil")}
+              <FaRegBuilding size={26} /> {n("Accueil")}
             </span>
           </Link>
         </div>
@@ -152,14 +169,33 @@ export default function MainNavBar({ user }) {
               <IoSearch size={26} /> {n("Rechercher")}
             </span>
           </Link>
-        </div>{/* Pass the closeMenu function */}
-        <div className="flex items-center text-white">
-          <Link href="/addproject" onClick={closeMenu}>
-            <span className="flex items-center gap-2 text-2xl">
-              <FiPlusCircle size={26} /> {n("Ajouter")}
-            </span>
-          </Link>
         </div>
+        <div className="flex items-center ">
+          <LangSwitcher />
+        </div>
+
+        {/* Conditionally display the add project link only if the user is not connected */}
+        {!user && (
+          <div className="flex items-center text-white">
+            <Link href="/addproject" onClick={closeMenu}>
+              <span className="flex items-center gap-2 text-2xl">
+                <FiPlusCircle size={26} /> {n("Ajouter")}
+              </span>
+            </Link>
+          </div>
+        )}
+
+        {/* Display the /cproject link only if the user is connected */}
+        {user && (
+          <div className="flex items-center text-white">
+            <Link href="/cproject" onClick={closeMenu}>
+              <span className="flex items-center gap-2 text-2xl">
+                <IoSearch size={26} /> {n("VosProjets")}
+              </span>
+            </Link>
+          </div>
+        )}
+
         <div className="flex items-center ">
           <LangSwitcher />
         </div>

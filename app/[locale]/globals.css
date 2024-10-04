@@ -27,6 +27,7 @@
 .brownbg{background-color: var(--brown)}
 .browntext{color: var(--brown)}
 .brownborder{border-color: var(--brown)}
+.bgxclear { background-color: var(--clear) }
 
 .maintextfull {
   color: var(--full-bg);

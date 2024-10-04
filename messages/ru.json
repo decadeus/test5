@@ -35,7 +35,43 @@
         "Ajouter": "Добавить",
         "Rechercher": "Поиск",
         "Connexion": "Соединение",
-        "Accueil": "Главная"
+        "Accueil": "Главная",
+        "VosProjets": "Ваши проекты"
 
+    },
+    "Projet":{ 
+        "Modifier":"Изменить информацию о проекте",
+        "Compagnie":"Компания",
+        "NomProjet":"Название проекта",
+        "Pays":"Страна",
+        "Ville":"Город",
+        "Latitude":"Широта",
+        "Longitude":"Долгота",
+        "Monnaie":"Валюта",
+        "LienProjet":"Ссылка на проект",
+        "ProjetEnLigne":"Ваш проект",
+        "Link":"Ссылка на проект",
+       
+        "Piscine":"Бассейн",
+        "VideoSurveillance":"Видеонаблюдение",
+        "GardienAccueil":"Приемный охранник",
+        "SalleDeSport":"Фитнес-зал",
+        "AcccesHandicape":"Доступ для инвалидов",
+        "StockageVelo":"Хранение велосипедов",
+        "LieuJeuxEnfant":"Детская игровая площадка",
+        "ImmeubleClos":"Закрытое здание",
+        "Sauvegarder":"Сохранить",
+        "Chambres":"Комнаты",
+        "Etages":"Этажи",
+        "Surface":"Поверхность",
+        "Prix":"Цена",
+        "CacherLePrix":"Скрыть цену",
+        "jardin":"Сад",
+        "InfoSpecial":"Специальная информация",
+        "Ajouter":"Добавить",
+        "Modifier2":"Изменить",
+        "Supprimer":"Удалить",
+        "Action":"Действие",
+        "NombreAppartement":"Количество квартир"
     }
 }

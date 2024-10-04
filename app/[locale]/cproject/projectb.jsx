@@ -6,6 +6,7 @@ import { IoMdEyeOff } from "react-icons/io";
 import { IoEye } from "react-icons/io5";
 import { PiFlowerTulipBold } from "react-icons/pi";
 import Select from "./select";
+import { useTranslations} from "next-intl";
 
 export default function Projectb({ user }) {
   const supabase = createClient();
@@ -25,6 +26,8 @@ export default function Projectb({ user }) {
     key: null,
     direction: "desc",
   });
+
+  const p = useTranslations("Projet");
 
   useEffect(() => {
     if (user?.id) {
@@ -166,12 +169,12 @@ export default function Projectb({ user }) {
   );
 
   return (
-    <div className="w-full p-4 ">
+    <div className="w-full px-4 mt-16 ">
       {/* Display total number of rows */}
       <div className="mb-4"></div>
 
       {projects.map((project, projectIndex) => (
-        <div key={projectIndex} className="mb-8">
+        <div key={projectIndex} className="mb-4">
           <div className="flex flex-col">
             <Maindata
               compagny={project.compagny}
@@ -182,10 +185,11 @@ export default function Projectb({ user }) {
               lng={project.lng}
               cur={project.currency}
               online={project.online}
+              link={project.link}
               user={user}
             />
-            <p className="text-gray-100 text-center font-extrabold text-lg mb-4">
-              Number of apartments: {totalRows}
+            <p className="text-[#12171E] text-center font-extrabold text-lg mb-4">
+            {p("NombreAppartement")}: {totalRows}
             </p>
           </div>
           <div className="overflow-x-auto ">
@@ -202,35 +206,35 @@ export default function Projectb({ user }) {
                     className="py-2 px-4 border-b text-center cursor-pointer"
                     onClick={() => sortTable("bed")}
                   >
-                    Bedroom {getSortIndicator("bed")}
+                    {p("Chambres")} {getSortIndicator("bed")}
                   </th>
                   <th
                     className="py-2 px-4 border-b text-center cursor-pointer"
                     onClick={() => sortTable("floor")}
                   >
-                    Floor {getSortIndicator("floor")}
+                     {p("Etages")} {getSortIndicator("floor")}
                   </th>
                   <th
                     className="py-2 px-4 border-b text-center cursor-pointer"
                     onClick={() => sortTable("surface")}
                   >
-                    Surface {getSortIndicator("surface")}
+                     {p("Surface")} {getSortIndicator("surface")}
                   </th>
                   <th
                     className="py-2 px-4 border-b text-center cursor-pointer"
                     onClick={() => sortTable("price")}
                   >
-                    Price {getSortIndicator("price")}
+                     {p("Prix")} {getSortIndicator("price")}
                   </th>
-                  <th className="py-2 px-4 border-b text-center">Hide Price</th>
-                  <th className="py-2 px-4 border-b text-center">Garden</th>
+                  <th className="py-2 px-4 border-b text-center">{p("CacherLePrix")}</th>
+                  <th className="py-2 px-4 border-b text-center"> {p("jardin")}</th>
                   <th
                     className="py-2 px-4 border-b text-center cursor-pointer "
                     onClick={() => sortTable("des")}
                   >
-                    Special info {getSortIndicator("des")}
+                    {p("InfoSpecial")} {getSortIndicator("des")}
                   </th>
-                  <th className="py-2 px-4 border-b text-center">Actions</th>
+                  <th className="py-2 px-4 border-b text-center">{p("Action")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -240,34 +244,37 @@ export default function Projectb({ user }) {
                       type="text"
                       value={newItem.ref}
                       onChange={(e) => handleNewChange(e, "ref")}
-                      className="p-2 border rounded w-full text-center text-black"
+                      className="p-2 border rounded  text-center text-black w-[130px]"
                       placeholder="ex: AA0302"
                     />
                   </td>
-                  <td className="py-2 px-4 border-b text-right">
+                  <td className="py-2 px-4 border-b text-right w-[60px]">
                     <input
                       type="number"
                       value={newItem.bed}
+                      min={0}
                       onChange={(e) => handleNewChange(e, "bed")}
-                      className="p-2 border rounded w-full text-center text-black"
+                      className="p-2 border rounded w-[60px] text-center text-black "
                       placeholder=""
                     />
                   </td>
-                  <td className="py-2 px-4 border-b text-right">
+                  <td className="py-2 px-4 border-b text-right w-[60px]">
                     <input
                       type="number"
                       value={newItem.floor}
+                      min={0}
                       onChange={(e) => handleNewChange(e, "floor")}
-                      className="p-2 border rounded w-full text-center text-black"
+                      className="p-2 border rounded w-[60px] text-center text-black"
                       placeholder=""
                     />
                   </td>
-                  <td className="py-2 px-4 border-b text-right">
+                  <td className="py-2 px-4 border-b text-right w-[60px]">
                     <input
                       type="number"
                       value={newItem.surface}
+                      min={0}
                       onChange={(e) => handleNewChange(e, "surface")}
-                      className="p-2 border rounded w-full text-center text-black"
+                      className="p-2 border rounded w-[60px] text-center text-black"
                       placeholder=""
                     />
                   </td>
@@ -281,7 +288,7 @@ export default function Projectb({ user }) {
                     value={newItem.price || 0}  // Valeur par défaut à 0
                     min={0}  // Valeur minimale à zéro
                     onChange={(e) => handleNewChange(e, "price")}  // Gestionnaire de changement
-                    className="p-2 border rounded w-full text-center text-black"
+                    className="p-2 border rounded text-center text-black w-[120px]"
                     disabled={newItem.noprice}  // Désactivation conditionnelle
                     />
                   </td>
@@ -316,7 +323,7 @@ export default function Projectb({ user }) {
                       onClick={() => handleNewSave(projectIndex)}
                       className="px-4 py-2 bg-blue-500 text-white rounded"
                     >
-                      Add
+                     {p("Ajouter")}
                     </button>
                   </td>
                 </tr>
@@ -332,7 +339,7 @@ export default function Projectb({ user }) {
                             onChange={(e) =>
                               handleChange(e, projectIndex, itemIndex, "ref")
                             }
-                            className="w-full p-2 border rounded text-white"
+                            className="w-[130px] p-2 border rounded text-white"
                           />
                         </td>
                         <td className="py-2 px-4 border-b text-right">
@@ -342,7 +349,7 @@ export default function Projectb({ user }) {
                             onChange={(e) =>
                               handleChange(e, projectIndex, itemIndex, "bed")
                             }
-                            className="w-full p-2 border rounded text-right"
+                            className="p-2 border rounded text-right w-[60px]"
                           />
                         </td>
                         <td className="py-2 px-4 border-b text-right">
@@ -352,7 +359,7 @@ export default function Projectb({ user }) {
                             onChange={(e) =>
                               handleChange(e, projectIndex, itemIndex, "floor")
                             }
-                            className="w-full p-2 border rounded text-right"
+                            className="w-[60px] p-2 border rounded text-right"
                           />
                         </td>
                         <td className="py-2 px-4 border-b text-right">
@@ -367,7 +374,7 @@ export default function Projectb({ user }) {
                                 "surface"
                               )
                             }
-                            className="w-full p-2 border rounded text-right"
+                            className="w-[60px] p-2 border rounded text-right"
                           />
                         </td>
                         <td
@@ -387,7 +394,7 @@ export default function Projectb({ user }) {
                             onChange={(e) =>
                               handleChange(e, projectIndex, itemIndex, "price")
                             }
-                            className="w-full p-2 border rounded text-right"
+                            className="w-[120px] p-2 border rounded text-right"
                             disabled={item.noprice}
                           />
                         </td>
@@ -432,7 +439,7 @@ export default function Projectb({ user }) {
                             onClick={() => handleSave(projectIndex, itemIndex)}
                             className="px-4 py-2 bg-blue-500 text-white rounded"
                           >
-                            Save
+                           {p("Sauvegarder")}
                           </button>
                           <button
                             onClick={() =>
@@ -440,7 +447,7 @@ export default function Projectb({ user }) {
                             }
                             className="px-4 py-2 bg-red-500 text-white rounded ml-2"
                           >
-                            Delete
+                          {p("Supprimer")}
                           </button>
                         </td>
                       </>
@@ -498,7 +505,7 @@ export default function Projectb({ user }) {
                               }
                               className="px-4 py-2 bg-yellow-500 text-white rounded"
                             >
-                              Edit
+                             {p("Modifier2")}
                             </button>
                             <button
                               onClick={() =>
@@ -506,7 +513,7 @@ export default function Projectb({ user }) {
                               }
                               className="px-4 py-2 bg-red-500 text-white rounded ml-2"
                             >
-                              Delete
+                             {p("Supprimer")}
                             </button>
                           </div>
                         </td>

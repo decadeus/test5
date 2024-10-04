@@ -33,7 +33,43 @@
         "Ajouter": "Dodaj",
         "Rechercher": "Szukaj",
         "Connexion": "Połączenie",
-        "Accueil": "Strona główna"
+        "Accueil": "Strona główna",
+        "VosProjets": "Twoje projekty"
+    },
+    "Projet": {
+        "Modifier": "Edytuj informacje o projekcie",
+        "Compagnie": "Firma",
+        "NomProjet": "Nazwa projektu",
+        "Pays": "Kraj",
+        "Ville": "Miasto",
+        "Latitude": "Szerokość geograficzna",
+        "Longitude": "Długość geograficzna",
+        "Monnaie": "Waluta",
+        "LienProjet": "Link do projektu",
+        "ProjetEnLigne": "Twój projekt jest",
+        "Link": "Link do projektu",
+      
+        "Piscine": "Basen",
+        "VideoSurveillance": "Nadzór wideo",
+        "GardienAccueil": "Ochroniarz recepcji",
+        "SalleDeSport": "Siłownia",
+        "AcccesHandicape": "Dostęp dla niepełnosprawnych",
+        "StockageVelo": "Przechowywanie rowerów",
+        "LieuJeuxEnfant": "Plac zabaw dla dzieci",
+        "ImmeubleClos": "Zamknięty budynek",
+        "Sauvegarder": "Zapisz",
+        "Chambres": "Pokoje",
+        "Etages": "Piętra",
+        "Surface": "Powierzchnia",
+        "Prix": "Cena",
+        "CacherLePrix": "Ukryj cenę",
+        "jardin": "Ogród",
+        "InfoSpecial": "Specjalne informacje",
+        "Ajouter": "Dodaj",
+        "Modifier2": "Edytuj",
+        "Supprimer": "Usuń",
+        "Action": "Akcja",
+        "NombreAppartement": "Liczba mieszkań"
     }
 
 }

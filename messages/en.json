@@ -35,7 +35,43 @@
         "Ajouter":"Add",
         "Rechercher":"Search",
         "Connexion":"Connection",
-        "Accueil":"Home"
+        "Accueil":"Home",
+        "VosProjets":"Your projects"
 
+    },
+    "Projet":{
+        "Modifier":"Edit project information", 
+        "Compagnie":"Company",
+        "NomProjet":"Project name",
+        "Pays":"Country",
+        "Ville":"City",
+        "Latitude":"Latitude",
+        "Longitude":"Longitude",
+        "Monnaie":"Currency",
+        "LienProjet":"Project link",
+        "ProjetEnLigne":"Your project is",
+        "Link":"Link to project",
+       
+        "Piscine":"Swimming pool",
+        "VideoSurveillance":"CCTV",
+        "GardienAccueil":"Reception guard",
+        "SalleDeSport":"Gym",
+        "AcccesHandicape":"Disabled access",
+        "StockageVelo":"Bike storage",
+        "LieuJeuxEnfant":"Children's play area",
+        "ImmeubleClos":"Closed building",
+        "Sauvegarder":"Save",
+        "Chambres":"Bedrooms",
+        "Etages":"Floors",
+        "Surface":"Surface",
+        "Prix":"Price",
+        "CacherLePrix":"Hide the price",
+        "jardin":"Garden",
+        "InfoSpecial":"Special information",
+        "Ajouter":"Add",
+        "Modifier2":"Edit",
+        "Supprimer":"Delete",
+        "Action":"Action",
+        "NombreAppartement":"Number of apartments"
     }
 }

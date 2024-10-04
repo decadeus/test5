@@ -17,11 +17,9 @@ export default function Connect() {
     >
       <div className="">
         
-        <FaRegUserCircle
-          size={35}
-          color="white"
-          className="rounded-full p-1"
-        />
+      <div className="rounded-lg  border-2 p-2">
+         <p className="text-white">Login</p>
+        </div>
       </div>
     </Link>
   );

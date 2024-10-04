@@ -62,8 +62,8 @@ export default function Text({ user }) {
   return (
     <>
       <button onClick={onOpen}>
-        <div className="w-[50px] h-[50px] rounded-full">
-          <UAvatar url={avatarUrl} width={50} height={50} classn="rounded-full" />
+        <div className="rounded-lg  border-2 p-2">
+         <p className="text-red-700">Logout</p>
         </div>
       </button>
       <Modal

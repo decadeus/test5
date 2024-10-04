@@ -34,7 +34,44 @@
         "Ajouter":"Hinzufügen",
         "Rechercher":"Suche",
         "Connexion":"Verbindung",
-        "Accueil":"Zuhause"
+        "Accueil":"Zuhause",
+        "VosProjets":"Ihre Projekte"
+    },
+    "Projet":{
+        "Modifier":"Projektinformationen bearbeiten",
+        "Compagnie":"Unternehmen",
+        "NomProjet":"Projektname",
+        "Pays":"Land",
+        "Ville":"Stadt",
+        "Latitude":"Breitengrad",
+        "Longitude":"Längengrad",
+        "Monnaie":"Währung",
+        "LienProjet":"Projektlink",
+        "ProjecEnLigne":"Ihr Projekt ist",
+        "Link":"Projektlink",
+        
+        "Piscine":"Schwimmbad",
+        "VideoSurveillance":"Videoüberwachung",
+        "GardienAccueil":"Empfangswächter",
+        "SalleDeSport":"Fitnessraum",
+        "AcccesHandicape":"Behindertengerechter Zugang",
+        "StockageVelo":"Fahrradabstellraum",
+        "LieuJeuxEnfant":"Spielplatz für Kinder",
+        "ImmeubleClos":"Geschlossenes Gebäude",
+        "Sauvegarder":"Speichern",
+        "Chambres":"Schlafzimmer",
+        "Etages":"Stockwerke",
+        "Surface":"Oberfläche",
+        "Prix":"Preis",
+        "CacherLePrix":"Preis verbergen",
+        "jardin":"Garten",
+        "InfoSpecial":"Besondere Informationen",
+        "Ajouter":"Hinzufügen",
+        "Modifier2":"Bearbeiten",
+        "Supprimer":"Löschen",
+        "Action":"Aktion",
+        "NombreAppartement":"Anzahl der Wohnungen"
+
     }
 
 }
