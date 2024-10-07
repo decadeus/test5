@@ -345,7 +345,7 @@ export default function Projectb({ user }) {
                           <input
                             type="number"
                             value={item.bed}
-                            min={0}
+                            
                             onChange={(e) =>
                               handleChange(e, projectIndex, itemIndex, "bed")
                             }

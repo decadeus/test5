@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import Image from "next/legacy/image";
 import { FaDownload } from "react-icons/fa";
-import b from "@/components/b.png";
 
 const supabase = createClient();
 
@@ -64,8 +63,12 @@ export default function Avatar({ uid, url, id, size, onUpload, classn, width, he
           height={height}
         />
       ) : (
-        <div className="relative h-full">
-          <Image src={b} width={size} height={size} alt="Placeholder" />
+        <div
+          className="relative h-full flex items-center justify-center bg-white"
+          style={{ width: 300, height: 200 }}
+        >
+          {/* Optionally, add text or an icon to indicate loading */}
+          {/* <span>Loading...</span> */}
         </div>
       )}
       <div className="absolute bg-white w-fit rounded-xl text-center border-2 border-black top-4 left-4 py-2 px-4">

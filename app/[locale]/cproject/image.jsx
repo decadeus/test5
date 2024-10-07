@@ -46,7 +46,7 @@ export default function AvatarComponent({ user }) {
         
         if (error) throw error;
 
-        alert("Profile updated!");
+        alert("Updated!");
         setMainpicUrl(value);
       } catch (error) {
         alert("Error updating the data!");
