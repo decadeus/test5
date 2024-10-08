@@ -69,7 +69,10 @@
         "Modifier2":"Bearbeiten",
         "Supprimer":"Löschen",
         "Action":"Aktion",
-        "NombreAppartement":"Anzahl der Wohnungen"
+        "NombreAppartement":"Anzahl der Wohnungen",
+        "Rechercher:":"Suche",
+        "Modifié":"Geändert",
+        "Data successfully saved.":"Daten erfolgreich gespeichert."
 
     }
 

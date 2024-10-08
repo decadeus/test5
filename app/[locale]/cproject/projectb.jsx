@@ -6,7 +6,7 @@ import { IoMdEyeOff } from "react-icons/io";
 import { IoEye } from "react-icons/io5";
 import { PiFlowerTulipBold } from "react-icons/pi";
 import Select from "./select";
-import { useTranslations} from "next-intl";
+import { useTranslations } from "next-intl";
 
 export default function Projectb({ user }) {
   const supabase = createClient();
@@ -26,6 +26,7 @@ export default function Projectb({ user }) {
     key: null,
     direction: "desc",
   });
+  const [searchRef, setSearchRef] = useState(""); // État pour la recherche
 
   const p = useTranslations("Projet");
 
@@ -152,7 +153,6 @@ export default function Projectb({ user }) {
         return 0;
       }),
     }));
-
     setProjects(sortedProjects);
     setSortConfig({ key, direction });
   };
@@ -162,18 +162,27 @@ export default function Projectb({ user }) {
     return sortConfig.direction === "asc" ? "▲" : "▼";
   };
 
-  // Calculate total number of rows
-  const totalRows = projects.reduce(
+  // Filtrer les projets en fonction de la recherche "ref"
+  const filteredProjects = projects.map((project) => ({
+    ...project,
+    projectlist: project.projectlist.filter((item) =>
+      item.ref.toLowerCase().includes(searchRef.toLowerCase())
+    ),
+  }));
+
+  // Calculer le nombre total de lignes
+  const totalRows = filteredProjects.reduce(
     (total, project) => total + project.projectlist.length,
     0
   );
 
   return (
     <div className="w-full px-4 mt-16 ">
-      {/* Display total number of rows */}
-      <div className="mb-4"></div>
+      {/* Champ de recherche */}
 
-      {projects.map((project, projectIndex) => (
+      {/* Afficher le nombre total d'appartements */}
+
+      {filteredProjects.map((project, projectIndex) => (
         <div key={projectIndex} className="mb-4">
           <div className="flex flex-col">
             <Maindata
@@ -188,11 +197,20 @@ export default function Projectb({ user }) {
               link={project.link}
               user={user}
             />
-            <p className="text-[#12171E] text-center font-extrabold text-lg mb-4">
-            {p("NombreAppartement")}: {totalRows}
-            </p>
           </div>
           <div className="overflow-x-auto ">
+            <div className="mb-4 flex justify-center items-center gap-12">
+              <input
+                type="text"
+                placeholder={`${p("Rechercher:")} Ref`}
+                value={searchRef}
+                onChange={(e) => setSearchRef(e.target.value)}
+                className="p-2 border-black border-1 rounded w-fit text-black"
+              />
+              <p className="text-[#12171E] text-center font-extrabold text-lg">
+                {p("NombreAppartement")}: {totalRows}
+              </p>
+            </div>
             <table className="w-full bg-[#12171E] shadow-md rounded-lg overflow-hidden">
               <thead className="bg-[#12171E] text-white">
                 <tr className="text-white">
@@ -212,315 +230,286 @@ export default function Projectb({ user }) {
                     className="py-2 px-4 border-b text-center cursor-pointer"
                     onClick={() => sortTable("floor")}
                   >
-                     {p("Etages")} {getSortIndicator("floor")}
+                    {p("Etages")} {getSortIndicator("floor")}
                   </th>
                   <th
                     className="py-2 px-4 border-b text-center cursor-pointer"
                     onClick={() => sortTable("surface")}
                   >
-                     {p("Surface")} {getSortIndicator("surface")}
+                    {p("Surface")} {getSortIndicator("surface")}
                   </th>
                   <th
                     className="py-2 px-4 border-b text-center cursor-pointer"
                     onClick={() => sortTable("price")}
                   >
-                     {p("Prix")} {getSortIndicator("price")}
+                    {p("Prix")} {getSortIndicator("price")}
                   </th>
-                  <th className="py-2 px-4 border-b text-center">{p("CacherLePrix")}</th>
-                  <th className="py-2 px-4 border-b text-center"> {p("jardin")}</th>
+                  <th className="py-2 px-4 border-b text-center">
+                    {p("CacherLePrix")}
+                  </th>
+                  <th className="py-2 px-4 border-b text-center">
+                    {p("jardin")}
+                  </th>
                   <th
                     className="py-2 px-4 border-b text-center cursor-pointer "
                     onClick={() => sortTable("des")}
                   >
                     {p("InfoSpecial")} {getSortIndicator("des")}
                   </th>
-                  <th className="py-2 px-4 border-b text-center">{p("Action")}</th>
+                  <th className="py-2 px-4 border-b text-center">
+                    {p("Action")}
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="bg-[#12171E] text-white">
-                  <td className="py-2 px-4 border-b text-left ">
+                  <td className="py-2 px-4 border-b text-center ">
                     <input
                       type="text"
                       value={newItem.ref}
                       onChange={(e) => handleNewChange(e, "ref")}
                       className="p-2 border rounded  text-center text-black w-[130px]"
-                      placeholder="ex: AA0302"
+                      placeholder="ex: A001"
                     />
                   </td>
-                  <td className="py-2 px-4 border-b text-right w-[60px]">
+                  <td className="py-2 px-4 border-b text-center ">
                     <input
                       type="number"
                       value={newItem.bed}
-                      min={0}
                       onChange={(e) => handleNewChange(e, "bed")}
-                      className="p-2 border rounded w-[60px] text-center text-black "
-                      placeholder=""
+                      className="p-2 border rounded  text-center text-black w-[70px]"
+                      placeholder="ex: 1"
                     />
                   </td>
-                  <td className="py-2 px-4 border-b text-right w-[60px]">
+                  <td className="py-2 px-4 border-b text-center ">
                     <input
                       type="number"
                       value={newItem.floor}
                       onChange={(e) => handleNewChange(e, "floor")}
-                      className="p-2 border rounded w-[60px] text-center text-black"
-                      placeholder=""
+                      className="p-2 border rounded  text-center text-black w-[70px]"
+                      placeholder="ex: 1"
                     />
                   </td>
-                  <td className="py-2 px-4 border-b text-right w-[60px]">
+                  <td className="py-2 px-4 border-b text-center ">
                     <input
                       type="number"
                       value={newItem.surface}
-                      min={0}
                       onChange={(e) => handleNewChange(e, "surface")}
-                      className="p-2 border rounded w-[60px] text-center text-black"
-                      placeholder=""
+                      className="p-2 border rounded  text-center text-black w-[100px]"
+                      placeholder="ex: 65.10"
                     />
                   </td>
-                  <td
-                    className={`py-2 px-4 border-b text-right ${
-                      newItem.noprice ? "bg-gray-800" : ""
-                    }`}
-                  >
+                  <td className="py-2 px-4 border-b text-center mx-auto">
                     <input
-                    type="number"
-                    value={newItem.price || 0}  // Valeur par défaut à 0
-                    min={0}  // Valeur minimale à zéro
-                    onChange={(e) => handleNewChange(e, "price")}  // Gestionnaire de changement
-                    className="p-2 border rounded text-center text-black w-[120px]"
-                    disabled={newItem.noprice}  // Désactivation conditionnelle
+                      type="number"
+                      value={newItem.price}
+                      onChange={(e) => handleNewChange(e, "price")}
+                      className="p-2 border rounded  text-center text-black w-[130px]"
+                      placeholder="ex: 250000"
                     />
                   </td>
-                  <td className="py-2 px-4 border-b text-center">
+                  <td className="py-2 px-4 border-b text-center mx-auto ">
                     <input
                       type="checkbox"
                       checked={newItem.noprice}
                       onChange={(e) => handleNewChange(e, "noprice")}
-                      className="w-full"
+                      className="w-5 h-5 "
                     />
                   </td>
-                  <td className="py-2 px-4 border-b text-center">
+                  <td className="py-2 px-4 border-b text-center mx-auto">
                     <input
                       type="checkbox"
                       checked={newItem.garden}
                       onChange={(e) => handleNewChange(e, "garden")}
-                      className="w-full"
+                      className="w-5 h-5 "
                     />
                   </td>
-                  <td className="py-2 px-4 border-b text-left">
+                  <td className="py-2 px-4 border-b text-center ">
                     <input
                       type="text"
                       value={newItem.des}
                       onChange={(e) => handleNewChange(e, "des")}
-                      className="p-2 border rounded w-full text-center text-black"
-                      placeholder="ex: - 10%"
-                      maxLength={25}
+                      className="p-2 border rounded  text-center text-black w-[130px]"
                     />
                   </td>
-                  <td className="py-2 px-4 border-b text-center">
+                  <td className="py-2 px-4 border-b text-left ">
                     <button
+                      className="bg-blue-500 text-white px-4 py-2 rounded"
                       onClick={() => handleNewSave(projectIndex)}
-                      className="px-4 py-2 bg-blue-500 text-white rounded"
                     >
-                     {p("Ajouter")}
+                      {p("Ajouter")}
                     </button>
                   </td>
                 </tr>
+
                 {project.projectlist.map((item, itemIndex) => (
-                  <tr key={itemIndex}>
-                    {editing?.projectIndex === projectIndex &&
-                    editing?.itemIndex === itemIndex ? (
-                      <>
-                        <td className="py-2 px-4 border-b text-left">
-                          <input
-                            type="text"
-                            value={item.ref}
-                            onChange={(e) =>
-                              handleChange(e, projectIndex, itemIndex, "ref")
-                            }
-                            className="w-[130px] p-2 border rounded text-white"
-                          />
-                        </td>
-                        <td className="py-2 px-4 border-b text-right">
-                          <input
-                            type="number"
-                            value={item.bed}
-                            
-                            onChange={(e) =>
-                              handleChange(e, projectIndex, itemIndex, "bed")
-                            }
-                            className="p-2 border rounded text-right w-[60px]"
-                          />
-                        </td>
-                        <td className="py-2 px-4 border-b text-right">
-                          <input
-                            type="number"
-                            value={item.floor}
-                            min={0}
-                            onChange={(e) =>
-                              handleChange(e, projectIndex, itemIndex, "floor")
-                            }
-                            className="w-[60px] p-2 border rounded text-right"
-                          />
-                        </td>
-                        <td className="py-2 px-4 border-b text-right">
-                          <input
-                            type="number"
-                            value={item.surface}
-                            min={0}
-                            onChange={(e) =>
-                              handleChange(
-                                e,
-                                projectIndex,
-                                itemIndex,
-                                "surface"
-                              )
-                            }
-                            className="w-[60px] p-2 border rounded text-right"
-                          />
-                        </td>
-                        <td
-                          className={`py-2 px-4 border-b text-right ${
-                            item.noprice ? "bg-gray-800" : ""
-                          }`}
+                  <tr key={itemIndex} className="bg-[#12171E] text-white">
+                    <td className="py-2 px-4 border-b text-center ">
+                      {editing &&
+                      editing.projectIndex === projectIndex &&
+                      editing.itemIndex === itemIndex ? (
+                        <input
+                          type="text"
+                          value={item.ref}
+                          onChange={(e) =>
+                            handleChange(e, projectIndex, itemIndex, "ref")
+                          }
+                          className="p-2 border rounded  text-center text-black w-[130px]"
+                        />
+                      ) : (
+                        <p className="text-center">{item.ref}</p>
+                      )}
+                    </td>
+                    <td className="py-2 px-4 border-b text-center ">
+                      {editing &&
+                      editing.projectIndex === projectIndex &&
+                      editing.itemIndex === itemIndex ? (
+                        <input
+                          type="number"
+                          value={item.bed}
+                          onChange={(e) =>
+                            handleChange(e, projectIndex, itemIndex, "bed")
+                          }
+                          className="p-2 border rounded  text-center text-black w-[70px]"
+                        />
+                      ) : (
+                        <p className="text-center">{item.bed}</p>
+                      )}
+                    </td>
+                    <td className="py-2 px-4 border-b text-center ">
+                      {editing &&
+                      editing.projectIndex === projectIndex &&
+                      editing.itemIndex === itemIndex ? (
+                        <input
+                          type="number"
+                          value={item.floor}
+                          onChange={(e) =>
+                            handleChange(e, projectIndex, itemIndex, "floor")
+                          }
+                          className="p-2 border rounded  text-center text-black w-[70px]"
+                        />
+                      ) : (
+                        <p className="text-center">{item.floor}</p>
+                      )}
+                    </td>
+                    <td className="py-2 px-4 border-b text-center ">
+                      {editing &&
+                      editing.projectIndex === projectIndex &&
+                      editing.itemIndex === itemIndex ? (
+                        <input
+                          type="number"
+                          value={item.surface}
+                          onChange={(e) =>
+                            handleChange(e, projectIndex, itemIndex, "surface")
+                          }
+                          className="p-2 border rounded  text-center text-black w-[100px]"
+                        />
+                      ) : (
+                        <p className="text-center">{item.surface}</p>
+                      )}
+                    </td>
+                    <td className="py-2 px-4 border-b text-center ">
+                      {editing &&
+                      editing.projectIndex === projectIndex &&
+                      editing.itemIndex === itemIndex ? (
+                        <input
+                          type="number"
+                          value={item.price}
+                          onChange={(e) =>
+                            handleChange(e, projectIndex, itemIndex, "price")
+                          }
+                          className="p-2 border rounded  text-center text-black w-[130px]"
+                        />
+                      ) : item.noprice ? (
+                        <IoMdEyeOff size={20} className="mx-auto" />
+                      ) : (
+                        <p className="text-center">
+                          ${item.price.toLocaleString()} ${project.currency}
+                        </p>
+                      )}
+                    </td>
+                    <td className="py-2 px-4 border-b text-center">
+                      {editing &&
+                      editing.projectIndex === projectIndex &&
+                      editing.itemIndex === itemIndex ? (
+                        <input
+                          type="checkbox"
+                          checked={item.noprice}
+                          onChange={(e) =>
+                            handleChange(e, projectIndex, itemIndex, "noprice")
+                          }
+                          className="w-5 h-5 "
+                        />
+                      ) : item.noprice ? (
+                        <IoMdEyeOff size={20} className="mx-auto text-center" />
+                      ) : (
+                        <IoEye size={20} className="mx-auto" />
+                      )}
+                    </td>
+                    <td className="py-2 px-4 border-b text-center">
+                      {editing &&
+                      editing.projectIndex === projectIndex &&
+                      editing.itemIndex === itemIndex ? (
+                        <input
+                          type="checkbox"
+                          checked={item.garden}
+                          onChange={(e) =>
+                            handleChange(e, projectIndex, itemIndex, "garden")
+                          }
+                          className="w-5 h-5"
+                        />
+                      ) : item.garden ? (
+                        <PiFlowerTulipBold
+                          size={20}
+                          className="mx-auto text-green-500"
+                        />
+                      ) : null}
+                    </td>
+                    <td className="py-2 px-4 border-b text-center">
+                      {editing &&
+                      editing.projectIndex === projectIndex &&
+                      editing.itemIndex === itemIndex ? (
+                        <input
+                          type="text"
+                          value={item.des}
+                          onChange={(e) =>
+                            handleChange(e, projectIndex, itemIndex, "des")
+                          }
+                          className="p-2 border rounded  text-center text-black w-[130px]"
+                        />
+                      ) : (
+                        item.des
+                      )}
+                    </td>
+                    <td className="py-2 px-4 border-b text-left ">
+                      {editing &&
+                      editing.projectIndex === projectIndex &&
+                      editing.itemIndex === itemIndex ? (
+                        <button
+                          className="bg-green-500 text-white px-4 py-2 rounded"
+                          onClick={() => handleSave(projectIndex, itemIndex)}
                         >
-                          <input
-                            type="number"
-                            value={
-                              item.price !== undefined && item.price !== null
-                                ? item.price
-                                : 0
-                            } // Si la valeur est définie, afficher sinon laisser vide
-                            placeholder="N/A"
-                            min={0}
-                            onChange={(e) =>
-                              handleChange(e, projectIndex, itemIndex, "price")
-                            }
-                            className="w-[120px] p-2 border rounded text-right"
-                            disabled={item.noprice}
-                          />
-                        </td>
-                        <td className="py-2 px-4 border-b text-center">
-                          <input
-                            type="checkbox"
-                            checked={item.noprice}
-                            onChange={(e) =>
-                              handleChange(
-                                e,
-                                projectIndex,
-                                itemIndex,
-                                "noprice"
-                              )
-                            }
-                            className="w-full"
-                          />
-                        </td>
-                        <td className="py-2 px-4 border-b text-center">
-                          <input
-                            type="checkbox"
-                            checked={item.garden}
-                            onChange={(e) =>
-                              handleChange(e, projectIndex, itemIndex, "garden")
-                            }
-                            className="w-full"
-                          />
-                        </td>
-                        <td className="py-2 px-4 border-b text-left">
-                          <input
-                            type="text"
-                            value={item.des}
-                            onChange={(e) =>
-                              handleChange(e, projectIndex, itemIndex, "des")
-                            }
-                            className="w-full p-2 border rounded"
-                            maxLength={25}
-                          />
-                        </td>
-                        <td className="py-2 px-4 border-b text-center">
+                          {p("Sauvegarder")}
+                        </button>
+                      ) : (
+                        <>
                           <button
-                            onClick={() => handleSave(projectIndex, itemIndex)}
-                            className="px-4 py-2 bg-blue-500 text-white rounded"
+                            className="bg-yellow-500 text-white px-4 py-2 rounded mr-2"
+                            onClick={() => handleEdit(projectIndex, itemIndex)}
                           >
-                           {p("Sauvegarder")}
+                            {p("Modifier2")}
                           </button>
                           <button
+                            className="bg-red-500 text-white px-4 py-2 rounded"
                             onClick={() =>
                               handleDelete(projectIndex, itemIndex)
                             }
-                            className="px-4 py-2 bg-red-500 text-white rounded ml-2"
                           >
-                          {p("Supprimer")}
+                            {p("Supprimer")}
                           </button>
-                        </td>
-                      </>
-                    ) : (
-                      <>
-                        <td className="py-2 px-4 border-b text-center font-semibold text-white">
-                          {item.ref}
-                        </td>
-                        <td className="py-2 px-4 border-b text-center text-white">
-                          {item.bed}
-                        </td>
-                        <td className="py-2 px-4 border-b text-center text-white">
-                          {item.floor}
-                        </td>
-                        <td className="py-2 px-4 border-b text-center text-white">
-                          {item.surface}
-                        </td>
-                        <td
-                          className={`py-2 px-4 border-b text-center text-white ${
-                            item.noprice ? "bg-gray-800 text-black" : ""
-                          }`}
-                        >
-                          {item.price || "N/A"}
-                        </td>
-                        <td
-                          className={`py-2 px-4 border-b text-center ${
-                            item.noprice ? "text-red-500" : "text-green-500"
-                          }`}
-                        >
-                          <div className="flex items-center justify-center h-full">
-                            {item.noprice ? (
-                              <IoMdEyeOff className="text-xl" />
-                            ) : (
-                              <IoEye className="text-xl" />
-                            )}
-                          </div>
-                        </td>
-                        <td className="py-2 px-4 border-b text-center  ">
-                          {item.garden ? (
-                            <p className="flex justify-center items-center">
-                            <PiFlowerTulipBold color="pink" size={20} />
-                            </p>
-                          ) : (
-                            ""
-                          )}
-                        </td>
-                        <td className="py-2 px-4 border-b text-center font-semibold text-white">
-                          {item.des}
-                        </td>
-                        <td className="py-2 px-4 border-b text-center">
-                          <div className="flex">
-                            <button
-                              onClick={() =>
-                                handleEdit(projectIndex, itemIndex)
-                              }
-                              className="px-4 py-2 bg-yellow-500 text-white rounded"
-                            >
-                             {p("Modifier2")}
-                            </button>
-                            <button
-                              onClick={() =>
-                                handleDelete(projectIndex, itemIndex)
-                              }
-                              className="px-4 py-2 bg-red-500 text-white rounded ml-2"
-                            >
-                             {p("Supprimer")}
-                            </button>
-                          </div>
-                        </td>
-                      </>
-                    )}
+                        </>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>

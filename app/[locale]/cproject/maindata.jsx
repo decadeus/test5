@@ -350,37 +350,38 @@ export default function Maindata({
 
         </div>
         <div className="flex flex-col justify-center">
-          <div className="grid grid-cols-2 gap-4">
-            {Object.keys(features).map((feature) => (
-              <div className="relative flex items-center pr-12" key={feature}>
-                <input
-                  type="checkbox"
-                  id={`${feature}Switch`}
-                  checked={features[feature]}
-                  onChange={() => toggleFeature(feature)}
-                  className="hidden"
-                />
-                <label
-                  htmlFor={`${feature}Switch`}
-                  className="flex items-center cursor-pointer"
-                  aria-label={`Toggle ${feature} feature`}
-                >
-                  <div
-                    className={`w-10 h-6 flex items-center rounded-full p-1 ${
-                      features[feature] ? "bg-blue-500" : "bg-gray-600"
-                    }`}
-                  >
-                    <div
-                      className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
-                        features[feature] ? "translate-x-4" : "translate-x-0"
-                      }`}
-                    />
-                  </div>
-                  <p className="ml-2 capitalize">{f(feature)}</p>
-                </label>
-              </div>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 gap-4">
+  {Object.keys(features).map((feature) => (
+    <div className="relative flex items-center pr-12" key={feature}>
+      <input
+        type="checkbox"
+        id={`${feature}Switch`}
+        checked={features[feature]}
+        onChange={() => toggleFeature(feature)}
+        className="hidden"
+      />
+      <label
+        htmlFor={`${feature}Switch`}
+        className="flex items-center cursor-pointer w-full"
+        aria-label={`Toggle ${feature} feature`}
+      >
+        <div
+          className={`w-10 h-6 flex-shrink-0 flex items-center rounded-full p-1 ${
+            features[feature] ? "bg-blue-500" : "bg-gray-600"
+          }`}
+        >
+          <div
+            className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
+              features[feature] ? "translate-x-4" : "translate-x-0"
+            }`}
+          />
+        </div>
+        <p className="ml-2 capitalize truncate">{f(feature)}</p>
+      </label>
+    </div>
+  ))}
+</div>
+
         </div>
       </div>
       <button

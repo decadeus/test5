@@ -71,6 +71,9 @@
         "Modifier2":"Edit",
         "Supprimer":"Delete",
         "Action":"Action",
-        "NombreAppartement":"Number of apartments"
+        "NombreAppartement":"Number of apartments",
+        "Rechercher:":"Search",
+        "Modifié":"Modified",
+        "Data successfully saved.":"Data successfully saved."
     }
 }

@@ -69,7 +69,10 @@
         "Modifier2": "Edytuj",
         "Supprimer": "Usuń",
         "Action": "Akcja",
-        "NombreAppartement": "Liczba mieszkań"
+        "NombreAppartement": "Liczba mieszkań",
+        "Rechercher:": "Szukaj",
+        "Modifié": "Zmodyfikowany",
+        "Data successfully saved.": "Dane zostały pomyślnie zapisane."
     }
 
 }

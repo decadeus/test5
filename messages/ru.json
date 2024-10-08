@@ -71,6 +71,9 @@
         "Modifier2":"Изменить",
         "Supprimer":"Удалить",
         "Action":"Действие",
-        "NombreAppartement":"Количество квартир"
+        "NombreAppartement":"Количество квартир",
+        "Rechercher:":"Поиск",
+        "Modifié":"Изменено",
+        "Data successfully saved.":"Данные успешно сохранены."
     }
 }

@@ -67,6 +67,9 @@
         "Modifier2": "Modifier",
         "Supprimer": "Supprimer",
         "Action": "Action",
-        "NombreAppartement": "Nombre d'appartements"
+        "NombreAppartement": "Nombre d'appartements",
+        "Rechercher:": "Rechercher:",
+        "Modifié": "Modifié",
+        "Data successfully saved.": "Données enregistrées avec succès."
     }
 }
