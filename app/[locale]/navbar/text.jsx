@@ -63,64 +63,36 @@ export default function Text({ user }) {
     <>
       <button onClick={onOpen}>
         <div className="rounded-lg  border-2 p-2">
-         <p className="text-red-700">Logout</p>
+          <p className="text-white">Logout</p>
         </div>
       </button>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className="bg-gradient-to-r from-violet-600 to-indigo-600 border-blue-400 border-2"
+        className="clearbg border-2"
         shadow="lg"
         hideCloseButton={true}
       >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
+              
               <ModalBody>
-                <div className="w-full h-[300px]">
-                  {avatarUrl && (
-                    <Avatar
-                      uid={user?.id}
-                      width={2000}
-                      height={1000}
-                      url={avatarUrl}
-                      size={150}
-                      onUpload={(url) => setAvatarUrl(url)}
-                    />
-                  )}
-                </div>
-                <Input
-                  maxLength={16}
-                  fullWidth
-                  className="flex w-full"
-                  id="maintitle"
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  label="your pseudo"
-                />
-                <Button
-                  color="primary"
-                  onClick={() => {
-                    updateProfile();
-                    onClose();
-                  }}
-                  disabled={loading}
+               
+                <form
+                  action="/auth/signout"
+                  method="post"
+                  className="flex justify-center flex-col items-center"
                 >
-                  {loading ? "Updating..." : "Save"}
-                </Button>
+                  <div className="flex flex-col justify-center items-center mb-4 p-8">
+                   <h2 className="font-extrabold text-gray-700 text-xl pb-4">Are you Logging Out?</h2>
+                   <p>You can always log back in at any time</p>
+                   </div>
+                  <button type="submit">
+                    <p className="text-white text-2xl text-bold border-2 p-2 rounded-xl bg-black  ">Log out 👋</p>
+                  </button>
+                </form>
               </ModalBody>
-              <ModalFooter>
-                <div className="flex flex-col w-full justify-end">
-                  <Divider className="my-4 w-full" />
-                  <form action="/auth/signout" method="post" className="flex justify-end">
-                    <button type="submit">
-                      <p className="text-red-400">Log out</p>
-                    </button>
-                  </form>
-                </div>
-              </ModalFooter>
             </>
           )}
         </ModalContent>

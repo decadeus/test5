@@ -17,6 +17,8 @@ import {
 
 import { createClient } from "@/utils/supabase/client";
 import { FaEuroSign, FaHeart, FaRegHeart } from "react-icons/fa";
+import { TbCurrencyZloty } from "react-icons/tb";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Avatar from "@/app/getimage/project";
 import dynamic from "next/dynamic";
@@ -26,6 +28,7 @@ import { countryData } from "@/utils/countryData";
 import Link from "next/link";
 import Loading from "@/app/[locale]/loading";
 import { useTranslations } from "next-intl";
+
 
 const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
 const ITEMS_PER_PAGE = 4;
@@ -430,6 +433,7 @@ function Page() {
                   city: project?.city,
                   compagny: project?.compagny,
                   mainpic_url: project?.mainpic_url,
+                  link: project?.link,
                 }))}
                 maxLat={latLngExtremes.maxLat} // Passer maxLat
                 minLng={latLngExtremes.minLng}
@@ -457,7 +461,7 @@ function Page() {
                           />
                           {item.des && (
                             <div className="absolute top-2 left-2">
-                              <p className="text-white bgtest rounded-sm px-2 text-sm">
+                              <p className=" bg-white border-1 border-black rounded-lg text-black  px-2 text-sm">
                                 {item.des}
                               </p>
                             </div>
@@ -493,13 +497,13 @@ function Page() {
                                       </p>
                                     ) : (
                                       <p className="flex gap-1 items-center font-bold text-xl">
-                                        {item.pricetype === "PLN" ? (
-                                          <span className="flex">
-                                            {item.price}{" "}
+                                        {item.project.currency === "PLN" ? (
+                                          <span className="flex items-center">
+                                            {item.price}
                                             <TbCurrencyZloty size={20} />
                                           </span>
                                         ) : (
-                                          <span className="flex justify-center items-center text-xl">
+                                          <span className="flex items-center">
                                             {item.price}{" "}
                                             <FaEuroSign size={13} />
                                           </span>
