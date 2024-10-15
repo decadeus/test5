@@ -27,6 +27,10 @@ module.exports = {
           DEFAULT: "#2222c1",
           dark: "#004493",
         },
+        custom: {
+          brownc: "#bfae9b",
+          brownd: "#9c8164"// Couleur personnalisée
+        },
       },
       fontFamily: {
         kenia: ["var(--font-kenia)"],

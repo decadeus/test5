@@ -15,8 +15,8 @@
     "Filtre": {
         "Ajouter": "Ajouter à la liste vos projets",
         "ListeDesAppartements": "Liste des appartements",
-        "SelectionnezUnPays": "Sélectionnez un pays",
-        "SelectionnezUneVille": "Sélectionnez une ville",
+        "SelectionnezUnPays": "Pays",
+        "SelectionnezUneVille": "Ville",
         "Prix": "Prix",
         "Surface": "Surface",
         "Chambres": "Chambre",
