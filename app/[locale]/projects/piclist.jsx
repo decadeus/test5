@@ -3,29 +3,39 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 
-const Gallery = () => {
+function Gallery({ country }) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchProjects = async () => {
     const supabase = createClient();
-    const { data, error } = await supabase
+    setLoading(true);  // Activer le chargement
+
+    let query = supabase
       .from("project")
       .select("created_at, mainpic_url")
-      .order("created_at", { ascending: false }); // Tri par date de création
+      .order("created_at", { ascending: false });
+
+    // Si country est défini, ajoutez la condition. Sinon, récupérez tous les projets.
+    if (country) {
+      query = query.eq("country", country);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
       setError(error);
     } else {
-      setProjects(data); // Assigner directement les données des projets
+      setProjects(data); 
     }
-    setLoading(false);
+    setLoading(false);  // Désactiver le chargement
   };
 
+  // Exécuter fetchProjects chaque fois que le pays change
   useEffect(() => {
-    fetchProjects();
-  }, []);
+    fetchProjects(); // Appeler fetchProjects directement, car il gère la logique du pays
+  }, [country]);  // Relancer l'effet à chaque changement du pays
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;

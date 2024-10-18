@@ -4,21 +4,21 @@ import React from "react";
 
 import { FaRegUserCircle } from "react-icons/fa";
 import { Link } from "@/navigation";
- // Import the texts for different languages
+import LangSwitcher from "../components/LangSwitcher";
+// Import the texts for different languages
 
 export default function Connect() {
   // Use the language context to get the current language
-  
 
   return (
-    <Link
-      href="/login"
-      className=""
-    >
-      <div className="">
-        
-      <div className="rounded-lg  border-2 p-2">
-         <p className="text-white">Login</p>
+    <Link href="/login" className="">
+      <div className="flex gap-4">
+        <div className="flex items-center text-black ">
+          <LangSwitcher />
+        </div>
+
+        <div className="rounded-lg border-black  border-2 flex justify-center items-center  ">
+          <p className="text-black text-sm px-1">Login</p>
         </div>
       </div>
     </Link>

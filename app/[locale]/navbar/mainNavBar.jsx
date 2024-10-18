@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { createClient } from "@/utils/supabase/client";
 import { Link } from "@/navigation";
 import Image from "next/legacy/image";
@@ -14,6 +14,7 @@ import { FaRegBuilding } from "react-icons/fa";
 import { useTranslations } from "next-intl";
 import { IoSearch } from "react-icons/io5";
 import { FaNetworkWired } from "react-icons/fa";
+import { HiOutlinePlusCircle } from "react-icons/hi";
 
 export default function MainNavBar({ user }) {
   const [profile, setProfile] = useState(null);
@@ -48,7 +49,7 @@ export default function MainNavBar({ user }) {
 
   return (
     <div className="relative ">
-      <div className="flex justify-between items-center brownbg text-white px-4 py-4 xl:px-16 w-full fixed top-0 left-0 z-50 shadow-md">
+      <div className="flex justify-between items-center bg-gray-100/50 text-white px-4 py-1  w-full fixed top-0 left-0 z-50 shadow-md">
         <div className="flex justify-start items-center gap-2">
           <Link href="/">
             <div className="flex gap-2 items-center" onClick={closeMenu}>
@@ -56,14 +57,14 @@ export default function MainNavBar({ user }) {
                 <div className="w-8 h-8 rounded-full">
                   <Image
                     src={b}
-                    width={50}
-                    height={50}
+                    width={40}
+                    height={40}
                     alt="Logo"
                     className="rounded-full"
                   />
                 </div>
                 <div>
-                  <h2 className="text-white text-lg font-bold hidden sm:block">
+                  <h2 className="text-black text-sm font-bold hidden sm:block">
                     Hoomge.com
                   </h2>
                 </div>
@@ -78,7 +79,7 @@ export default function MainNavBar({ user }) {
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <svg
-            className="w-8 h-8 text-white"
+            className="w-8 h-8 text-black"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -95,34 +96,36 @@ export default function MainNavBar({ user }) {
 
         {/* Main navigation for large screens */}
         <div className="hidden xl:flex gap-12 items-center">
-          <div className="py-1 px-4  rounded-lg text-white transition-colors duration-300">
+          <div className="py-1 px-4  rounded-lg text-black transition-colors duration-300">
             <Link href="/projects" onClick={closeMenu}>
-              <span className="text-sm sm:text-lg flex items-center gap-2">
-                <IoSearch size={22} />
+              <span className="text-sm flex items-center gap-2">
+                <IoSearch size={20} />
                 {n("Rechercher")}
               </span>
             </Link>
           </div>
 
           {!user && (
-            <div className="py-1 px-4  rounded-lg text-white transition-colors duration-300 flex justify-center items-center gap-12">
-              <Link href="/addproject" onClick={closeMenu}>
-                <span className="text-sm sm:text-lg ">{n("Ajouter")}</span>
-              </Link>
-              <div className="flex items-center ">
-          <LangSwitcher />
-        </div>
+            <div className="py-1 px-4  rounded-lg text-black transition-colors duration-300 flex justify-center items-center gap-12">
+              <div className="flex gap-2 justify-center items-center">
+                <HiOutlinePlusCircle size={20} />
+
+                <Link href="/addproject" onClick={closeMenu}>
+                  <span className="text-sm">{n("Ajouter")}</span>
+                </Link>
+              </div>
+
+             
             </div>
-            
           )}
 
           {/* Grouping the /cproject link and LangSwitcher */}
           {user && (
             <div className="flex items-center gap-8">
-              <div className="flex items-center text-white">
+              <div className="flex items-center text-black">
                 <Link href="/cproject" onClick={closeMenu}>
                   <span className="flex items-center gap-2 text-lg">
-                    <FaNetworkWired size={22} /> {n("VosProjets")}
+                    <FaNetworkWired size={22} color="black" /> {n("VosProjets")}
                   </span>
                 </Link>
               </div>

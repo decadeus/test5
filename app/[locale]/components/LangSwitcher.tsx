@@ -41,9 +41,9 @@ const LangSwitcher: React.FC = () => {
     
     <div className="hidden lg:block">
       {/* Taille d'icône de 30 pour les écrans plus larges (responsive) */}
-      <FiGlobe color="white" size={20} />
+      <FiGlobe color="black" size={18} />
     </div>
-          <p className="text-2xl lg:text-lg">Language</p>
+          <p className="text-sm">Language</p>
         </Button>
         {isOptionsExpanded && (
   <div className='absolute right-0 mt-2 w-full origin-top-right rounded-md shadow-lg z-50 '>

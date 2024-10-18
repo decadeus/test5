@@ -9,24 +9,23 @@ import * as ScrollArea from "@radix-ui/react-scroll-area";
 import useCustomCursor from "@/components/useCustomCursor";
 import Link from "next/link";
 import Loading from "./loading";
-import { useTranslations} from "next-intl";
+import { useTranslations } from "next-intl";
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState("France");
+
   const t = useTranslations("Homepage");
 
   const MIN_LOADING_TIME = 1000;
-
-
 
   const fetchProjects = async () => {
     const startTime = Date.now();
     const supabase = createClient();
     const { data, error } = await supabase
       .from("project")
-      .select("*")
+      .select("*, compagny, ide, projectlist(ide, id)")
       .eq("country", selectedCountry);
 
     const elapsedTime = Date.now() - startTime;
@@ -43,6 +42,27 @@ export default function Page() {
   useEffect(() => {
     fetchProjects();
   }, [selectedCountry]);
+
+  const apartmentIDs = new Set(
+    projects
+      .filter(
+        (project) =>
+          project.projectlist &&
+          project.projectlist.some((item) => item.ide === project.id)
+      )
+      .map((project) => project.id)
+  );
+
+  const totalApartments = projects.reduce((acc, project) => {
+    // S'assurer que projectlist existe et est un tableau
+    if (project.projectlist && Array.isArray(project.projectlist)) {
+      return acc + project.projectlist.length; // Ajouter le nombre d'appartements pour ce projet
+    }
+    return acc; // Accumulateur si projectlist est vide
+  }, 0);
+
+  const uniqueCompanies = new Set(projects.map((project) => project.compagny));
+  const uniqueIdeas = new Set(projects.map((project) => project.ide));
 
   const handleCountryChange = (country) => {
     setSelectedCountry(country);
@@ -64,9 +84,6 @@ export default function Page() {
       <div className="w-full maintextfull">
         <Para t={t} />
       </div>
-    
-
-
       <div className="flex justify-center  -mt-[300px]  sm:-mt-[200px] sm:mb-[200px] mb-[200px] z-20">
         <button
           onClick={() => handleCountryChange("France")}
@@ -108,15 +125,13 @@ export default function Page() {
               H
             </h1>
           </div>
-        
+
           <h1 className="sm:text-4xl text-2xl font-bold px-4 text-center pb-[20px]">
-          {t("title")}
+            {t("title")}
           </h1>
         </div>
         <div className="flex flex-col sm:justify-center sm:items-center sm:w-1/2 px-4 sm:pr-48 gap-4">
-          <h2 className="sm:text-md ">
-          {t("Description")}
-          </h2>
+          <h2 className="sm:text-md ">{t("Description")}</h2>
           <Link
             href="/projects"
             className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
@@ -125,10 +140,17 @@ export default function Page() {
           </Link>
         </div>
       </div>
+      <div className="mb-32">
+      <Statistics
+        uniqueCompanies={uniqueCompanies}
+        uniqueIdeas={uniqueIdeas}
+        totalApartments={totalApartments}
+      />
+      </div>
 
       <div className="w-full flex flex-col justify-center xl:mb-32 lg:mb-28 md:mb-20 sm:mb-10 ">
         <h2 className="font-macondo text-black text-4xl text-center">
-        {t("TitleNew")}
+          {t("TitleNew")}
         </h2>
 
         <Scroll projects={projects} t={t} />
@@ -136,24 +158,29 @@ export default function Page() {
       <div className=""></div>
       <div className="w-full flex-col  py-8 mb-16">
         <h2 className="font-macondo  text-4xl text-center pb-8 ">
-        {t("TitleBeau")}
+          {t("TitleBeau")}
         </h2>
         <div className="flex sm:gap-4 gap-8 justify-center items-center w-full flex-col md:flex-row">
           {projects
-            .filter((p) => [10, 12, 13, 14].includes(p.id))
+            .filter((p) => [22, 23, 24].includes(p.id))
             .map((project, index) => (
-              <ScrollImage key={project.id} projects={project} index={index} t={t} />
+              <ScrollImage
+                key={project.id}
+                projects={project}
+                index={index}
+                t={t}
+              />
             ))}
         </div>
       </div>
 
       <div className="w-full flex flex-col  py-8 mb-8">
         <h2 className="font-macondo  text-4xl text-center pb-8 ">
-        {t("TitleVacance")}
+          {t("TitleVacance")}
           {/* Utiliser le texte basé sur la langue */}
         </h2>
         {projects
-          .filter((p) => [10, 12, 13, 14].includes(p.id))
+          .filter((p) => [19, 20, 21].includes(p.id))
           .map((project, index) => (
             <Demi key={project.id} projects={project} index={index} t={t} />
           ))}
@@ -166,10 +193,65 @@ export default function Page() {
           {t("Tous")}
         </Link>
       </div>
+
       <ScrollingText />
     </>
   );
 }
+const Statistics = ({ uniqueCompanies, uniqueIdeas, totalApartments }) => {
+  const [displayedCompanies, setDisplayedCompanies] = useState(0);
+  const [displayedIdeas, setDisplayedIdeas] = useState(0);
+  const [displayedApartments, setDisplayedApartments] = useState(0);
+
+  const animateCount = (target, setDisplayed) => {
+    return new Promise((resolve) => {
+      let count = 0;
+      const increment = Math.ceil(target / 100);
+      const interval = setInterval(() => {
+        if (count < target) {
+          count += increment;
+          setDisplayed(count > target ? target : count);
+        } else {
+          clearInterval(interval);
+          resolve(); // Résoudre la promesse lorsque l'animation est terminée
+        }
+      }, 10);
+    });
+  };
+
+  useEffect(() => {
+    const animateAllCounts = async () => {
+      await Promise.all([
+        animateCount(uniqueCompanies.size, setDisplayedCompanies),
+        animateCount(uniqueIdeas.size, setDisplayedIdeas),
+        animateCount(totalApartments, setDisplayedApartments),
+      ]);
+    };
+
+    animateAllCounts();
+  }, [uniqueCompanies.size, uniqueIdeas.size, totalApartments]);
+
+  const countstyle = "mt-2 text-center bg-gray-100 rounded-xl p-4 w-[150px]";
+  const countnumber = "font-semibold browntext text-2xl";
+  const counttext = "text-gray-600 text-lg";
+
+  return (
+    <div className="flex gap-8  items-center my-8 transition-shadow duration-300 transform hover:-translate-y-1 animate-fadeIn">
+      <div className={countstyle}>
+        <p className={counttext}>Companies</p>
+        <span className={countnumber}>{displayedCompanies}</span>
+      </div>
+      <div className={countstyle}>
+        <p className={counttext}>Projets</p>
+        <span className={countnumber}>{displayedIdeas}</span>
+      </div>
+      <div className={countstyle}>
+        <p className={counttext}>Appartements</p>
+        <span className={countnumber}>{displayedApartments}</span>
+      </div>
+    </div>
+  );
+};
 
 function Scroll({ projects = [], index, t }) {
   const {
@@ -306,7 +388,7 @@ function Demi({ projects, index, t }) {
         {projects.link && (
           <a href={projects.link} target="_blank" rel="noopener noreferrer">
             <p className="browntext hover:underline">
-            {t("EnSavoirPlus")} <span>{projects.name}</span>
+              {t("EnSavoirPlus")} <span>{projects.name}</span>
             </p>
           </a>
         )}
@@ -363,16 +445,12 @@ function Para({ t }) {
 
         {/* Contenu au-dessus de l'image */}
         <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-80 pl-20">
-          <h1 className="text-3xl text-left">
-          {t("subtitle")}
-          </h1>
+          <h1 className="text-3xl text-left">{t("subtitle")}</h1>
 
           <p className="text-left text-sm pt-4 flex items-center">
-          {t("defiler")} <FaLongArrowAltDown />
+            {t("defiler")} <FaLongArrowAltDown />
           </p>
         </div>
-
-       
       </div>
     </>
   );
