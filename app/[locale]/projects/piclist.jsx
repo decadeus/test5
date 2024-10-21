@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 
-function Gallery({ city }) {
+function Gallery({ city, compagny, project }) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +14,7 @@ function Gallery({ city }) {
 
     let query = supabase
       .from("project")
-      .select("created_at, mainpic_url")
+      .select("created_at, mainpic_url, name, compagny")
       .order("created_at", { ascending: false });
 
     // Si city est défini, ajoutez la condition. Sinon, récupérez tous les projets.
@@ -73,7 +73,6 @@ function Gallery({ city }) {
             </div>
           </div>
         )}
-       
       </div>
     );
   }
@@ -340,7 +339,6 @@ function Gallery({ city }) {
 
   if (projects.length === 7) {
     return (
-        
       <div className="grid grid-cols-6 grid-rows-3 gap-4 h-[600px] ">
         {/* La première image occupe deux colonnes et trois lignes */}
         <div className="col-span-3">
@@ -351,6 +349,12 @@ function Gallery({ city }) {
               height={150}
               className="rounded-xl p-0 m-0"
             />
+            <div className="absolute bottom-0 left-0 p-2">
+              <Textcp
+                project={projects[0]?.name}
+                company={projects[0]?.compagny}
+              />
+            </div>
           </div>
         </div>
 
@@ -364,6 +368,12 @@ function Gallery({ city }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+              <div className="absolute bottom-0 left-0 p-2">
+              <Textcp
+                project={projects[1]?.name}
+                company={projects[1]?.compagny}
+              />
+            </div>
             </div>
           </div>
         )}
@@ -376,6 +386,12 @@ function Gallery({ city }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+              <div className="absolute bottom-0 left-0 p-2">
+              <Textcp
+                project={projects[2]?.name}
+                company={projects[2]?.compagny}
+              />
+            </div>
             </div>
           </div>
         )}
@@ -388,6 +404,12 @@ function Gallery({ city }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+              <div className="absolute bottom-0 left-0 p-2">
+              <Textcp
+                project={projects[3]?.name}
+                company={projects[3]?.compagny}
+              />
+            </div>
             </div>
           </div>
         )}
@@ -400,6 +422,12 @@ function Gallery({ city }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+              <div className="absolute bottom-0 left-0 p-2">
+              <Textcp
+                project={projects[4]?.name}
+                company={projects[4]?.compagny}
+              />
+            </div>
             </div>
           </div>
         )}
@@ -412,10 +440,16 @@ function Gallery({ city }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+              <div className="absolute bottom-0 left-0 p-2">
+              <Textcp
+                project={projects[5]?.name}
+                company={projects[5]?.compagny}
+              />
+            </div>
             </div>
           </div>
         )}
-          {projects[6] && (
+        {projects[6] && (
           <div className="col-span-2 col-start-5 row-start-3">
             <div className="relative h-full w-full">
               <Avatar
@@ -424,6 +458,12 @@ function Gallery({ city }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+              <div className="absolute bottom-0 left-0 p-2">
+              <Textcp
+                project={projects[6]?.name}
+                company={projects[6]?.compagny}
+              />
+            </div>
             </div>
           </div>
         )}
@@ -431,10 +471,16 @@ function Gallery({ city }) {
     );
   }
 
-
-  return (
-    <div></div>
-  );
+  return <div></div>;
 }
 
 export default Gallery;
+
+function Textcp({ project, company }) {
+  return (
+    <div className="flex flex-col bg-gray-700/50 p-2">
+      <p className="text-white">{project}</p>
+      <p className="text-white">{company}</p>
+    </div>
+  );
+}
