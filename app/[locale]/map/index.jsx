@@ -65,7 +65,13 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
   }
 
   return (
-    <MapContainer center={center} zoom={4} className={classN}>
+    <MapContainer
+      center={center}
+      zoom={4}
+      className={classN}
+      minZoom={4}  // Zoom minimum autorisé
+    
+    >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

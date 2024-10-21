@@ -344,8 +344,8 @@ function Page() {
   const latLngExtremes = getLatLngExtremes(filteredProjects);
 
   return (
-    <div className="flex flex-col w-full gap-4 sm:pt-4 mt-32 bgfull text-black mb-16">
-      <h1 className="text-5xl colortest  font-satisfy pl-4">
+    <div className="flex flex-col w-full gap-4 sm:pt-4 mt-32 bgfull text-gray-700 mb-16 px-4">
+      <h1 className="text-5xl text-gray-700 font-satisfy pl-4">
         {f("ListeDesAppartements")}
       </h1>
       <div className="pl-4">
@@ -584,7 +584,11 @@ function Page() {
           </div>
         </div>
       </div>
-      <Gallery country={selectedCountries[0]}  />
+      <div className="mt-12">
+      {selectedCity !== "Select a city" && <p className=" text-2xl mb-8 pl-4 text-gray-700">Les derniers projets à <span className="font-extrabold">{selectedCity}</span></p>}
+
+      <Gallery city={selectedCity} />
+      </div>
 
     </div>
   );

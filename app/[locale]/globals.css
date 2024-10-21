@@ -119,6 +119,7 @@
   text-align: center;
   font-size: 14px;
   white-space: nowrap;
+  border: 1px solid black;
 }
 
 .bubble-content {
@@ -126,17 +127,7 @@
   z-index: 1;
 }
 
-.bubble-pointer {
-  position: absolute;
-  bottom: -10px; /* Positionne la queue sous la bulle */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid var(--bg-test); /* La couleur de la queue doit correspondre à celle de la bulle */
-}
+
 
 #building-text {
   visibility: hidden; /* Masquer le texte au départ */
@@ -268,8 +259,8 @@
 .custom-bubble {
   position: relative;
   display: inline-block;
-  background-color: #bfae9b;
-  color: white;
+  background-color: white;
+  color: rgb(55 65 81);
   padding: 8px 12px;
   border-radius: 16px;
   text-align: center;
@@ -289,10 +280,23 @@
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid #c9af95;; /* La couleur de la queue doit correspondre à celle de la bulle */
+  border-left: 10px solid transparent;  /* Triangle transparent à gauche */
+  border-right: 10px solid transparent; /* Triangle transparent à droite */
+  border-top: 10px solid rgb(55 65 81);         /* Couleur noire en haut */
 }
+
+.bubble-pointer::before {
+  content: "";
+  position: absolute;
+  top: -2px;   /* Légèrement au-dessus de la pointe pour la bordure */
+  left: -10px; /* Aligner avec la bordure gauche */
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;  /* Bordure transparente gauche */
+  border-right: 12px solid transparent; /* Bordure transparente droite */
+      /* Couleur de la pointe (haut) */
+}
+
 
 /* // Modal modify projet */
 
