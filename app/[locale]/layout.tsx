@@ -9,6 +9,7 @@ import Head from "next/head";
 import Foot from "../footer/footer";
 import { Kenia, Satisfy, Macondo } from "next/font/google";
 import { Analytics } from '@vercel/analytics/react';
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -70,6 +71,7 @@ export default async function RootLayout({
         </Providers>
         </NextIntlClientProvider>
       </body>
+      <GoogleAnalytics gaId="G-PM0XV9QPRJ" />
     </html>
   );
 }

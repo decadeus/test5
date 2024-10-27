@@ -478,7 +478,7 @@ export default Gallery;
 
 function Textcp({ project, company }) {
   return (
-    <div className="flex flex-col bg-gray-700/50 p-2">
+    <div className="flex flex-col bg-gray-900/50 p-2">
       <p className="text-white">{project}</p>
       <p className="text-white">{company}</p>
     </div>
