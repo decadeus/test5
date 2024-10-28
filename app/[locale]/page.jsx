@@ -82,6 +82,7 @@ export default function Page() {
         }
       `}</style>
       <div className="w-full maintextfull">
+       <h1>Ceci est un test</h1>
         <Para t={t} />
       </div>
       <div className="flex justify-center  -mt-[300px]  sm:-mt-[200px] sm:mb-[200px] mb-[200px] z-20">
