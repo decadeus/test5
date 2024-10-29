@@ -586,6 +586,7 @@ function Page() {
       </div>
       <div className="mt-12">
       {selectedCity !== "Select a city" && <p className=" text-2xl mb-8 pl-4 text-gray-700">Les derniers projets à <span className="font-extrabold">{selectedCity}</span></p>}
+      <p>text gallery</p>
 
       <Gallery city={selectedCity} />
       </div>
