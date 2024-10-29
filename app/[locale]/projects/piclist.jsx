@@ -45,6 +45,26 @@ function Gallery({ city, compagny, project }) {
     return <div>No images available</div>; // Ou un autre message ou rien
   }
 
+  if (projects.length === 1) {
+    return (
+      <div className="grid grid-cols-2 grid-rows-1 gap-4 h-[600px] ">
+        {/* La première image occupe deux colonnes et trois lignes */}
+        <div className="">
+          <div className="relative h-full w-full">
+            <Avatar
+              url={projects[0]?.mainpic_url} // Image 1
+              width={250}
+              height={150}
+              className="rounded-xl p-0 m-0"
+            />
+          </div>
+        </div>
+
+     
+      </div>
+    );
+  }
+
   if (projects.length === 2) {
     return (
       <div className="grid grid-cols-2 grid-rows-1 gap-4 h-[600px] ">
