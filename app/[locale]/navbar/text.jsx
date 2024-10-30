@@ -63,7 +63,7 @@ export default function Text({ user }) {
     <>
       <button onClick={onOpen}>
         <div className="rounded-lg  border-2 p-2 border-black">
-          <p className="text-black">Logout</p>
+          <p className="text-black text-xs">Logout</p>
         </div>
       </button>
       <Modal

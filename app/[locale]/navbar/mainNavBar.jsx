@@ -114,8 +114,6 @@ export default function MainNavBar({ user }) {
                   <span className="text-sm">{n("Ajouter")}</span>
                 </Link>
               </div>
-
-             
             </div>
           )}
 
@@ -129,19 +127,22 @@ export default function MainNavBar({ user }) {
                   </span>
                 </Link>
               </div>
-              <LangSwitcher />
+             
             </div>
           )}
         </div>
 
         {/* User/Connect Section */}
-        <div className="hidden xl:flex items-center gap-4">
+        <div className="hidden xl:flex pr-8 gap-4">
           {user ? (
             <div className="flex gap-2 items-center">
-              <div className="flex flex-col text-center">
-                <p>{user.email}</p>
+              <div className="flex items-center ">
+                <LangSwitcher />
               </div>
-              <div className="w-[50px] h-[50px]">
+              <div className="flex flex-col text-center">
+                <p className="text-black text-sm">{user.email}</p>
+              </div>
+              <div className="w-[50px] h-[50px] flex items-center">
                 <Text user={user} />
               </div>
             </div>
@@ -206,7 +207,7 @@ export default function MainNavBar({ user }) {
         {user ? (
           <div className="text-center space-y-4">
             <p className="font-bold text-lg">{profile?.username}</p>
-            <p>{user.email}</p>
+            <p className="text-black">{user.email}</p>
             <div className="w-[50px] h-[50px] mx-auto">
               <Text user={user} />
             </div>
