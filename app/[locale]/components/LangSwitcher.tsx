@@ -66,7 +66,7 @@ const LangSwitcher: React.FC = () => {
               }}
               className={`block w-full px-4 py-2 text-left text-sm bg-white hover:bg-gray-300 ${
                 pathname === `/${lang.code}`
-                  ? 'bg-gray-500 text-white hover:bg-gray-300 hover:text-white'
+                  ? 'bg-gray-500 text-black hover:bg-gray-300 hover:text-white'
                   : 'bg-red-300 text-blue-300'
               }`}
             >

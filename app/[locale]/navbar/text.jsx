@@ -62,8 +62,8 @@ export default function Text({ user }) {
   return (
     <>
       <button onClick={onOpen}>
-        <div className="rounded-lg  border-2 p-2">
-          <p className="text-white">Logout</p>
+        <div className="rounded-lg  border-2 p-2 border-black">
+          <p className="text-black">Logout</p>
         </div>
       </button>
       <Modal
