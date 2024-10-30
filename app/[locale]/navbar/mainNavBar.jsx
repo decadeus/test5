@@ -124,8 +124,8 @@ export default function MainNavBar({ user }) {
             <div className="flex items-center gap-8">
               <div className="flex items-center text-black">
                 <Link href="/cproject" onClick={closeMenu}>
-                  <span className="flex items-center gap-2 text-lg">
-                    <FaNetworkWired size={22} color="black" /> {n("VosProjets")}
+                  <span className="flex items-center gap-2 text-sm">
+                    <FaNetworkWired size={20} color="black" /> {n("VosProjets")}
                   </span>
                 </Link>
               </div>

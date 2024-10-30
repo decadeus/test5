@@ -61,7 +61,7 @@ export default function AvatarModal({ user }) {
 
   return (
     <div className="py-2">
-        <Button className="hide h-fit w-fit rounded-full" isIconOnly onPress={onOpen}>
+        <Button className="hide h-fit w-fit rounded-full text-black border-black" isIconOnly onPress={onOpen}>
       {avatarUrl ? (
         <Avatar
         isBordered
