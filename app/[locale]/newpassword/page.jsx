@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react';
-import { supabase } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
