@@ -2,26 +2,22 @@
 import { useState } from 'react'
 import { createClient } from "@/utils/supabase/client";
 
-export default function ChangePassword() {
+export default function NewPassword() {
   const [loading, setLoading] = useState(false)
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
   const [error, setError] = useState(null)
 
-  async function handleChangePassword(event) {
+  // Extract the token from the URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
+
+  async function handleNewPassword(event) {
     event.preventDefault()
     setLoading(true)
     setError(null)
     const supabase = createClient();
 
-    // Check if passwords match
-    if (password !== confirmPassword) {
-      setError("Passwords do not match!")
-      setLoading(false)
-      return
-    }
-
-    const { error } = await supabase.auth.update({ password })
+    const { error } = await supabase.auth.update({ password: newPassword }, { token })
 
     if (error) {
       console.error("Error updating password:", error) // Log the error for debugging
@@ -33,32 +29,21 @@ export default function ChangePassword() {
   }
 
   return (
-    <form onSubmit={handleChangePassword} className="form-widget">
+    <form onSubmit={handleNewPassword} className="form-widget">
       <div>
-        <label htmlFor="password">New Password</label>
+        <label htmlFor="newPassword">New Password</label>
         <input
-          id="password"
+          id="newPassword"
           type="password"
           required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="confirmPassword">Confirm New Password</label>
-        <input
-          id="confirmPassword"
-          type="password"
-          required
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
         />
       </div>
 
       <div>
         <button className="button block primary" type="submit" disabled={loading}>
-          {loading ? 'Loading ...' : 'Change Password'}
+          {loading ? 'Loading ...' : 'Reset Password'}
         </button>
       </div>
 
