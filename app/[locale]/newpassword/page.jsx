@@ -1,118 +1,67 @@
-'use client';
-import { useState, useEffect } from 'react';
+'use client'
+import { useState } from 'react'
 import { createClient } from "@/utils/supabase/client";
-import { useRouter, useSearchParams } from 'next/navigation';
 
-const ResetPassword = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-  const [isReady, setIsReady] = useState(false);
+export default function ChangePassword() {
+  const [loading, setLoading] = useState(false)
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState(null)
 
-  useEffect(() => {
-    // Retrieve token and type from query parameters
-    const token = searchParams.get('token');
-    const type = searchParams.get('type');
-
-    console.log("Token:", token); // Debugging: Log the token
-    console.log("Type:", type); // Debugging: Log the type
-
-    // Check if the token and type are valid for password reset
-    if (type === 'recovery' && token) {
-      const supabase = createClient();
-
-      // Attempt to set the session with the provided token
-      supabase.auth.setSession({ access_token: token }).then(({ error }) => {
-        if (error) {
-          setError('Failed to authenticate with the reset token. It may be expired or invalid.');
-          console.error('Session error:', error);
-        } else {
-          setIsReady(true);
-        }
-      }).catch((err) => {
-        setError('An unexpected error occurred while setting the session.');
-        console.error('Error setting session:', err);
-      });
-    } else {
-      setError('Invalid or expired password reset link.');
-    }
-  }, [searchParams]);
-
-  const handleResetPassword = async (event) => {
-    event.preventDefault();
-    setError('');
-    setMessage('');
-
-    // Confirm new password matches confirmation
-    if (newPassword !== confirmPassword) {
-      setError("Passwords do not match. Please try again.");
-      return;
-    }
-
+  async function handleChangePassword(event) {
+    event.preventDefault()
+    setLoading(true)
+    setError(null)
     const supabase = createClient();
 
-    // Update the user password
-    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setError("Passwords do not match!")
+      setLoading(false)
+      return
+    }
+
+    const { error } = await supabase.auth.update({ password })
 
     if (error) {
-      setError(`Failed to reset password: ${error.message}`);
+      setError(error.message)
     } else {
-      setMessage('Your password has been reset successfully! Redirecting to login...');
-      // Redirect to login page after a delay
-      setTimeout(() => router.push('/login'), 3000);
+      alert('Password updated successfully!')
     }
-  };
+    setLoading(false)
+  }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4">Reset Password</h2>
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-        {message && <p className="text-green-500 text-sm">{message}</p>}
-        {isReady ? (
-          <form onSubmit={handleResetPassword}>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="new-password">
-                New Password
-              </label>
-              <input
-                type="password"
-                id="new-password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                required
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="confirm-password">
-                Confirm New Password
-              </label>
-              <input
-                type="password"
-                id="confirm-password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-            >
-              Set New Password
-            </button>
-          </form>
-        ) : (
-          <p>Loading...</p>
-        )}
+    <form onSubmit={handleChangePassword} className="form-widget">
+      <div>
+        <label htmlFor="password">New Password</label>
+        <input
+          id="password"
+          type="password"
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </div>
-    </div>
-  );
-};
 
-export default ResetPassword;
+      <div>
+        <label htmlFor="confirmPassword">Confirm New Password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          required
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+      </div>
+
+      <div>
+        <button className="button block primary" type="submit" disabled={loading}>
+          {loading ? 'Loading ...' : 'Change Password'}
+        </button>
+      </div>
+
+      {error && <div className="error">{error}</div>}
+    </form>
+  )
+}
