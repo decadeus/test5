@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react';
-import { supabase } from '../utils/supabaseClient';
+import { createClient } from "@/utils/supabase/client";
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -9,6 +9,7 @@ const ChangePassword = () => {
   const [error, setError] = useState('');
 
   const handleChangePassword = async (event) => {
+    const supabase = createClient();
     event.preventDefault();
     setError('');
     setMessage('');
