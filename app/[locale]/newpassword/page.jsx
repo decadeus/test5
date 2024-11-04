@@ -7,20 +7,24 @@ const ResetPassword = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Access query parameters directly with `useSearchParams`
-    const accessToken = searchParams.get('access_token');
+    // Access the token using either 'access_token' or 'token' from the URL parameters
+    const token = searchParams.get('access_token') || searchParams.get('token');
     const type = searchParams.get('type');
 
-    // Check for 'recovery' type and access token
-    if (type === 'recovery' && accessToken) {
+    console.log("Token:", token);
+    console.log("Type:", type);
+
+    // Check for 'recovery' type and a valid token
+    if (type === 'recovery' && token) {
       const supabase = createClient();
       // Update the auth session with the token from URL
-      supabase.auth.setSession({ access_token: accessToken });
+      supabase.auth.setSession({ access_token: token });
       setIsReady(true);
     } else {
       setError('Invalid or expired password reset link.');
@@ -31,6 +35,12 @@ const ResetPassword = () => {
     event.preventDefault();
     setError('');
     setMessage('');
+
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match. Please try again.");
+      return;
+    }
+
     const supabase = createClient();
 
     const { error } = await supabase.auth.updateUser({
@@ -63,6 +73,19 @@ const ResetPassword = () => {
                 id="new-password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700" htmlFor="confirm-password">
+                Confirm New Password
+              </label>
+              <input
+                type="password"
+                id="confirm-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2"
               />
