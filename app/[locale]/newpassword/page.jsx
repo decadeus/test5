@@ -16,24 +16,28 @@ const ResetPassword = () => {
     const token = searchParams.get('token');
     const type = searchParams.get('type');
 
-    console.log("Token:", token); // Debugging: Log the token
-    console.log("Type:", type); // Debugging: Log the type
+    // Debug: log parameters to verify they're being captured correctly
+    console.log("Token:", token);
+    console.log("Type:", type);
 
     if (type === 'recovery' && token) {
       const supabase = createClient();
 
-      // Attempt to set the session with the provided token
-      supabase.auth.setSession({ access_token: token }).then(({ error }) => {
-        if (error) {
-          setError('Failed to authenticate with the reset token. It may be expired or invalid.');
-          console.error('Session error:', error);
-        } else {
-          setIsReady(true);
-        }
-      }).catch((err) => {
-        setError('An unexpected error occurred while setting the session.');
-        console.error('Error setting session:', err);
-      });
+      // Attempt to set the session with the token from the URL
+      supabase.auth.setSession({ access_token: token })
+        .then(({ error }) => {
+          if (error) {
+            setError('Failed to authenticate with the reset token. It may be expired or invalid.');
+            console.error('Session error:', error); // Debug: log session errors
+          } else {
+            console.log("Session successfully set"); // Debug: confirm successful session set
+            setIsReady(true);
+          }
+        })
+        .catch((err) => {
+          setError('An unexpected error occurred while setting the session.');
+          console.error('Error setting session:', err);
+        });
     } else {
       setError('Invalid or expired password reset link.');
     }
@@ -44,7 +48,7 @@ const ResetPassword = () => {
     setError('');
     setMessage('');
 
-    // Confirm new password matches confirmation
+    // Check if new password matches confirmation
     if (newPassword !== confirmPassword) {
       setError("Passwords do not match. Please try again.");
       return;
@@ -52,16 +56,14 @@ const ResetPassword = () => {
 
     const supabase = createClient();
 
-    // Update the user password using updateUser method
-    const { error } = await supabase.auth.updateUser({
-      password: newPassword,
-    });
+    // Update password using the updateUser method
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
 
     if (error) {
       setError(`Failed to reset password: ${error.message}`);
     } else {
       setMessage('Your password has been reset successfully! Redirecting to login...');
-      // Redirect to login page after a delay
+      // Redirect to login page after 3 seconds
       setTimeout(() => router.push('/login'), 3000);
     }
   };
