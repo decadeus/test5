@@ -1,30 +1,31 @@
-'use client'
+'use client';
 import { useState, useEffect } from 'react';
 import { createClient } from "@/utils/supabase/client";
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const ResetPassword = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Ensure router is ready before accessing query params
-    if (router.isReady) {
-      const { access_token, type } = router.query;
+    // Access query parameters directly with `useSearchParams`
+    const accessToken = searchParams.get('access_token');
+    const type = searchParams.get('type');
 
-      // Check for the 'recovery' type and access token
-      if (type === 'recovery' && access_token) {
-        // Update the auth session with the token from URL
-        supabase.auth.setSession({ access_token });
-        setIsReady(true);
-      } else {
-        setError('Invalid or expired password reset link.');
-      }
+    // Check for 'recovery' type and access token
+    if (type === 'recovery' && accessToken) {
+      const supabase = createClient();
+      // Update the auth session with the token from URL
+      supabase.auth.setSession({ access_token: accessToken });
+      setIsReady(true);
+    } else {
+      setError('Invalid or expired password reset link.');
     }
-  }, [router.isReady, router.query]);
+  }, [searchParams]);
 
   const handleResetPassword = async (event) => {
     event.preventDefault();
@@ -40,7 +41,7 @@ const ResetPassword = () => {
       setError(error.message);
     } else {
       setMessage('Your password has been reset successfully!');
-      // Optionally, redirect to login page after a few seconds
+      // Redirect to login page after a few seconds
       setTimeout(() => router.push('/login'), 3000);
     }
   };
