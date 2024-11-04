@@ -13,19 +13,22 @@ const ResetPassword = () => {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Access the token using either 'access_token' or 'token' from the URL parameters
+    // Retrieve token and type from query parameters
     const token = searchParams.get('access_token') || searchParams.get('token');
     const type = searchParams.get('type');
 
-    console.log("Token:", token);
-    console.log("Type:", type);
-
-    // Check for 'recovery' type and a valid token
+    // Check if the token and type are valid for password reset
     if (type === 'recovery' && token) {
       const supabase = createClient();
-      // Update the auth session with the token from URL
-      supabase.auth.setSession({ access_token: token });
-      setIsReady(true);
+      
+      // Use the token to set a session in Supabase
+      supabase.auth.setSession({ access_token: token }).then(({ error }) => {
+        if (error) {
+          setError('Failed to authenticate with the reset token. It may be expired or invalid.');
+        } else {
+          setIsReady(true);
+        }
+      });
     } else {
       setError('Invalid or expired password reset link.');
     }
@@ -36,6 +39,7 @@ const ResetPassword = () => {
     setError('');
     setMessage('');
 
+    // Confirm new password and confirmation match
     if (newPassword !== confirmPassword) {
       setError("Passwords do not match. Please try again.");
       return;
@@ -43,15 +47,14 @@ const ResetPassword = () => {
 
     const supabase = createClient();
 
-    const { error } = await supabase.auth.updateUser({
-      password: newPassword,
-    });
+    // Update the user password
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
 
     if (error) {
-      setError(error.message);
+      setError(`Failed to reset password: ${error.message}`);
     } else {
-      setMessage('Your password has been reset successfully!');
-      // Redirect to login page after a few seconds
+      setMessage('Your password has been reset successfully! Redirecting to login...');
+      // Redirect to login page after a delay
       setTimeout(() => router.push('/login'), 3000);
     }
   };
