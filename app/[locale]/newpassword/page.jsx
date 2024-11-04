@@ -13,21 +13,27 @@ const ResetPassword = () => {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Retrieve token and type from query parameters
-    const token = searchParams.get('access_token') || searchParams.get('token');
+    const token = searchParams.get('token');
     const type = searchParams.get('type');
 
-    // Check if the token and type are valid for password reset
+    // Debugging: Log the token and type
+    console.log("Token:", token);
+    console.log("Type:", type);
+
     if (type === 'recovery' && token) {
       const supabase = createClient();
       
-      // Use the token to set a session in Supabase
+      // Attempt to set the session with the provided token
       supabase.auth.setSession({ access_token: token }).then(({ error }) => {
         if (error) {
           setError('Failed to authenticate with the reset token. It may be expired or invalid.');
+          console.error('Session error:', error);
         } else {
           setIsReady(true);
         }
+      }).catch((err) => {
+        setError('An unexpected error occurred while setting the session.');
+        console.error('Error setting session:', err);
       });
     } else {
       setError('Invalid or expired password reset link.');
@@ -39,7 +45,7 @@ const ResetPassword = () => {
     setError('');
     setMessage('');
 
-    // Confirm new password and confirmation match
+    // Confirm new password matches confirmation
     if (newPassword !== confirmPassword) {
       setError("Passwords do not match. Please try again.");
       return;
