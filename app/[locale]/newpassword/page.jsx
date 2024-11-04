@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { supabase } from './supabaseClient'
+import { createClient } from "@/utils/supabase/client";
 
 export default function ChangePassword() {
   const [loading, setLoading] = useState(false)
@@ -12,6 +12,7 @@ export default function ChangePassword() {
     event.preventDefault()
     setLoading(true)
     setError(null)
+    const supabase = createClient();
 
     // Check if passwords match
     if (password !== confirmPassword) {
