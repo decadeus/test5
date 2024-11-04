@@ -13,16 +13,17 @@ const ResetPassword = () => {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
+    // Retrieve token and type from query parameters
     const token = searchParams.get('token');
     const type = searchParams.get('type');
 
-    // Debugging: Log the token and type
-    console.log("Token:", token);
-    console.log("Type:", type);
+    console.log("Token:", token); // Debugging: Log the token
+    console.log("Type:", type); // Debugging: Log the type
 
+    // Check if the token and type are valid for password reset
     if (type === 'recovery' && token) {
       const supabase = createClient();
-      
+
       // Attempt to set the session with the provided token
       supabase.auth.setSession({ access_token: token }).then(({ error }) => {
         if (error) {
