@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from './supabaseClient'
 
 export default function ChangePassword() {
   const [loading, setLoading] = useState(false)
@@ -12,7 +12,6 @@ export default function ChangePassword() {
     event.preventDefault()
     setLoading(true)
     setError(null)
-    const supabase = createClient();
 
     // Check if passwords match
     if (password !== confirmPassword) {
@@ -24,11 +23,12 @@ export default function ChangePassword() {
     const { error } = await supabase.auth.update({ password })
 
     if (error) {
+      console.error("Error updating password:", error) // Log the error for debugging
       setError(error.message)
     } else {
       alert('Password updated successfully!')
     }
-    setLoading(false)
+    setLoading(false) // Ensure loading state is reset
   }
 
   return (
