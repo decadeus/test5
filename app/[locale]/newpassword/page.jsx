@@ -15,33 +15,34 @@ const ResetPassword = () => {
   useEffect(() => {
     const token = searchParams.get('token');
     const type = searchParams.get('type');
-
-    // Debug: log parameters to verify they're being captured correctly
+  
+    // Log parameters to help debug missing values
     console.log("Token:", token);
     console.log("Type:", type);
-
-    if (type === 'recovery' && token) {
-      const supabase = createClient();
-
-      // Attempt to set the session with the token from the URL
-      supabase.auth.setSession({ access_token: token })
-        .then(({ error }) => {
-          if (error) {
-            setError('Failed to authenticate with the reset token. It may be expired or invalid.');
-            console.error('Session error:', error); // Debug: log session errors
-          } else {
-            console.log("Session successfully set"); // Debug: confirm successful session set
-            setIsReady(true);
-          }
-        })
-        .catch((err) => {
-          setError('An unexpected error occurred while setting the session.');
-          console.error('Error setting session:', err);
-        });
-    } else {
-      setError('Invalid or expired password reset link.');
+  
+    if (!token || type !== 'recovery') {
+      setError('Invalid or expired password reset link.'); 
+      console.error("Missing or invalid 'type' parameter:", type);
+      return;
     }
+  
+    const supabase = createClient();
+  
+    supabase.auth.setSession({ access_token: token })
+      .then(({ error }) => {
+        if (error) {
+          setError('Failed to authenticate with the reset token. It may be expired or invalid.');
+          console.error('Session error:', error); // Log session errors for debugging
+        } else {
+          setIsReady(true);
+        }
+      })
+      .catch((err) => {
+        setError('An unexpected error occurred while setting the session.');
+        console.error('Error setting session:', err);
+      });
   }, [searchParams]);
+  
 
   const handleResetPassword = async (event) => {
     event.preventDefault();
