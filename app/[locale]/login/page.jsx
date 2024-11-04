@@ -1,7 +1,7 @@
-'use client'
+'use client';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { createClient } from "@/utils/supabase/client";
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
 
 export default function LoginPage() {
   const [message, setMessage] = useState('');
@@ -9,16 +9,20 @@ export default function LoginPage() {
   const supabase = createClient();
 
   useEffect(() => {
-    // Listen for authentication changes and refresh the page on sign-in
+    // Listen for authentication state changes
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN') {
         setMessage('Logged in successfully! Redirecting...');
-        // Redirect to home or dashboard
-        setTimeout(() => router.push('/dashboard'), 2000);
+        // Redirect to the dashboard or home page after successful sign-in
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 2000);
+      } else if (event === 'SIGNED_OUT') {
+        setMessage('You have been signed out.');
       }
     });
 
-    // Cleanup the listener on component unmount
+    // Cleanup listener on component unmount
     return () => {
       authListener?.unsubscribe();
     };
