@@ -12,6 +12,7 @@ const ChangePassword = () => {
     event.preventDefault();
     setError('');
     setMessage('');
+    const supabase = createClient();
 
     // Fetch the current user
     const { data: { user }, error: userError } = await supabase.auth.getUser();
