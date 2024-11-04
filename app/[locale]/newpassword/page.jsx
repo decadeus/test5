@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react';
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -9,24 +9,36 @@ const ChangePassword = () => {
   const [error, setError] = useState('');
 
   const handleChangePassword = async (event) => {
-    const supabase = createClient();
     event.preventDefault();
     setError('');
     setMessage('');
 
-    const user = supabase.auth.user();
+    // Fetch the current user
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
 
-    if (!user) {
+    if (userError || !user) {
       setError('You must be logged in to change your password.');
       return;
     }
 
-    const { error } = await supabase.auth.update({
+    // Re-authenticate user with current password
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: user.email,
+      password: currentPassword,
+    });
+
+    if (signInError) {
+      setError("Current password is incorrect.");
+      return;
+    }
+
+    // Update to new password if re-authentication succeeded
+    const { error: updateError } = await supabase.auth.updateUser({
       password: newPassword,
     });
 
-    if (error) {
-      setError(error.message);
+    if (updateError) {
+      setError(updateError.message);
     } else {
       setMessage('Password changed successfully!');
     }
