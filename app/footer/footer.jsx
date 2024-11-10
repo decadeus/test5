@@ -1,4 +1,5 @@
 import React from "react";
+import LinK from "next/link";
 import Image from "next/legacy/image";
 import { FaTwitter } from "react-icons/fa";
 
@@ -14,12 +15,16 @@ export default function Foot() {
 
         {/* Middle Section */}
         <div className="flex flex-col items-center sm:items-start">
-          <p className="text-xs sm:text-sm font-semibold hover:text-white cursor-pointer">
-            Terms and Conditions
-          </p>
-          <p className="text-xs sm:text-sm font-semibold hover:text-white cursor-pointer">
-            Add a Property Terms of Service
-          </p>
+          <LinK
+         
+            href="/en/cgu">Terms and Conditions
+          
+          </LinK>
+          <LinK
+         
+         href="/en/pdc">Privacy Policy
+       
+       </LinK>
         </div>
 
         {/* Right Section */}
