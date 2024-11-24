@@ -804,6 +804,7 @@ function FilterB({
                 variant="light"
                 radius="none"
                 className="border border-gray-300 rounded-2xl h-fit py-[7px]  w-[150px] bg-white text-left flex justify-start "
+                id="equip"
               >
                 <p className="text-left text-[11px] font-light text-gray-500">
                   {f("Residence")}({countChecked()})
@@ -812,7 +813,8 @@ function FilterB({
               <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                   {(onClose) => (
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 p-4">
+                
                       {facilities.map(
                         ({ id, label, value, selected, onChange }) => (
                           <CheckboxGroup
@@ -827,9 +829,7 @@ function FilterB({
                             <Checkbox value={value}>
                               <div className="flex items-center">
                                 <p className="mr-2">{label}</p>
-                                <span className="text-xs text-gray-500">
-                                  ({countChecked([selected])})
-                                </span>
+                               
                               </div>
                             </Checkbox>
                           </CheckboxGroup>
@@ -917,217 +917,7 @@ function FilterB({
           </div>
         </div>
       </div>
-      <div className="lg:hidden block">
-        <div className="w-full flex justify-center">
-          <Button
-            onPress={onOpen}
-            className="mb-4 bg-gray-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200 w-fit"
-          >
-            Filtre
-          </Button>
-        </div>
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-          <ModalContent>
-            {(onClose) => (
-              <>
-                <ModalBody className="bg-gray-50 p-6 rounded-lg shadow-lg max-h-[70vh] overflow-y-auto">
-                  <div className="flex flex-col w-full">
-                    {/* Container for the select inputs */}
-                    <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-                      {/* Country Select */}
-                      <div className="w-full md:w-1/2">
-                        <select
-                          value={editableCountry}
-                          onChange={handleCountryChange}
-                          className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600 text-sm w-full shadow-sm hover:shadow-md transition duration-150"
-                        >
-                          <option value="" className="text-red-300">
-                            {f("SelectionnezUnPays")}
-                          </option>
-                          {Object.keys(countryData).map((country) => (
-                            <option
-                              key={country}
-                              value={country}
-                              className="text-black"
-                            >
-                              {country}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
 
-                      {/* City Select */}
-                      <div className="w-full md:w-1/2">
-                        <select
-                          value={editableCity}
-                          onChange={handleCityChange}
-                          className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600 text-sm w-full shadow-sm hover:shadow-md transition duration-150"
-                        >
-                          <option
-                            value="Select a city"
-                            className="text-red-300"
-                          >
-                            {f("SelectionnezUneVille")}
-                          </option>
-                          {cities.map((city, index) => (
-                            <option
-                              key={index}
-                              value={city}
-                              className="text-black"
-                            >
-                              {city}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-
-                    {/* Checkboxes for filtering options */}
-                    <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-                      <div className="flex items-center">
-                        <Checkbox
-                          isChecked={showFavorites}
-                          onChange={(e) => onFavoritesChange(e.target.checked)}
-                          color="bgmap"
-                          aria-label="favorite"
-                          size="sm"
-                        >
-                          <span className="ml-2 text-gray-600">
-                            {f("MesFavoris")}
-                          </span>
-                        </Checkbox>
-                      </div>
-
-                      <div className="flex items-center">
-                        <Checkbox
-                          isChecked={selectedGarden}
-                          onChange={(e) => onGardenChange(e.target.checked)}
-                          color="bgmap"
-                          aria-label="Garden"
-                          size="sm"
-                        >
-                          <span className="ml-2 text-gray-600">
-                            {f("AvecJardin")}
-                          </span>
-                        </Checkbox>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap justify-between gap-4 mb-4">
-                      {modalData.map(
-                        ({
-                          label,
-                          range,
-                          onRangeChange,
-                          min,
-                          max,
-                          step,
-                          isOpen,
-                          setIsOpen,
-                          id,
-                        }) => (
-                          <div
-                            key={id}
-                            className="flex flex-col w-full md:w-1/3"
-                          >
-                            <Button
-                              onClick={() => setIsOpen(true)}
-                              variant="light"
-                              radius="none"
-                              className="bg-white border border-gray-300 rounded-md p-3 text-sm font-medium text-blue-600 hover:bg-blue-100 transition duration-150"
-                            >
-                              <div className="flex justify-between">
-                                <p className="text-gray-700">{label}</p>
-                                <p className="text-gray-500">
-                                  ({range[0]} - {range[1]})
-                                </p>
-                              </div>
-                            </Button>
-                            <Modal
-                              isOpen={isOpen}
-                              onOpenChange={setIsOpen}
-                              id={id}
-                            >
-                              <ModalContent>
-                                {(onClose) => (
-                                  <div className="flex flex-col p-4 bg-white rounded-lg shadow-lg">
-                                    <h3 className="font-semibold text-lg mb-4">
-                                      {label}
-                                    </h3>
-                                    <div className="flex justify-between mb-2">
-                                      <div className="border-2 border-gray-300 rounded-md w-1/2 p-2 bg-gray-100">
-                                        <p className="font-semibold text-sm">
-                                          Min
-                                        </p>
-                                        <p>{range[0]}</p>
-                                      </div>
-                                      <div className="border-2 border-gray-300 rounded-md w-1/2 p-2 bg-gray-100">
-                                        <p className="font-semibold text-sm">
-                                          Max
-                                        </p>
-                                        <p>{range[1]}</p>
-                                      </div>
-                                    </div>
-                                    <Slider
-                                      min={min}
-                                      max={max}
-                                      step={step}
-                                      value={range}
-                                      onChange={onRangeChange}
-                                      className="max-w-md mt-4"
-                                      color="bgmap"
-                                      aria-label={label}
-                                      size="sm"
-                                    />
-                                  </div>
-                                )}
-                              </ModalContent>
-                            </Modal>
-                          </div>
-                        )
-                      )}
-                    </div>
-
-                    {/* Directly display the list of checkboxes for residence */}
-                    <div className="flex flex-col">
-                      <h3 className="font-semibold text-lg mb-2">Résidences</h3>
-                      {facilities.map(
-                        ({ id, label, value, selected, onChange }) => (
-                          <CheckboxGroup
-                            key={id}
-                            id={id}
-                            value={selected ? [value] : []}
-                            onChange={onChange}
-                            color="bgmap"
-                            orientation="vertical"
-                            aria-label={label}
-                          >
-                            <Checkbox value={value}>
-                              <div className="flex items-center">
-                                <span className="mr-2 text-gray-700">
-                                  {label}
-                                </span>
-                              </div>
-                            </Checkbox>
-                          </CheckboxGroup>
-                        )
-                      )}
-                    </div>
-                  </div>
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="danger" variant="light" onPress={onClose}>
-                    Fermer
-                  </Button>
-                  <Button color="primary" onPress={onClose}>
-                    Action
-                  </Button>
-                </ModalFooter>
-              </>
-            )}
-          </ModalContent>
-        </Modal>
-      </div>
     </div>
   );
 }
