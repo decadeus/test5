@@ -16,8 +16,6 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 
-
-
 import { createClient } from "@/utils/supabase/client";
 import { FaEuroSign, FaHeart, FaRegHeart } from "react-icons/fa";
 import { TbCurrencyZloty } from "react-icons/tb";
@@ -100,23 +98,17 @@ function Page() {
     setLoading(false);
   };
 
-
-
   useEffect(() => {
     fetchProjects();
   }, [sortKey]);
 
-
   console.log("Pays sélectionnés :", selectedCountries);
-
 
   useEffect(() => {
     const storedFavorites =
       JSON.parse(localStorage.getItem(NEW_FAVORITE_APARTMENTS_KEY)) || [];
     setFavorites(storedFavorites);
   }, []);
-
-
 
   useEffect(() => {
     setCurrentPage(1);
@@ -181,7 +173,7 @@ function Page() {
       const isInCountry =
         selectedCountries.length === 0 ||
         selectedCountries.includes(project.project.country);
-      
+
       const isInCity =
         selectedCity === "Select a city" ||
         selectedCity === project.project.city;
@@ -226,9 +218,6 @@ function Page() {
     showFavorites,
     favorites,
   ]);
-
- 
-  
 
   useEffect(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -350,7 +339,7 @@ function Page() {
       <h1 className="text-5xl text-gray-700 font-satisfy pl-4">
         {f("ListeDesAppartements")}
       </h1>
-    
+
       <div className="pl-4">
         <div className="flex  w-full my-8 ">
           <Link
@@ -365,7 +354,7 @@ function Page() {
         <div className="w-1/2 flex flex-col">
           <div className="">
             <div className="flex justify-between items-center mb-4 px-2">
-              <p className="flex text-xs text-center text-gray-500 w-full">
+              <p className="flex text-md text-center text-gray-800 w-full">
                 Total: {filteredProjects.length} {f("AppartementTrouve")}
               </p>
               <div className="flex sm:flex-row flex-col sm:items-center items-end sm:w-full w-1/2">
@@ -513,6 +502,7 @@ function Page() {
                                     borderWeight="none"
                                     containerPadding={0} // Supprime la bordure
                                     shadow="lg" // Supprime l'ombre
+                                    placement="left"
                                   >
                                     <p>
                                       <PiEyeThin size={20} />
@@ -588,12 +578,15 @@ function Page() {
         </div>
       </div>
       <div className="mt-12">
-      {selectedCity !== "Select a city" && <p className=" text-2xl mb-8 pl-4 text-gray-700">Les derniers projets à <span className="font-extrabold">{selectedCity}</span></p>}
-   
+        {selectedCity !== "Select a city" && (
+          <p className=" text-2xl mb-8 pl-4 text-gray-700">
+            Les derniers projets à{" "}
+            <span className="font-extrabold">{selectedCity}</span>
+          </p>
+        )}
 
-      <Gallery city={selectedCity} />
+        <Gallery city={selectedCity} />
       </div>
-
     </div>
   );
 }
@@ -641,7 +634,7 @@ function FilterB({
   const [editableCountry, setEditableCountry] = useState("");
   const [editableCity, setEditableCity] = useState("Select a city");
 
-  const colorfilter = "text-gray-400 text-xs";
+  const colorfilter = "text-gray-800 text-xs";
   useEffect(() => {
     if (editableCountry && countryData[editableCountry]) {
       setCities(countryData[editableCountry]);
@@ -663,9 +656,6 @@ function FilterB({
     setEditableCity(selectedCity);
     onCityChange(selectedCity);
   };
-
-
-  
 
   const facilities = [
     {
@@ -770,7 +760,7 @@ function FilterB({
               <select
                 value={editableCountry}
                 onChange={handleCountryChange}
-                className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs w-[150px]"
+                className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-xs w-[150px]"
               >
                 <option value="" className="text-red-300">
                   {f("SelectionnezUnPays")}
@@ -787,11 +777,10 @@ function FilterB({
               <select
                 value={editableCity}
                 onChange={handleCityChange}
-                className="border border-gray-300 pl-2 rounded-2xl py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-400 text-xs w-[150px]"
+                className="border border-gray-300 pl-2 rounded-2xl py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-xs w-[150px]"
               >
                 <option value="Select a city" className="text-red-300">
-                {f("SelectionnezUneVille")}
-
+                  {f("SelectionnezUneVille")}
                 </option>
                 {cities.map((city, index) => (
                   <option key={index} value={city} className="text-black">
@@ -809,7 +798,7 @@ function FilterB({
                 className="border border-gray-300 rounded-2xl h-fit py-[7px]  w-[150px] bg-white text-left flex justify-start "
                 id="equip"
               >
-                <p className="text-left text-[11px] font-light text-gray-500">
+                <p className="text-left text-[11px]  text-gray-800">
                   {f("Residence")}({countChecked()})
                 </p>
               </Button>
@@ -817,7 +806,6 @@ function FilterB({
                 <ModalContent>
                   {(onClose) => (
                     <div className="flex flex-col gap-2 p-4">
-                
                       {facilities.map(
                         ({ id, label, value, selected, onChange }) => (
                           <CheckboxGroup
@@ -832,7 +820,6 @@ function FilterB({
                             <Checkbox value={value}>
                               <div className="flex items-center">
                                 <p className="mr-2">{label}</p>
-                               
                               </div>
                             </Checkbox>
                           </CheckboxGroup>
@@ -896,6 +883,7 @@ function FilterB({
                           )}
                           aria-label={label}
                         />
+                        
                       </div>
                     </div>
                   )
@@ -920,7 +908,6 @@ function FilterB({
           </div>
         </div>
       </div>
-
     </div>
   );
 }

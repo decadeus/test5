@@ -2,11 +2,14 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
+import Link from "next/link";
 
 function Gallery({ city, compagny, project }) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const SBI = "bg-yellow-700 p-2 rounded-sm text-white";
 
   const fetchProjects = async () => {
     const supabase = createClient();
@@ -14,7 +17,7 @@ function Gallery({ city, compagny, project }) {
 
     let query = supabase
       .from("project")
-      .select("created_at, mainpic_url, name, compagny")
+      .select("created_at, mainpic_url, name, compagny, link")
       .order("created_at", { ascending: false });
 
     // Si city est défini, ajoutez la condition. Sinon, récupérez tous les projets.
@@ -59,8 +62,6 @@ function Gallery({ city, compagny, project }) {
             />
           </div>
         </div>
-
-     
       </div>
     );
   }
@@ -77,6 +78,12 @@ function Gallery({ city, compagny, project }) {
               height={150}
               className="rounded-xl p-0 m-0"
             />
+            <Link
+              href={projects[0]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[0]?.name}</p>
+            </Link>
           </div>
         </div>
 
@@ -90,6 +97,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[1]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[1]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -109,6 +122,12 @@ function Gallery({ city, compagny, project }) {
               height={150}
               className="rounded-xl p-0 m-0"
             />
+             <Link
+              href={projects[0]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[0]?.name}</p>
+            </Link>
           </div>
         </div>
 
@@ -122,6 +141,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[1]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[1]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -134,6 +159,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[2]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[2]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -153,6 +184,12 @@ function Gallery({ city, compagny, project }) {
               height={150}
               className="rounded-xl p-0 m-0"
             />
+             <Link
+              href={projects[0]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[0]?.name}</p>
+            </Link>
           </div>
         </div>
 
@@ -166,6 +203,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[1]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[1]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -178,6 +221,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[2]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[2]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -190,6 +239,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[3]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[3]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -202,6 +257,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[4]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[4]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -221,6 +282,12 @@ function Gallery({ city, compagny, project }) {
               height={150}
               className="rounded-xl p-0 m-0"
             />
+             <Link
+              href={projects[0]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[0]?.name}</p>
+            </Link>
           </div>
         </div>
 
@@ -234,6 +301,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[1]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[1]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -246,6 +319,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[2]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[2]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -258,6 +337,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[3]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[3]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -270,6 +355,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[4]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[4]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -289,6 +380,12 @@ function Gallery({ city, compagny, project }) {
               height={150}
               className="rounded-xl p-0 m-0"
             />
+             <Link
+              href={projects[0]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[0]?.name}</p>
+            </Link>
           </div>
         </div>
 
@@ -302,6 +399,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[1]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[1]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -314,6 +417,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[2]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[2]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -326,6 +435,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[3]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[3]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -338,6 +453,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[4]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[4]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -350,6 +471,12 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[5]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[5]?.name}</p>
+            </Link>
             </div>
           </div>
         )}
@@ -369,6 +496,12 @@ function Gallery({ city, compagny, project }) {
               height={150}
               className="rounded-xl p-0 m-0"
             />
+             <Link
+              href={projects[0]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[0]?.name}</p>
+            </Link>
             <div className="absolute bottom-0 left-0 p-2">
               <Textcp
                 project={projects[0]?.name}
@@ -388,12 +521,18 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[1]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[1]?.name}</p>
+            </Link>
               <div className="absolute bottom-0 left-0 p-2">
-              <Textcp
-                project={projects[1]?.name}
-                company={projects[1]?.compagny}
-              />
-            </div>
+                <Textcp
+                  project={projects[1]?.name}
+                  company={projects[1]?.compagny}
+                />
+              </div>
             </div>
           </div>
         )}
@@ -406,12 +545,18 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[2]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[2]?.name}</p>
+            </Link>
               <div className="absolute bottom-0 left-0 p-2">
-              <Textcp
-                project={projects[2]?.name}
-                company={projects[2]?.compagny}
-              />
-            </div>
+                <Textcp
+                  project={projects[2]?.name}
+                  company={projects[2]?.compagny}
+                />
+              </div>
             </div>
           </div>
         )}
@@ -424,12 +569,18 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[3]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[3]?.name}</p>
+            </Link>
               <div className="absolute bottom-0 left-0 p-2">
-              <Textcp
-                project={projects[3]?.name}
-                company={projects[3]?.compagny}
-              />
-            </div>
+                <Textcp
+                  project={projects[3]?.name}
+                  company={projects[3]?.compagny}
+                />
+              </div>
             </div>
           </div>
         )}
@@ -442,12 +593,18 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[4]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[4]?.name}</p>
+            </Link>
               <div className="absolute bottom-0 left-0 p-2">
-              <Textcp
-                project={projects[4]?.name}
-                company={projects[4]?.compagny}
-              />
-            </div>
+                <Textcp
+                  project={projects[4]?.name}
+                  company={projects[4]?.compagny}
+                />
+              </div>
             </div>
           </div>
         )}
@@ -460,12 +617,18 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[5]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[5]?.name}</p>
+            </Link>
               <div className="absolute bottom-0 left-0 p-2">
-              <Textcp
-                project={projects[5]?.name}
-                company={projects[5]?.compagny}
-              />
-            </div>
+                <Textcp
+                  project={projects[5]?.name}
+                  company={projects[5]?.compagny}
+                />
+              </div>
             </div>
           </div>
         )}
@@ -478,12 +641,18 @@ function Gallery({ city, compagny, project }) {
                 height={150}
                 className="rounded-xl p-0 m-0"
               />
+               <Link
+              href={projects[6]?.link}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[6]?.name}</p>
+            </Link>
               <div className="absolute bottom-0 left-0 p-2">
-              <Textcp
-                project={projects[6]?.name}
-                company={projects[6]?.compagny}
-              />
-            </div>
+                <Textcp
+                  project={projects[6]?.name}
+                  company={projects[6]?.compagny}
+                />
+              </div>
             </div>
           </div>
         )}
