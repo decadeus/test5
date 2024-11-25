@@ -88,9 +88,9 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
             position={[todo.lat, todo.lng]}
             icon={createTextIcon(todo.name)} // Utilisation d'un texte comme icône
           >
-            <Popup maxWidth={450} className="p-0 m-0">
-              <div className="bg-white shadow-md overflow-hidden w-full transition-transform duration-300 hover:scale-105 p-5 rounded-lg">
-                <div className="relative h-36 w-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-t-lg">
+            <Popup  className="w-[300px] bg-red-300">
+              <div className="bg-white shadow-sm overflow-hidden w-full transition-transform duration-300 hover:scale-105 rounded-lg">
+                <div className="relative h-44 w-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-t-lg">
                   <Avatar
                     url={todo.mainpic_url || a}
                     width={350}
@@ -99,26 +99,27 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
                     alt="Project Image"
                   />
                 </div>
-                <div className="px-5">
-                  <h2 className="font-bold text-2xl text-gray-900 ">
+                <div className="">
+                  <h2 className="font-bold text-xl text-gray-900 ">
                     {todo.name}
                   </h2>
                   <div className="text-gray-700 text-sm">
                     <span className="text-base font-medium text-gray-800 ">
                       By {todo.compagny}
                     </span>
-                    <div className="flex gap-2 ">
-                      <span className="pr-2 py-0.5 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded-full">
-                        {todo.country}
-                      </span>
-                      <span className="py-0.5 bg-gray-100 text-gray-800 text-xs font-semibold rounded-full">
+                    <div className="flex gap-1 mt-2 ">
+                    <span className="">
                         {todo.city}
                       </span>
+                      <span className="font-bold">
+                        {todo.country}
+                      </span>
+                    
                     </div>
                   </div>
                   <div className="mt-4 flex justify-center">
                     <Link href={`${todo.link}`}>
-                      <button className="w-full py-2 px-4 flex items-center justify-center text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-full hover:from-purple-600 hover:to-blue-600 transition duration-300 shadow-lg transform hover:scale-105">
+                      <button className="w-full py-2 px-4 flex items-center justify-center text-white bg-gradient-to-r from-yellow-800 to-yellow-700 rounded-full  shadow-lg transform hover:scale-105">
                         <svg
                           className="w-5 h-5 mr-2"
                           fill="none"

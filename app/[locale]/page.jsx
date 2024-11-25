@@ -82,7 +82,6 @@ export default function Page() {
         }
       `}</style>
       <div className="w-full maintextfull">
-        <p> Test de le creation d'une branche</p>
       
         <Para t={t} />
       </div>

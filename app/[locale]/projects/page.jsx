@@ -16,6 +16,8 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 
+import ListCV from "./listCV"
+
 import { createClient } from "@/utils/supabase/client";
 import { FaEuroSign, FaHeart, FaRegHeart } from "react-icons/fa";
 import { TbCurrencyZloty } from "react-icons/tb";
@@ -87,7 +89,7 @@ function Page() {
     const { data, error } = await supabase
       .from("projectlist")
       .select(
-        "*, project(*, created_at, city, lat, lng, mainpic_url, swim, fitness, child, disabled, bike, cctv, entrance)"
+        "*, project(*, created_at, city, lat, lng, mainpic_url, swim, fitness, child, disabled, bike, cctv, entrance, country)"
       )
       .order(sortKey, { ascending: false });
     if (error) {
@@ -348,6 +350,7 @@ function Page() {
       <h1 className="text-5xl text-gray-700 font-satisfy pl-4">
         {f("ListeDesAppartements")}
       </h1>
+      <ListCV />
       <div className="pl-4">
         <div className="flex  w-full my-8 ">
           <Link
@@ -586,7 +589,7 @@ function Page() {
       </div>
       <div className="mt-12">
       {selectedCity !== "Select a city" && <p className=" text-2xl mb-8 pl-4 text-gray-700">Les derniers projets à <span className="font-extrabold">{selectedCity}</span></p>}
-      <p>text gallery eeyyyy</p>
+   
 
       <Gallery city={selectedCity} />
       </div>
