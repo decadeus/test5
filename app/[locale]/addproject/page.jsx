@@ -7,7 +7,7 @@ import { useMemo } from "react";
 export default function MainPage() {
   const containerStyle =
     "flex flex-col items-center  w-[1200px] pt-32 pb-32 px-4";
-  const headerStyle = "text-4xl font-bold text-black text-center";
+  const headerStyle = "text-4xl font-bold text-black text-center mb-8";
   const subheaderStyle =
     "text-lg text-black mb-8 font-montserrat mb-32 text-center";
 
@@ -51,7 +51,7 @@ export default function MainPage() {
   return (
     <div className={containerStyle}>
       <h1 className={headerStyle}>
-        Avec Hoomge, c'est facile de rajouter son projet gratuitement
+        Avec Hoomge, c'est facile de rajouter un projet immobilier gratuitement
       </h1>
       <p className={subheaderStyle}>
         "Grâce aux nombreux référencements de projets immobiliers, trouvez le
@@ -64,49 +64,49 @@ export default function MainPage() {
         {stepContainerStyle.map(({ step, title, para, nb }, index) => (
           <div
             key={index}
-            className="relative text-white bg-gray-800 p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 ease-in-out group mx-4"
+            className="relative text-white bg-gray-800 p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 ease-in-out group mx-4 h-fit"
           >
             {/* Parent Grid Container */}
-            <div className="grid grid-rows-3  h-fit">
+            <div className="flex flex-col h-fit">
               {/* Bloc 1 : Step */}
-              <div className="flex items-start h-[50px]">
+              <div className="flex items-start pb-4 ">
                 <p className="text-sm lg:text-lg pt-4">
                   {step} {nb}
                 </p>
               </div>
 
               {/* Bloc 2 : Title */}
-              <div className="flex items-start h-[50px]">
+              <div className="flex items-start pb-4 ">
                 <h2 className="text-2xl font-semibold ">{title}</h2>
               </div>
 
               {/* Bloc 3 : Para */}
-              <div className="flex items-start h-[80px]">
+              <div className="flex items-start">
                 <p className="text-base">{para}</p>
               </div>
 
               {/* Bouton pour scroll */}
-              <div className="flex justify-between items-center mt-4 h-[50px] pt-12">
-                <button
-                  onClick={scrollToSection}
-                  className="flex items-center text-white cursor-pointer group hover:underline"
-                >
-                  GET STARTED
-                  <FaArrowRight className="ml-2 transition-transform duration-300 ease-in-out group-hover:rotate-90" />
-                </button>
-              </div>
             </div>
           </div>
         ))}
       </div>
-      <div className="w-full flex">
-        <div className="w-1/2 flex justify-center items-center">Mettre à</div>
-        <div className="bg-gray-900 p-4 rounded-xl shadow-2xl mt-12 w-1/2">
-          <img
-            src="/Tab3.png"
-            alt="Tab2"
-            className="w-full h-full object-cover rounded-lg"
-          />
+      <div className="w-full flex flex-col justify-center  my-8">
+        <h2 className="text-3xl font-medium w-full  text-center">
+         Informations sur le projet immobilier
+        </h2>
+        <div className="w-full flex">
+          <div className="w-1/2 flex justify-center items-center">
+            <p className="px-4 text-xl">
+              Afin de faciliter les recherches des appartements des futurs acquéreurs, fournissez les informations de base du projet. Vous pouvez ajouter une photo, les infomations generales, les services inclus dans l'immeuble. Une fois ces informations remplis, vous pouvez mettre votre projet en ligne sur le site et commencer à ajouter les appartements et mettre à jour à tout instant.
+            </p>
+          </div>
+          <div className="bg-gray-900 p-4 rounded-xl shadow-2xl mt-12 w-1/2">
+            <img
+              src="/Tab3.png"
+              alt="Tab2"
+              className="w-full h-full object-cover rounded-lg"
+            />
+          </div>
         </div>
       </div>
       <div className="w-full flex flex-col">
@@ -114,7 +114,11 @@ export default function MainPage() {
           <h2 className="text-3xl font-medium">
             Mettre à jour la liste des appartements à la vente
           </h2>
-          <p>A tout moment, pour pouvez modifier les informations pour chaque appartement. Si un grand nombre de biens, nous avons inclus un filtre de recherche et un trie par colonne.</p>
+          <p>
+            A tout moment, pour pouvez modifier les informations pour chaque
+            appartement. Si un grand nombre de biens, nous avons inclus un
+            filtre de recherche et un trie par colonne.
+          </p>
         </div>
         <div className="flex w-full justify-center items-center">
           <div className="bg-gray-900 rounded-xl shadow-2xl mt-12 p-4 w-fit flex justify-center items-center ">

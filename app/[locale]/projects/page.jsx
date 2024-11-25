@@ -16,7 +16,7 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 
-import ListCV from "./listCV"
+
 
 import { createClient } from "@/utils/supabase/client";
 import { FaEuroSign, FaHeart, FaRegHeart } from "react-icons/fa";
@@ -350,7 +350,7 @@ function Page() {
       <h1 className="text-5xl text-gray-700 font-satisfy pl-4">
         {f("ListeDesAppartements")}
       </h1>
-      <ListCV />
+    
       <div className="pl-4">
         <div className="flex  w-full my-8 ">
           <Link
