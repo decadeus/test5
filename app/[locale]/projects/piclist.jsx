@@ -80,6 +80,8 @@ function Gallery({ city, compagny, project }) {
             />
             <Link
               href={projects[0]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[0]?.name}</p>
@@ -99,6 +101,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[1]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[1]?.name}</p>
@@ -124,6 +128,8 @@ function Gallery({ city, compagny, project }) {
             />
              <Link
               href={projects[0]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[0]?.name}</p>
@@ -143,6 +149,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[1]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[1]?.name}</p>
@@ -161,6 +169,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[2]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[2]?.name}</p>
@@ -186,6 +196,8 @@ function Gallery({ city, compagny, project }) {
             />
              <Link
               href={projects[0]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[0]?.name}</p>
@@ -205,6 +217,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[1]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[1]?.name}</p>
@@ -223,6 +237,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[2]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[2]?.name}</p>
@@ -241,6 +257,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[3]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[3]?.name}</p>
@@ -259,6 +277,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[4]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[4]?.name}</p>
@@ -284,6 +304,8 @@ function Gallery({ city, compagny, project }) {
             />
              <Link
               href={projects[0]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[0]?.name}</p>
@@ -303,6 +325,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[1]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[1]?.name}</p>
@@ -321,6 +345,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[2]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[2]?.name}</p>
@@ -339,6 +365,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[3]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[3]?.name}</p>
@@ -357,6 +385,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[4]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[4]?.name}</p>
@@ -382,6 +412,8 @@ function Gallery({ city, compagny, project }) {
             />
              <Link
               href={projects[0]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[0]?.name}</p>
@@ -401,6 +433,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[1]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[1]?.name}</p>
@@ -419,6 +453,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[2]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[2]?.name}</p>
@@ -437,6 +473,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[3]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[3]?.name}</p>
@@ -455,6 +493,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[4]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[4]?.name}</p>
@@ -473,6 +513,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[5]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[5]?.name}</p>
@@ -498,6 +540,8 @@ function Gallery({ city, compagny, project }) {
             />
              <Link
               href={projects[0]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[0]?.name}</p>
@@ -523,6 +567,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[1]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[1]?.name}</p>
@@ -547,6 +593,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[2]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[2]?.name}</p>
@@ -571,6 +619,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[3]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[3]?.name}</p>
@@ -595,6 +645,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[4]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[4]?.name}</p>
@@ -619,6 +671,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[5]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[5]?.name}</p>
@@ -643,6 +697,8 @@ function Gallery({ city, compagny, project }) {
               />
                <Link
               href={projects[6]?.link}
+              target="_blank" 
+              rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
             >
               <p className={SBI}>{projects[6]?.name}</p>
