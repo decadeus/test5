@@ -250,8 +250,8 @@ function Page() {
     setBedRange(values);
   };
 
-  const handleGardenChange = (selected) => {
-    setSelectedGarden(selected.includes("garden"));
+  const handleGardenChange = (values) => {
+    setSelectedGarden(values);
   };
 
   const handleSwimChange = (selected) => {
