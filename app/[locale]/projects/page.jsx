@@ -450,7 +450,7 @@ function Page() {
                                       </p>
                                     ) : (
                                       <p className="flex gap-1 items-center font-bold text-xs">
-                                        {item.project.currency === "PLN" ? (
+                                        {item.project.cur === "PLN" ? (
                                           <span className="flex items-center">
                                             {item.price}
                                             <TbCurrencyZloty size={15} />
