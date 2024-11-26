@@ -191,7 +191,9 @@ function Page() {
         hasCctv &&
         hasEntrance &&
         isInCountry &&
-        isInCity
+        isInCity &&
+        project.project.online === true
+
       );
     });
 
