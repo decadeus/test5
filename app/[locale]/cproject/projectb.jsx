@@ -484,6 +484,7 @@ export default function Projectb({ user }) {
                             handleChange(e, projectIndex, itemIndex, "des")
                           }
                           className="p-2 border rounded  text-center text-black w-[130px]"
+                          maxLength="25"
                         />
                       ) : (
                         item.des
