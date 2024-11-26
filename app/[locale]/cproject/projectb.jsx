@@ -270,6 +270,7 @@ export default function Projectb({ user }) {
                       onChange={(e) => handleNewChange(e, "ref")}
                       className="p-2 border rounded  text-center text-black w-[130px]"
                       placeholder="ex: A001"
+                      maxLength="10"
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-center ">
@@ -334,6 +335,7 @@ export default function Projectb({ user }) {
                       value={newItem.des}
                       onChange={(e) => handleNewChange(e, "des")}
                       className="p-2 border rounded  text-center text-black w-[130px]"
+                      maxLength="25"
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-left ">
@@ -359,6 +361,7 @@ export default function Projectb({ user }) {
                             handleChange(e, projectIndex, itemIndex, "ref")
                           }
                           className="p-2 border rounded  text-center text-black w-[130px]"
+                          maxLength="10"
                         />
                       ) : (
                         <p className="text-center">{item.ref}</p>
