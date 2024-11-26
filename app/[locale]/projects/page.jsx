@@ -439,9 +439,11 @@ function Page() {
                                     <div>
                                       <p>{item.surface} m²</p>
                                     </div>
+                                    <p>|</p>
                                     <div>
                                       <p>{item.bed} beds</p>
                                     </div>
+                                    <p>|</p>
                                   </div>
                                   <div className="">
                                     {item.noprice || item.price === null ? (
@@ -458,7 +460,7 @@ function Page() {
                                         ) : (
                                           <span className="flex items-center">
                                             {item.price}{" "}
-                                            <FaEuroSign size={13} />
+                                            <FaEuroSign size={10} />
                                           </span>
                                         )}
                                       </p>
