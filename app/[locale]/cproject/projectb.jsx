@@ -279,6 +279,7 @@ export default function Projectb({ user }) {
                       onChange={(e) => handleNewChange(e, "bed")}
                       className="p-2 border rounded  text-center text-black w-[70px]"
                       placeholder="ex: 1"
+                      min="0" 
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-center ">
