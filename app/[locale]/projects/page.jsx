@@ -641,7 +641,7 @@ function FilterB({
   const [editableCountry, setEditableCountry] = useState("");
   const [editableCity, setEditableCity] = useState("Select a city");
 
-  const colorfilter = "text-gray-800 text-xs";
+  const colorfilter = "text-[13px]  text-gray-800";
   useEffect(() => {
     if (editableCountry && countryData[editableCountry]) {
       setCities(countryData[editableCountry]);
@@ -805,7 +805,7 @@ function FilterB({
                 className="border border-gray-300 rounded-2xl h-fit py-[7px]  w-[150px] bg-white text-left flex justify-start "
                 id="equip"
               >
-                <p className="text-left text-[11px]  text-gray-800">
+                <p className="text-left text-[13px]  text-gray-800">
                   {f("Residence")}({countChecked()})
                 </p>
               </Button>
