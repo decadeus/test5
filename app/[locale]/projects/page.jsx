@@ -193,7 +193,6 @@ function Page() {
         isInCountry &&
         isInCity &&
         project.project.online === true
-
       );
     });
 
@@ -525,7 +524,13 @@ function Page() {
                                   </Button>
                                 </div>
                                 <div>
-                                  <IoIosLogOut size={16} />
+                                  <Link
+                                    href={item.project.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <IoIosLogOut size={16} />
+                                  </Link>
                                 </div>
                               </div>
                             </div>
@@ -885,7 +890,6 @@ function FilterB({
                           )}
                           aria-label={label}
                         />
-                        
                       </div>
                     </div>
                   )
