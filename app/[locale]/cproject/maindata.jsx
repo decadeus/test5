@@ -115,7 +115,7 @@ export default function Maindata({
         city: editableCity,
         lat: editableLat,
         lng: editableLng,
-        currency: editableCurrency,
+        cur: editableCurrency,
         link: editableLink,
         online: isOnline,
         ...features,
