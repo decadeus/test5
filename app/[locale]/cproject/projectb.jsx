@@ -424,7 +424,7 @@ export default function Projectb({ user }) {
                         <IoMdEyeOff size={20} className="mx-auto" />
                       ) : (
                         <p className="text-center">
-                          ${item.price.toLocaleString()} ${project.currency}
+                          {item.price.toLocaleString()} {project.currency}
                         </p>
                       )}
                     </td>

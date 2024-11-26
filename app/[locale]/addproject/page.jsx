@@ -6,7 +6,7 @@ import { useMemo } from "react";
 
 export default function MainPage() {
   const containerStyle =
-    "flex flex-col items-center  w-[1200px] pt-32 pb-32 px-4";
+    "flex flex-col items-center  w-full px-32 pt-32 pb-32 px-4";
   const headerStyle = "text-4xl font-bold text-black text-center mb-8";
   const subheaderStyle =
     "text-lg text-black mb-8 font-montserrat mb-32 text-center";
@@ -60,7 +60,7 @@ export default function MainPage() {
       </p>
 
       {/* Conteneur Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 grid-rows-1 gap-2 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-4 grid-rows-1 gap-2 w-full ">
         {stepContainerStyle.map(({ step, title, para, nb }, index) => (
           <div
             key={index}
@@ -90,7 +90,7 @@ export default function MainPage() {
           </div>
         ))}
       </div>
-      <div className="w-full flex flex-col justify-center  my-8">
+      <div className="w-full flex flex-col justify-center  my-8 bg-gray-100 p-8">
         <h2 className="text-3xl font-medium w-full  text-center">
          Informations sur le projet immobilier
         </h2>
@@ -109,7 +109,7 @@ export default function MainPage() {
           </div>
         </div>
       </div>
-      <div className="w-full flex flex-col">
+      <div className="w-full flex flex-col bg-gray-100 p-8">
         <div className="w-full flex flex-col gap-4 justify-center items-center">
           <h2 className="text-3xl font-medium">
             Mettre à jour la liste des appartements à la vente
