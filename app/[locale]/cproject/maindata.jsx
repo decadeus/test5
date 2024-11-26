@@ -178,7 +178,7 @@ export default function Maindata({
           <select
             value={editableCountry}
             onChange={handleCountryChange}
-            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px]"
           >
             <option value="__">__</option>
             {Object.keys(countryData).map((country) => (
@@ -194,7 +194,7 @@ export default function Maindata({
           <select
             value={editableCity}
             onChange={handleCityChange}
-            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px]"
             disabled={!editableCountry}
           >
             <option value="">__</option>
@@ -279,12 +279,9 @@ export default function Maindata({
               <select
                 value={editableCurrency}
                 onChange={(e) => setEditableCurrency(e.target.value)}
-                className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px]"
               >
-                <option value="" disabled>
-                  __
-                </option>
-               
+           
                 <option value="EUR">EUR</option>
                 <option value="PLN">PLN</option>
               </select>
