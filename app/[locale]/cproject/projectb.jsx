@@ -371,6 +371,7 @@ export default function Projectb({ user }) {
                         <input
                           type="number"
                           value={item.bed}
+                          min="0" 
                           onChange={(e) =>
                             handleChange(e, projectIndex, itemIndex, "bed")
                           }
@@ -404,6 +405,7 @@ export default function Projectb({ user }) {
                         <input
                           type="number"
                           value={item.surface}
+                          min="0" 
                           onChange={(e) =>
                             handleChange(e, projectIndex, itemIndex, "surface")
                           }
@@ -420,6 +422,7 @@ export default function Projectb({ user }) {
                         <input
                           type="number"
                           value={item.price}
+                          min="0" 
                           onChange={(e) =>
                             handleChange(e, projectIndex, itemIndex, "price")
                           }
