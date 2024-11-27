@@ -148,7 +148,7 @@ export default function MainNavBar({ user }) {
             </div>
           ) : (
             <div className="flex gap-4 w-fit">
-              <p className="text-red-400">eqd</p>
+             
               <Connect className="py-2" />
             </div>
           )}
