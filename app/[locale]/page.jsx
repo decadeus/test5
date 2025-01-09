@@ -194,7 +194,7 @@ export default function Page() {
           {t("Tous")}
         </Link>
       </div>
-      <h1>test super</h1>
+      <h1>test super H</h1>
 
       <ScrollingText />
     </>
