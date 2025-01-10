@@ -231,9 +231,9 @@ const Statistics = ({ uniqueCompanies, uniqueIdeas, totalApartments }) => {
     animateAllCounts();
   }, [uniqueCompanies.size, uniqueIdeas.size, totalApartments]);
 
-  const countstyle = "mt-2 text-center bg-gray-100 rounded-xl p-4 lg:w-[150px] w-[120px]"
-  const countnumber = "font-semibold browntext lg:text-2xl text-lg";
-  const counttext = "text-gray-600 lg:text-lg text-sm";
+  const countstyle = "mt-2 text-center bg-gray-100 rounded-xl p-4 sm:w-[150px] w-[120px]"
+  const countnumber = "font-semibold browntext sm:text-2xl text-lg";
+  const counttext = "text-gray-600 sm:text-lg text-sm";
 
   return (
     <div className="flex gap-4 xl:gap-8  items-center my-8 transition-shadow duration-300 transform hover:-translate-y-1 animate-fadeIn">
