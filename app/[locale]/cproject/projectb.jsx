@@ -195,6 +195,7 @@ export default function Projectb({ user }) {
               cur={project.currency}
               online={project.online}
               link={project.link}
+              des={project.des}
               user={user}
             />
           </div>

@@ -17,6 +17,7 @@ export default function Maindata({
   lng,
   cur,
   online,
+  des,
   swim,
   closed,
   cctv,
@@ -38,6 +39,7 @@ export default function Maindata({
   const [editableLink, setEditableLink] = useState(link);
   const [editableCurrency, setEditableCurrency] = useState(cur);
   const [isOnline, setIsOnline] = useState(online);
+  const [editableDes, setEditableDes] = useState(des);
   const [features, setFeatures] = useState({
     swim,
 
@@ -76,11 +78,12 @@ export default function Maindata({
       setEditableCurrency(project.currency);
       setEditableLink(project.link);
       setIsOnline(project.online);
+      setEditableDes(project.des);
       setFeatures({
         swim: project.swim,
 
         cctv: project.cctv,
-  
+
         entrance: project.entrance,
         bike: project.bike,
         disabled: project.disabled,
@@ -101,7 +104,7 @@ export default function Maindata({
       !editableLat ||
       !editableLng
     ) {
-      alert("All fields, including the city, are required.");
+      alert("All fields are required.");
       setIsSaving(false);
       return;
     }
@@ -117,6 +120,7 @@ export default function Maindata({
         lng: editableLng,
         cur: editableCurrency,
         link: editableLink,
+        des: editableDes,
         online: isOnline,
         ...features,
       })
@@ -281,7 +285,6 @@ export default function Maindata({
                 onChange={(e) => setEditableCurrency(e.target.value)}
                 className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px]"
               >
-           
                 <option value="EUR">EUR</option>
                 <option value="PLN">PLN</option>
               </select>
@@ -296,89 +299,99 @@ export default function Maindata({
               />
             </div>
           </div>
-
+          <div className="flex flex-col">
+            <label className="text-white mb-1">{f("Link")}</label>
+            <textarea
+              value={
+                editableDes.length > 300
+                  ? editableDes.slice(0, 300)
+                  : editableDes
+              }
+              onChange={(e) => setEditableDes(e.target.value.slice(0, 300))}
+              rows="3"
+              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+            />
+            <span className="text-gray-400 text-sm mt-1">
+              {editableDes.length}/300 characters
+            </span>
+          </div>
 
           <div className="flex flex-col">
-              <div className="flex flex-col pt-4">
-                <label className="text-white mb-1 flex">
-                  {f("ProjetEnLigne")}
-                  <span className="text-white flex items-center ml-2">
-                    <span>{isOnline ? "online" : "offline"}</span>{" "}
-                    {/* Corrected this line */}
-                    {isOnline ? (
-                      <IoEye className="ml-2 text-xl text-green-600" />
-                    ) : (
-                      <IoMdEyeOff className="ml-2 text-xl text-red-600" />
-                    )}
-                  </span>
-                </label>
-              </div>
+            <div className="flex flex-col pt-4">
+              <label className="text-white mb-1 flex">
+                {f("ProjetEnLigne")}
+                <span className="text-white flex items-center ml-2">
+                  <span>{isOnline ? "online" : "offline"}</span>{" "}
+                  {/* Corrected this line */}
+                  {isOnline ? (
+                    <IoEye className="ml-2 text-xl text-green-600" />
+                  ) : (
+                    <IoMdEyeOff className="ml-2 text-xl text-red-600" />
+                  )}
+                </span>
+              </label>
+            </div>
 
-              <div className="relative flex  ">
+            <div className="relative flex  ">
+              <input
+                type="checkbox"
+                id="onlineSwitch"
+                checked={isOnline}
+                onChange={() => setIsOnline(!isOnline)}
+                className="hidden"
+              />
+              <label
+                htmlFor="onlineSwitch"
+                className="flex items-center cursor-pointer"
+                aria-label="Toggle project online status"
+              >
+                <div
+                  className={`w-10 h-6 flex  items-center rounded-full p-1 ${
+                    isOnline ? "bg-green-500" : "bg-red-600"
+                  }`}
+                >
+                  <div
+                    className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
+                      isOnline ? "translate-x-4" : "translate-x-0"
+                    }`}
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-center">
+          <div className="grid grid-cols-1 gap-4">
+            {Object.keys(features).map((feature) => (
+              <div className="relative flex items-center pr-12" key={feature}>
                 <input
                   type="checkbox"
-                  id="onlineSwitch"
-                  checked={isOnline}
-                  onChange={() => setIsOnline(!isOnline)}
+                  id={`${feature}Switch`}
+                  checked={features[feature]}
+                  onChange={() => toggleFeature(feature)}
                   className="hidden"
                 />
                 <label
-                  htmlFor="onlineSwitch"
-                  className="flex items-center cursor-pointer"
-                  aria-label="Toggle project online status"
+                  htmlFor={`${feature}Switch`}
+                  className="flex items-center cursor-pointer w-full"
+                  aria-label={`Toggle ${feature} feature`}
                 >
                   <div
-                    className={`w-10 h-6 flex  items-center rounded-full p-1 ${
-                      isOnline ? "bg-green-500" : "bg-red-600"
+                    className={`w-10 h-6 flex-shrink-0 flex items-center rounded-full p-1 ${
+                      features[feature] ? "bg-blue-500" : "bg-gray-600"
                     }`}
                   >
                     <div
                       className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
-                        isOnline ? "translate-x-4" : "translate-x-0"
+                        features[feature] ? "translate-x-4" : "translate-x-0"
                       }`}
                     />
                   </div>
+                  <p className="ml-2 capitalize truncate">{f(feature)}</p>
                 </label>
               </div>
-            </div>
-
-
-
-
-        </div>
-        <div className="flex flex-col justify-center">
-        <div className="grid grid-cols-1 gap-4">
-  {Object.keys(features).map((feature) => (
-    <div className="relative flex items-center pr-12" key={feature}>
-      <input
-        type="checkbox"
-        id={`${feature}Switch`}
-        checked={features[feature]}
-        onChange={() => toggleFeature(feature)}
-        className="hidden"
-      />
-      <label
-        htmlFor={`${feature}Switch`}
-        className="flex items-center cursor-pointer w-full"
-        aria-label={`Toggle ${feature} feature`}
-      >
-        <div
-          className={`w-10 h-6 flex-shrink-0 flex items-center rounded-full p-1 ${
-            features[feature] ? "bg-blue-500" : "bg-gray-600"
-          }`}
-        >
-          <div
-            className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
-              features[feature] ? "translate-x-4" : "translate-x-0"
-            }`}
-          />
-        </div>
-        <p className="ml-2 capitalize truncate">{f(feature)}</p>
-      </label>
-    </div>
-  ))}
-</div>
-
+            ))}
+          </div>
         </div>
       </div>
       <button

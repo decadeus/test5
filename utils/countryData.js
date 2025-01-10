@@ -47,6 +47,7 @@ export const countryData = {
     "Castanet-Tolosan",
     "Castelnau-le-Lez",
     "Cesson",
+    "Challes-les-eaux",
     "Châlons-en-Champagne",
     "Chalon-sur-Saône",
     "Champigny-sur-Marne",

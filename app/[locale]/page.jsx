@@ -82,7 +82,6 @@ export default function Page() {
         }
       `}</style>
       <div className="w-full maintextfull">
-      
         <Para t={t} />
       </div>
       <div className="flex justify-center  -mt-[300px]  sm:-mt-[200px] sm:mb-[200px] mb-[200px] z-20">
@@ -142,11 +141,11 @@ export default function Page() {
         </div>
       </div>
       <div className="mb-32">
-      <Statistics
-        uniqueCompanies={uniqueCompanies}
-        uniqueIdeas={uniqueIdeas}
-        totalApartments={totalApartments}
-      />
+        <Statistics
+          uniqueCompanies={uniqueCompanies}
+          uniqueIdeas={uniqueIdeas}
+          totalApartments={totalApartments}
+        />
       </div>
 
       <div className="w-full flex flex-col justify-center xl:mb-32 lg:mb-28 md:mb-20 sm:mb-10 ">
@@ -163,7 +162,7 @@ export default function Page() {
         </h2>
         <div className="flex sm:gap-4 gap-8 justify-center items-center w-full flex-col md:flex-row">
           {projects
-            .filter((p) => [22, 23, 24].includes(p.id))
+            .filter((p) => [1, 2, 3].includes(p.id))
             .map((project, index) => (
               <ScrollImage
                 key={project.id}
@@ -181,7 +180,7 @@ export default function Page() {
           {/* Utiliser le texte basé sur la langue */}
         </h2>
         {projects
-          .filter((p) => [19, 20, 21].includes(p.id))
+          .filter((p) => [1, 2, 3].includes(p.id))
           .map((project, index) => (
             <Demi key={project.id} projects={project} index={index} t={t} />
           ))}
@@ -194,7 +193,6 @@ export default function Page() {
           {t("Tous")}
         </Link>
       </div>
-      <h1>test super H</h1>
 
       <ScrollingText />
     </>
@@ -268,7 +266,7 @@ function Scroll({ projects = [], index, t }) {
     <div className="flex justify-center mx-auto  xl:w-[1100px] lg:w-[950px] md:w-[700px] sm:w-[550px] w-[350px] overflow-x-auto relative py-8">
       <ScrollArea.Root className="ScrollAreaRoot" type="always">
         <ScrollArea.Viewport className="w-full">
-          <div className="flex gap-8 mb-4">
+          <div className="flex gap-8 mb-4 ml-4">
             {projects.map((item) => (
               <div
                 key={item.id}
@@ -307,8 +305,8 @@ function Scroll({ projects = [], index, t }) {
                     <p className="cleartext sm:text-[12px]">
                       {item.city}, {item.country}
                     </p>
-                    <p className="cleartext sm:text-[18px] font-bold">
-                      {item.compagny}
+                    <p className="cleartext sm:text-[12px] font-bold pt-4">
+                      {item.des}
                     </p>
                   </div>
                 </a>
@@ -385,7 +383,7 @@ function Demi({ projects, index, t }) {
         <p className="font-satisfy text-4xl font-extrabold pb-4 sm:pb-8 browntext text-center sm:text-left">
           {projects.name}
         </p>
-        <p className="text-center sm:text-left pb-4 sm:pb-8">{projects.Des}</p>
+        <p className="text-center sm:text-left pb-4 sm:pb-8">{projects.des}</p>
 
         {projects.link && (
           <a href={projects.link} target="_blank" rel="noopener noreferrer">
