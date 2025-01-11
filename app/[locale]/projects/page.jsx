@@ -432,9 +432,11 @@ function Page() {
                         {/* Le div principal qui subit le flou */}
                         <div className="">
                           <div className="flex  w-full ">
-                            <div className="flex justify-between w-full">
+                            <div className="flex justify-between w-full flex-col sm:flex-row">
+                              <div className="bg-yellow-300">
                               <div className=" flex flex-col justify-between  text-gray-500">
                                 <div className="flex gap-2 text-xs text-gray-500">
+                                  <div>
                                   <div className="flex gap-2">
                                     <div>
                                       <p>{item.surface} m²</p>
@@ -487,7 +489,9 @@ function Page() {
                                   </div>
                                 )}
                               </div>
-                              <div className=" justify-center items-center flex pr-4 ">
+                              </div>
+                              </div>
+                              <div className=" justify-center items-center flex pr-4 bg-red-300 ">
                                 <div>
                                   <Tooltip
                                     content={
