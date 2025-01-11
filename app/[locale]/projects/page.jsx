@@ -76,6 +76,7 @@ function Page() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState("bed");
   const f = useTranslations("Filtre");
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const sort = [
     { key: "surface", label: "surface" },
@@ -434,88 +435,91 @@ function Page() {
                           <div className="flex  w-full ">
                             <div className="flex justify-between w-full flex-col sm:flex-row">
                               <div className="">
-                              <div className=" flex flex-col justify-between  text-gray-500">
-                                <div className="flex gap-2 text-xs text-gray-500">
-                                  <div>
-                                  <div className="flex gap-2">
+                                <div className=" flex flex-col justify-between  text-gray-500">
+                                  <div className="flex gap-2 text-xs text-gray-500">
                                     <div>
-                                      <p>{item.surface} m²</p>
-                                    </div>
-                                    <p>|</p>
-                                    <div>
-                                      <p>{item.bed} beds</p>
-                                    </div>
-                                    <p>|</p>
-                                  </div>
-                                  <div className="pt-2">
-                                    {item.noprice || item.price === null ? (
-                                      <p className="flex gap-1 items-center italic text-xs">
-                                        undefined
-                                      </p>
-                                    ) : (
-                                      <p className="flex gap-1 items-center font-bold text-xs">
-                                        {item.project.cur === "PLN" ? (
-                                          <span className="flex items-center">
-                                            {item.price}
-                                            <TbCurrencyZloty size={15} />
-                                          </span>
+                                      <div className="flex gap-2">
+                                        <div>
+                                          <p>{item.surface} m²</p>
+                                        </div>
+                                        <p>|</p>
+                                        <div>
+                                          <p>{item.bed} beds</p>
+                                        </div>
+                                        <p>|</p>
+                                      </div>
+                                      <div className="pt-2">
+                                        {item.noprice || item.price === null ? (
+                                          <p className="flex gap-1 items-center italic text-xs">
+                                            undefined
+                                          </p>
                                         ) : (
-                                          <span className="flex items-center">
-                                            {item.price}{" "}
-                                            <FaEuroSign size={10} />
-                                          </span>
+                                          <p className="flex gap-1 items-center font-bold text-xs">
+                                            {item.project.cur === "PLN" ? (
+                                              <span className="flex items-center">
+                                                {item.price}
+                                                <TbCurrencyZloty size={15} />
+                                              </span>
+                                            ) : (
+                                              <span className="flex items-center">
+                                                {item.price}{" "}
+                                                <FaEuroSign size={10} />
+                                              </span>
+                                            )}
+                                          </p>
                                         )}
+                                      </div>
+                                    </div>
+                                    <div className="flex gap-2 text-xs text-gray-500 ">
+                                      <p className="text-md font-bold">
+                                        {item.project.name}
                                       </p>
+                                      <p className="font-semibold">
+                                        {item.project.country}
+                                      </p>
+                                      <p>{item.project.city}</p>
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-center items-center">
+                                    {" "}
+                                    {item.des && (
+                                      <div className="">
+                                        <p className=" bg-white  rounded-lg text-gray-700  px-2 py-1 text-xs">
+                                          {item.des}
+                                        </p>
+                                      </div>
                                     )}
                                   </div>
                                 </div>
-                                <div className="flex gap-2 text-xs text-gray-500 ">
-                                  <p className="text-md font-bold">
-                                    {item.project.name}
-                                  </p>
-                                  <p className="font-semibold">
-                                    {item.project.country}
-                                  </p>
-                                  <p>{item.project.city}</p>
-                                </div>
-                              </div>
-                              <div className="flex justify-center items-center">
-                                {" "}
-                                {item.des && (
-                                  <div className="">
-                                    <p className=" bg-white  rounded-lg text-gray-700  px-2 py-1 text-xs">
-                                      {item.des}
-                                    </p>
-                                  </div>
-                                )}
-                              </div>
-                              </div>
                               </div>
                               <div className=" justify-center items-center flex pr-4  ">
-                                <div>
-                                  <Tooltip
-                                    content={
-                                      <div className=" h-[150px] w-[250px] p-0 m-0 rounded-xl">
-                                        <Avatar
-                                          url={item.project.mainpic_url} // Utilise 'src' au lieu de 'url'
-                                          width={250} // Ajuste la largeur pour correspondre à la taille du div parent
-                                          height={150} // Ajuste la hauteur pour correspondre à la taille du div parent
-                                          className="rounded-xl p-0 m-0" // Supprime l'arrondi
-                                        />
-                                      </div>
-                                    }
-                                    radius="none" // Ajuste le rayon du tooltip
-                                    color="transparent" // Supprime la couleur de fond par défaut
-                                    borderWeight="none"
-                                    containerPadding={0} // Supprime la bordure
-                                    shadow="lg" // Supprime l'ombre
-                                    placement="left"
-                                  >
-                                    <p>
-                                      <PiEyeThin size={20} />
-                                    </p>
-                                  </Tooltip>
-                                </div>
+                                
+                                <Button onPress={onOpen} isIconOnly  className="bg-transparent w-fit">
+                                  <PiEyeThin size={20} />
+                                </Button>
+                                <Modal
+                                  isOpen={isOpen}
+                                  onOpenChange={onOpenChange}
+                                  className="bg-transparent border-2 w-fit p-0 m-0"
+                                >
+                                  <ModalContent>
+                                    {(onClose) => (
+                                      <>
+                                        <ModalBody>
+                                          <div className=" h-[350px] w-[350px] p-0 m-0 rounded-xl">
+                                            <Avatar
+                                              url={item.project.mainpic_url} // Utilise 'src' au lieu de 'url'
+                                              width={250} // Ajuste la largeur pour correspondre à la taille du div parent
+                                              height={150} // Ajuste la hauteur pour correspondre à la taille du div parent
+                                              className="rounded-xl p-0 m-0 h-[250px] w-[250px]" // Supprime l'arrondi
+                                            />
+                                          </div>
+                                        </ModalBody>
+                                      </>
+                                    )}
+                                  </ModalContent>
+                                </Modal>
+
                                 <div className="flex justify-center items-center">
                                   <Button
                                     onClick={() => handleToggleFavorite(item)}
