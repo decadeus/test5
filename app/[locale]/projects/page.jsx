@@ -448,7 +448,6 @@ function Page() {
                                         </div>
                                         <p>|</p>
                                       </div>
-                                   
                                     </div>
                                     <div className="flex gap-2 text-xs text-gray-500 ">
                                       <p className="text-md font-bold">
@@ -460,31 +459,30 @@ function Page() {
                                       <p>{item.project.city}</p>
                                     </div>
                                   </div>
-                                 
                                 </div>
                                 <div className="flex justify-between items-center pt-2">
-                                <div className="">
-                                        {item.noprice || item.price === null ? (
-                                          <p className="flex gap-1 items-center italic text-xs">
-                                            undefined
-                                          </p>
+                                  <div className="">
+                                    {item.noprice || item.price === null ? (
+                                      <p className="flex gap-1 items-center italic text-xs">
+                                        undefined
+                                      </p>
+                                    ) : (
+                                      <p className="flex gap-1 items-center font-bold text-xs">
+                                        {item.project.cur === "PLN" ? (
+                                          <span className="flex items-center">
+                                            {item.price}
+                                            <TbCurrencyZloty size={15} />
+                                          </span>
                                         ) : (
-                                          <p className="flex gap-1 items-center font-bold text-xs">
-                                            {item.project.cur === "PLN" ? (
-                                              <span className="flex items-center">
-                                                {item.price}
-                                                <TbCurrencyZloty size={15} />
-                                              </span>
-                                            ) : (
-                                              <span className="flex items-center">
-                                                {item.price}{" "}
-                                                <FaEuroSign size={10} />
-                                              </span>
-                                            )}
-                                          </p>
+                                          <span className="flex items-center">
+                                            {item.price}{" "}
+                                            <FaEuroSign size={10} />
+                                          </span>
                                         )}
-                                      </div>
-                                      <div className="flex justify-center items-center">
+                                      </p>
+                                    )}
+                                  </div>
+                                  <div className="flex justify-center items-center">
                                     {" "}
                                     {item.des && (
                                       <div className="">
@@ -494,12 +492,15 @@ function Page() {
                                       </div>
                                     )}
                                   </div>
-                                  </div>
+                                </div>
                               </div>
-                            
+
                               <div className=" justify-center items-center flex pr-4  ">
-                                
-                                <Button onPress={onOpen} isIconOnly  className="bg-transparent w-fit">
+                                <Button
+                                  onPress={onOpen}
+                                  isIconOnly
+                                  className="bg-transparent w-fit"
+                                >
                                   <PiEyeThin size={20} />
                                 </Button>
                                 <Modal
@@ -582,7 +583,7 @@ function Page() {
         <div className="lg:w-1/2  ">
           <div className="w-full sm:h-[650px] h-[200px] z-0 mb-4">
             <LazyMap
-              classN="w-full sm:h-[650px] h-[200px] z-0"
+              classN="w-full sm:h-[650px] h-[300px] z-0"
               todos={filteredProjects.map(({ project }) => ({
                 lat: project?.lat,
                 lng: project?.lng,
@@ -931,6 +932,128 @@ function FilterB({
           </div>
         </div>
       </div>
+      <div className="block lg:hidden bg-gray-200 py-4">
+  <Button onPress={onOpen}>Filter</Button>
+  <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+    <ModalContent>
+      {(onClose) => (
+        <>
+          <ModalHeader className="flex flex-col gap-1">
+            <p className="text-sm">Modal Title</p>
+          </ModalHeader>
+          <ModalBody>
+            <div className="flex flex-col gap-6">
+
+              {/* Country and City Selectors */}
+              <div className="flex justify-center gap-6">
+                <select
+                  value={editableCountry}
+                  onChange={handleCountryChange}
+                  className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-sm w-36"
+                >
+                  <option value="" className="text-red-300 text-sm">
+                    {f("SelectionnezUnPays")}
+                  </option>
+                  {Object.keys(countryData).map((country) => (
+                    <option key={country} value={country} className="text-black text-sm">
+                      {country}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={editableCity}
+                  onChange={handleCityChange}
+                  className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-sm w-36"
+                >
+                  <option value="" className="text-red-300 text-sm">
+                    {f("SelectionnezUneVille")}
+                  </option>
+                  {cities.map((city, index) => (
+                    <option key={index} value={city} className="text-black text-sm">
+                      {city}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Facilities Section */}
+              <div className="flex flex-col gap-4">
+                {facilities.map(({ id, label, value, selected, onChange }) => (
+                  <CheckboxGroup
+                    key={id}
+                    id={id}
+                    value={selected ? [value] : []}
+                    onChange={onChange}
+                    color="bgmap"
+                    orientation="horizontal"
+                    aria-label={label}
+                  >
+                    <Checkbox value={value}>
+                      <div className="flex items-center">
+                        <p className="text-sm">{label}</p>
+                      </div>
+                    </Checkbox>
+                  </CheckboxGroup>
+                ))}
+              </div>
+
+              {/* Sliders Section */}
+              <div className="flex flex-col gap-6">
+                {modalData.map(({ label, range, onRangeChange, min, max, step, id }) => (
+                  <div key={id} className="w-full">
+                    <div className="flex justify-between text-sm pb-1">
+                      <p className={`${colorfilter} text-sm`}>{label}</p>
+                      <p className={`${colorfilter} text-sm`}>{range[0]} - {range[1]}</p>
+                    </div>
+                    <Slider
+                      min={min}
+                      maxValue={max}
+                      step={step}
+                      value={range}
+                      onChange={onRangeChange}
+                      classNames={{
+                        base: "max-w-md gap-3 h-[2px]",
+                        track: "h-[2px] bg-gray-300",
+                        filler: "bg-gradient-to-r from-custom-brownc to-custom-brownd",
+                      }}
+                      renderThumb={(props) => (
+                        <div
+                          {...props}
+                          className="p-1 bg-background border rounded-full shadow-lg cursor-grab"
+                        >
+                          <span className="block w-1 h-1 bg-gradient-to-br from-custom-brownc to-custom-brownd rounded-full" />
+                        </div>
+                      )}
+                      aria-label={label}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Garden Option */}
+              <div className="flex justify-center pt-4">
+                <div className="w-fit bg-white border border-gray-300 rounded-2xl px-4 py-2">
+                  <Checkbox
+                    isChecked={selectedGarden}
+                    onChange={(e) => onGardenChange(e.target.checked)}
+                    color="bgmap"
+                    size="sm"
+                    radius="full"
+                  >
+                    <p className={`${colorfilter} text-sm`}>{f("AvecJardin")}</p>
+                  </Checkbox>
+                </div>
+              </div>
+
+            </div>
+          </ModalBody>
+        </>
+      )}
+    </ModalContent>
+  </Modal>
+</div>
+
     </div>
   );
 }
