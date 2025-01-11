@@ -120,9 +120,9 @@ export default function MainNavBar({ user }) {
           {/* Grouping the /cproject link and LangSwitcher */}
           {user && (
             <div className="flex items-center gap-8">
-              <div className="flex items-center text-black">
+              <div className="flex items-center text-black text-sm ">
                 <Link href="/cproject" onClick={closeMenu}>
-                  <span className="flex items-center gap-2 text-sm">
+                  <span className="flex items-center gap-2">
                     <FaNetworkWired size={20} color="black" /> {n("VosProjets")}
                   </span>
                 </Link>
@@ -147,7 +147,7 @@ export default function MainNavBar({ user }) {
               </div>
             </div>
           ) : (
-            <div className="flex gap-4 w-fit">
+            <div className="flex gap-4 w-fit ">
              
               <Connect className="py-2" />
             </div>

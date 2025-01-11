@@ -209,6 +209,7 @@ export const countryData = {
     "Saint-Brieuc",
     "Saint-Cyr-l’École",
     "Saint-Denis",
+    "Saint-Didier-au-Mont-d’Or",
     "Saint-Étienne",
     "Saint-Étienne-du-Rouvray",
     "Saint-Fons",

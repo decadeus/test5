@@ -162,7 +162,7 @@ export default function Page() {
         </h2>
         <div className="flex sm:gap-4 gap-8 justify-center items-center w-full flex-col md:flex-row">
           {projects
-            .filter((p) => [1, 2, 3].includes(p.id))
+            .filter((p) => p.scroll)
             .map((project, index) => (
               <ScrollImage
                 key={project.id}
@@ -180,7 +180,7 @@ export default function Page() {
           {/* Utiliser le texte basé sur la langue */}
         </h2>
         {projects
-          .filter((p) => [1, 2, 3].includes(p.id))
+          .filter((p) => p.demi)
           .map((project, index) => (
             <Demi key={project.id} projects={project} index={index} t={t} />
           ))}

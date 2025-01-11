@@ -351,8 +351,8 @@ function Page() {
           </Link>
         </div>
       </div>
-      <div className=" w-full flex ">
-        <div className="w-1/2 flex flex-col">
+      <div className=" w-full flex lg:flex-row flex-col gap-4">
+        <div className="lg:w-1/2 flex flex-col">
           <div className="">
             <div className="flex justify-between items-center mb-4 px-2">
               <p className="flex text-md text-center text-gray-800 w-full">
@@ -564,7 +564,7 @@ function Page() {
             </ScrollArea>
           </div>
         </div>
-        <div className="w-1/2  ">
+        <div className="lg:w-1/2  ">
           <div className="w-full sm:h-[650px] h-[200px] z-0 mb-4">
             <LazyMap
               classN="w-full sm:h-[650px] h-[200px] z-0"
