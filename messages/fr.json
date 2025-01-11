@@ -27,7 +27,9 @@
         "TrierPar": "Trier par",
         "precedent": "Précédent",
         "suivant": "Suivant",
-        "VoirPlus": "Voir plus"
+        "VoirPlus": "Voir plus",
+        "Filtre": "Filtre"
+ 
     },
     "Nav": {
         "Ajouter": "Ajouter",

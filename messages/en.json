@@ -27,7 +27,8 @@
         "TrierPar": "Sort by",
         "precedent":"Previous",
         "suivant":"Next",
-        "VoirPlus":"See more"
+        "VoirPlus":"See more",
+        "Filtre":"Filter"
 
 
     },

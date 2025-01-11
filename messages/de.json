@@ -28,7 +28,8 @@
         "TrierPar":"Sortieren nach",
         "precedent":"Vorherige",
         "suivant":"Nächster",
-        "VoirPlus":"Mehr sehen"
+        "VoirPlus":"Mehr sehen",
+        "Filtre":"Filter"
     },
     "Nav":{
         "Ajouter":"Hinzufügen",

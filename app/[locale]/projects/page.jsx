@@ -932,128 +932,156 @@ function FilterB({
           </div>
         </div>
       </div>
-      <div className="block lg:hidden bg-gray-200 py-4">
-  <Button onPress={onOpen}>Filter</Button>
-  <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-    <ModalContent>
-      {(onClose) => (
-        <>
-          <ModalHeader className="flex flex-col gap-1">
-            <p className="text-sm">Modal Title</p>
-          </ModalHeader>
-          <ModalBody>
-            <div className="flex flex-col gap-6">
+      <div className="block lg:hidden py-4 ">
+      <div className="flex justify-center">
+        <Button
+          onPress={onOpen}
+          className="flex justify-center items-center"
+        >
+          {f("Filtre")}
+        </Button>
+        </div>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalBody>
+                  <div className="flex flex-col gap-6">
+                    {/* Country and City Selectors */}
+                    <div className="flex justify-center gap-6">
+                      <select
+                        value={editableCountry}
+                        onChange={handleCountryChange}
+                        className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-sm w-36"
+                      >
+                        <option value="" className="text-red-300 text-sm">
+                          {f("SelectionnezUnPays")}
+                        </option>
+                        {Object.keys(countryData).map((country) => (
+                          <option
+                            key={country}
+                            value={country}
+                            className="text-black text-sm"
+                          >
+                            {country}
+                          </option>
+                        ))}
+                      </select>
 
-              {/* Country and City Selectors */}
-              <div className="flex justify-center gap-6">
-                <select
-                  value={editableCountry}
-                  onChange={handleCountryChange}
-                  className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-sm w-36"
-                >
-                  <option value="" className="text-red-300 text-sm">
-                    {f("SelectionnezUnPays")}
-                  </option>
-                  {Object.keys(countryData).map((country) => (
-                    <option key={country} value={country} className="text-black text-sm">
-                      {country}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  value={editableCity}
-                  onChange={handleCityChange}
-                  className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-sm w-36"
-                >
-                  <option value="" className="text-red-300 text-sm">
-                    {f("SelectionnezUneVille")}
-                  </option>
-                  {cities.map((city, index) => (
-                    <option key={index} value={city} className="text-black text-sm">
-                      {city}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Facilities Section */}
-              <div className="flex flex-col gap-4">
-                {facilities.map(({ id, label, value, selected, onChange }) => (
-                  <CheckboxGroup
-                    key={id}
-                    id={id}
-                    value={selected ? [value] : []}
-                    onChange={onChange}
-                    color="bgmap"
-                    orientation="horizontal"
-                    aria-label={label}
-                  >
-                    <Checkbox value={value}>
-                      <div className="flex items-center">
-                        <p className="text-sm">{label}</p>
-                      </div>
-                    </Checkbox>
-                  </CheckboxGroup>
-                ))}
-              </div>
-
-              {/* Sliders Section */}
-              <div className="flex flex-col gap-6">
-                {modalData.map(({ label, range, onRangeChange, min, max, step, id }) => (
-                  <div key={id} className="w-full">
-                    <div className="flex justify-between text-sm pb-1">
-                      <p className={`${colorfilter} text-sm`}>{label}</p>
-                      <p className={`${colorfilter} text-sm`}>{range[0]} - {range[1]}</p>
+                      <select
+                        value={editableCity}
+                        onChange={handleCityChange}
+                        className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-sm w-36"
+                      >
+                        <option value="" className="text-red-300 text-sm">
+                          {f("SelectionnezUneVille")}
+                        </option>
+                        {cities.map((city, index) => (
+                          <option
+                            key={index}
+                            value={city}
+                            className="text-black text-sm"
+                          >
+                            {city}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                    <Slider
-                      min={min}
-                      maxValue={max}
-                      step={step}
-                      value={range}
-                      onChange={onRangeChange}
-                      classNames={{
-                        base: "max-w-md gap-3 h-[2px]",
-                        track: "h-[2px] bg-gray-300",
-                        filler: "bg-gradient-to-r from-custom-brownc to-custom-brownd",
-                      }}
-                      renderThumb={(props) => (
-                        <div
-                          {...props}
-                          className="p-1 bg-background border rounded-full shadow-lg cursor-grab"
-                        >
-                          <span className="block w-1 h-1 bg-gradient-to-br from-custom-brownc to-custom-brownd rounded-full" />
-                        </div>
+
+                    {/* Facilities Section */}
+                    <div className="flex flex-col gap-4">
+                      {facilities.map(
+                        ({ id, label, value, selected, onChange }) => (
+                          <CheckboxGroup
+                            key={id}
+                            id={id}
+                            value={selected ? [value] : []}
+                            onChange={onChange}
+                            color="bgmap"
+                            orientation="horizontal"
+                            aria-label={label}
+                          >
+                            <Checkbox value={value}>
+                              <div className="flex items-center">
+                                <p className="text-sm">{label}</p>
+                              </div>
+                            </Checkbox>
+                          </CheckboxGroup>
+                        )
                       )}
-                      aria-label={label}
-                    />
+                    </div>
+
+                    {/* Sliders Section */}
+                    <div className="flex flex-col gap-6">
+                      {modalData.map(
+                        ({
+                          label,
+                          range,
+                          onRangeChange,
+                          min,
+                          max,
+                          step,
+                          id,
+                        }) => (
+                          <div key={id} className="w-full">
+                            <div className="flex justify-between text-sm pb-1">
+                              <p className={`${colorfilter} text-sm`}>
+                                {label}
+                              </p>
+                              <p className={`${colorfilter} text-sm`}>
+                                {range[0]} - {range[1]}
+                              </p>
+                            </div>
+                            <Slider
+                              min={min}
+                              maxValue={max}
+                              step={step}
+                              value={range}
+                              onChange={onRangeChange}
+                              classNames={{
+                                base: "max-w-md gap-3 h-[2px]",
+                                track: "h-[2px] bg-gray-300",
+                                filler:
+                                  "bg-gradient-to-r from-custom-brownc to-custom-brownd",
+                              }}
+                              renderThumb={(props) => (
+                                <div
+                                  {...props}
+                                  className="p-1 bg-background border rounded-full shadow-lg cursor-grab"
+                                >
+                                  <span className="block w-1 h-1 bg-gradient-to-br from-custom-brownc to-custom-brownd rounded-full" />
+                                </div>
+                              )}
+                              aria-label={label}
+                            />
+                          </div>
+                        )
+                      )}
+                    </div>
+
+                    {/* Garden Option */}
+                    <div className="flex justify-center pt-4">
+                      <div className="w-fit bg-white border border-gray-300 rounded-2xl px-4 py-2">
+                        <Checkbox
+                          isChecked={selectedGarden}
+                          onChange={(e) => onGardenChange(e.target.checked)}
+                          color="bgmap"
+                          size="sm"
+                          radius="full"
+                        >
+                          <p className={`${colorfilter} text-sm`}>
+                            {f("AvecJardin")}
+                          </p>
+                        </Checkbox>
+                      </div>
+                    </div>
                   </div>
-                ))}
-              </div>
-
-              {/* Garden Option */}
-              <div className="flex justify-center pt-4">
-                <div className="w-fit bg-white border border-gray-300 rounded-2xl px-4 py-2">
-                  <Checkbox
-                    isChecked={selectedGarden}
-                    onChange={(e) => onGardenChange(e.target.checked)}
-                    color="bgmap"
-                    size="sm"
-                    radius="full"
-                  >
-                    <p className={`${colorfilter} text-sm`}>{f("AvecJardin")}</p>
-                  </Checkbox>
-                </div>
-              </div>
-
-            </div>
-          </ModalBody>
-        </>
-      )}
-    </ModalContent>
-  </Modal>
-</div>
-
+                </ModalBody>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+      </div>
     </div>
   );
 }
