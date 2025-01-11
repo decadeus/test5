@@ -448,7 +448,22 @@ function Page() {
                                         </div>
                                         <p>|</p>
                                       </div>
-                                      <div className="pt-2">
+                                   
+                                    </div>
+                                    <div className="flex gap-2 text-xs text-gray-500 ">
+                                      <p className="text-md font-bold">
+                                        {item.project.name}
+                                      </p>
+                                      <p className="font-semibold">
+                                        {item.project.country}
+                                      </p>
+                                      <p>{item.project.city}</p>
+                                    </div>
+                                  </div>
+                                 
+                                </div>
+                                <div className="flex justify-between items-center pt-2">
+                                <div className="">
                                         {item.noprice || item.price === null ? (
                                           <p className="flex gap-1 items-center italic text-xs">
                                             undefined
@@ -469,18 +484,7 @@ function Page() {
                                           </p>
                                         )}
                                       </div>
-                                    </div>
-                                    <div className="flex gap-2 text-xs text-gray-500 ">
-                                      <p className="text-md font-bold">
-                                        {item.project.name}
-                                      </p>
-                                      <p className="font-semibold">
-                                        {item.project.country}
-                                      </p>
-                                      <p>{item.project.city}</p>
-                                    </div>
-                                  </div>
-                                  <div className="flex justify-center items-center">
+                                      <div className="flex justify-center items-center">
                                     {" "}
                                     {item.des && (
                                       <div className="">
@@ -490,8 +494,9 @@ function Page() {
                                       </div>
                                     )}
                                   </div>
-                                </div>
+                                  </div>
                               </div>
+                            
                               <div className=" justify-center items-center flex pr-4  ">
                                 
                                 <Button onPress={onOpen} isIconOnly  className="bg-transparent w-fit">
@@ -500,7 +505,9 @@ function Page() {
                                 <Modal
                                   isOpen={isOpen}
                                   onOpenChange={onOpenChange}
-                                  className="bg-transparent border-2 w-fit p-0 m-0"
+                                  className="bg-transparent border-2 w-fit p-0 mt-[30px] border-transparent"
+                                  placement="top-center"
+                                  hideCloseButton={true}
                                 >
                                   <ModalContent>
                                     {(onClose) => (
