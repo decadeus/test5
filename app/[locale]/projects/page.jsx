@@ -433,7 +433,7 @@ function Page() {
                         <div className="">
                           <div className="flex  w-full ">
                             <div className="flex justify-between w-full flex-col sm:flex-row">
-                              <div className="bg-yellow-300">
+                              <div className="">
                               <div className=" flex flex-col justify-between  text-gray-500">
                                 <div className="flex gap-2 text-xs text-gray-500">
                                   <div>
@@ -447,7 +447,7 @@ function Page() {
                                     </div>
                                     <p>|</p>
                                   </div>
-                                  <div className="">
+                                  <div className="pt-2">
                                     {item.noprice || item.price === null ? (
                                       <p className="flex gap-1 items-center italic text-xs">
                                         undefined
@@ -491,7 +491,7 @@ function Page() {
                               </div>
                               </div>
                               </div>
-                              <div className=" justify-center items-center flex pr-4 bg-red-300 ">
+                              <div className=" justify-center items-center flex pr-4  ">
                                 <div>
                                   <Tooltip
                                     content={
