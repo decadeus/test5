@@ -46,7 +46,7 @@ const LangSwitcher: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center">
-      <div ref={menuRef}>
+      <div ref={menuRef} className="flex justify-center items-center relative">
         <button
           className=""
           onClick={() => setIsOptionsExpanded(!isOptionsExpanded)}
