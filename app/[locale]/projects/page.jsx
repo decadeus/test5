@@ -946,7 +946,7 @@ function FilterB({
             {(onClose) => (
               <>
                 <ModalBody>
-                  <div className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-6 pt-10">
                     {/* Country and City Selectors */}
                     <div className="flex justify-center gap-6">
                       <select
@@ -1012,7 +1012,7 @@ function FilterB({
                     </div>
 
                     {/* Sliders Section */}
-                    <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-14">
                       {modalData.map(
                         ({
                           label,

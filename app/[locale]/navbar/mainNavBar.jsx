@@ -127,18 +127,16 @@ export default function MainNavBar({ user }) {
                   </span>
                 </Link>
               </div>
-             
             </div>
           )}
         </div>
 
         {/* User/Connect Section */}
-        <div className="hidden xl:flex pr-8 gap-4">
+        <div className="hidden xl:flex gap-4 text-white">
           {user ? (
-            <div className="flex gap-2 items-center">
-              <div className="flex items-center ">
-                <LangSwitcher />
-              </div>
+            <div className="py-1 px-4  rounded-lg text-black transition-colors duration-300 flex justify-center items-center gap-12">
+              <LangSwitcher />
+
               <div className="flex flex-col text-center">
                 <p className="text-black text-sm">{user.email}</p>
               </div>
@@ -148,7 +146,6 @@ export default function MainNavBar({ user }) {
             </div>
           ) : (
             <div className="flex gap-4 w-fit ">
-             
               <Connect className="py-2" />
             </div>
           )}
@@ -175,55 +172,24 @@ export default function MainNavBar({ user }) {
             </span>
           </Link>
         </div>
-        <div className="flex items-center ">
-          <LangSwitcher />
+        <div className="flex items-center text-white">
+          <Link href="/addproject" onClick={closeMenu}>
+            <span className="flex items-center gap-2 text-2xl">
+              <FiPlusCircle size={26} /> {n("Ajouter")}
+            </span>
+          </Link>
         </div>
-
-        {/* Conditionally display the add project link only if the user is not connected */}
-        {!user && (
-          <div className="flex items-center text-white">
-            <Link href="/addproject" onClick={closeMenu}>
-              <span className="flex items-center gap-2 text-2xl">
-                <FiPlusCircle size={26} /> {n("Ajouter")}
-              </span>
-            </Link>
-          </div>
-        )}
-
-        {/* Display the /cproject link only if the user is connected */}
-        {user && (
-          <div className="flex items-center text-white">
-            <Link href="/cproject" onClick={closeMenu}>
-              <span className="flex items-center gap-2 text-2xl">
-                <IoSearch size={26} /> {n("VosProjets")}
-              </span>
-            </Link>
-          </div>
-        )}
-
         <div className="flex items-center ">
-          <LangSwitcher />
+          <Link href="/addproject" onClick={closeMenu} className="">
+            <span className="flex items-center gap-2 text-2xl text-white">
+              <LangSwitcher />
+            </span>
+          </Link>
         </div>
-
-        {user ? (
-          <div className="text-center space-y-4">
-            <p className="font-bold text-lg">{profile?.username}</p>
-            <p className="text-black">{user.email}</p>
-            <div className="w-[50px] h-[50px] mx-auto">
-              <Text user={user} />
-            </div>
-          </div>
-        ) : (
-          <div className="flex gap-2">
-            <Connect />
-            <p className="text-red-400">eqwdwqd</p>
-            <p className="text-white text-2xl">{n("Connexion")}</p>
-          </div>
-        )}
 
         {/* Close Menu Button */}
         <button
-          className="absolute top-6 right-6 text-white"
+          className="absolute top-6 right-6 text-red"
           onClick={closeMenu}
         >
           <svg
@@ -242,20 +208,6 @@ export default function MainNavBar({ user }) {
           </svg>
         </button>
       </div>
-    </div>
-  );
-}
-
-function HelpAdmin() {
-  return (
-    <div className="pr-8">
-      <Link href="/aide">
-        <Tooltip content="Aide" className="bg-black text-white">
-          <p className="text-center flex justify-center items-center font-bold rounded-full border text-white bg-green-500 w-8 h-8">
-            ?
-          </p>
-        </Tooltip>
-      </Link>
     </div>
   );
 }

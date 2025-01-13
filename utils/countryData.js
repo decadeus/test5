@@ -40,6 +40,7 @@ export const countryData = {
     "Cachan",
     "Cagnes-sur-Mer",
     "Caen",
+    "Caluire-et-cuire",
     "Cambrai",
     "Cap-d’Ail",
     "Carrières-sous-Poissy",
