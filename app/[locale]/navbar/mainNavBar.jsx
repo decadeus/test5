@@ -65,7 +65,7 @@ export default function MainNavBar({ user }) {
                 </div>
                 <div>
                   <h2 className="text-black text-sm font-bold hidden sm:block">
-                    Hoomcccger.com
+                    Hoomcger.com
                   </h2>
                 </div>
               </div>
