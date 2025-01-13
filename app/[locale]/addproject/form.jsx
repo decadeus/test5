@@ -148,14 +148,14 @@ export default function Form() {
           <div className="flex gap-4">
             <button
               type="button"
-              className={`p-3 w-full rounded-sm ${formData.country === "France" ? "bg-blue-500 text-white border-blue-700" : "bg-gray-200 text-gray-700 hover:bg-blue-100"}`}
+              className={`p-3 w-full rounded-sm ${formData.country === "France" ? "bg-[#bfae9ba4] text-white border-blue-700" : "bg-gray-200 text-gray-700 hover:bg-blue-100"}`}
               onClick={() => handleCountrySelect("France")}
             >
               France
             </button>
             <button
               type="button"
-              className={`p-3 w-full rounded-sm ${formData.country === "Poland" ? "bg-blue-500 text-white border-blue-700" : "bg-gray-200 text-gray-700 hover:bg-blue-100"}`}
+              className={`p-3 w-full rounded-sm ${formData.country === "Poland" ? "bg-[#bfae9ba4] text-white border-blue-700" : "bg-gray-200 text-gray-700 hover:bg-blue-100"}`}
               onClick={() => handleCountrySelect("Poland")}
             >
               Poland
@@ -178,7 +178,7 @@ export default function Form() {
 
         <button
           type="submit"
-          className="bg-blue-800 hover:bg-blue-700 text-white font-semibold py-3 rounded-sm transition duration-300"
+          className="bg-[#755808]  text-white font-semibold py-3 rounded-sm transition duration-300"
         >
           Request to Add Your Property
         </button>
