@@ -7,4 +7,5 @@ export const companies = [
   { id: 6, name: "EkoDeweloper", pic: "eiffage_logo.png" },
   { id: 7, name: "Maycom", pic: "eiffage_logo.png" },
   { id: 8, name: "Vinci", pic: "eiffage_logo.png" },
+  { id: 9, name: "immobuild", pic: "eiffage_logo.png" },
 ];

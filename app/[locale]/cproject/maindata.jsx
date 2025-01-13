@@ -396,7 +396,7 @@ export default function Maindata({
       </div>
       <button
         onClick={handleSave}
-        className={`mt-8 bg-blue-500 text-white px-6 py-2 rounded-md ${
+        className={`mt-8 brownbg text-white px-6 py-2 rounded-md ${
           isSaving ? "opacity-50 cursor-not-allowed" : ""
         }`}
         disabled={isSaving}
