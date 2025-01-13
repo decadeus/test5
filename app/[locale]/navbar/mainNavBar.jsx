@@ -2,7 +2,7 @@
 import { createClient } from "@/utils/supabase/client";
 import { Link } from "@/navigation";
 import Image from "next/legacy/image";
-import b from "@/components/b.png";
+import H from "@/components/H.png";
 import Connect from "./connect";
 import { Tooltip } from "@nextui-org/react";
 import Text from "./text";
@@ -54,13 +54,13 @@ export default function MainNavBar({ user }) {
           <Link href="/">
             <div className="flex gap-2 items-center" onClick={closeMenu}>
               <div className="flex justify-center items-center gap-2">
-                <div className="w-8 h-8 rounded-full">
+                <div className="w-12 h-12 rounded-full">
                   <Image
-                    src={b}
-                    width={40}
-                    height={40}
+                    src={H}
+                    width={160}
+                    height={160}
                     alt="Logo"
-                    className="rounded-full"
+                    className="rounded-full "
                   />
                 </div>
                 <div>
