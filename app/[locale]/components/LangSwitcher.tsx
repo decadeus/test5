@@ -62,7 +62,7 @@ const LangSwitcher: React.FC = () => {
           </div>
         </button>
         {isOptionsExpanded && (
-          <div className="absolute right-0 mt-2 w-full origin-top-right rounded-md shadow-lg z-50">
+          <div className="absolute right-0 mt-64 w-full origin-top-right rounded-md shadow-lg z-50">
             <div
               className=""
               role="menu"
