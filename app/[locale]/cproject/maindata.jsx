@@ -130,7 +130,7 @@ export default function Maindata({
       console.error("Error saving data: ", error);
       alert("Failed to save data.");
     } else {
-      alert("Data successfully saved.");
+      alert("Data successfully saved");
     }
 
     setIsSaving(false);
