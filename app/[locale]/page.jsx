@@ -7,7 +7,7 @@ import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 import useCustomCursor from "@/components/useCustomCursor";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import Loading from "./loading";
 import { useTranslations } from "next-intl";
 
@@ -263,7 +263,7 @@ function Scroll({ projects = [], index, t }) {
   } = useCustomCursor(t("EnSavoirPlus"));
 
   return (
-    <div className="flex justify-center mx-auto  xl:w-[1100px] lg:w-[950px] md:w-[700px] sm:w-[550px] w-[350px] overflow-x-auto relative py-8">
+    <div className="flex justify-center mx-auto  xl:w-[1100px] lg:w-[950px] md:w-[700px] sm:w-[550px] w-[350px] overflow-x-auto relative py-4">
       <ScrollArea.Root className="ScrollAreaRoot" type="always">
         <ScrollArea.Viewport className="w-full">
           <div className="flex gap-8 mb-4 ml-4">
