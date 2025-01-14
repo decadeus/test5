@@ -522,13 +522,11 @@ function Page() {
                                     <IoIosLogOut size={16} />
                                   </Link>
                                 </div>
-                                <Popover placement="top"
-                                      showArrow>
+                                <Popover placement="top" showArrow>
                                   <PopoverTrigger>
                                     <Button
                                       className="bg-transparent"
                                       isIconOnly
-                                      
                                     >
                                       <PiEyeThin size={20} />
                                     </Button>
@@ -927,10 +925,28 @@ function FilterB({
         </div>
       </div>
       <div className="block lg:hidden py-4 ">
+        <div className="flex justify-between items-center px-4 pb-4 ">
+        <div className="flex justify-center items-center pl-5">
+          <div
+            onClick={handleIconClick}
+            className={`cursor-pointer flex items-center ${
+              showFavorites ? "text-gray-500" : "text-gray-600"
+            }`}
+            aria-label="favorite"
+          >
+            {showFavorites ? (
+              <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
+            ) : (
+              <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
+            )}
+            <p className="pl-4">{f("MesFavoris")}</p>
+          </div>
+        </div>
         <div className="flex justify-center">
           <Button onPress={onOpen} className="flex justify-center items-center">
             {f("Filtre")}
           </Button>
+        </div>
         </div>
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
           <ModalContent>
