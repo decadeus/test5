@@ -14,6 +14,9 @@ import {
   Select,
   SelectItem,
   Tooltip,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
 } from "@nextui-org/react";
 
 import { createClient } from "@/utils/supabase/client";
@@ -495,44 +498,13 @@ function Page() {
                                 </div>
                               </div>
 
-                              <div className=" justify-center items-center flex pr-4  ">
-                                <Button
-                                  onPress={onOpen}
-                                  isIconOnly
-                                  className="bg-transparent w-fit"
-                                >
-                                  <PiEyeThin size={20} />
-                                </Button>
-                                <Modal
-                                  isOpen={isOpen}
-                                  onOpenChange={onOpenChange}
-                                  className="bg-transparent border-2 w-fit p-0 mt-[30px] border-transparent"
-                                  placement="top-center"
-                                  hideCloseButton={true}
-                                >
-                                  <ModalContent>
-                                    {(onClose) => (
-                                      <>
-                                        <ModalBody>
-                                          <div className=" h-[350px] w-[350px] p-0 m-0 rounded-xl">
-                                            <Avatar
-                                              url={item.project.mainpic_url} // Utilise 'src' au lieu de 'url'
-                                              width={250} // Ajuste la largeur pour correspondre à la taille du div parent
-                                              height={150} // Ajuste la hauteur pour correspondre à la taille du div parent
-                                              className="rounded-xl p-0 m-0 h-[250px] w-[250px]" // Supprime l'arrondi
-                                            />
-                                          </div>
-                                        </ModalBody>
-                                      </>
-                                    )}
-                                  </ModalContent>
-                                </Modal>
-
+                              <div className=" justify-center items-center flex pr-4 gap-4  ">
                                 <div className="flex justify-center items-center">
                                   <Button
                                     onClick={() => handleToggleFavorite(item)}
                                     className="bg-transparent text-white hover:bg-opacity-10"
                                     aria-label="favorite"
+                                    isIconOnly
                                   >
                                     {isFavorite(item) ? (
                                       <FaHeart fill="#bfae9b" size={15} />
@@ -550,6 +522,28 @@ function Page() {
                                     <IoIosLogOut size={16} />
                                   </Link>
                                 </div>
+                                <Popover placement="top"
+                                      showArrow>
+                                  <PopoverTrigger>
+                                    <Button
+                                      className="bg-transparent"
+                                      isIconOnly
+                                      
+                                    >
+                                      <PiEyeThin size={20} />
+                                    </Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent>
+                                    <div className=" h-[350px] w-[350px] p-0 m-0 rounded-xl">
+                                      <Avatar
+                                        url={item.project.mainpic_url} // Utilise 'src' au lieu de 'url'
+                                        width={250} // Ajuste la largeur pour correspondre à la taille du div parent
+                                        height={150} // Ajuste la hauteur pour correspondre à la taille du div parent
+                                        className="rounded-xl p-0 m-0 h-[250px] w-[250px]" // Supprime l'arrondi
+                                      />
+                                    </div>
+                                  </PopoverContent>
+                                </Popover>
                               </div>
                             </div>
                           </div>
@@ -933,13 +927,10 @@ function FilterB({
         </div>
       </div>
       <div className="block lg:hidden py-4 ">
-      <div className="flex justify-center">
-        <Button
-          onPress={onOpen}
-          className="flex justify-center items-center"
-        >
-          {f("Filtre")}
-        </Button>
+        <div className="flex justify-center">
+          <Button onPress={onOpen} className="flex justify-center items-center">
+            {f("Filtre")}
+          </Button>
         </div>
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
           <ModalContent>
