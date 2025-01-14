@@ -14,7 +14,7 @@ import { useTranslations } from "next-intl";
 export default function Page() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCountry, setSelectedCountry] = useState("France");
+  const [selectedCountry, setSelectedCountry] = useState("Polska");
 
   const t = useTranslations("Homepage");
 
@@ -131,7 +131,7 @@ export default function Page() {
           </h1>
         </div>
         <div className="flex flex-col sm:justify-center sm:items-center sm:w-1/2 px-4 sm:pr-48 gap-4">
-          <h2 className="sm:text-md ">{t("Description")}</h2>
+          <p className="sm:text-md ">{t("Description")}</p>
           <Link
             href="/projects"
             className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
@@ -380,9 +380,9 @@ function Demi({ projects, index, t }) {
 
       {/* Text Container */}
       <div className="sm:w-1/2 w-full flex flex-col justify-center items-center px-4 sm:px-12 py-8 sm:py-0">
-        <p className="font-satisfy text-4xl font-extrabold pb-4 sm:pb-8 browntext text-center sm:text-left">
+        <h3 className="font-satisfy text-4xl font-extrabold pb-4 sm:pb-8 browntext text-center sm:text-left">
           {projects.name}
-        </p>
+        </h3>
         <p className="text-center sm:text-left pb-4 sm:pb-8">{projects.des}</p>
 
         {projects.link && (
@@ -445,7 +445,7 @@ function Para({ t }) {
 
         {/* Contenu au-dessus de l'image */}
         <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-80 pl-20">
-          <h1 className="text-3xl text-left">{t("subtitle")}</h1>
+          <p className="text-3xl text-left">{t("subtitle")}</p>
 
           <p className="text-left text-sm pt-4 flex items-center">
             {t("defiler")} <FaLongArrowAltDown />
