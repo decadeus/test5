@@ -160,7 +160,7 @@ export default function Page() {
         <h2 className="font-macondo  text-4xl text-center pb-8 ">
           {t("TitleBeau")}
         </h2>
-        <div className="flex sm:gap-4 gap-8 justify-center items-center w-full flex-col md:flex-row">
+        <div className="flex sm:gap-4 gap-8 justify-center items-center w-full flex-col md:flex-row flex-wrap">
           {projects
             .filter((p) => p.scroll)
             .map((project, index) => (
@@ -597,8 +597,8 @@ function ScrollImage({ projects, t }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="items-center justify-center space-y-4 md:space-y-0 md:space-x-4 ">
-        <div className="relative lg:w-[350px] md:w-[250px] sm:w-[200px] sm:h-[250px] w-[350px] h-[200px] shadow-lg shadow-black hover:shadow transition-shadow duration-1000">
+      <div className=" flex flex-wrap bg-red-300 ">
+        <div className="relative lg:w-[250px] md:w-[350px] sm:w-[300px] sm:h-[300px] w-[350px] h-[200px] shadow-lg shadow-black hover:shadow transition-shadow duration-1000 border-black border-2">
           <a
             href={projects.link}
             target="_blank"
