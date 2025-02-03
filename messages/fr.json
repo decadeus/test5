@@ -73,5 +73,10 @@
         "Rechercher:": "Rechercher:",
         "Modifié": "Modifié",
         "Data successfully saved": "Données enregistrées avec succès."
+    },
+    "SEO":
+    {
+        "Title": "Referencement des projets immobiliers",
+        "Description": "Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement recherché et les services dans l'immeuble."
     }
 }

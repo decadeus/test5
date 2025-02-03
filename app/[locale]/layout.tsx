@@ -9,7 +9,9 @@ import Head from "next/head";
 import Foot from "../footer/footer";
 import { Kenia, Satisfy, Macondo } from "next/font/google";
 import { Analytics } from '@vercel/analytics/react';
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics } from '@next/third-parties/google';
+import {getTranslations} from 'next-intl/server';
+
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -28,11 +30,15 @@ const satisfy = Satisfy({
   weight: "400"
 });
 
+
+
+
 const macondo= Macondo({
   subsets: ["latin"],
   variable: "--font-macondo",
   weight: "400"
 });
+
 
 
  
@@ -48,6 +54,7 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   const supabase = createClient();
+  const f = await getTranslations("SEO");
 
   // Fetch user data
   const {
@@ -63,8 +70,8 @@ export default async function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#ffffff" />
-        
-        <title>My Application</title>
+        <title>{f("Title")}</title>
+    
       </Head>
       <body>
         <NextIntlClientProvider messages={messages}>

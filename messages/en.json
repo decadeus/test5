@@ -76,5 +76,9 @@
         "Rechercher:":"Search",
         "Modifié":"Modified",
         "Data successfully saved":"Data successfully saved."
+    },
+    "SEO":{
+        "Title":"Real estate project references",
+        "Description":"Find the real estate project that suits you by using the search filters according to the apartment and the services in the building."
     }
 }

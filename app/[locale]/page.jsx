@@ -121,9 +121,9 @@ export default function Page() {
       <div className="flex-col sm:flex sm:flex-row h-[200px] sm:mt-[0]  mt-[100px] mb-[100px] ">
         <div className="flex justify-center items-center sm:w-1/2  sm:pl-4 relative z-10 ">
           <div className="absolute inset-0 flex items-center justify-center">
-            <h1 className="text-[20rem] text-black opacity-5 transform font-satisfy pb-8">
+            <p className="text-[20rem] text-black opacity-5 font-satisfy pb-8">
               H
-            </h1>
+            </p>
           </div>
 
           <h1 className="sm:text-4xl text-2xl font-bold px-4 text-center pb-[20px]">

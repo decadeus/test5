@@ -74,6 +74,21 @@
         "Rechercher:": "Szukaj",
         "Modifié": "Zmodyfikowany",
         "Data successfully saved": "Dane zostały pomyślnie zapisane."
+    },
+    "SEO": {
+        "SelectionnezUneVille": "Miasto",
+        "Prix": "Cena",
+        "Surface": "Powierzchnia",
+        "Chambres": "Pokój",
+        "AvecJardin": "Z ogrodem",
+        "MesFavoris": "Moje ulubione",
+        "Residence": "Rezydencja",
+        "AppartementTrouve": "znalezionych mieszkań",
+        "TrierPar": "Sortuj według",
+        "precedent": "Poprzedni",
+        "suivant": "Następny",
+        "VoirPlus": "Zobacz więcej",
+        "Filtre": "Filtr"
     }
 
 }
