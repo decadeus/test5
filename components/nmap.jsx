@@ -13,7 +13,7 @@ export default function MyPage() {
   );
 
   return (
-    <div className="">
+    <div className="w-full">
       <Map position={[55.50554, 10.0925]} classN="h-48 w-full mt-12" />
     </div>
   );

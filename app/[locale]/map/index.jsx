@@ -118,7 +118,7 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
                     </div>
                   </div>
                   <div className="mt-4 flex justify-center">
-                    <Link href={`${todo.link}`}>
+                  <Link href={`/detailproject/${todo.codepro}`}>
                       <button className="w-full py-2 px-4 flex items-center justify-center text-white bg-gradient-to-r from-yellow-800 to-yellow-700 rounded-full  shadow-lg transform hover:scale-105">
                         <svg
                           className="w-5 h-5 mr-2"

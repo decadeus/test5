@@ -585,6 +585,8 @@ function Page() {
                 compagny: project?.compagny,
                 mainpic_url: project?.mainpic_url,
                 link: project?.link,
+                codepro: project?.codepro,
+              
               }))}
               maxLat={latLngExtremes.maxLat} // Passer maxLat
               minLng={latLngExtremes.minLng}
