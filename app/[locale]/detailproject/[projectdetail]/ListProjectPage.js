@@ -255,54 +255,81 @@ export default function ListProjectPage() {
                 <p className="text-gray-600">{des}</p>
 
                 <div className="overflow-x-auto">
-  <table className="table-auto w-full border border-gray-300 text-gray-700 text-xs sm:text-sm mt-6">
-    <thead className="bg-gray-100">
-      <tr>
-        <th className="border p-3 cursor-pointer" onClick={() => handleSort("ref")}>
-          <div className="flex justify-between items-center">
-            <span>Ref</span> <span>{getSortIcon("ref")}</span>
-          </div>
-        </th>
-        <th className="border p-3 cursor-pointer" onClick={() => handleSort("bed")}>
-          <div className="flex justify-between items-center">
-            <span>Bedrooms</span> <span>{getSortIcon("bed")}</span>
-          </div>
-        </th>
-        <th className="border p-3 cursor-pointer" onClick={() => handleSort("surface")}>
-          <div className="flex justify-between items-center">
-            <span>Surface</span> <span>{getSortIcon("surface")}</span>
-          </div>
-        </th>
-        <th className="border p-3 cursor-pointer" onClick={() => handleSort("floor")}>
-          <div className="flex justify-between items-center">
-            <span>Floor</span> <span>{getSortIcon("floor")}</span>
-          </div>
-        </th>
-        <th className="border p-3 cursor-pointer" onClick={() => handleSort("price")}>
-          <div className="flex justify-between items-center">
-            <span>Price</span> <span>{getSortIcon("price")}</span>
-          </div>
-        </th>
-        <th className="border p-3 text-center">Garden</th>
-      </tr>
-    </thead>
-    <tbody>
-      {sortedData.map((item, i) => (
-        <tr key={i} className="odd:bg-gray-50 hover:bg-gray-200">
-          <td className="border p-3">{item.ref}</td>
-          <td className="border p-3 text-center">{item.bed}</td>
-          <td className="border p-3">{item.surface} m²</td>
-          <td className="border p-3 text-center">{item.floor}</td>
-          <td className="border p-3 font-semibold">zł {item.price}</td>
-          <td className="border p-3 text-center">
-            {item.garden && <Flower className="w-6 h-6 mx-auto" />}
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
-
+                  <table className="table-auto w-full border border-gray-300 text-gray-700 text-xs sm:text-sm mt-6">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th
+                          className="border p-3 cursor-pointer"
+                          onClick={() => handleSort("ref")}
+                        >
+                          <div className="flex justify-between items-center">
+                            <span>Ref</span> <span>{getSortIcon("ref")}</span>
+                          </div>
+                        </th>
+                        <th
+                          className="border p-3 cursor-pointer"
+                          onClick={() => handleSort("bed")}
+                        >
+                          <div className="flex justify-between items-center">
+                            <span>Bedrooms</span>{" "}
+                            <span>{getSortIcon("bed")}</span>
+                          </div>
+                        </th>
+                        <th
+                          className="border p-3 cursor-pointer"
+                          onClick={() => handleSort("surface")}
+                        >
+                          <div className="flex justify-between items-center">
+                            <span>Surface</span>{" "}
+                            <span>{getSortIcon("surface")}</span>
+                          </div>
+                        </th>
+                        <th
+                          className="border p-3 cursor-pointer"
+                          onClick={() => handleSort("floor")}
+                        >
+                          <div className="flex justify-between items-center">
+                            <span>Floor</span>{" "}
+                            <span>{getSortIcon("floor")}</span>
+                          </div>
+                        </th>
+                        <th
+                          className="border p-3 cursor-pointer"
+                          onClick={() => handleSort("price")}
+                        >
+                          <div className="flex justify-between items-center">
+                            <span>Price</span>{" "}
+                            <span>{getSortIcon("price")}</span>
+                          </div>
+                        </th>
+                        <th className="border p-3 text-center">Garden</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sortedData.map((item, i) => (
+                        <tr
+                          key={i}
+                          className="odd:bg-gray-50 hover:bg-gray-200"
+                        >
+                          <td className="border p-3">{item.ref}</td>
+                          <td className="border p-3 text-center">{item.bed}</td>
+                          <td className="border p-3">{item.surface} m²</td>
+                          <td className="border p-3 text-center">
+                            {item.floor}
+                          </td>
+                          <td className="border p-3 font-semibold">
+                            zł {item.price}
+                          </td>
+                          <td className="border p-3 text-center">
+                            {item.garden && (
+                              <Flower className="w-6 h-6 mx-auto" />
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
               {/* Other project compagny */}
               <div className="mb-8">
@@ -323,7 +350,7 @@ export default function ListProjectPage() {
                           </h4>
 
                           {/* Conteneur de l'image avec effet de hover */}
-                          <div className="relative h-[150px] w-[200px] rounded-xl overflow-hidden cursor-pointer group">
+                          <div className="relative w-[300px] h-[100px] md:h-[200px] md:w-[350px] rounded-xl overflow-hidden cursor-pointer group">
                             {project.mainpic_url ? (
                               <Avatar
                                 url={project.mainpic_url}
@@ -357,45 +384,44 @@ export default function ListProjectPage() {
               </div>
             </div>
 
-            <div className="w-full sm:w-full lg:w-1/3 pl-4 sm:pl-2 pt-16">
-            <div
-  id="sidebar"
-  className={`w-full top-20 
+            <div className="w-full sm:w-full lg:w-1/3 px-4 sm:pl-2 pt-16">
+              <div
+                id="sidebar"
+                className={`w-full top-20 
     lg:sticky lg:top-20 lg:w-96
   `}
->
-
+              >
                 <div className="flex flex-col md:flex-row  gap-4 lg:flex-col border text-gray-700 bg-white shadow-xl rounded-lg w-full p-8 mb-4">
                   <div className="w-full lg:w-full">
-                  <h1 className="mb-6 font-semibold text-2xl sm:text-3xl text-gray-800">
-                    More Information
-                  </h1>
-                  <p className="text-gray-600 mb-4 text-sm sm:text-base">
-                    Learn more about the property details and features.
-                  </p>
-                  {projectData.link && (
-                    <a
-                      href={projectData.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <button className="bg-[#755808] text-white px-6 py-3 w-full rounded-lg text-lg shadow-md transition-colors duration-300 hover:bg-[#6c4a07] transform active:scale-95">
-                        Go to Property Developer
-                      </button>
-                    </a>
-                  )}
-
-                  {languages.length > 0 && (
-                    <p className="mt-6 text-gray-500 text-sm">
-                      Language:{" "}
-                      <span className="font-semibold">
-                        {languages.join(", ")}
-                      </span>
+                    <h1 className="mb-6 font-semibold text-2xl sm:text-3xl text-gray-800">
+                      More Information
+                    </h1>
+                    <p className="text-gray-600 mb-4 text-sm sm:text-base">
+                      Learn more about the property details and features.
                     </p>
-                  )}
+                    {projectData.link && (
+                      <a
+                        href={projectData.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <button className="bg-[#755808] text-white px-6 py-3 w-full rounded-lg text-lg shadow-md transition-colors duration-300 hover:bg-[#6c4a07] transform active:scale-95">
+                          Go to Property Developer
+                        </button>
+                      </a>
+                    )}
+
+                    {languages.length > 0 && (
+                      <p className="mt-6 text-gray-500 text-sm">
+                        Language:{" "}
+                        <span className="font-semibold">
+                          {languages.join(", ")}
+                        </span>
+                      </p>
+                    )}
                   </div>
                   <div className="w-full lg:w-full">
-                  <PageM lat={projectData.lat} lng={projectData.lng} />
+                    <PageM lat={projectData.lat} lng={projectData.lng} />
                   </div>
                 </div>
               </div>
