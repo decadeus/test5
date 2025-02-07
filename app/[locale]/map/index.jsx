@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ReactDOMServer from "react-dom/server"; // Import ReactDOMServer
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 import "leaflet-defaulticon-compatibility";
@@ -7,18 +8,22 @@ import L from "leaflet";
 import Avatar from "@/app/getimage/project";
 import Link from "next/link";
 import a from "@/components/image/appart1.jpg";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import Point from "@/components/svg/point"; // Make sure Flower is imported correctly
 
 // Fonction pour créer une icône texte personnalisée
-const createTextIcon = (text) => {
+const createTextIcon = () => {
+  // Render the Flower component as static HTML
+  const flowerSVG = ReactDOMServer.renderToStaticMarkup(<Point />);
+
   return new L.DivIcon({
     html: `
-      <div class="custom-bubble">
-        <div class="bubble-content">${text}</div>
-        <div class="bubble-pointer"></div>
-      </div>
-    `,
-    iconSize: null, // Laisser iconSize null pour que la taille s'adapte automatiquement
-    className: "custom-text-icon", // Classe CSS pour personnaliser le style
+      <div style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+        <!-- Embed the static SVG directly inside the DivIcon -->
+        ${flowerSVG}
+      </div>`,
+    iconSize: [48, 48], // Set the size of the icon
+    className: "custom-icon", // Optional: you can add custom styles here
   });
 };
 
@@ -70,7 +75,6 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
       zoom={4}
       className={classN}
       minZoom={4}  // Zoom minimum autorisé
-    
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -86,9 +90,9 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
           <Marker
             key={todo.id}
             position={[todo.lat, todo.lng]}
-            icon={createTextIcon(todo.name)} // Utilisation d'un texte comme icône
+            icon={createTextIcon()} // Use the newly created icon
           >
-            <Popup  className="w-[300px] bg-red-300">
+            <Popup className="w-[300px] bg-red-300">
               <div className="bg-white shadow-sm overflow-hidden w-full transition-transform duration-300 hover:scale-105 rounded-lg">
                 <div className="relative h-44 w-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-t-lg">
                   <Avatar
@@ -114,12 +118,11 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
                       <span className="font-bold">
                         {todo.country}
                       </span>
-                    
                     </div>
                   </div>
                   <div className="mt-4 flex justify-center">
                   <Link href={`/detailproject/${todo.codepro}`}>
-                      <button className="w-full py-2 px-4 flex items-center justify-center text-white bg-gradient-to-r from-yellow-800 to-yellow-700 rounded-full  shadow-lg transform hover:scale-105">
+                      <button className="w-full py-2 px-4 flex items-center justify-center text-white bg-gradient-to-r from-yellow-800 to-yellow-700 rounded-full shadow-lg transform hover:scale-105">
                         <svg
                           className="w-5 h-5 mr-2"
                           fill="none"
