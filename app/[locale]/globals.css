@@ -336,6 +336,13 @@
 }
 
 
+.point-icon:hover .inner-circle {
+  fill: blue; /* Changer la couleur au survol */
+}
+
+.point-icon {
+  fill: #764510
+}
 
 @keyframes scroll {
   0% {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ReactDOMServer from "react-dom/server"; // Import ReactDOMServer
+import ReactDOMServer from "react-dom/server";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 import "leaflet-defaulticon-compatibility";
@@ -9,25 +9,17 @@ import Avatar from "@/app/getimage/project";
 import Link from "next/link";
 import a from "@/components/image/appart1.jpg";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import Point from "@/components/svg/point"; // Make sure Flower is imported correctly
+import Point from "@/components/svg/point";
 
-// Fonction pour créer une icône texte personnalisée
 const createTextIcon = () => {
-  // Render the Flower component as static HTML
   const flowerSVG = ReactDOMServer.renderToStaticMarkup(<Point />);
-
   return new L.DivIcon({
-    html: `
-      <div style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
-        <!-- Embed the static SVG directly inside the DivIcon -->
-        ${flowerSVG}
-      </div>`,
-    iconSize: [48, 48], // Set the size of the icon
-    className: "custom-icon", // Optional: you can add custom styles here
+    html: `<div style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">${flowerSVG}</div>`,
+    iconSize: [48, 48],
+    className: "custom-icon",
   });
 };
 
-// Fonction pour ajuster automatiquement les limites de la carte
 const getMapBounds = (todos) => {
   const bounds = new L.LatLngBounds([]);
   todos.forEach((todo) => {
@@ -37,14 +29,11 @@ const getMapBounds = (todos) => {
   return bounds;
 };
 
-// Composant pour appliquer un zoom automatique
 const AutoZoom = ({ bounds }) => {
   const map = useMap();
   useEffect(() => {
     if (bounds.isValid()) {
-      map.fitBounds(bounds, {
-        padding: [50, 50], // Ajoute un peu de marge autour des marqueurs
-      });
+      map.fitBounds(bounds);
     }
   }, [map, bounds]);
   return null;
@@ -63,90 +52,91 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
     }
   }, [todos]);
 
-  // Calcul des bornes avec un ajustement de ±5 pour la longitude
   const bounds = getMapBounds(todos);
   if (bounds.isValid()) {
-    bounds.pad(0.05); // Ajuster le zoom en ajoutant un padding global de 5%
+    bounds.pad(0.05);
   }
 
   return (
-    <MapContainer
-      center={center}
-      zoom={4}
-      className={classN}
-      minZoom={4}  // Zoom minimum autorisé
-    >
+    <>
+   <style>{`
+  .leaflet-popup-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+  
+  .leaflet-popup-content-wrapper {
+    padding: 0 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+  }
+
+  .leaflet-popup-tip {
+    display: none !important;
+  }
+
+  .popup-container img {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+  }
+`}</style>
+
+    <MapContainer center={center} zoom={4} className={classN} minZoom={4}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-
-      {/* Application du zoom automatique */}
       <AutoZoom bounds={bounds} />
-
       {todos
-        .filter((todo) => todo.lat && todo.lng) // Vérification si lat et lng sont définis
+        .filter((todo) => todo.lat && todo.lng)
         .map((todo) => (
           <Marker
             key={todo.id}
             position={[todo.lat, todo.lng]}
-            icon={createTextIcon()} // Use the newly created icon
+            icon={createTextIcon()}
           >
-            <Popup className="w-[300px] bg-red-300">
-              <div className="bg-white shadow-sm overflow-hidden w-full transition-transform duration-300 hover:scale-105 rounded-lg">
-                <div className="relative h-44 w-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-t-lg">
+            <Popup>
+              <div className="bg-white shadow-xl overflow-hidden w-[300px] rounded-lg border-b-blue-700 border-b-5">
+                <h2 className="font-bold text-xl text-gray-900 pl-2">{todo.name}</h2>
+                <div className="relative h-48 w-full">
                   <Avatar
                     url={todo.mainpic_url || a}
-                    width={350}
-                    height={150}
-                    className="object-cover w-full h-full opacity-90 hover:opacity-100 transition-opacity duration-300 rounded-t-lg"
+                    width={500}
+                    height={200}
+                    className="object-cover w-full h-full"
                     alt="Project Image"
                   />
                 </div>
-                <div className="">
-                  <h2 className="font-bold text-xl text-gray-900 ">
-                    {todo.name}
-                  </h2>
-                  <div className="text-gray-700 text-sm">
-                    <span className="text-base font-medium text-gray-800 ">
-                      By {todo.compagny}
-                    </span>
-                    <div className="flex gap-1 mt-2 ">
-                    <span className="">
-                        {todo.city}
-                      </span>
-                      <span className="font-bold">
-                        {todo.country}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="mt-4 flex justify-center">
-                  <Link href={`/detailproject/${todo.codepro}`}>
-                      <button className="w-full py-2 px-4 flex items-center justify-center text-white bg-gradient-to-r from-yellow-800 to-yellow-700 rounded-full shadow-lg transform hover:scale-105">
-                        <svg
-                          className="w-5 h-5 mr-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M14 5l7 7m0 0l-7 7m7-7H3"
-                          />
-                        </svg>
-                        View Project
-                      </button>
-                    </Link>
-                  </div>
+                <div className="text-gray-700 text-sm">
+                  <span className="text-base font-medium text-gray-800 pl-2">
+                    By {todo.compagny}
+                  </span>
                 </div>
+
+                <div className="w-full flex items-center justify-center my-2">
+  <div className="w-full flex justify-center items-center text-sm mb-2">
+    {todo.qty} Appartment(s)
+  </div>
+  <div className="w-full flex justify-center">
+    <Link href={`/en/detailproject/${todo.codepro}`}>
+      <button className="w-full  py-1 px-6 flex items-center justify-center text-white text-base font-semibold bg-gradient-to-r from-yellow-800 to-yellow-700 rounded-md shadow-xl">
+        Details
+      </button>
+    </Link>
+  </div>
+</div>
+
+
               </div>
             </Popup>
           </Marker>
         ))}
     </MapContainer>
+    </>
   );
 };
 

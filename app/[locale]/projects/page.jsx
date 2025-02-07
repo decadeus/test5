@@ -91,7 +91,7 @@ function Page() {
     const { data, error } = await supabase
       .from("projectlist")
       .select(
-        "*, project(*, created_at, city, lat, lng, mainpic_url, swim, fitness, child, disabled, bike, cctv, entrance, country)"
+        "*, project(*, created_at, city, lat, lng, mainpic_url, swim, fitness, child, disabled, bike, cctv, entrance, country, qty)"
       )
       .order(sortKey, { ascending: false });
     if (error) {
@@ -586,6 +586,7 @@ function Page() {
                 mainpic_url: project?.mainpic_url,
                 link: project?.link,
                 codepro: project?.codepro,
+                qty: project?.qty,
               
               }))}
               maxLat={latLngExtremes.maxLat} // Passer maxLat

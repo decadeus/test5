@@ -16,37 +16,58 @@ import Fitness from "@/components/svg/fitness.js";
 import Cctv from "@/components/svg/cctv.js";
 import Sauna from "@/components/svg/sauna.js";
 import Disabled from "@/components/svg/disabled.js";
-import PageM from "@/components/nmap.jsx";
+
 import Flower from "@/components/svg/flower.js";
 import Bike from "@/components/svg/bike.js";
-
-
+import PageM from "@/components/nmap.jsx";
+import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
+import Avatar from "@/app/getimage/project";
+import Link from "next/link";
 
 export default function ListProjectPage() {
   const { projectdetail } = useParams();
   const supabase = createClient();
   const [projectData, setProjectData] = useState(null);
   const [isFixed, setIsFixed] = useState(false);
+  const [sortedData, setSortedData] = useState([]);
+  const [sortColumn, setSortColumn] = useState(null);
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [relatedProjects, setRelatedProjects] = useState([]);
 
   useEffect(() => {
     if (!projectdetail) return;
 
     const fetchValue = async () => {
-      const { data, error } = await supabase
-        .from("project")
-        .select()
-        .eq("codepro", projectdetail)
-        .single();
+      try {
+        const { data, error } = await supabase
+          .from("project")
+          .select("*, projectlist(*)")
+          .eq("codepro", projectdetail)
+          .single();
 
-      if (error) {
-        console.error("Error fetching project:", error);
-      } else {
+        if (error) throw error;
+
         setProjectData(data);
+        setSortedData(data.projectlist || []);
+
+        // Récupérer les projets associés
+        if (data) {
+          const { data: relatedData, error: relatedError } = await supabase
+            .from("project")
+            .select("name, codepro, compagny, mainpic_url")
+            .eq("compagny", data.compagny)
+            .neq("codepro", data.codepro);
+
+          if (relatedError) throw relatedError;
+          setRelatedProjects(relatedData || []);
+        }
+      } catch (error) {
+        console.error("Error fetching project:", error.message);
       }
     };
 
     fetchValue();
-  }, [projectdetail, supabase]);
+  }, [projectdetail]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,6 +92,7 @@ export default function ListProjectPage() {
     adress = "Non défini",
     des = "Non défini",
     metades = "Non défini",
+    compagny = "Non défini",
     en = false,
     fr = false,
     ru = false,
@@ -85,7 +107,6 @@ export default function ListProjectPage() {
     entrance = false,
     bike = false,
   } = projectData || {};
-
 
   const amenitiesIcons = [
     lift && Lift,
@@ -106,31 +127,78 @@ export default function ListProjectPage() {
     ge && "Deutsch",
   ].filter(Boolean);
 
+  // Fonction de tri
+  const handleSort = (column) => {
+    const order = sortColumn === column && sortOrder === "asc" ? "desc" : "asc";
+    setSortColumn(column);
+    setSortOrder(order);
+
+    const sorted = [...sortedData].sort((a, b) => {
+      const valueA = a[column];
+      const valueB = b[column];
+
+      if (typeof valueA === "number" && typeof valueB === "number") {
+        return order === "asc" ? valueA - valueB : valueB - valueA;
+      } else {
+        return order === "asc"
+          ? String(valueA).localeCompare(String(valueB))
+          : String(valueB).localeCompare(String(valueA));
+      }
+    });
+
+    setSortedData(sorted);
+  };
+
+  // Icône de tri
+  const getSortIcon = (column) => {
+    if (sortColumn === column) {
+      return sortOrder === "asc" ? <FaSortUp /> : <FaSortDown />;
+    }
+    return <FaSort />;
+  };
+
+  console.log("Related Projects:", relatedProjects);
+  console.log("image", projectData);
+
   return (
     <div className="w-full mt-16 text-sm">
       {projectData ? (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-4">
-            {[i1, i2, i3, i4, i5].map((img, index) => (
-              <div
-                key={index}
-                className={
-                  index === 0
-                    ? "col-span-1 sm:col-span-2 lg:col-span-2 row-span-2"
-                    : "col-span-1"
-                }
-              >
-                <Image
-                  src={img}
-                  layout="responsive"
-                  width={16}
-                  height={9}
-                  alt="Project Image"
-                  className="object-cover rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105"
-                />
-              </div>
-            ))}
-          </div>
+<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-2">
+  {[
+    projectData?.mainpic_url,
+    projectData?.pic2,
+    projectData?.pic3,
+    projectData?.pic4,
+    projectData?.pic5,
+  ].map((img, index) => (
+    <div
+      key={index}
+      className={`relative ${
+        index === 0
+          ? "col-span-2 sm:col-span-2 lg:col-span-2 row-span-2"
+          : "col-span-1"
+      } 
+      ${index === 0 ? "h-[600px] lg:h-[500px] md:h-[200px] sm:h-[100px]" : "h-[194px] lg:h-[245px] md:h-[120px] sm:h-[80px]"}
+      `}
+    >
+      {img ? (
+        <Avatar
+          url={img}
+          alt={`Project Image ${index + 1}`}
+          className={`w-full object-cover rounded-xl transition-transform duration-300 hover:scale-105 h-full`}
+        />
+      ) : (
+        <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-600 rounded-xl">
+          Image non disponible
+        </div>
+      )}
+    </div>
+  ))}
+</div>
+
+
+
 
           <div
             id="content-container"
@@ -171,33 +239,117 @@ export default function ListProjectPage() {
                 Location
               </h2>
               <p className="text-gray-600">{des}</p>
-
               <table className="table-auto w-full border border-gray-300 text-gray-700 text-xs sm:text-sm mt-6">
                 <thead className="bg-gray-100">
                   <tr>
-                    <th className="border p-3">Ref</th>
-                    <th className="border p-3">Bedrooms</th>
-                    <th className="border p-3">Surface</th>
-                    <th className="border p-3">Floor</th>
-                    <th className="border p-3">Price</th>
-                    <th className="border p-3">Garden</th>
+                    <th
+                      className="border p-3 cursor-pointer"
+                      onClick={() => handleSort("ref")}
+                    >
+                      <div className="flex justify-between items-center">
+                        <span>Ref</span> <span>{getSortIcon("ref")}</span>
+                      </div>
+                    </th>
+                    <th
+                      className="border p-3 cursor-pointer"
+                      onClick={() => handleSort("bed")}
+                    >
+                      <div className="flex justify-between items-center">
+                        <span>Bedrooms</span> <span>{getSortIcon("bed")}</span>
+                      </div>
+                    </th>
+                    <th
+                      className="border p-3 cursor-pointer"
+                      onClick={() => handleSort("surface")}
+                    >
+                      <div className="flex justify-between items-center">
+                        <span>Surface</span>{" "}
+                        <span>{getSortIcon("surface")}</span>
+                      </div>
+                    </th>
+                    <th
+                      className="border p-3 cursor-pointer"
+                      onClick={() => handleSort("floor")}
+                    >
+                      <div className="flex justify-between items-center">
+                        <span>Floor</span> <span>{getSortIcon("floor")}</span>
+                      </div>
+                    </th>
+                    <th
+                      className="border p-3 cursor-pointer"
+                      onClick={() => handleSort("price")}
+                    >
+                      <div className="flex justify-between items-center">
+                        <span>Price</span> <span>{getSortIcon("price")}</span>
+                      </div>
+                    </th>
+                    <th className="border p-3 text-center">Garden</th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  {["E4501", "E4502", "E4503"].map((ref, i) => (
+                  {sortedData.map((item, i) => (
                     <tr key={i} className="odd:bg-gray-50 hover:bg-gray-200">
-                      <td className="border p-3">{ref}</td>
-                      <td className="border p-3 text-center">3</td>
-                      <td className="border p-3">85 m²</td>
-                      <td className="border p-3 text-center">3</td>
-                      <td className="border p-3 font-semibold">250,000 PLN</td>
-                      <td className="border p-3 text-center w-20 h-20">
-                        <Flower className="w-24 h-24" />
+                      <td className="border p-3">{item.ref}</td>
+                      <td className="border p-3 text-center">{item.bed}</td>
+                      <td className="border p-3">{item.surface} m²</td>
+                      <td className="border p-3 text-center">{item.floor}</td>
+                      <td className="border p-3 font-semibold">
+                        zł {item.price}
+                      </td>
+                      <td className="border p-3 text-center">
+                        {item.garden && <Flower className="w-6 h-6 mx-auto" />}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <h3 className="text-xl font-bold mb-4">
+                Other projects from {compagny}
+              </h3>
+
+              {relatedProjects && relatedProjects.length > 0 ? (
+                <div>
+                  <ul className="flex gap-4 flex-wrap">
+                    {relatedProjects.map((project, i) => (
+                      <li
+                        key={project.codepro || i}
+                        className="border p-4 rounded-lg shadow-md bg-white flex flex-col items-center"
+                      >
+                        <h4 className="font-semibold text-md mb-2">
+                          {project.name}
+                        </h4>
+
+                        {/* Conteneur de l'image avec effet de hover */}
+                        <div className="relative h-[150px] w-[200px] rounded-xl overflow-hidden cursor-pointer group">
+                          {project.mainpic_url ? (
+                            <Avatar
+                              url={project.mainpic_url}
+                              width={250}
+                              height={250}
+                              alt="Project Image"
+                              className="rounded-xl h-full w-full transition-transform duration-300 group-hover:scale-105"
+                            />
+                          ) : (
+                            <div className="flex items-center justify-center w-full h-full bg-gray-200 rounded-xl">
+                              <span className="text-gray-500">No image</span>
+                            </div>
+                          )}
+
+                          {/* Bouton qui apparaît au survol */}
+                          <Link href={`/en/detailproject/${project.codepro}`}>
+                            <button className="absolute inset-0 flex items-center justify-center bg-black/60  text-white text-base font-semibold rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                              Details
+                            </button>
+                          </Link>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <p className="text-gray-500">No related projects available.</p>
+              )}
             </div>
 
             <div className="w-full sm:w-1/3 lg:w-1/3 pl-4 sm:pl-16 pt-16">
@@ -236,9 +388,8 @@ export default function ListProjectPage() {
                       </span>
                     </p>
                   )}
-                   <PageM lat={projectData.lat} lng={projectData.lng} />
+                  <PageM lat={projectData.lat} lng={projectData.lng} />
                 </div>
-
               </div>
             </div>
           </div>
