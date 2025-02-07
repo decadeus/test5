@@ -254,88 +254,69 @@ export default function ListProjectPage() {
                 </h2>
                 <p className="text-gray-600">{des}</p>
 
-                <table className="table-auto w-full border border-gray-300 text-gray-700 text-xs sm:text-sm mt-6">
-                  <thead className="bg-gray-100">
-                    <tr>
-                      <th
-                        className="border p-3 cursor-pointer"
-                        onClick={() => handleSort("ref")}
-                      >
-                        <div className="flex justify-between items-center">
-                          <span>Ref</span> <span>{getSortIcon("ref")}</span>
-                        </div>
-                      </th>
-                      <th
-                        className="border p-3 cursor-pointer"
-                        onClick={() => handleSort("bed")}
-                      >
-                        <div className="flex justify-between items-center">
-                          <span>Bedrooms</span>{" "}
-                          <span>{getSortIcon("bed")}</span>
-                        </div>
-                      </th>
-                      <th
-                        className="border p-3 cursor-pointer"
-                        onClick={() => handleSort("surface")}
-                      >
-                        <div className="flex justify-between items-center">
-                          <span>Surface</span>{" "}
-                          <span>{getSortIcon("surface")}</span>
-                        </div>
-                      </th>
-                      <th
-                        className="border p-3 cursor-pointer"
-                        onClick={() => handleSort("floor")}
-                      >
-                        <div className="flex justify-between items-center">
-                          <span>Floor</span> <span>{getSortIcon("floor")}</span>
-                        </div>
-                      </th>
-                      <th
-                        className="border p-3 cursor-pointer"
-                        onClick={() => handleSort("price")}
-                      >
-                        <div className="flex justify-between items-center">
-                          <span>Price</span> <span>{getSortIcon("price")}</span>
-                        </div>
-                      </th>
-                      <th className="border p-3 text-center">Garden</th>
-                    </tr>
-                  </thead>
+                <div className="overflow-x-auto">
+  <table className="table-auto w-full border border-gray-300 text-gray-700 text-xs sm:text-sm mt-6">
+    <thead className="bg-gray-100">
+      <tr>
+        <th className="border p-3 cursor-pointer" onClick={() => handleSort("ref")}>
+          <div className="flex justify-between items-center">
+            <span>Ref</span> <span>{getSortIcon("ref")}</span>
+          </div>
+        </th>
+        <th className="border p-3 cursor-pointer" onClick={() => handleSort("bed")}>
+          <div className="flex justify-between items-center">
+            <span>Bedrooms</span> <span>{getSortIcon("bed")}</span>
+          </div>
+        </th>
+        <th className="border p-3 cursor-pointer" onClick={() => handleSort("surface")}>
+          <div className="flex justify-between items-center">
+            <span>Surface</span> <span>{getSortIcon("surface")}</span>
+          </div>
+        </th>
+        <th className="border p-3 cursor-pointer" onClick={() => handleSort("floor")}>
+          <div className="flex justify-between items-center">
+            <span>Floor</span> <span>{getSortIcon("floor")}</span>
+          </div>
+        </th>
+        <th className="border p-3 cursor-pointer" onClick={() => handleSort("price")}>
+          <div className="flex justify-between items-center">
+            <span>Price</span> <span>{getSortIcon("price")}</span>
+          </div>
+        </th>
+        <th className="border p-3 text-center">Garden</th>
+      </tr>
+    </thead>
+    <tbody>
+      {sortedData.map((item, i) => (
+        <tr key={i} className="odd:bg-gray-50 hover:bg-gray-200">
+          <td className="border p-3">{item.ref}</td>
+          <td className="border p-3 text-center">{item.bed}</td>
+          <td className="border p-3">{item.surface} m²</td>
+          <td className="border p-3 text-center">{item.floor}</td>
+          <td className="border p-3 font-semibold">zł {item.price}</td>
+          <td className="border p-3 text-center">
+            {item.garden && <Flower className="w-6 h-6 mx-auto" />}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
 
-                  <tbody>
-                    {sortedData.map((item, i) => (
-                      <tr key={i} className="odd:bg-gray-50 hover:bg-gray-200">
-                        <td className="border p-3">{item.ref}</td>
-                        <td className="border p-3 text-center">{item.bed}</td>
-                        <td className="border p-3">{item.surface} m²</td>
-                        <td className="border p-3 text-center">{item.floor}</td>
-                        <td className="border p-3 font-semibold">
-                          zł {item.price}
-                        </td>
-                        <td className="border p-3 text-center">
-                          {item.garden && (
-                            <Flower className="w-6 h-6 mx-auto" />
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
               </div>
               {/* Other project compagny */}
-              <div>
+              <div className="mb-8">
                 <h3 className="text-xl font-bold mb-2">
                   Other projects from {compagny}
                 </h3>
 
                 {relatedProjects && relatedProjects.length > 0 ? (
                   <div>
-                    <ul className="flex gap-4 flex-wrap items-center justify-center">
+                    <ul className="flex gap-4 flex-wrap  ">
                       {relatedProjects.map((project, i) => (
                         <li
                           key={project.codepro || i}
-                          className="border p-4 rounded-lg shadow-md bg-white flex flex-col items-center justify-center"
+                          className="border p-4 rounded-lg shadow-md bg-white flex flex-col justify-center"
                         >
                           <h4 className="font-semibold text-md mb-2">
                             {project.name}
@@ -384,7 +365,7 @@ export default function ListProjectPage() {
   `}
 >
 
-                <div className="flex gap-4 lg:flex-col border text-gray-700 bg-white shadow-xl rounded-lg w-full p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                <div className="flex flex-col md:flex-row  gap-4 lg:flex-col border text-gray-700 bg-white shadow-xl rounded-lg w-full p-8 mb-4">
                   <div className="w-full lg:w-full">
                   <h1 className="mb-6 font-semibold text-2xl sm:text-3xl text-gray-800">
                     More Information
