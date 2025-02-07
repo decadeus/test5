@@ -164,204 +164,228 @@ export default function ListProjectPage() {
     <div className="w-full mt-16 text-sm">
       {projectData ? (
         <>
-<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-2">
-  {[
-    projectData?.mainpic_url,
-    projectData?.pic2,
-    projectData?.pic3,
-    projectData?.pic4,
-    projectData?.pic5,
-  ].map((img, index) => (
-    <div
-      key={index}
-      className={`relative ${
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-2">
+            {[
+              projectData?.mainpic_url,
+              projectData?.pic2,
+              projectData?.pic3,
+              projectData?.pic4,
+              projectData?.pic5,
+            ].map((img, index) => (
+              <div
+                key={index}
+                className={`relative ${
+                  index === 0
+                    ? "col-span-2 sm:col-span-2 lg:col-span-2 row-span-2"
+                    : "col-span-1"
+                } 
+      ${
         index === 0
-          ? "col-span-2 sm:col-span-2 lg:col-span-2 row-span-2"
-          : "col-span-1"
-      } 
-      ${index === 0 ? "h-[600px] lg:h-[500px] md:h-[200px] sm:h-[100px]" : "h-[194px] lg:h-[245px] md:h-[120px] sm:h-[80px]"}
+          ? "h-[200px] lg:h-[500px] md:h-[200px] sm:h-[100px]"
+          : "h-[94px] lg:h-[245px] md:h-[120px] sm:h-[80px]"
+      }
       `}
-    >
-      {img ? (
-        <Avatar
-          url={img}
-          alt={`Project Image ${index + 1}`}
-          className={`w-full object-cover rounded-xl transition-transform duration-300 hover:scale-105 h-full`}
-        />
-      ) : (
-        <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-600 rounded-xl">
-          Image non disponible
-        </div>
-      )}
-    </div>
-  ))}
-</div>
-
-
-
+              >
+                {img ? (
+                  <Avatar
+                    url={img}
+                    alt={`Project Image ${index + 1}`}
+                    className={`w-full object-cover rounded-xl transition-transform duration-300 hover:scale-105 h-full`}
+                  />
+                ) : (
+                  <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-600 rounded-xl">
+                    Image non disponible
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
 
           <div
             id="content-container"
-            className="flex w-full px-4 md:px-10 mt-8"
+            className=" w-full flex-col px-4 md:px-10 mt-8 lg:flex-row flex"
           >
-            <div className="w-full sm:w-2/3 lg:w-2/3 p-6 flex flex-col gap-4">
-              <p className="text-gray-500 text-sm sm:text-lg">
-                <span className="text-blue-500">{country}</span> /
-                <span className="text-blue-500 px-1">{city}</span> /
-                <span className="pl-1">{name}</span>
-              </p>
-              <h1 className="font-bold text-4xl sm:text-5xl mt-4 mb-2 text-gray-800">
-                {name}
-              </h1>
-              <p className="text-gray-600 text-base mb-6">
-                <span>{adress}</span>, <span>{city}</span>,{" "}
-                <span>{country}</span>
-              </p>
+            <div className="w-full lg:w-2/3 pl-2 pr-2 flex flex-col gap-12">
+              <div>
+                <p className="text-gray-500 text-sm sm:text-lg">
+                  <span className="text-blue-500">{country}</span> /
+                  <span className="text-blue-500 px-1">{city}</span> /
+                  <span className="pl-1">{name}</span>
+                </p>
+              </div>
+              {/* Name */}
+              <div>
+                <h1 className="font-bold text-4xl sm:text-5xl mt-4 mb-2 text-gray-800">
+                  {name}
+                </h1>
 
-              <h2 className="font-semibold text-lg sm:text-xl mb-0 text-gray-700">
-                {metades}
-              </h2>
-              <p className="text-gray-600 whitespace-pre-line">{des}</p>
-
-              <h2 className="font-semibold text-lg sm:text-xl mb-0 text-gray-700">
-                Community Amenities
-              </h2>
-              <p className="text-gray-600 whitespace-pre-line">{des}</p>
-              <div className="flex flex-wrap gap-6 mt-4">
-                {amenitiesIcons.map((Icon, i) => (
-                  <div key={i} className="w-18 sm:w-20 md:w-24">
-                    <Icon className="transform transition-transform duration-300 hover:scale-110" />
-                  </div>
-                ))}
+                <p className="text-gray-600 text-base ">
+                  <span>{adress}</span>, <span>{city}</span>,{" "}
+                  <span>{country}</span>
+                </p>
               </div>
 
-              <h2 className="font-semibold text-lg sm:text-xl mb-1 text-gray-700">
-                Location
-              </h2>
-              <p className="text-gray-600">{des}</p>
-              <table className="table-auto w-full border border-gray-300 text-gray-700 text-xs sm:text-sm mt-6">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th
-                      className="border p-3 cursor-pointer"
-                      onClick={() => handleSort("ref")}
-                    >
-                      <div className="flex justify-between items-center">
-                        <span>Ref</span> <span>{getSortIcon("ref")}</span>
-                      </div>
-                    </th>
-                    <th
-                      className="border p-3 cursor-pointer"
-                      onClick={() => handleSort("bed")}
-                    >
-                      <div className="flex justify-between items-center">
-                        <span>Bedrooms</span> <span>{getSortIcon("bed")}</span>
-                      </div>
-                    </th>
-                    <th
-                      className="border p-3 cursor-pointer"
-                      onClick={() => handleSort("surface")}
-                    >
-                      <div className="flex justify-between items-center">
-                        <span>Surface</span>{" "}
-                        <span>{getSortIcon("surface")}</span>
-                      </div>
-                    </th>
-                    <th
-                      className="border p-3 cursor-pointer"
-                      onClick={() => handleSort("floor")}
-                    >
-                      <div className="flex justify-between items-center">
-                        <span>Floor</span> <span>{getSortIcon("floor")}</span>
-                      </div>
-                    </th>
-                    <th
-                      className="border p-3 cursor-pointer"
-                      onClick={() => handleSort("price")}
-                    >
-                      <div className="flex justify-between items-center">
-                        <span>Price</span> <span>{getSortIcon("price")}</span>
-                      </div>
-                    </th>
-                    <th className="border p-3 text-center">Garden</th>
-                  </tr>
-                </thead>
+              {/* Metadatas */}
+              <div className="">
+                <h2 className="font-semibold text-lg sm:text-xl mb-2 text-gray-700">
+                  {metades}
+                </h2>
+                <p className="text-gray-600 whitespace-pre-line">{des}</p>
+              </div>
 
-                <tbody>
-                  {sortedData.map((item, i) => (
-                    <tr key={i} className="odd:bg-gray-50 hover:bg-gray-200">
-                      <td className="border p-3">{item.ref}</td>
-                      <td className="border p-3 text-center">{item.bed}</td>
-                      <td className="border p-3">{item.surface} m²</td>
-                      <td className="border p-3 text-center">{item.floor}</td>
-                      <td className="border p-3 font-semibold">
-                        zł {item.price}
-                      </td>
-                      <td className="border p-3 text-center">
-                        {item.garden && <Flower className="w-6 h-6 mx-auto" />}
-                      </td>
-                    </tr>
+              {/* Community Amenities */}
+              <div>
+                <h2 className="font-semibold text-lg sm:text-xl mb-2 text-gray-700">
+                  Community Amenities
+                </h2>
+                <p className="text-gray-600 whitespace-pre-line">{des}</p>
+                <div className="flex flex-wrap gap-6 mt-4">
+                  {amenitiesIcons.map((Icon, i) => (
+                    <div key={i} className="w-24 sm:w-24 md:w-24">
+                      <Icon className="transform transition-transform duration-300 hover:scale-110" />
+                    </div>
                   ))}
-                </tbody>
-              </table>
-              <h3 className="text-xl font-bold mb-4">
-                Other projects from {compagny}
-              </h3>
-
-              {relatedProjects && relatedProjects.length > 0 ? (
-                <div>
-                  <ul className="flex gap-4 flex-wrap">
-                    {relatedProjects.map((project, i) => (
-                      <li
-                        key={project.codepro || i}
-                        className="border p-4 rounded-lg shadow-md bg-white flex flex-col items-center"
-                      >
-                        <h4 className="font-semibold text-md mb-2">
-                          {project.name}
-                        </h4>
-
-                        {/* Conteneur de l'image avec effet de hover */}
-                        <div className="relative h-[150px] w-[200px] rounded-xl overflow-hidden cursor-pointer group">
-                          {project.mainpic_url ? (
-                            <Avatar
-                              url={project.mainpic_url}
-                              width={250}
-                              height={250}
-                              alt="Project Image"
-                              className="rounded-xl h-full w-full transition-transform duration-300 group-hover:scale-105"
-                            />
-                          ) : (
-                            <div className="flex items-center justify-center w-full h-full bg-gray-200 rounded-xl">
-                              <span className="text-gray-500">No image</span>
-                            </div>
-                          )}
-
-                          {/* Bouton qui apparaît au survol */}
-                          <Link href={`/en/detailproject/${project.codepro}`}>
-                            <button className="absolute inset-0 flex items-center justify-center bg-black/60  text-white text-base font-semibold rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                              Details
-                            </button>
-                          </Link>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
-              ) : (
-                <p className="text-gray-500">No related projects available.</p>
-              )}
+              </div>
+              {/* List appartments */}
+              <div>
+                <h2 className="font-semibold text-lg sm:text-xl mb-2 text-gray-700">
+                  Appartments on sell
+                </h2>
+                <p className="text-gray-600">{des}</p>
+
+                <table className="table-auto w-full border border-gray-300 text-gray-700 text-xs sm:text-sm mt-6">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th
+                        className="border p-3 cursor-pointer"
+                        onClick={() => handleSort("ref")}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span>Ref</span> <span>{getSortIcon("ref")}</span>
+                        </div>
+                      </th>
+                      <th
+                        className="border p-3 cursor-pointer"
+                        onClick={() => handleSort("bed")}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span>Bedrooms</span>{" "}
+                          <span>{getSortIcon("bed")}</span>
+                        </div>
+                      </th>
+                      <th
+                        className="border p-3 cursor-pointer"
+                        onClick={() => handleSort("surface")}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span>Surface</span>{" "}
+                          <span>{getSortIcon("surface")}</span>
+                        </div>
+                      </th>
+                      <th
+                        className="border p-3 cursor-pointer"
+                        onClick={() => handleSort("floor")}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span>Floor</span> <span>{getSortIcon("floor")}</span>
+                        </div>
+                      </th>
+                      <th
+                        className="border p-3 cursor-pointer"
+                        onClick={() => handleSort("price")}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span>Price</span> <span>{getSortIcon("price")}</span>
+                        </div>
+                      </th>
+                      <th className="border p-3 text-center">Garden</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {sortedData.map((item, i) => (
+                      <tr key={i} className="odd:bg-gray-50 hover:bg-gray-200">
+                        <td className="border p-3">{item.ref}</td>
+                        <td className="border p-3 text-center">{item.bed}</td>
+                        <td className="border p-3">{item.surface} m²</td>
+                        <td className="border p-3 text-center">{item.floor}</td>
+                        <td className="border p-3 font-semibold">
+                          zł {item.price}
+                        </td>
+                        <td className="border p-3 text-center">
+                          {item.garden && (
+                            <Flower className="w-6 h-6 mx-auto" />
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {/* Other project compagny */}
+              <div>
+                <h3 className="text-xl font-bold mb-2">
+                  Other projects from {compagny}
+                </h3>
+
+                {relatedProjects && relatedProjects.length > 0 ? (
+                  <div>
+                    <ul className="flex gap-4 flex-wrap items-center justify-center">
+                      {relatedProjects.map((project, i) => (
+                        <li
+                          key={project.codepro || i}
+                          className="border p-4 rounded-lg shadow-md bg-white flex flex-col items-center justify-center"
+                        >
+                          <h4 className="font-semibold text-md mb-2">
+                            {project.name}
+                          </h4>
+
+                          {/* Conteneur de l'image avec effet de hover */}
+                          <div className="relative h-[150px] w-[200px] rounded-xl overflow-hidden cursor-pointer group">
+                            {project.mainpic_url ? (
+                              <Avatar
+                                url={project.mainpic_url}
+                                width={250}
+                                height={250}
+                                alt="Project Image"
+                                className="rounded-xl h-full w-full transition-transform duration-300 group-hover:scale-105"
+                              />
+                            ) : (
+                              <div className="flex items-center justify-center w-full h-full bg-gray-200 rounded-xl">
+                                <span className="text-gray-500">No image</span>
+                              </div>
+                            )}
+
+                            {/* Bouton qui apparaît au survol */}
+                            <Link href={`/en/detailproject/${project.codepro}`}>
+                              <button className="absolute inset-0 flex items-center justify-center bg-black/60  text-white text-base font-semibold rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                                Details
+                              </button>
+                            </Link>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <p className="text-gray-500">
+                    No related projects available.
+                  </p>
+                )}
+              </div>
             </div>
 
-            <div className="w-full sm:w-1/3 lg:w-1/3 pl-4 sm:pl-16 pt-16">
-              <div
-                id="sidebar"
-                className={
-                  isFixed
-                    ? "fixed top-20 w-full sm:w-96"
-                    : "sticky top-20 w-full sm:w-96"
-                }
-              >
-                <div className="border text-gray-700 bg-white shadow-xl rounded-lg w-full p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+            <div className="w-full sm:w-full lg:w-1/3 pl-4 sm:pl-2 pt-16">
+            <div
+  id="sidebar"
+  className={`w-full top-20 
+    lg:sticky lg:top-20 lg:w-96
+  `}
+>
+
+                <div className="flex gap-4 lg:flex-col border text-gray-700 bg-white shadow-xl rounded-lg w-full p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                  <div className="w-full lg:w-full">
                   <h1 className="mb-6 font-semibold text-2xl sm:text-3xl text-gray-800">
                     More Information
                   </h1>
@@ -388,7 +412,10 @@ export default function ListProjectPage() {
                       </span>
                     </p>
                   )}
+                  </div>
+                  <div className="w-full lg:w-full">
                   <PageM lat={projectData.lat} lng={projectData.lng} />
+                  </div>
                 </div>
               </div>
             </div>
