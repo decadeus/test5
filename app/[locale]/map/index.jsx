@@ -17,6 +17,7 @@ const createTextIcon = () => {
     html: `<div style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">${flowerSVG}</div>`,
     iconSize: [48, 48],
     className: "custom-icon",
+    
   });
 };
 
@@ -98,6 +99,8 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
             key={todo.id}
             position={[todo.lat, todo.lng]}
             icon={createTextIcon()}
+            aria-label="Pointer sur map"
+  title="Pointer sur map"
           >
             <Popup>
               <div className="bg-white shadow-xl overflow-hidden w-[300px] rounded-lg border-b-blue-700 border-b-5">

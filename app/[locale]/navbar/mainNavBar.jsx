@@ -77,6 +77,8 @@ export default function MainNavBar({ user }) {
         <button
           className="block xl:hidden focus:outline-none"
           onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Ouvrir ou fermer le menu"
+  title="Ouvrir ou fermer le menu"
         >
           <svg
             className="w-8 h-8 text-black"
@@ -191,6 +193,8 @@ export default function MainNavBar({ user }) {
         <button
           className="absolute top-6 right-6 text-red"
           onClick={closeMenu}
+          aria-label="Ouvrir ou fermer le menu"
+  title="Ouvrir ou fermer le menu"
         >
           <svg
             className="w-8 h-8"

@@ -10,7 +10,7 @@ export default function Foot() {
         {/* Left Section */}
         <div className="flex flex-col items-center sm:items-start">
           <p className="text-md sm:text-2xl font-bold text-white">Hoomge.com</p>
-          <p className="text-xs sm:text-sm text-gray-400">@2024 DECADEUS</p>
+          <p className="text-xs sm:text-sm text-gray-300">@2024 DECADEUS</p>
         </div>
 
         {/* Middle Section */}
@@ -28,7 +28,7 @@ export default function Foot() {
         </div>
 
         {/* Right Section */}
-        <div className="flex flex-col items-center sm:items-start text-gray-400">
+        <div className="flex flex-col items-center sm:items-start text-gray-300">
           <p className="text-xs sm:text-sm hover:text-white cursor-pointer">
             DEBEAUMONT@DECADEUS.COM
           </p>
