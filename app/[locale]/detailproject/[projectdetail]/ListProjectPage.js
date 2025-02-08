@@ -339,42 +339,42 @@ export default function ListProjectPage() {
 
                 {relatedProjects && relatedProjects.length > 0 ? (
                   <div>
-                    <ul className="flex gap-4 flex-wrap  ">
-                      {relatedProjects.map((project, i) => (
-                        <li
-                          key={project.codepro || i}
-                          className="border p-4 rounded-lg shadow-md bg-white flex flex-col justify-center"
-                        >
-                          <h4 className="font-semibold text-md mb-2">
-                            {project.name}
-                          </h4>
+                   <ul className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+  {relatedProjects.map((project, i) => (
+    <li
+      key={project.codepro || i}
+      className="border p-4 rounded-lg shadow-md bg-white flex flex-col justify-center"
+    >
+      <h4 className="font-semibold text-md mb-2">{project.name}</h4>
 
-                          {/* Conteneur de l'image avec effet de hover */}
-                          <div className="relative w-[300px] h-[100px] md:h-[200px] md:w-[350px] rounded-xl overflow-hidden cursor-pointer group">
-                            {project.mainpic_url ? (
-                              <Avatar
-                                url={project.mainpic_url}
-                                width={250}
-                                height={250}
-                                alt="Project Image"
-                                className="rounded-xl h-full w-full transition-transform duration-300 group-hover:scale-105"
-                              />
-                            ) : (
-                              <div className="flex items-center justify-center w-full h-full bg-gray-200 rounded-xl">
-                                <span className="text-gray-500">No image</span>
-                              </div>
-                            )}
+      {/* Conteneur de l'image avec effet de hover */}
+      <div className="relative w-full h-[150px] md:h-[150px] lg:h-[200px] rounded-xl overflow-hidden cursor-pointer group">
+        {project.mainpic_url ? (
+          <Avatar
+            url={project.mainpic_url}
+            width={400}  // Largeur améliorée
+            height={400} // Hauteur améliorée
+            alt="Project Image"
+            className="rounded-xl w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex items-center justify-center w-full h-full bg-gray-200 rounded-xl">
+            <span className="text-gray-500">No image</span>
+          </div>
+        )}
 
-                            {/* Bouton qui apparaît au survol */}
-                            <Link href={`/en/detailproject/${project.codepro}`}>
-                              <button className="absolute inset-0 flex items-center justify-center bg-black/60  text-white text-base font-semibold rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                                Details
-                              </button>
-                            </Link>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+        {/* Bouton qui apparaît au survol */}
+        <Link href={`/en/detailproject/${project.codepro}`}>
+          <button className="absolute inset-0 flex items-center justify-center bg-black/60 text-white text-base font-semibold rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            Details
+          </button>
+        </Link>
+      </div>
+    </li>
+  ))}
+</ul>
+
+
                   </div>
                 ) : (
                   <p className="text-gray-500">
@@ -387,7 +387,7 @@ export default function ListProjectPage() {
             <div className="w-full sm:w-full lg:w-1/3 px-4 sm:pl-2 pt-16">
               <div
                 id="sidebar"
-                className={`w-full top-20 
+                className={`w-fulli top-20 
     lg:sticky lg:top-20 lg:w-96
   `}
               >
