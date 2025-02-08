@@ -23,6 +23,7 @@ import PageM from "@/components/nmap.jsx";
 import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 import Avatar from "@/app/getimage/project";
 import Link from "next/link";
+import Loading from "@/app/[locale]/loading";
 
 export default function ListProjectPage() {
   const { projectdetail } = useParams();
@@ -157,8 +158,7 @@ export default function ListProjectPage() {
     return <FaSort />;
   };
 
-  console.log("Related Projects:", relatedProjects);
-  console.log("image", projectData);
+ 
 
   return (
     <div className="w-full mt-16 text-sm">
@@ -429,7 +429,7 @@ export default function ListProjectPage() {
           </div>
         </>
       ) : (
-        <p className="text-gray-500 mt-4">Chargement des données...</p>
+       <Loading />
       )}
     </div>
   );
