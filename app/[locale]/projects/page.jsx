@@ -340,89 +340,77 @@ function Page() {
   const latLngExtremes = getLatLngExtremes(filteredProjects);
 
   return (
-    <div className="flex flex-col w-full gap-4 sm:pt-4 mt-32 bgfull text-gray-700 mb-16 px-4">
-      <h1 className="text-5xl text-gray-700 font-satisfy pl-4">
-        {f("ListeDesAppartements")}
-      </h1>
-
-      <div className="pl-4">
-        <div className="flex  w-full my-8 ">
-          <Link
-            href="/projects"
-            className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500 mx-8"
-          >
-            {f("Ajouter")}
-          </Link>
+    <div className="flex flex-col w-full gap-4 sm:pt-4 mt-12 bgfull text-gray-700 mb-16 px-4">
+      <div className="">
+      
+        <div className="w-full px-2">
+          <FilterB
+            selectedCountries={selectedCountries}
+            onCountryChange={handleCountryChange}
+            selectedCity={selectedCity}
+            onCityChange={handleCityChange}
+            selectedGarden={selectedGarden}
+            onGardenChange={handleGardenChange}
+            selectedSwim={selectedSwim}
+            onSwimChange={handleSwimChange}
+            selectedFitness={selectedFitness}
+            onFitnessChange={handleFitnessChange}
+            selectedChild={selectedChild}
+            onChildChange={handleChildChange}
+            selectedDisabled={selectedDisabled}
+            onDisabledChange={handleDisabledChange}
+            selectedBike={selectedBike}
+            onBikeChange={handleBikeChange}
+            selectedCctv={selectedCctv}
+            onCctvChange={handleCctvChange}
+            selectedEntrance={selectedEntrance}
+            onEntranceChange={handleEntranceChange}
+            priceRange={priceRange}
+            onPriceRangeChange={handlePriceRangeChange}
+            surfaceRange={surfaceRange}
+            onSurfaceRangeChange={handleSurfaceRangeChange}
+            bedRange={bedRange}
+            onBedRangeChange={handleBedRangeChange}
+            showFavorites={showFavorites}
+            onFavoritesChange={setShowFavorites}
+            f={f}
+          />
         </div>
       </div>
+
       <div className=" w-full flex lg:flex-row flex-col gap-4">
         <div className="lg:w-1/2 flex flex-col">
-          <div className="">
-            <div className="flex justify-between items-center mb-4 px-2">
-              <p className="flex text-md text-center text-gray-800 w-full">
-                Total: {filteredProjects.length} {f("AppartementTrouve")}
-              </p>
-              <div className="flex sm:flex-row flex-col sm:items-center items-end sm:w-full w-1/2">
-                <label
-                  className="text-xs mr-2 w-[300px] text-right text-gray-500"
-                  htmlFor="sort-select"
+        <div className="flex  items-center mb-4 px-2">
+          <p className="flex text-sm  text-gray-800 w-full">
+            Total: {filteredProjects.length} {f("AppartementTrouve")}
+          </p>
+          <div className="flex sm:flex-row flex-col sm:items-center items-end sm:w-full w-1/2">
+            <label
+              className="text-xs mr-2 w-[300px] text-right text-gray-500"
+              htmlFor="sort-select"
+            >
+              {f("TrierPar")} (high to low)
+            </label>
+            <select
+              id="sort-select"
+              onChange={(e) => setSortKey(e.target.value)}
+              className="bg-white w-[150px] text-gray-500 border border-gray-300 rounded-sm text-xs"
+            >
+              <option value="" disabled selected>
+                Select
+              </option>
+              {sort.map(({ key, label }) => (
+                <option
+                  key={key}
+                  value={key}
+                  className="bg-white text-gray-500"
                 >
-                  {f("TrierPar")} (high to low)
-                </label>
-                <select
-                  id="sort-select"
-                  onChange={(e) => setSortKey(e.target.value)}
-                  className="bg-white w-[150px] text-gray-500 border border-gray-300 rounded-sm text-xs"
-                >
-                  <option value="" disabled selected>
-                    Select
-                  </option>
-                  {sort.map(({ key, label }) => (
-                    <option
-                      key={key}
-                      value={key}
-                      className="bg-white text-gray-500"
-                    >
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="w-full px-2">
-              <FilterB
-                selectedCountries={selectedCountries}
-                onCountryChange={handleCountryChange}
-                selectedCity={selectedCity}
-                onCityChange={handleCityChange}
-                selectedGarden={selectedGarden}
-                onGardenChange={handleGardenChange}
-                selectedSwim={selectedSwim}
-                onSwimChange={handleSwimChange}
-                selectedFitness={selectedFitness}
-                onFitnessChange={handleFitnessChange}
-                selectedChild={selectedChild}
-                onChildChange={handleChildChange}
-                selectedDisabled={selectedDisabled}
-                onDisabledChange={handleDisabledChange}
-                selectedBike={selectedBike}
-                onBikeChange={handleBikeChange}
-                selectedCctv={selectedCctv}
-                onCctvChange={handleCctvChange}
-                selectedEntrance={selectedEntrance}
-                onEntranceChange={handleEntranceChange}
-                priceRange={priceRange}
-                onPriceRangeChange={handlePriceRangeChange}
-                surfaceRange={surfaceRange}
-                onSurfaceRangeChange={handleSurfaceRangeChange}
-                bedRange={bedRange}
-                onBedRangeChange={handleBedRangeChange}
-                showFavorites={showFavorites}
-                onFavoritesChange={setShowFavorites}
-                f={f}
-              />
-            </div>
+                  {label}
+                </option>
+              ))}
+            </select>
           </div>
+        </div>
           <div className="">
             <ScrollArea className="h-fit w-full px-2 sm:pb-4">
               <div className="relative flex flex-col w-full sm:gap-2 gap-4 justify-center">
@@ -587,7 +575,6 @@ function Page() {
                 link: project?.link,
                 codepro: project?.codepro,
                 qty: project?.qty,
-              
               }))}
               maxLat={latLngExtremes.maxLat} // Passer maxLat
               minLng={latLngExtremes.minLng}
@@ -654,7 +641,7 @@ function FilterB({
   const [editableCountry, setEditableCountry] = useState("");
   const [editableCity, setEditableCity] = useState("Select a city");
 
-  const colorfilter = "text-[13px]  text-gray-800";
+  const colorfilter = "text-xs  text-gray-800";
   useEffect(() => {
     if (editableCountry && countryData[editableCountry]) {
       setCities(countryData[editableCountry]);
@@ -773,10 +760,10 @@ function FilterB({
   };
   return (
     <div>
-      <div className="hidden lg:block bg-gray-200 py-4">
-        <div className="flex justify-between items-center px-4 pb-4 ">
+      <div className="hidden lg:block  py-2 w-full">
+        <div className="flex justify-between items-center px-4">
           <div className="flex gap-2 w-full">
-            <div className="w-1/4 flex justify-center">
+            <div className="">
               <select
                 value={editableCountry}
                 onChange={handleCountryChange}
@@ -793,7 +780,7 @@ function FilterB({
               </select>
             </div>
 
-            <div className="w-1/4 flex justify-center">
+            <div className="">
               <select
                 value={editableCity}
                 onChange={handleCityChange}
@@ -810,19 +797,20 @@ function FilterB({
               </select>
             </div>
 
-            <div className="w-1/4 flex justify-center">
+            <div className="">
               <Button
                 onClick={() => onOpenChange(true)}
                 variant="light"
                 radius="none"
-                className="border border-gray-300 rounded-2xl h-fit py-[7px]  w-[150px] bg-white text-left flex justify-start "
-                id="equip"
+
+                className="border border-gray-300 rounded-2xl h-fit py-[8px]  w-[150px] bg-white text-left flex justify-start "
+                id="equipa"
               >
-                <p className="text-left text-[13px]  text-gray-800">
+                <p className="text-left text-xs  text-gray-800">
                   {f("Residence")}({countChecked()})
                 </p>
               </Button>
-              <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+              <Modal isOpen={isOpen} onOpenChange={onOpenChange} id="equipa">
                 <ModalContent>
                   {(onClose) => (
                     <div className="flex flex-col gap-2 p-4">
@@ -850,24 +838,24 @@ function FilterB({
                 </ModalContent>
               </Modal>
             </div>
-            <div className="w-1/4 flex justify-center items-center pl-5">
-              <div
-                onClick={handleIconClick}
-                className={`cursor-pointer flex items-center ${
-                  showFavorites ? "text-red-500" : "text-gray-600"
-                }`}
-                aria-label="favorite"
-              >
-                {showFavorites ? (
-                  <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
-                ) : (
-                  <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
-                )}
+
+            <div className="flex justify-center items-center">
+                <div className="w-fit bg-white border-gray-300 border-1 rounded-2xl text-xs justify-center items-center py-[8px] px-2">
+                  <Checkbox
+                    isChecked={selectedGarden}
+                    onChange={(e) => onGardenChange(e.target.checked)}
+                    color="bgmap"
+                    aria-label="Garden"
+                    size="sm"
+                    radius="full"
+                    className="flex justify-center items-center"
+                  >
+                    <p className={colorfilter}>{f("AvecJardin")}</p>
+                  </Checkbox>
+                </div>
               </div>
-            </div>
+           
           </div>
-        </div>
-        <div className=" flex items-center w-full px-4 ">
           <div className="flex flex-col justify-center items-center  gap-2 w-full ">
             <div className="flex w-full">
               <div className="flex w-3/4 gap-3">
@@ -908,48 +896,53 @@ function FilterB({
                   )
                 )}
               </div>
-              <div className=" flex justify-center items-center  w-1/4 pl-5 pt-2">
-                <div className="w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 ">
-                  <Checkbox
-                    isChecked={selectedGarden}
-                    onChange={(e) => onGardenChange(e.target.checked)}
-                    color="bgmap"
-                    aria-label="Garden"
-                    size="sm"
-                    radius="full"
-                    className="flex justify-center items-center py-1"
-                  >
-                    <p className={colorfilter}>{f("AvecJardin")}</p>
-                  </Checkbox>
-                </div>
+            
+              <div className="w-1/4 flex justify-center items-center pl-5">
+              <p className="pr-4 text-sm">Your favorite</p>
+              <div
+                onClick={handleIconClick}
+                className={`cursor-pointer flex items-center ${
+                  showFavorites ? "text-red-500" : "text-gray-600"
+                }`}
+                aria-label="favorite"
+              >
+                {showFavorites ? (
+                  <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
+                ) : (
+                  <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
+                )}
               </div>
+            </div>
             </div>
           </div>
         </div>
       </div>
       <div className="block lg:hidden py-4 ">
         <div className="flex justify-between items-center px-4 pb-4 ">
-        <div className="flex justify-center items-center pl-5">
-          <div
-            onClick={handleIconClick}
-            className={`cursor-pointer flex items-center ${
-              showFavorites ? "text-gray-500" : "text-gray-600"
-            }`}
-            aria-label="favorite"
-          >
-            {showFavorites ? (
-              <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
-            ) : (
-              <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
-            )}
-            <p className="pl-4">{f("MesFavoris")}</p>
+          <div className="flex justify-center items-center pl-5">
+            <div
+              onClick={handleIconClick}
+              className={`cursor-pointer flex items-center ${
+                showFavorites ? "text-gray-500" : "text-gray-600"
+              }`}
+              aria-label="favorite"
+            >
+              {showFavorites ? (
+                <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
+              ) : (
+                <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
+              )}
+              <p className="pl-4">{f("MesFavoris")}</p>
+            </div>
           </div>
-        </div>
-        <div className="flex justify-center">
-          <Button onPress={onOpen} className="flex justify-center items-center">
-            {f("Filtre")}
-          </Button>
-        </div>
+          <div className="flex justify-center">
+            <Button
+              onPress={onOpen}
+              className="flex justify-center items-center"
+            >
+              {f("Filtre")}
+            </Button>
+          </div>
         </div>
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
           <ModalContent>

@@ -10,11 +10,17 @@ import useCustomCursor from "@/components/useCustomCursor";
 import { Link } from "@/navigation";
 import Loading from "./loading";
 import { useTranslations } from "next-intl";
+import { Card, CardBody } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState("Polska");
+
+  const [fetchProjectsA, setFetchProjectsA] = useState([]); // Initialise un tableau vide
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   const t = useTranslations("Homepage");
 
@@ -31,6 +37,11 @@ export default function Page() {
     const elapsedTime = Date.now() - startTime;
     const remainingTime = Math.max(MIN_LOADING_TIME - elapsedTime, 0);
 
+    if (!error) {
+      setProjects(data);
+      // Par défaut, affiche tous les projets
+    }
+
     setTimeout(() => {
       setLoading(false);
       if (!error) {
@@ -40,8 +51,41 @@ export default function Page() {
   };
 
   useEffect(() => {
+    fetchProjectsAFromSupabase();
+  }, []);
+
+  const fetchProjectsAFromSupabase = async () => {
+    setLoading(true); // Active le mode chargement
+    const supabase = createClient(
+      "https://your-supabase-url",
+      "your-supabase-key"
+    );
+
+    try {
+      const { data, error } = await supabase
+        .from("project")
+        .select("id, name, city");
+
+      if (error) {
+        console.error(
+          "Erreur lors de la récupération des projets:",
+          error.message
+        );
+      } else {
+        setFetchProjectsA(data || []); // Stocke les données dans l'état
+      }
+    } catch (err) {
+      console.error("Erreur inattendue:", err);
+    } finally {
+      setLoading(false); // Désactive le mode chargement
+    }
+  };
+
+  useEffect(() => {
     fetchProjects();
   }, [selectedCountry]);
+
+  const normalizedSearchTerm = searchTerm.toLowerCase();
 
   const apartmentIDs = new Set(
     projects
@@ -140,6 +184,67 @@ export default function Page() {
           </Link>
         </div>
       </div>
+      <div className="p-6 w-96 border-black border-2 rounded-md relative">
+  {/* Champ de recherche avec bouton "X" */}
+  <div className="relative w-80">
+    <input
+      type="text"
+      placeholder="Rechercher une ville..."
+      className="w-full p-2 border rounded pr-10"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
+
+    {/* Bouton "X" pour effacer la recherche */}
+    {searchTerm.length > 0 && (
+      <button
+        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full w-6 h-6 flex items-center justify-center"
+        onClick={() => setSearchTerm("")}
+      >
+        ✖
+      </button>
+    )}
+  </div>
+
+  {/* Affichage des villes uniques avec mise en évidence des lettres recherchées */}
+  {loading ? (
+    <p>Chargement...</p>
+  ) : (
+    <ul className="mt-4">
+      {searchTerm.length >= 2 &&
+        [
+          ...new Set(
+            fetchProjectsA
+              .filter(
+                (project) =>
+                  project.city &&
+                  project.city.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map((project) => project.city)
+          ),
+        ].map((city, index) => {
+          // Séparation du texte pour mettre en gras la recherche
+          const regex = new RegExp(`(${searchTerm})`, "gi");
+          const highlightedText = city.split(regex).map((part, i) =>
+            part.toLowerCase() === searchTerm.toLowerCase() ? (
+              <strong key={i} className="text-red-500">{part}</strong>
+            ) : (
+              part
+            )
+          );
+
+          return (
+            <li key={index} className="p-2">
+              {highlightedText}
+            </li>
+          );
+        })}
+    </ul>
+  )}
+</div>
+
+
+
       <div className="mb-32">
         <Statistics
           uniqueCompanies={uniqueCompanies}
@@ -231,7 +336,8 @@ const Statistics = ({ uniqueCompanies, uniqueIdeas, totalApartments }) => {
     animateAllCounts();
   }, [uniqueCompanies.size, uniqueIdeas.size, totalApartments]);
 
-  const countstyle = "mt-2 text-center bg-gray-100 rounded-xl p-4 sm:w-[150px] w-[120px]"
+  const countstyle =
+    "mt-2 text-center bg-gray-100 rounded-xl p-4 sm:w-[150px] w-[120px]";
   const countnumber = "font-semibold browntext sm:text-2xl text-lg";
   const counttext = "text-gray-600 sm:text-lg text-sm";
 
