@@ -36,6 +36,7 @@ import { MdOutput } from "react-icons/md";
 import { IoIosLogOut } from "react-icons/io";
 import Gallery from "@/app/[locale]/projects/piclist";
 import { PiEyeThin } from "react-icons/pi";
+import Filter from "@/components/svg/filter";
 
 const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
 const ITEMS_PER_PAGE = 8;
@@ -91,7 +92,7 @@ function Page() {
     const { data, error } = await supabase
       .from("projectlist")
       .select(
-        "*, project(*, created_at, city, lat, lng, mainpic_url, swim, fitness, child, disabled, bike, cctv, entrance, country, qty)"
+        "*, project(*, created_at, city, lat, lng, mainpic_url, swim, fitness, child, disabled, bike, cctv, entrance, country)"
       )
       .order(sortKey, { ascending: false });
     if (error) {
@@ -106,7 +107,6 @@ function Page() {
     fetchProjects();
   }, [sortKey]);
 
-  console.log("Pays sélectionnés :", selectedCountries);
 
   useEffect(() => {
     const storedFavorites =
@@ -341,76 +341,76 @@ function Page() {
 
   return (
     <div className="flex flex-col w-full gap-4 sm:pt-4 mt-12 bgfull text-gray-700 mb-16 px-4">
-      <div className="">
-      
-        <div className="w-full px-2">
-          <FilterB
-            selectedCountries={selectedCountries}
-            onCountryChange={handleCountryChange}
-            selectedCity={selectedCity}
-            onCityChange={handleCityChange}
-            selectedGarden={selectedGarden}
-            onGardenChange={handleGardenChange}
-            selectedSwim={selectedSwim}
-            onSwimChange={handleSwimChange}
-            selectedFitness={selectedFitness}
-            onFitnessChange={handleFitnessChange}
-            selectedChild={selectedChild}
-            onChildChange={handleChildChange}
-            selectedDisabled={selectedDisabled}
-            onDisabledChange={handleDisabledChange}
-            selectedBike={selectedBike}
-            onBikeChange={handleBikeChange}
-            selectedCctv={selectedCctv}
-            onCctvChange={handleCctvChange}
-            selectedEntrance={selectedEntrance}
-            onEntranceChange={handleEntranceChange}
-            priceRange={priceRange}
-            onPriceRangeChange={handlePriceRangeChange}
-            surfaceRange={surfaceRange}
-            onSurfaceRangeChange={handleSurfaceRangeChange}
-            bedRange={bedRange}
-            onBedRangeChange={handleBedRangeChange}
-            showFavorites={showFavorites}
-            onFavoritesChange={setShowFavorites}
-            f={f}
-          />
-        </div>
-      </div>
-
+      <div className="w-full px-2">
+              <FilterB
+                selectedCountries={selectedCountries}
+                onCountryChange={handleCountryChange}
+                selectedCity={selectedCity}
+                onCityChange={handleCityChange}
+                selectedGarden={selectedGarden}
+                onGardenChange={handleGardenChange}
+                selectedSwim={selectedSwim}
+                onSwimChange={handleSwimChange}
+                selectedFitness={selectedFitness}
+                onFitnessChange={handleFitnessChange}
+                selectedChild={selectedChild}
+                onChildChange={handleChildChange}
+                selectedDisabled={selectedDisabled}
+                onDisabledChange={handleDisabledChange}
+                selectedBike={selectedBike}
+                onBikeChange={handleBikeChange}
+                selectedCctv={selectedCctv}
+                onCctvChange={handleCctvChange}
+                selectedEntrance={selectedEntrance}
+                onEntranceChange={handleEntranceChange}
+                priceRange={priceRange}
+                onPriceRangeChange={handlePriceRangeChange}
+                surfaceRange={surfaceRange}
+                onSurfaceRangeChange={handleSurfaceRangeChange}
+                bedRange={bedRange}
+                onBedRangeChange={handleBedRangeChange}
+                showFavorites={showFavorites}
+                onFavoritesChange={setShowFavorites}
+                f={f}
+              />
+            </div>
       <div className=" w-full flex lg:flex-row flex-col gap-4">
+        
         <div className="lg:w-1/2 flex flex-col">
-        <div className="flex  items-center mb-4 px-2">
-          <p className="flex text-sm  text-gray-800 w-full">
-            Total: {filteredProjects.length} {f("AppartementTrouve")}
-          </p>
-          <div className="flex sm:flex-row flex-col sm:items-center items-end sm:w-full w-1/2">
-            <label
-              className="text-xs mr-2 w-[300px] text-right text-gray-500"
-              htmlFor="sort-select"
-            >
-              {f("TrierPar")} (high to low)
-            </label>
-            <select
-              id="sort-select"
-              onChange={(e) => setSortKey(e.target.value)}
-              className="bg-white w-[150px] text-gray-500 border border-gray-300 rounded-sm text-xs"
-            >
-              <option value="" disabled selected>
-                Select
-              </option>
-              {sort.map(({ key, label }) => (
-                <option
-                  key={key}
-                  value={key}
-                  className="bg-white text-gray-500"
+          <div className="">
+            <div className="flex justify-between items-center mb-4 px-2">
+              <p className="flex text-md text-center text-gray-800 w-full">
+                Total: {filteredProjects.length} {f("AppartementTrouve")}
+              </p>
+              <div className="flex sm:flex-row flex-col sm:items-center items-end sm:w-full w-1/2">
+                <label
+                  className="text-xs mr-2 w-[300px] text-right text-gray-500"
+                  htmlFor="sort-select"
                 >
-                  {label}
-                </option>
-              ))}
-            </select>
+                  {f("TrierPar")} (high to low)
+                </label>
+                <select
+                  id="sort-select"
+                  onChange={(e) => setSortKey(e.target.value)}
+                  className="bg-white w-[150px] text-gray-500 border border-gray-300 rounded-sm text-xs"
+                >
+                  <option value="" disabled selected>
+                    Select
+                  </option>
+                  {sort.map(({ key, label }) => (
+                    <option
+                      key={key}
+                      value={key}
+                      className="bg-white text-gray-500"
+                    >
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            
           </div>
-        </div>
           <div className="">
             <ScrollArea className="h-fit w-full px-2 sm:pb-4">
               <div className="relative flex flex-col w-full sm:gap-2 gap-4 justify-center">
@@ -573,8 +573,6 @@ function Page() {
                 compagny: project?.compagny,
                 mainpic_url: project?.mainpic_url,
                 link: project?.link,
-                codepro: project?.codepro,
-                qty: project?.qty,
               }))}
               maxLat={latLngExtremes.maxLat} // Passer maxLat
               minLng={latLngExtremes.minLng}
@@ -639,29 +637,61 @@ function FilterB({
   const [isResModalOpen, setIsResModalOpen] = useState(false);
   const [cities, setCities] = useState([]);
   const [editableCountry, setEditableCountry] = useState("");
-  const [editableCity, setEditableCity] = useState("Select a city");
+  const [editableCity, setEditableCity] = useState("Select city");
 
-  const colorfilter = "text-xs  text-gray-800";
+  const colorfilter = "text-sm  text-gray-800";
+
   useEffect(() => {
-    if (editableCountry && countryData[editableCountry]) {
-      setCities(countryData[editableCountry]);
-      setEditableCity("Select a city");
-    } else {
-      setCities([]);
-      setEditableCity("Select a city");
+    // Récupération des données depuis localStorage
+    const storedCountry = localStorage.getItem("selectedCountry") || "";
+    const storedCity = localStorage.getItem("selectedCity") || "";
+
+    setEditableCountry(storedCountry);
+    onCountryChange([storedCountry]); // Met à jour le state du parent
+
+    if (storedCountry && countryData[storedCountry]) {
+      const availableCities = countryData[storedCountry];
+      setCities(availableCities);
+
+      const defaultCity = availableCities.includes(storedCity)
+        ? storedCity
+        : availableCities.length > 0
+        ? availableCities[0]
+        : "";
+
+      setEditableCity(defaultCity);
+      onCityChange(defaultCity); // Met à jour la ville sélectionnée
     }
-  }, [editableCountry]);
+  }, []);
 
   const handleCountryChange = (e) => {
     const selectedCountry = e.target.value;
     setEditableCountry(selectedCountry);
     onCountryChange([selectedCountry]);
+    localStorage.setItem("selectedCountry", selectedCountry); // Sauvegarde dans localStorage
+
+    // 🔹 Mettre à jour la liste des villes avec "Select city" comme première option
+    if (selectedCountry && countryData[selectedCountry]) {
+      const availableCities = ["Select city", ...countryData[selectedCountry]];
+      setCities(availableCities);
+
+      // 🔹 Sélectionner par défaut "Select city"
+      setEditableCity("Select city");
+      onCityChange("Select city");
+      localStorage.setItem("selectedCity", "Select city"); // Sauvegarde l'option par défaut
+    } else {
+      setCities(["Select city"]);
+      setEditableCity("Select city");
+      onCityChange("Select city");
+      localStorage.setItem("selectedCity", "Select city"); // Réinitialiser si aucun pays valide
+    }
   };
 
   const handleCityChange = (e) => {
     const selectedCity = e.target.value;
     setEditableCity(selectedCity);
     onCityChange(selectedCity);
+    localStorage.setItem("selectedCity", selectedCity); // Sauvegarde dans localStorage
   };
 
   const facilities = [
@@ -760,16 +790,17 @@ function FilterB({
   };
   return (
     <div>
-      <div className="hidden lg:block  py-2 w-full">
-        <div className="flex justify-between items-center px-4">
-          <div className="flex gap-2 w-full">
+      <div className="hidden lg:block  py-4 w-full">
+        <div className="flex">
+        
+          <div className="flex gap-2  w-1/2">
             <div className="">
               <select
                 value={editableCountry}
                 onChange={handleCountryChange}
-                className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-xs w-[150px]"
+                className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-sm w-[150px]"
               >
-                <option value="" className="text-red-300">
+                <option value="" className="text-red-300 ">
                   {f("SelectionnezUnPays")}
                 </option>
                 {Object.keys(countryData).map((country) => (
@@ -784,11 +815,8 @@ function FilterB({
               <select
                 value={editableCity}
                 onChange={handleCityChange}
-                className="border border-gray-300 pl-2 rounded-2xl py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-xs w-[150px]"
+                className="border border-gray-300 pl-2 rounded-2xl py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 w-[150px] text-sm"
               >
-                <option value="Select a city" className="text-red-300">
-                  {f("SelectionnezUneVille")}
-                </option>
                 {cities.map((city, index) => (
                   <option key={index} value={city} className="text-black">
                     {city}
@@ -802,15 +830,16 @@ function FilterB({
                 onClick={() => onOpenChange(true)}
                 variant="light"
                 radius="none"
-
-                className="border border-gray-300 rounded-2xl h-fit py-[8px]  w-[150px] bg-white text-left flex justify-start "
-                id="equipa"
+                className="border border-gray-300 rounded-2xl h-fit py-[7px]  w-[150px] bg-white text-left flex justify-between "
+                id="equip"
               >
-                <p className="text-left text-xs  text-gray-800">
-                  {f("Residence")}({countChecked()})
+                <p className="text-left text-sm flex items-center text-gray-800">
+                  {f("Residence")}
+                 
                 </p>
+                <p> <Filter className="w-8 h-8" /></p>
               </Button>
-              <Modal isOpen={isOpen} onOpenChange={onOpenChange} id="equipa">
+              <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                   {(onClose) => (
                     <div className="flex flex-col gap-2 p-4">
@@ -838,24 +867,26 @@ function FilterB({
                 </ModalContent>
               </Modal>
             </div>
-
-            <div className="flex justify-center items-center">
-                <div className="w-fit bg-white border-gray-300 border-1 rounded-2xl text-xs justify-center items-center py-[8px] px-2">
+           
+            <div className="">
+                <div className="w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-3 ">
                   <Checkbox
                     isChecked={selectedGarden}
                     onChange={(e) => onGardenChange(e.target.checked)}
-                    color="bgmap"
+                
                     aria-label="Garden"
                     size="sm"
                     radius="full"
-                    className="flex justify-center items-center"
+                    className="flex justify-center items-center py-1"
+                    color="success"
                   >
                     <p className={colorfilter}>{f("AvecJardin")}</p>
                   </Checkbox>
                 </div>
               </div>
-           
           </div>
+        
+        <div className=" flex items-center w-1/2">
           <div className="flex flex-col justify-center items-center  gap-2 w-full ">
             <div className="flex w-full">
               <div className="flex w-3/4 gap-3">
@@ -892,13 +923,12 @@ function FilterB({
                           aria-label={label}
                         />
                       </div>
+                      
                     </div>
                   )
                 )}
               </div>
-            
-              <div className="w-1/4 flex justify-center items-center pl-5">
-              <p className="pr-4 text-sm">Your favorite</p>
+              <div className="">
               <div
                 onClick={handleIconClick}
                 className={`cursor-pointer flex items-center ${
@@ -913,8 +943,10 @@ function FilterB({
                 )}
               </div>
             </div>
+            
             </div>
           </div>
+        </div>
         </div>
       </div>
       <div className="block lg:hidden py-4 ">

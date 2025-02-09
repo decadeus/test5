@@ -12,6 +12,7 @@ import Loading from "./loading";
 import { useTranslations } from "next-intl";
 import { Card, CardBody } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
+import { useRouter } from "next/navigation"; // Pour rediriger
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
@@ -25,6 +26,7 @@ export default function Page() {
   const t = useTranslations("Homepage");
 
   const MIN_LOADING_TIME = 1000;
+  const router = useRouter(); // Initialisation du router
 
   const fetchProjects = async () => {
     const startTime = Date.now();
@@ -64,7 +66,7 @@ export default function Page() {
     try {
       const { data, error } = await supabase
         .from("project")
-        .select("id, name, city");
+        .select("id, name, city, country");
 
       if (error) {
         console.error(
@@ -185,65 +187,84 @@ export default function Page() {
         </div>
       </div>
       <div className="p-6 w-96 border-black border-2 rounded-md relative">
-  {/* Champ de recherche avec bouton "X" */}
-  <div className="relative w-80">
-    <input
-      type="text"
-      placeholder="Rechercher une ville..."
-      className="w-full p-2 border rounded pr-10"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-    />
+        {/* Champ de recherche avec bouton "X" */}
+        <div className="relative w-80">
+          <input
+            type="text"
+            placeholder="Rechercher une ville..."
+            className="w-full p-2 border rounded pr-10"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
 
-    {/* Bouton "X" pour effacer la recherche */}
-    {searchTerm.length > 0 && (
-      <button
-        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full w-6 h-6 flex items-center justify-center"
-        onClick={() => setSearchTerm("")}
-      >
-        ✖
-      </button>
-    )}
-  </div>
+          {/* Bouton "X" pour effacer la recherche */}
+          {searchTerm.length > 0 && (
+            <button
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full w-6 h-6 flex items-center justify-center"
+              onClick={() => setSearchTerm("")}
+            >
+              ✖
+            </button>
+          )}
+        </div>
 
-  {/* Affichage des villes uniques avec mise en évidence des lettres recherchées */}
-  {loading ? (
-    <p>Chargement...</p>
-  ) : (
-    <ul className="mt-4">
-      {searchTerm.length >= 2 &&
-        [
-          ...new Set(
-            fetchProjectsA
-              .filter(
-                (project) =>
-                  project.city &&
-                  project.city.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-              .map((project) => project.city)
-          ),
-        ].map((city, index) => {
-          // Séparation du texte pour mettre en gras la recherche
-          const regex = new RegExp(`(${searchTerm})`, "gi");
-          const highlightedText = city.split(regex).map((part, i) =>
-            part.toLowerCase() === searchTerm.toLowerCase() ? (
-              <strong key={i} className="text-red-500">{part}</strong>
-            ) : (
-              part
-            )
-          );
+        {/* Affichage des villes uniques avec mise en évidence des lettres recherchées */}
+        {loading ? (
+          <p>Chargement...</p>
+        ) : (
+          <ul className="mt-4">
+            {searchTerm.length >= 2 &&
+              Array.from(
+                new Map(
+                  fetchProjectsA
+                    .filter(
+                      (project) =>
+                        project.city &&
+                        project.city
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase())
+                    )
+                    .map((project) => [
+                      project.city.toLowerCase(), // Clé unique pour éviter les doublons
+                      {
+                        city: project.city,
+                        country: project.country || "N/A",
+                      },
+                    ])
+                ).values()
+              ).map(({ city, country }, index) => {
+                // Mise en forme du texte recherché en gras
+                const regex = new RegExp(`(${searchTerm})`, "gi");
+                const highlightedText = city.split(regex).map((part, i) =>
+                  part.toLowerCase() === searchTerm.toLowerCase() ? (
+                    <strong key={i} className="text-red-500">
+                      {part}
+                    </strong>
+                  ) : (
+                    part
+                  )
+                );
 
-          return (
-            <li key={index} className="p-2">
-              {highlightedText}
-            </li>
-          );
-        })}
-    </ul>
-  )}
-</div>
-
-
+                return (
+                  <li
+                    key={index}
+                    className="p-2 cursor-pointer hover:bg-gray-100 flex justify-between"
+                    onClick={() => {
+                      setSearchTerm(city); // Met à jour le champ de recherche
+                      localStorage.setItem("selectedCity", city); // Stocke la ville
+                      localStorage.setItem("selectedCountry", country); // Stocke le pays
+                      router.push("/en/projects"); // 🔄 Redirige vers /projects
+                    }}
+                  >
+                    <span>{highlightedText}</span>
+                    <span className="text-gray-500 ml-2">{country}</span>{" "}
+                    {/* Affichage du pays */}
+                  </li>
+                );
+              })}
+          </ul>
+        )}
+      </div>
 
       <div className="mb-32">
         <Statistics
