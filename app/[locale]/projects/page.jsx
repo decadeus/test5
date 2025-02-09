@@ -340,8 +340,8 @@ function Page() {
   const latLngExtremes = getLatLngExtremes(filteredProjects);
 
   return (
-    <div className="flex flex-col w-full gap-4 sm:pt-4 mt-12 bgfull text-gray-700 mb-16 px-4">
-      <div className="w-full px-2">
+    <div className="flex flex-col w-full sm:pt-4 mt-12 bgfull text-gray-700 mb-16 px-4">
+      <div className="w-full border-b-1 border-gray-300">
               <FilterB
                 selectedCountries={selectedCountries}
                 onCountryChange={handleCountryChange}
@@ -374,7 +374,7 @@ function Page() {
                 f={f}
               />
             </div>
-      <div className=" w-full flex lg:flex-row flex-col gap-4">
+      <div className=" w-full flex lg:flex-row flex-col gap-4 ">
         
         <div className="lg:w-1/2 flex flex-col">
           <div className="">
@@ -789,7 +789,7 @@ function FilterB({
     onFavoritesChange(!showFavorites);
   };
   return (
-    <div>
+    <div className="">
       <div className="hidden lg:block  py-4 w-full">
         <div className="flex">
         
@@ -798,7 +798,7 @@ function FilterB({
               <select
                 value={editableCountry}
                 onChange={handleCountryChange}
-                className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-sm w-[150px]"
+                className="w-[100px] bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 "
               >
                 <option value="" className="text-red-300 ">
                   {f("SelectionnezUnPays")}
@@ -815,7 +815,7 @@ function FilterB({
               <select
                 value={editableCity}
                 onChange={handleCityChange}
-                className="border border-gray-300 pl-2 rounded-2xl py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 w-[150px] text-sm"
+                className="w-[150px] bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 "
               >
                 {cities.map((city, index) => (
                   <option key={index} value={city} className="text-black">
@@ -825,12 +825,44 @@ function FilterB({
               </select>
             </div>
 
+           
+           
             <div className="">
+                <div className="w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 ">
+                  <Checkbox
+                    isChecked={selectedGarden}
+                    onChange={(e) => onGardenChange(e.target.checked)}
+                
+                    aria-label="Garden"
+                    size="sm"
+                    radius="full"
+                    className="flex justify-center items-center"
+                    color="success"
+                  >
+                    <p className={colorfilter}>{f("AvecJardin")}</p>
+                  </Checkbox>
+                </div>
+              </div>
+              <div
+                onClick={handleIconClick}
+                className={`cursor-pointer flex w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2  ${
+                  showFavorites ? "text-red-500" : "text-gray-600"
+                }`}
+                aria-label="favorite"
+              >
+                <p className="pr-2 text-sm text-gray-800">Your favorite</p>
+                {showFavorites ? (
+                  <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
+                ) : (
+                  <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
+                )}
+              </div>
+              <div className="">
               <Button
                 onClick={() => onOpenChange(true)}
                 variant="light"
                 radius="none"
-                className="border border-gray-300 rounded-2xl h-fit py-[7px]  w-[150px] bg-white text-left flex justify-between "
+                className="w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-3  "
                 id="equip"
               >
                 <p className="text-left text-sm flex items-center text-gray-800">
@@ -867,23 +899,6 @@ function FilterB({
                 </ModalContent>
               </Modal>
             </div>
-           
-            <div className="">
-                <div className="w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-3 ">
-                  <Checkbox
-                    isChecked={selectedGarden}
-                    onChange={(e) => onGardenChange(e.target.checked)}
-                
-                    aria-label="Garden"
-                    size="sm"
-                    radius="full"
-                    className="flex justify-center items-center py-1"
-                    color="success"
-                  >
-                    <p className={colorfilter}>{f("AvecJardin")}</p>
-                  </Checkbox>
-                </div>
-              </div>
           </div>
         
         <div className=" flex items-center w-1/2">
@@ -928,21 +943,9 @@ function FilterB({
                   )
                 )}
               </div>
-              <div className="">
-              <div
-                onClick={handleIconClick}
-                className={`cursor-pointer flex items-center ${
-                  showFavorites ? "text-red-500" : "text-gray-600"
-                }`}
-                aria-label="favorite"
-              >
-                {showFavorites ? (
-                  <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
-                ) : (
-                  <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
-                )}
-              </div>
-            </div>
+             
+           
+          
             
             </div>
           </div>

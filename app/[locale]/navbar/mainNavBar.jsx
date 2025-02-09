@@ -49,7 +49,7 @@ export default function MainNavBar({ user }) {
 
   return (
     <div className="relative ">
-      <div className="flex justify-between items-center bg-gray-100/70 text-white px-4 py-1  w-full fixed top-0 left-0 z-50 shadow-md">
+      <div className="flex justify-between items-center  text-white px-4 py-1  w-full fixed top-0 left-0 z-50 border-b-1 border-gray-300">
         <div className="flex justify-start items-center gap-2">
           <Link href="/">
             <div className="flex gap-2 items-center" onClick={closeMenu}>

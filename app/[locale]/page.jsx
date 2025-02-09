@@ -213,56 +213,55 @@ export default function Page() {
           <p>Chargement...</p>
         ) : (
           <ul className="mt-4">
-            {searchTerm.length >= 2 &&
-              Array.from(
-                new Map(
-                  fetchProjectsA
-                    .filter(
-                      (project) =>
-                        project.city &&
-                        project.city
-                          .toLowerCase()
-                          .includes(searchTerm.toLowerCase())
-                    )
-                    .map((project) => [
-                      project.city.toLowerCase(), // Clé unique pour éviter les doublons
-                      {
-                        city: project.city,
-                        country: project.country || "N/A",
-                      },
-                    ])
-                ).values()
-              ).map(({ city, country }, index) => {
-                // Mise en forme du texte recherché en gras
-                const regex = new RegExp(`(${searchTerm})`, "gi");
-                const highlightedText = city.split(regex).map((part, i) =>
-                  part.toLowerCase() === searchTerm.toLowerCase() ? (
-                    <strong key={i} className="text-red-500">
-                      {part}
-                    </strong>
-                  ) : (
-                    part
-                  )
-                );
+  {searchTerm.length >= 2 &&
+    Array.from(
+      new Map(
+        fetchProjectsA
+          .filter(
+            (project) =>
+              project.city &&
+              project.city.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          .map((project) => [
+            project.city.toLowerCase(),
+            {
+              city: project.city,
+              country: project.country || "N/A",
+            },
+          ])
+      ).values()
+    ).map(({ city, country }, index) => {
+      const regex = new RegExp(`(${searchTerm})`, "gi");
+      const highlightedText = city.split(regex).map((part, i) =>
+        part.toLowerCase() === searchTerm.toLowerCase() ? (
+          <strong key={i} className="text-red-500">{part}</strong>
+        ) : (
+          part
+        )
+      );
 
-                return (
-                  <li
-                    key={index}
-                    className="p-2 cursor-pointer hover:bg-gray-100 flex justify-between"
-                    onClick={() => {
-                      setSearchTerm(city); // Met à jour le champ de recherche
-                      localStorage.setItem("selectedCity", city); // Stocke la ville
-                      localStorage.setItem("selectedCountry", country); // Stocke le pays
-                      router.push("/en/projects"); // 🔄 Redirige vers /projects
-                    }}
-                  >
-                    <span>{highlightedText}</span>
-                    <span className="text-gray-500 ml-2">{country}</span>{" "}
-                    {/* Affichage du pays */}
-                  </li>
-                );
-              })}
-          </ul>
+      return (
+        <li
+          key={index}
+          className="p-2 cursor-pointer hover:bg-gray-100 flex justify-between"
+          onClick={() => {
+            setSearchTerm(city);
+            localStorage.setItem("selectedCity", city);
+            localStorage.setItem("selectedCountry", country);
+
+            // ⏳ Ajouter un délai avant la redirection
+            setTimeout(() => {
+              router.push("/en/projects");
+            }, 500); // Délai de 500ms avant la redirection
+          }}
+        >
+          <span>{highlightedText}</span>
+          <span className="text-gray-500 ml-2">{country}</span>
+        </li>
+      );
+    })}
+</ul>
+
         )}
       </div>
 
