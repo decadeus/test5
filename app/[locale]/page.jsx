@@ -13,6 +13,7 @@ import { useTranslations } from "next-intl";
 import { Card, CardBody } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation"; // Pour rediriger
+import { IoSearch } from "react-icons/io5";
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
@@ -129,73 +130,21 @@ export default function Page() {
       `}</style>
       <div className="w-full maintextfull">
         <Para t={t} />
-      </div>
-      <div className="flex justify-center  -mt-[300px]  sm:-mt-[200px] sm:mb-[200px] mb-[200px] z-20">
-        <button
-          onClick={() => handleCountryChange("France")}
-          className={`flex justify-between items-center  gap-2 px-4 py-2 m-2   border-2 rounded brownborder  ${
-            selectedCountry === "France"
-              ? "brownbg text-white  "
-              : "clearbg browntext"
-          }`}
-        >
-          <img
-            src="/france-flag-round-circle-icon.svg"
-            alt="Icon"
-            width="20"
-            height="20"
-          />{" "}
-          {t("France")}
-        </button>
-        <button
-          onClick={() => handleCountryChange("Polska")}
-          className={`flex justify-between items-center  gap-2 px-4 py-2 m-2  border-2 rounded brownborder  ${
-            selectedCountry === "Polska"
-              ? "brownbg text-white "
-              : "clearbg browntext"
-          }`}
-        >
-          <img
-            src="/monaco-flag-round-circle-icon.svg"
-            alt="Icon"
-            width="20"
-            height="20"
-          />{" "}
-          {t("Pologne")}
-        </button>
-      </div>
-      <div className="flex-col sm:flex sm:flex-row h-[200px] sm:mt-[0]  mt-[100px] mb-[100px] ">
-        <div className="flex justify-center items-center sm:w-1/2  sm:pl-4 relative z-10 ">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <p className="text-[20rem] text-black opacity-5 font-satisfy pb-8">
-              H
-            </p>
-          </div>
 
-          <h1 className="sm:text-4xl text-2xl font-bold px-4 text-center pb-[20px]">
-            {t("title")}
-          </h1>
-        </div>
-        <div className="flex flex-col sm:justify-center sm:items-center sm:w-1/2 px-4 sm:pr-48 gap-4">
-          <p className="sm:text-md ">{t("Description")}</p>
-          <Link
-            href="/projects"
-            className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
-          >
-            {t("Tous")}
-          </Link>
-        </div>
       </div>
-      <div className="p-6 w-96 border-black border-2 rounded-md relative">
+
+      <div className="w-fit border-black border-2 rounded-3xl relative -mt-[400px] z-40 p-2 bg-white  ">
         {/* Champ de recherche avec bouton "X" */}
-        <div className="relative w-80">
-          <input
-            type="text"
-            placeholder="Rechercher une ville..."
-            className="w-full p-2 border rounded pr-10"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="relative w-80 ">
+        <input
+     type="text"
+     placeholder="Paris, Warsaw, ..."
+     className="w-full p-2 rounded pr-10 text-black placeholder:text-black outline-none focus:outline-none focus:ring-0"
+
+     value={searchTerm}
+     onChange={(e) => setSearchTerm(e.target.value)}
+   />
+   <IoSearch size={20} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black" />
 
           {/* Bouton "X" pour effacer la recherche */}
           {searchTerm.length > 0 && (
@@ -212,7 +161,7 @@ export default function Page() {
         {loading ? (
           <p>Chargement...</p>
         ) : (
-          <ul className="mt-4">
+          <ul className="bg-white">
   {searchTerm.length >= 2 &&
     Array.from(
       new Map(
@@ -264,6 +213,56 @@ export default function Page() {
 
         )}
       </div>
+      
+      
+      <div className="flex-col sm:flex sm:flex-row h-[200px] sm:mt-[0]  mt-[100px] mb-[100px] ">
+       
+        <div className="flex flex-col sm:justify-center sm:items-center sm:w-1/2 px-4 sm:pr-48 gap-4 bg-red-300">
+          <p className="sm:text-md ">{t("Description")}</p>
+          <Link
+            href="/projects"
+            className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
+          >
+            {t("Tous")}
+          </Link>
+        </div>
+      </div>
+
+      <div className="flex justify-center mt-20 ">
+        <button
+          onClick={() => handleCountryChange("France")}
+          className={`flex justify-between items-center  gap-2 px-4 py-2 m-2   border-2 rounded brownborder  ${
+            selectedCountry === "France"
+              ? "brownbg text-white  "
+              : "clearbg browntext"
+          }`}
+        >
+          <img
+            src="/france-flag-round-circle-icon.svg"
+            alt="Icon"
+            width="20"
+            height="20"
+          />{" "}
+          {t("France")}
+        </button>
+        <button
+          onClick={() => handleCountryChange("Polska")}
+          className={`flex justify-between items-center  gap-2 px-4 py-2 m-2  border-2 rounded brownborder  ${
+            selectedCountry === "Polska"
+              ? "brownbg text-white "
+              : "clearbg browntext"
+          }`}
+        >
+          <img
+            src="/monaco-flag-round-circle-icon.svg"
+            alt="Icon"
+            width="20"
+            height="20"
+          />{" "}
+          {t("Pologne")}
+        </button>
+      </div>
+    
 
       <div className="mb-32">
         <Statistics
@@ -570,12 +569,25 @@ function Para({ t }) {
         <div className="absolute inset-0 bg-white opacity-60 z-10" />
 
         {/* Contenu au-dessus de l'image */}
-        <div className="relative z-20 flex flex-col items-start justify-end h-full text-black pb-80 pl-20">
+        <div className="relative z-20 flex flex-col items-start justify-center h-full text-black pb-80 pl-20">
+
+        <h1 className="sm:text-4xl text-2xl font-bold text-center pb-[20px]">
+            {t("title")}
+          </h1>
           <p className="text-3xl text-left">{t("subtitle")}</p>
 
           <p className="text-left text-sm pt-4 flex items-center">
             {t("defiler")} <FaLongArrowAltDown />
           </p>
+
+          <div className="flex justify-center items-start sm:w-1/2  sm:pl-4 relative z-10 mt-20">
+          <div className="absolute inset-0 flex  justify-center">
+            <p className="text-[20rem] text-black opacity-5 font-satisfy pb-8">
+              H
+            </p>
+          </div>
+
+        </div>
         </div>
       </div>
     </>
