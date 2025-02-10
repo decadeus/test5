@@ -28,7 +28,7 @@ import Avatar from "@/app/getimage/project";
 import dynamic from "next/dynamic";
 import { TailSpin } from "react-loader-spinner";
 import { projectIcons } from "@/lib/iconbuilding";
-import { countryData } from "@/utils/countryData";
+import { countryData } from "@/utils/cityExisted";
 import Link from "next/link";
 import Loading from "@/app/[locale]/loading";
 import { useTranslations } from "next-intl";
@@ -818,6 +818,7 @@ function FilterB({
                 onChange={handleCityChange}
                 className="w-[150px] bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 "
               >
+                
                 {cities.map((city, index) => (
                   <option key={index} value={city} className="text-black">
                     {city}
