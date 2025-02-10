@@ -39,7 +39,7 @@ import { PiEyeThin } from "react-icons/pi";
 import Filter from "@/components/svg/filter";
 
 const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 12;
 
 const LazyMap = dynamic(() => import("@/app/[locale]/map/index"), {
   ssr: false,
@@ -106,7 +106,6 @@ function Page() {
   useEffect(() => {
     fetchProjects();
   }, [sortKey]);
-
 
   useEffect(() => {
     const storedFavorites =
@@ -342,40 +341,39 @@ function Page() {
   return (
     <div className="flex flex-col w-full sm:pt-4 mt-12 bgfull text-gray-700 mb-16 px-4">
       <div className="w-full border-b-1 border-gray-300">
-              <FilterB
-                selectedCountries={selectedCountries}
-                onCountryChange={handleCountryChange}
-                selectedCity={selectedCity}
-                onCityChange={handleCityChange}
-                selectedGarden={selectedGarden}
-                onGardenChange={handleGardenChange}
-                selectedSwim={selectedSwim}
-                onSwimChange={handleSwimChange}
-                selectedFitness={selectedFitness}
-                onFitnessChange={handleFitnessChange}
-                selectedChild={selectedChild}
-                onChildChange={handleChildChange}
-                selectedDisabled={selectedDisabled}
-                onDisabledChange={handleDisabledChange}
-                selectedBike={selectedBike}
-                onBikeChange={handleBikeChange}
-                selectedCctv={selectedCctv}
-                onCctvChange={handleCctvChange}
-                selectedEntrance={selectedEntrance}
-                onEntranceChange={handleEntranceChange}
-                priceRange={priceRange}
-                onPriceRangeChange={handlePriceRangeChange}
-                surfaceRange={surfaceRange}
-                onSurfaceRangeChange={handleSurfaceRangeChange}
-                bedRange={bedRange}
-                onBedRangeChange={handleBedRangeChange}
-                showFavorites={showFavorites}
-                onFavoritesChange={setShowFavorites}
-                f={f}
-              />
-            </div>
+        <FilterB
+          selectedCountries={selectedCountries}
+          onCountryChange={handleCountryChange}
+          selectedCity={selectedCity}
+          onCityChange={handleCityChange}
+          selectedGarden={selectedGarden}
+          onGardenChange={handleGardenChange}
+          selectedSwim={selectedSwim}
+          onSwimChange={handleSwimChange}
+          selectedFitness={selectedFitness}
+          onFitnessChange={handleFitnessChange}
+          selectedChild={selectedChild}
+          onChildChange={handleChildChange}
+          selectedDisabled={selectedDisabled}
+          onDisabledChange={handleDisabledChange}
+          selectedBike={selectedBike}
+          onBikeChange={handleBikeChange}
+          selectedCctv={selectedCctv}
+          onCctvChange={handleCctvChange}
+          selectedEntrance={selectedEntrance}
+          onEntranceChange={handleEntranceChange}
+          priceRange={priceRange}
+          onPriceRangeChange={handlePriceRangeChange}
+          surfaceRange={surfaceRange}
+          onSurfaceRangeChange={handleSurfaceRangeChange}
+          bedRange={bedRange}
+          onBedRangeChange={handleBedRangeChange}
+          showFavorites={showFavorites}
+          onFavoritesChange={setShowFavorites}
+          f={f}
+        />
+      </div>
       <div className=" w-full flex lg:flex-row flex-col gap-4 ">
-        
         <div className="lg:w-1/2 flex flex-col">
           <div className="">
             <div className="flex justify-between items-center mb-4 px-2">
@@ -409,137 +407,95 @@ function Page() {
                 </select>
               </div>
             </div>
-            
           </div>
           <div className="">
             <ScrollArea className="h-fit w-full px-2 sm:pb-4">
-              <div className="relative flex flex-col w-full sm:gap-2 gap-4 justify-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 ">
                 {projects.map((item, index) => (
                   <div
                     key={index}
-                    className="flex flex-col justify-center items-center w-full gap-4 bg-gray-100 shadow-sm rounded-sm group"
+                    className="flex flex-col w-full shadow-sm rounded-sm border border-gray-300"
                   >
-                    <div className="flex flex-col w-full gap-4 justify-center py-2 px-2 ">
-                      <div className=" transition duration-300">
-                        {/* Le div principal qui subit le flou */}
-                        <div className="">
-                          <div className="flex  w-full ">
-                            <div className="flex justify-between w-full flex-col sm:flex-row">
-                              <div className="">
-                                <div className=" flex flex-col justify-between  text-gray-500">
-                                  <div className="flex gap-2 text-xs text-gray-500">
-                                    <div>
-                                      <div className="flex gap-2">
-                                        <div>
-                                          <p>{item.surface} m²</p>
-                                        </div>
-                                        <p>|</p>
-                                        <div>
-                                          <p>{item.bed} beds</p>
-                                        </div>
-                                        <p>|</p>
-                                      </div>
-                                    </div>
-                                    <div className="flex gap-2 text-xs text-gray-500 ">
-                                      <p className="text-md font-bold">
-                                        {item.project.name}
-                                      </p>
-                                      <p className="font-semibold">
-                                        {item.project.country}
-                                      </p>
-                                      <p>{item.project.city}</p>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="flex justify-between items-center pt-2">
-                                  <div className="">
-                                    {item.noprice || item.price === null ? (
-                                      <p className="flex gap-1 items-center italic text-xs">
-                                        undefined
-                                      </p>
-                                    ) : (
-                                      <p className="flex gap-1 items-center font-bold text-xs">
-                                        {item.project.cur === "PLN" ? (
-                                          <span className="flex items-center">
-                                            {item.price}
-                                            <TbCurrencyZloty size={15} />
-                                          </span>
-                                        ) : (
-                                          <span className="flex items-center">
-                                            {item.price}{" "}
-                                            <FaEuroSign size={10} />
-                                          </span>
-                                        )}
-                                      </p>
-                                    )}
-                                  </div>
-                                  <div className="flex justify-center items-center">
-                                    {" "}
-                                    {item.des && (
-                                      <div className="">
-                                        <p className=" bg-white  rounded-lg text-gray-700  px-2 py-1 text-xs">
-                                          {item.des}
-                                        </p>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className=" justify-center items-center flex pr-4 gap-4  ">
-                                <div className="flex justify-center items-center">
-                                  <Button
-                                    onClick={() => handleToggleFavorite(item)}
-                                    className="bg-transparent text-white hover:bg-opacity-10"
-                                    aria-label="favorite"
-                                    isIconOnly
-                                  >
-                                    {isFavorite(item) ? (
-                                      <FaHeart fill="#bfae9b" size={15} />
-                                    ) : (
-                                      <FaRegHeart fill="#bfae9b" size={15} />
-                                    )}
-                                  </Button>
-                                </div>
-                                <div>
-                                  <Link
-                                    href={item.project.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    <IoIosLogOut size={16} />
-                                  </Link>
-                                </div>
-                                <Popover placement="top" showArrow>
-                                  <PopoverTrigger>
-                                    <Button
-                                      className="bg-transparent"
-                                      isIconOnly
-                                    >
-                                      <PiEyeThin size={20} />
-                                    </Button>
-                                  </PopoverTrigger>
-                                  <PopoverContent>
-                                    <div className=" h-[350px] w-[350px] p-0 m-0 rounded-xl">
-                                      <Avatar
-                                        url={item.project.mainpic_url} // Utilise 'src' au lieu de 'url'
-                                        width={250} // Ajuste la largeur pour correspondre à la taille du div parent
-                                        height={150} // Ajuste la hauteur pour correspondre à la taille du div parent
-                                        className="rounded-xl p-0 m-0 h-[250px] w-[250px]" // Supprime l'arrondi
-                                      />
-                                    </div>
-                                  </PopoverContent>
-                                </Popover>
-                              </div>
-                            </div>
+                    <div className="flex flex-col gap-2 w-full px-2">
+                      <div className="pt-2 w-full h-1/4">
+                        <div className="flex justify-between items-center text-gray-500 text-xs">
+                          <div className="flex gap-2">
+                            <p>{item.surface} m²</p>
+                            <span>|</span>
+                            <p>{item.bed} beds</p>
+                            <p className="text-md font-bold">
+                              {item.project.name}
+                            </p>
                           </div>
                         </div>
+                      </div>
+                      <div className="flex justify-between items-center h-1/4">
+                       
+                        <div className="flex gap-2 text-sm">
+                          <p>{item.project.country}</p>
+                          <p>{item.project.city}</p>
+                        </div>
+                      </div>
+                      <div className="h-1/4 flex ">
+                      <p className="text-xs font-bold flex justify-center items-center">
+                          {item.noprice || item.price === null ? (
+                            <span className="italic text-gray-500">
+                              undefined
+                            </span>
+                          ) : item.project.cur === "PLN" ? (
+                            <span className="flex">
+                              {item.price} <TbCurrencyZloty size={15} />
+                            </span>
+                          ) : (
+                            <span className="flex">
+                              {item.price} <FaEuroSign size={10} />
+                            </span>
+                          )}
+                        </p>
+                        {item.des ? (
+                          <p className="bg-white rounded-lg text-gray-700 px-2 py-1 text-xs text-center">
+                            {item.des}
+                          </p>
+                        ) : (
+                          <span className="invisible">Placeholder</span>
+                        )}
+                      </div>
+
+                      <div className="flex justify-center items-center gap-4 h-1/4">
+                        <Button
+                          onClick={() => handleToggleFavorite(item)}
+                          className="bg-transparent text-white hover:bg-opacity-10"
+                          aria-label="favorite"
+                          isIconOnly
+                        >
+                          {isFavorite(item) ? (
+                            <FaHeart fill="#bfae9b" size={15} />
+                          ) : (
+                            <FaRegHeart fill="#bfae9b" size={15} />
+                          )}
+                        </Button>
+                        <Popover placement="top" showArrow>
+                          <PopoverTrigger>
+                            <Button className="bg-transparent" isIconOnly>
+                              <PiEyeThin size={20} />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent>
+                            <div className="h-[350px] w-[350px] rounded-xl">
+                              <Avatar
+                                url={item.project.mainpic_url}
+                                width={250}
+                                height={150}
+                                className="rounded-xl h-[250px] w-[250px]"
+                              />
+                            </div>
+                          </PopoverContent>
+                        </Popover>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-
               <div className="flex justify-between items-center mt-4 text-gray-500 px-4">
                 <Button
                   onClick={handlePreviousPage}
@@ -793,7 +749,6 @@ function FilterB({
     <div className="">
       <div className="hidden lg:block  py-4 w-full">
         <div className="flex">
-        
           <div className="flex gap-2  w-1/2">
             <div className="">
               <select
@@ -818,7 +773,6 @@ function FilterB({
                 onChange={handleCityChange}
                 className="w-[150px] bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 "
               >
-                
                 {cities.map((city, index) => (
                   <option key={index} value={city} className="text-black">
                     {city}
@@ -827,39 +781,36 @@ function FilterB({
               </select>
             </div>
 
-           
-           
             <div className="">
-                <div className="w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 ">
-                  <Checkbox
-                    isChecked={selectedGarden}
-                    onChange={(e) => onGardenChange(e.target.checked)}
-                
-                    aria-label="Garden"
-                    size="sm"
-                    radius="full"
-                    className="flex justify-center items-center"
-                    color="success"
-                  >
-                    <p className={colorfilter}>{f("AvecJardin")}</p>
-                  </Checkbox>
-                </div>
+              <div className="w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 ">
+                <Checkbox
+                  isChecked={selectedGarden}
+                  onChange={(e) => onGardenChange(e.target.checked)}
+                  aria-label="Garden"
+                  size="sm"
+                  radius="full"
+                  className="flex justify-center items-center"
+                  color="success"
+                >
+                  <p className={colorfilter}>{f("AvecJardin")}</p>
+                </Checkbox>
               </div>
-              <div
-                onClick={handleIconClick}
-                className={`cursor-pointer flex w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2  ${
-                  showFavorites ? "text-red-500" : "text-gray-600"
-                }`}
-                aria-label="favorite"
-              >
-                <p className="pr-2 text-sm text-gray-800">Your favorite</p>
-                {showFavorites ? (
-                  <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
-                ) : (
-                  <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
-                )}
-              </div>
-              <div className="">
+            </div>
+            <div
+              onClick={handleIconClick}
+              className={`cursor-pointer flex w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2  ${
+                showFavorites ? "text-red-500" : "text-gray-600"
+              }`}
+              aria-label="favorite"
+            >
+              <p className="pr-2 text-sm text-gray-800">Your favorite</p>
+              {showFavorites ? (
+                <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
+              ) : (
+                <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
+              )}
+            </div>
+            <div className="">
               <Button
                 onClick={() => onOpenChange(true)}
                 variant="light"
@@ -869,9 +820,11 @@ function FilterB({
               >
                 <p className="text-left text-sm flex items-center text-gray-800">
                   {f("Residence")}
-                 
                 </p>
-                <p> <Filter className="w-8 h-8" /></p>
+                <p>
+                  {" "}
+                  <Filter className="w-8 h-8" />
+                </p>
               </Button>
               <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
@@ -902,56 +855,51 @@ function FilterB({
               </Modal>
             </div>
           </div>
-        
-        <div className=" flex items-center w-1/2">
-          <div className="flex flex-col justify-center items-center  gap-2 w-full ">
-            <div className="flex w-full">
-              <div className="flex w-3/4 gap-3">
-                {modalData.map(
-                  ({ label, range, onRangeChange, min, max, step, id }) => (
-                    <div key={id} className="w-full">
-                      <div className="flex justify-between text-xs pb-1">
-                        <p className={colorfilter}>{label}</p>
-                        <p className={colorfilter}>
-                          {range[0]} - {range[1]}
-                        </p>
+
+          <div className=" flex items-center w-1/2">
+            <div className="flex flex-col justify-center items-center  gap-2 w-full ">
+              <div className="flex w-full">
+                <div className="flex w-3/4 gap-3">
+                  {modalData.map(
+                    ({ label, range, onRangeChange, min, max, step, id }) => (
+                      <div key={id} className="w-full">
+                        <div className="flex justify-between text-xs pb-1">
+                          <p className={colorfilter}>{label}</p>
+                          <p className={colorfilter}>
+                            {range[0]} - {range[1]}
+                          </p>
+                        </div>
+                        <div className="">
+                          <Slider
+                            min={min}
+                            maxValue={max}
+                            step={step}
+                            value={range}
+                            onChange={onRangeChange}
+                            classNames={{
+                              base: "max-w-md gap-3 h-[2px]",
+                              track: "border-s-brownd h-[2px] bg-white ",
+                              filler:
+                                "bg-gradient-to-r from-custom-brownc to-custom-brownd",
+                            }}
+                            renderThumb={(props) => (
+                              <div
+                                {...props}
+                                className="group p-1 top-1/2 bg-background border-small border-default-200 dark:border-default-400/50 shadow-xl rounded-full cursor-grab data-[dragging=true]:cursor-grabbing"
+                              >
+                                <span className="transition-transform bg-gradient-to-br shadow-2xl from-custom-brownc to-custom-brownd rounded-full w-1 h-1 block group-data-[dragging=true]:scale-80 " />
+                              </div>
+                            )}
+                            aria-label={label}
+                          />
+                        </div>
                       </div>
-                      <div className="">
-                        <Slider
-                          min={min}
-                          maxValue={max}
-                          step={step}
-                          value={range}
-                          onChange={onRangeChange}
-                          classNames={{
-                            base: "max-w-md gap-3 h-[2px]",
-                            track: "border-s-brownd h-[2px] bg-white ",
-                            filler:
-                              "bg-gradient-to-r from-custom-brownc to-custom-brownd",
-                          }}
-                          renderThumb={(props) => (
-                            <div
-                              {...props}
-                              className="group p-1 top-1/2 bg-background border-small border-default-200 dark:border-default-400/50 shadow-xl rounded-full cursor-grab data-[dragging=true]:cursor-grabbing"
-                            >
-                              <span className="transition-transform bg-gradient-to-br shadow-2xl from-custom-brownc to-custom-brownd rounded-full w-1 h-1 block group-data-[dragging=true]:scale-80 " />
-                            </div>
-                          )}
-                          aria-label={label}
-                        />
-                      </div>
-                      
-                    </div>
-                  )
-                )}
+                    )
+                  )}
+                </div>
               </div>
-             
-           
-          
-            
             </div>
           </div>
-        </div>
         </div>
       </div>
       <div className="block lg:hidden py-4 ">
