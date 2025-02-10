@@ -12,9 +12,7 @@ export default function Connect() {
 
   return (
     <div className="flex justify-center items-center gap-8">
-         <div className="flex items-center text-black ">
-          <LangSwitcher />
-        </div>
+        
 
     <Link href="/login" className="">
       <div className="flex gap-4">
