@@ -15,6 +15,7 @@ const LangSwitcher: React.FC = () => {
   const pathname = usePathname();
   const urlSegments = useSelectedLayoutSegments();
   const [isOptionsExpanded, setIsOptionsExpanded] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const options: Option[] = [
@@ -25,9 +26,23 @@ const LangSwitcher: React.FC = () => {
     { country: "Русский", code: "ru" },
   ];
 
-  // Find the current language, fallback to "Select Language"
+  useEffect(() => {
+    // Charger la langue stockée au montage
+    const storedLanguage = localStorage.getItem("selectedLanguage");
+    if (storedLanguage) {
+      setSelectedLanguage(storedLanguage);
+    }
+  }, []);
+
+  const handleLanguageChange = (code: string) => {
+    localStorage.setItem("selectedLanguage", code);
+    setSelectedLanguage(code);
+  };
+
+  // Trouver la langue actuelle en fonction de l'URL ou de `localStorage`
   const currentLang =
     options.find((option) => pathname.startsWith(`/${option.code}`))?.country ||
+    options.find((option) => option.code === selectedLanguage)?.country ||
     "Select Language";
 
   useEffect(() => {
@@ -76,11 +91,15 @@ const LangSwitcher: React.FC = () => {
         {isOptionsExpanded && (
           <div
             id="language-options"
-            className="absolute right-0 left-1 top-full mt-2 ml-4 w-48  shadow-lg rounded-md z-50 border"
+            className="absolute right-0 left-1 top-full mt-2 ml-4 w-48 shadow-lg rounded-md z-50 border"
           >
             <div role="menu" aria-orientation="vertical">
               {options.map((lang) => (
-                <Link key={lang.code} href={`/${lang.code}/${urlSegments.join("/")}`}>
+                <Link
+                  key={lang.code}
+                  href={`/${lang.code}/${urlSegments.join("/")}`}
+                  onClick={() => handleLanguageChange(lang.code)}
+                >
                   <button
                     lang={lang.code}
                     onMouseDown={(e) => e.preventDefault()}

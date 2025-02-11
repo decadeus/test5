@@ -14,6 +14,7 @@ import { Card, CardBody } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation"; // Pour rediriger
 import { IoSearch } from "react-icons/io5";
+import { usePathname } from "next/navigation";
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
@@ -28,7 +29,8 @@ export default function Page() {
 
   const MIN_LOADING_TIME = 1000;
   const router = useRouter(); // Initialisation du router
-
+  const pathname = usePathname();
+  const locale = pathname ? pathname.split("/")[1] : "en";
   const fetchProjects = async () => {
     const startTime = Date.now();
     const supabase = createClient();
@@ -130,21 +132,22 @@ export default function Page() {
       `}</style>
       <div className="w-full maintextfull">
         <Para t={t} />
-
       </div>
 
       <div className="w-fit border-black border-2 rounded-3xl relative -mt-[400px] z-40 p-2 bg-white  ">
         {/* Champ de recherche avec bouton "X" */}
         <div className="relative w-80 ">
-        <input
-     type="text"
-     placeholder="Paris, Warsaw, ..."
-     className="w-full p-2 rounded pr-10 text-black placeholder:text-black outline-none focus:outline-none focus:ring-0"
-
-     value={searchTerm}
-     onChange={(e) => setSearchTerm(e.target.value)}
-   />
-   <IoSearch size={20} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black" />
+          <input
+            type="text"
+            placeholder="Paris, Warsaw, ..."
+            className="w-full p-2 rounded pr-10 text-black placeholder:text-black outline-none focus:outline-none focus:ring-0"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <IoSearch
+            size={20}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black"
+          />
 
           {/* Bouton "X" pour effacer la recherche */}
           {searchTerm.length > 0 && (
@@ -162,61 +165,62 @@ export default function Page() {
           <p>Chargement...</p>
         ) : (
           <ul className="bg-white">
-  {searchTerm.length >= 2 &&
-    Array.from(
-      new Map(
-        fetchProjectsA
-          .filter(
-            (project) =>
-              project.city &&
-              project.city.toLowerCase().includes(searchTerm.toLowerCase())
-          )
-          .map((project) => [
-            project.city.toLowerCase(),
-            {
-              city: project.city,
-              country: project.country || "N/A",
-            },
-          ])
-      ).values()
-    ).map(({ city, country }, index) => {
-      const regex = new RegExp(`(${searchTerm})`, "gi");
-      const highlightedText = city.split(regex).map((part, i) =>
-        part.toLowerCase() === searchTerm.toLowerCase() ? (
-          <strong key={i} className="text-red-500">{part}</strong>
-        ) : (
-          part
-        )
-      );
+            {searchTerm.length >= 2 &&
+              Array.from(
+                new Map(
+                  fetchProjectsA
+                    .filter(
+                      (project) =>
+                        project.city &&
+                        project.city
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase())
+                    )
+                    .map((project) => [
+                      project.city.toLowerCase(),
+                      {
+                        city: project.city,
+                        country: project.country || "N/A",
+                      },
+                    ])
+                ).values()
+              ).map(({ city, country }, index) => {
+                const regex = new RegExp(`(${searchTerm})`, "gi");
+                const highlightedText = city.split(regex).map((part, i) =>
+                  part.toLowerCase() === searchTerm.toLowerCase() ? (
+                    <strong key={i} className="text-red-500">
+                      {part}
+                    </strong>
+                  ) : (
+                    part
+                  )
+                );
 
-      return (
-        <li
-          key={index}
-          className="p-2 cursor-pointer hover:bg-gray-100 flex justify-between"
-          onClick={() => {
-            setSearchTerm(city);
-            localStorage.setItem("selectedCity", city);
-            localStorage.setItem("selectedCountry", country);
+                return (
+                  <li
+                    key={index}
+                    className="p-2 cursor-pointer hover:bg-gray-100 flex justify-between"
+                    onClick={() => {
+                      setSearchTerm(city);
+                      localStorage.setItem("selectedCity", city);
+                      localStorage.setItem("selectedCountry", country);
 
-            // ⏳ Ajouter un délai avant la redirection
-            setTimeout(() => {
-              router.push("/en/projects");
-            }, 500); // Délai de 500ms avant la redirection
-          }}
-        >
-          <span>{highlightedText}</span>
-          <span className="text-gray-500 ml-2">{country}</span>
-        </li>
-      );
-    })}
-</ul>
-
+                      // ⏳ Ajouter un délai avant la redirection
+                      setTimeout(() => {
+                        router.push(`/${locale}/projects`);
+                      }, 500); // Délai de 500ms avant la redirection
+                    }}
+                  >
+                    <span>{highlightedText}</span>
+                    <span className="text-gray-500 ml-2">{country}</span>
+                  </li>
+                );
+              })}
+          </ul>
         )}
       </div>
-      
-      
+
       <div className="flex-col sm:flex sm:flex-row h-[200px] sm:mt-[0]  mt-[100px] mb-[100px] ">
-       
         <div className="flex flex-col sm:justify-center sm:items-center sm:w-1/2 px-4 sm:pr-48 gap-4 bg-red-300">
           <p className="sm:text-md ">{t("Description")}</p>
           <Link
@@ -262,7 +266,6 @@ export default function Page() {
           {t("Pologne")}
         </button>
       </div>
-    
 
       <div className="mb-32">
         <Statistics
@@ -569,25 +572,23 @@ function Para({ t }) {
         <div className="absolute inset-0 bg-white opacity-60 z-10" />
 
         {/* Contenu au-dessus de l'image */}
-        <div className="relative z-20 flex flex-col items-start justify-center h-full text-black pb-80 pl-20">
+        <div className="relative z-20 flex flex-col items-center  h-full text-black mt-[100px]">
+          
+              <h1 className="sm:text-4xl text-2xl font-bold text-center px-8 ">
+                {t("title")}
+              </h1>
+              <p className="text-[20rem] text-black opacity-5 font-satisfy p-0 m-0 ">
+                H
+              </p>
+              <div className="flex justify-center items-center flex-col">
+                <p className="text-3xl text-center">{t("subtitle")}</p>
 
-        <h1 className="sm:text-4xl text-2xl font-bold text-center pb-[20px]">
-            {t("title")}
-          </h1>
-          <p className="text-3xl text-left">{t("subtitle")}</p>
-
-          <p className="text-left text-sm pt-4 flex items-center">
-            {t("defiler")} <FaLongArrowAltDown />
-          </p>
-
-          <div className="flex justify-center items-start sm:w-1/2  sm:pl-4 relative z-10 mt-20">
-          <div className="absolute inset-0 flex  justify-center">
-            <p className="text-[20rem] text-black opacity-5 font-satisfy pb-8">
-              H
-            </p>
-          </div>
-
-        </div>
+                <p className="text-left text-sm pt-4 flex items-center">
+                  {t("defiler")} <FaLongArrowAltDown />
+                </p>
+              </div>
+           
+          
         </div>
       </div>
     </>

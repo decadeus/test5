@@ -34,7 +34,9 @@ export default function ListProjectPage() {
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const [relatedProjects, setRelatedProjects] = useState([]);
-
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
   useEffect(() => {
     if (!projectdetail) return;
 
@@ -71,6 +73,14 @@ export default function ListProjectPage() {
   }, [projectdetail]);
 
   useEffect(() => {
+    const storedCountry = localStorage.getItem("selectedCountry");
+    const storedCity = localStorage.getItem("selectedCity");
+
+    if (storedCountry) setCountry(storedCountry);
+    if (storedCity) setCity(storedCity);
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       const sidebar = document.getElementById("sidebar");
       const container = document.getElementById("content-container");
@@ -87,8 +97,8 @@ export default function ListProjectPage() {
 
   // Récupération des informations du projet avec des valeurs par défaut
   const {
-    country = "Non défini",
-    city = "Non défini",
+    country: projectCountry,
+    city: projectCity,
     name = "Non défini",
     adress = "Non défini",
     des = "Non défini",
@@ -109,6 +119,9 @@ export default function ListProjectPage() {
     bike = false,
   } = projectData || {};
 
+  // Use project data if available; otherwise, use local storage values
+  const displayCountry = projectCountry || country || "Non défini";
+  const displayCity = projectCity || city || "Non défini";
   const amenitiesIcons = [
     lift && Lift,
     swim && Swim,
@@ -158,7 +171,12 @@ export default function ListProjectPage() {
     return <FaSort />;
   };
 
- 
+
+
+useEffect(() => {
+  const storedLanguage = localStorage.getItem("selectedLanguage") || "en";
+  setSelectedLanguage(storedLanguage);
+}, []);
 
   return (
     <div className="w-full mt-16 text-sm">
@@ -208,9 +226,24 @@ export default function ListProjectPage() {
             <div className="w-full lg:w-2/3 pl-2 pr-2 flex flex-col gap-12">
               <div>
                 <p className="text-gray-500 text-sm sm:text-lg">
-                  <span className="text-blue-500">{country}</span> /
-                  <span className="text-blue-500 px-1">{city}</span> /
-                  <span className="pl-1">{name}</span>
+                  <Link
+                    href="/en/projects"
+                    onClick={() =>
+                      localStorage.setItem("selectedCity", "Select city")
+                    }
+                  >
+                    <span className="text-blue-500 hover:underline cursor-pointer">
+                      {displayCountry}
+                    </span>
+                  </Link>
+                  /
+                 
+                  <Link href={`/${selectedLanguage || "en"}/projects`}>
+  <span className="text-blue-500 px-1 hover:underline cursor-pointer">
+    {displayCity}
+  </span>
+</Link>
+                  /<span className="pl-1">{name}</span>
                 </p>
               </div>
               {/* Name */}
@@ -339,42 +372,42 @@ export default function ListProjectPage() {
 
                 {relatedProjects && relatedProjects.length > 0 ? (
                   <div>
-                   <ul className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-  {relatedProjects.map((project, i) => (
-    <li
-      key={project.codepro || i}
-      className="border p-4 rounded-lg shadow-md bg-white flex flex-col justify-center"
-    >
-      <h4 className="font-semibold text-md mb-2">{project.name}</h4>
+                    <ul className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                      {relatedProjects.map((project, i) => (
+                        <li
+                          key={project.codepro || i}
+                          className="border p-4 rounded-lg shadow-md bg-white flex flex-col justify-center"
+                        >
+                          <h4 className="font-semibold text-md mb-2">
+                            {project.name}
+                          </h4>
 
-      {/* Conteneur de l'image avec effet de hover */}
-      <div className="relative w-full h-[150px] md:h-[150px] lg:h-[200px] rounded-xl overflow-hidden cursor-pointer group">
-        {project.mainpic_url ? (
-          <Avatar
-            url={project.mainpic_url}
-            width={400}  // Largeur améliorée
-            height={400} // Hauteur améliorée
-            alt="Project Image"
-            className="rounded-xl w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-        ) : (
-          <div className="flex items-center justify-center w-full h-full bg-gray-200 rounded-xl">
-            <span className="text-gray-500">No image</span>
-          </div>
-        )}
+                          {/* Conteneur de l'image avec effet de hover */}
+                          <div className="relative w-full h-[150px] md:h-[150px] lg:h-[200px] rounded-xl overflow-hidden cursor-pointer group">
+                            {project.mainpic_url ? (
+                              <Avatar
+                                url={project.mainpic_url}
+                                width={400} // Largeur améliorée
+                                height={400} // Hauteur améliorée
+                                alt="Project Image"
+                                className="rounded-xl w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                              />
+                            ) : (
+                              <div className="flex items-center justify-center w-full h-full bg-gray-200 rounded-xl">
+                                <span className="text-gray-500">No image</span>
+                              </div>
+                            )}
 
-        {/* Bouton qui apparaît au survol */}
-        <Link href={`/en/detailproject/${project.codepro}`}>
-          <button className="absolute inset-0 flex items-center justify-center bg-black/60 text-white text-base font-semibold rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            Details
-          </button>
-        </Link>
-      </div>
-    </li>
-  ))}
-</ul>
-
-
+                            {/* Bouton qui apparaît au survol */}
+                            <Link href={`/en/detailproject/${project.codepro}`}>
+                              <button className="absolute inset-0 flex items-center justify-center bg-black/60 text-white text-base font-semibold rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                                Details
+                              </button>
+                            </Link>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 ) : (
                   <p className="text-gray-500">
@@ -429,7 +462,7 @@ export default function ListProjectPage() {
           </div>
         </>
       ) : (
-       <Loading />
+        <Loading />
       )}
     </div>
   );

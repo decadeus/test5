@@ -10,6 +10,7 @@ import Link from "next/link";
 import a from "@/components/image/appart1.jpg";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import Point from "@/components/svg/point";
+import { usePathname } from "next/navigation";
 
 const createTextIcon = () => {
   const flowerSVG = ReactDOMServer.renderToStaticMarkup(<Point />);
@@ -35,15 +36,18 @@ const AutoZoom = ({ bounds }) => {
     if (bounds.isValid()) {
       map.fitBounds(bounds);
       setTimeout(() => {
-        map.setZoom(map.getZoom() - 1); // Réduit d’un niveau de zoom
+        map.setZoom(map.getZoom() - 1);
       }, 500);
     }
   }, [map, bounds]);
-  
+
   return null;
 };
 
 const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
+  const pathname = usePathname();
+  const locale = pathname ? pathname.split("/")[1] : "en"; // Sécurise l'extraction du locale
+
   const [center, setCenter] = useState([
     mLat || 52.22767841358763,
     mLng || 2.341876947781295,
@@ -64,30 +68,30 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
   return (
     <>
       <style>{`
-  .leaflet-popup-content {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-  }
-  
-  .leaflet-popup-content-wrapper {
-    padding: 0 !important;
-    border-radius: 8px !important;
-    overflow: hidden !important;
-  }
+        .leaflet-popup-content {
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100% !important;
+        }
+        
+        .leaflet-popup-content-wrapper {
+          padding: 0 !important;
+          border-radius: 8px !important;
+          overflow: hidden !important;
+        }
 
-  .leaflet-popup-tip {
-    display: none !important;
-  }
+        .leaflet-popup-tip {
+          display: none !important;
+        }
 
-  .popup-container img {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    height: auto !important;
-    display: block !important;
-  }
-`}</style>
+        .popup-container img {
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100% !important;
+          height: auto !important;
+          display: block !important;
+        }
+      `}</style>
 
       <MapContainer center={center} zoom={4} className={classN} minZoom={4}>
         <TileLayer
@@ -130,11 +134,13 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
                       {todo.qty} Appartment(s)
                     </div>
                     <div className="w-full flex justify-center">
-                      <Link href={`/en/detailproject/${todo.codepro}`}>
-                        <button className="w-full  py-1 px-6 flex items-center justify-center text-white text-base font-semibold bg-gradient-to-r from-yellow-800 to-yellow-700 rounded-md shadow-xl">
-                          Details
-                        </button>
-                      </Link>
+                      {locale && (
+                        <Link href={`/${locale}/detailproject/${todo.codepro}`}>
+                          <button className="w-full py-1 px-6 flex items-center justify-center text-white text-base font-semibold bg-gradient-to-r from-yellow-800 to-yellow-700 rounded-md shadow-xl">
+                            Details
+                          </button>
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>

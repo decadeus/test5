@@ -17,7 +17,7 @@ function Gallery({ city, compagny, project }) {
 
     let query = supabase
       .from("project")
-      .select("created_at, mainpic_url, name, compagny, link")
+      .select("created_at, mainpic_url, name, compagny, link, codepro")
       .order("created_at", { ascending: false });
 
     // Si city est défini, ajoutez la condition. Sinon, récupérez tous les projets.
@@ -60,6 +60,14 @@ function Gallery({ city, compagny, project }) {
               height={150}
               className="rounded-xl p-0 m-0"
             />
+             <Link
+               href={`/en/detailproject/${projects[0]?.codepro}`}
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            >
+              <p className={SBI}>{projects[0]?.name}</p>
+            </Link>
           </div>
         </div>
       </div>
@@ -79,7 +87,7 @@ function Gallery({ city, compagny, project }) {
               className="rounded-xl p-0 m-0"
             />
             <Link
-              href={projects[0]?.link}
+               href={`/en/detailproject/${projects[0]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -100,7 +108,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[1]?.link}
+              href={`/en/detailsproject/${projects[1]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -127,7 +135,7 @@ function Gallery({ city, compagny, project }) {
               className="rounded-xl p-0 m-0"
             />
              <Link
-              href={projects[0]?.link}
+              href={`/en/detailproject/${projects[0]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -148,7 +156,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[1]?.link}
+              href={`/en/detailproject/${projects[1]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -168,7 +176,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[2]?.link}
+               href={`/en/detailproject/${projects[2]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -195,7 +203,7 @@ function Gallery({ city, compagny, project }) {
               className="rounded-xl p-0 m-0"
             />
              <Link
-              href={projects[0]?.link}
+              href={`/en/detailproject/${projects[0]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -216,7 +224,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[1]?.link}
+               href={`/en/detailproject/${projects[1]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -236,7 +244,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[2]?.link}
+              href={`/en/detailproject/${projects[2]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -256,7 +264,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[3]?.link}
+               href={`/en/detailproject/${projects[3]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -276,7 +284,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[4]?.link}
+              href={`/en/detailproject/${projects[4]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -303,7 +311,7 @@ function Gallery({ city, compagny, project }) {
               className="rounded-xl p-0 m-0"
             />
              <Link
-              href={projects[0]?.link}
+              href={`/en/detailproject/${projects[0]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -324,7 +332,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[1]?.link}
+               href={`/en/detailproject/${projects[1]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -344,7 +352,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[2]?.link}
+               href={`/en/detailproject/${projects[2]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -364,7 +372,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[3]?.link}
+              href={`/en/detailproject/${projects[3]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -384,7 +392,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[4]?.link}
+              href={`/en/detailproject/${projects[4]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -411,7 +419,7 @@ function Gallery({ city, compagny, project }) {
               className="rounded-xl p-0 m-0"
             />
              <Link
-              href={projects[0]?.link}
+              href={`/en/detailproject/${projects[0]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -432,7 +440,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[1]?.link}
+              href={`/en/detailproject/${projects[1]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -452,7 +460,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[2]?.link}
+               href={`/en/detailproject/${projects[2]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -472,7 +480,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[3]?.link}
+              href={`/en/detailproject/${projects[3]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -492,7 +500,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[4]?.link}
+               href={`/en/detailproject/${projects[4]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -512,7 +520,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[5]?.link}
+               href={`/en/detailproject/${projects[5]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -539,7 +547,7 @@ function Gallery({ city, compagny, project }) {
               className="rounded-xl p-0 m-0"
             />
              <Link
-              href={projects[0]?.link}
+               href={`/en/detailproject/${projects[0]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -566,7 +574,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[1]?.link}
+              href={`/en/detailproject/${projects[1]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -592,7 +600,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[2]?.link}
+              href={`/en/detailproject/${projects[2]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -618,7 +626,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[3]?.link}
+               href={`/en/detailproject/${projects[3]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -644,7 +652,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[4]?.link}
+               href={`/en/detailproject/${projects[4]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -670,7 +678,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[5]?.link}
+               href={`/en/detailproject/${projects[5]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
@@ -696,7 +704,7 @@ function Gallery({ city, compagny, project }) {
                 className="rounded-xl p-0 m-0"
               />
                <Link
-              href={projects[6]?.link}
+               href={`/en/detailproject/${projects[6]?.codepro}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
