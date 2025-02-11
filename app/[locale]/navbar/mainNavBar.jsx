@@ -50,7 +50,7 @@ export default function MainNavBar({ user }) {
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
       <Respon n={n} user={user} />
-      <div className="hidden sm:flex items-center justify-between relative">
+      <div className="hidden md:flex items-center justify-between relative">
         {/* Search & Language Switcher - Completely Left */}
         <div className="flex items-center gap-4 pl-4">
           <Link
@@ -121,6 +121,7 @@ function Respon({ n, user }) {
         onOpenChange={onOpenChange}
         placement="left"
         color="primary"
+        size="xs"
       >
         <DrawerContent className="bg-gray-900 text-white">
           {(onClose) => (
