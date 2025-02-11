@@ -10,8 +10,8 @@ import useCustomCursor from "@/components/useCustomCursor";
 import { Link } from "@/navigation";
 import Loading from "./loading";
 import { useTranslations } from "next-intl";
-import { Card, CardBody } from "@nextui-org/react";
-import { Input } from "@nextui-org/react";
+import { Card, CardBody } from "@heroui/react";
+import { Input } from "@heroui/react";
 import { useRouter } from "next/navigation"; // Pour rediriger
 import { IoSearch } from "react-icons/io5";
 import { usePathname } from "next/navigation";

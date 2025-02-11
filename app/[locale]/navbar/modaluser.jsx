@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/client";
 import Image from "next/legacy/image";
 
 import { CgProfile } from "react-icons/cg";
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Avatar} from "@nextui-org/react";
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Avatar} from "@heroui/react";
 import AccountForm from "@/app/account/account-form"
 
 export default function AvatarModal({ user }) {

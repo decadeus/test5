@@ -6,7 +6,7 @@ import { usePathname, useSelectedLayoutSegments } from "next/navigation";
 import React, { useState, useEffect, useRef } from "react";
 import { FiGlobe } from "react-icons/fi";
 
-const LangSwitcher: React.FC = () => {
+const LangRes: React.FC = () => {
   interface Option {
     country: string;
     code: string;
@@ -72,15 +72,16 @@ const LangSwitcher: React.FC = () => {
           aria-controls="language-options"
           aria-label="Select language"
           onClick={() => setIsOptionsExpanded(!isOptionsExpanded)}
-          className="flex items-center gap-2 p-2 rounded-md transition-all"
+          className="flex items-center gap-2  transition-all"
         >
-         
+       
+          <div className="w-8 flex justify-center items-center text-center">
+            <FiGlobe color="white" size={18} />
+            </div>
+            <div className="w-fit flex items-start text-center">{capitalize(currentLang)}</div>
+          
 
-          {/* Desktop View */}
-          <div className="hidden lg:flex gap-2 items-center">
-            <FiGlobe color="black" size={18} />
-            <p className="text-sm">{capitalize(currentLang)}</p>
-          </div>
+          
         </button>
 
         {/* Dropdown Menu */}
@@ -99,7 +100,7 @@ const LangSwitcher: React.FC = () => {
                   <button
                     lang={lang.code}
                     onMouseDown={(e) => e.preventDefault()}
-                    className={`block w-full px-4 py-2 text-left text-sm rounded-md transition-colors 
+                    className={`block w-full px-4 py-2 text-left text-sm transition-colors 
                       ${
                         pathname.startsWith(`/${lang.code}`)
                           ? "brownbg text-white"
@@ -118,4 +119,4 @@ const LangSwitcher: React.FC = () => {
   );
 };
 
-export default LangSwitcher;
+export default LangRes;

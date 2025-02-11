@@ -17,7 +17,7 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { createClient } from "@/utils/supabase/client";
 import { FaEuroSign, FaHeart, FaRegHeart } from "react-icons/fa";
@@ -746,7 +746,7 @@ function FilterB({
     onFavoritesChange(!showFavorites);
   };
   return (
-    <div className="">
+    (<div className="">
       <div className="hidden lg:block  py-4 w-full">
         <div className="flex">
           <div className="flex gap-2  w-1/2">
@@ -805,9 +805,9 @@ function FilterB({
             >
               <p className="pr-2 text-sm text-gray-800">Your favorite</p>
               {showFavorites ? (
-                <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
+                (<FaHeart size={20} color="#bfae9b" />) // Cœur plein si favori
               ) : (
-                <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
+                (<FaRegHeart size={20} color="#bfae9b" />) // Cœur vide si non favori
               )}
             </div>
             <div className="">
@@ -913,9 +913,9 @@ function FilterB({
               aria-label="favorite"
             >
               {showFavorites ? (
-                <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
+                (<FaHeart size={20} color="#bfae9b" />) // Cœur plein si favori
               ) : (
-                <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
+                (<FaRegHeart size={20} color="#bfae9b" />) // Cœur vide si non favori
               )}
               <p className="pl-4">{f("MesFavoris")}</p>
             </div>
@@ -1070,6 +1070,6 @@ function FilterB({
           </ModalContent>
         </Modal>
       </div>
-    </div>
+    </div>)
   );
 }

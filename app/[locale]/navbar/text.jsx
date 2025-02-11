@@ -10,7 +10,7 @@ import {
   useDisclosure,
   Input,
   Divider,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import Avatar from "@/app/getimage/getone";
 import UAvatar from "@/app/getimage/getone"; // Use the original Avatar component
 import { createClient } from "@/utils/supabase/client";
