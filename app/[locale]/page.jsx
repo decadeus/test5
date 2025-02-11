@@ -572,15 +572,15 @@ function Para({ t }) {
         <div className="absolute inset-0 bg-white opacity-60 z-10" />
 
         {/* Contenu au-dessus de l'image */}
-        <div className="relative z-20 flex flex-col items-center  h-full text-black mt-[100px]">
+        <div className="relative z-20 flex flex-col justify-between items-center  h-full text-black  xs:py-[150px] gap-0 py-[120px]  xs:gap-8">
           
-              <h1 className="sm:text-4xl text-2xl font-bold text-center px-8 ">
+              <h1 className="sm:text-4xl text-2xl font-bold text-center px-8">
                 {t("title")}
               </h1>
-              <p className="text-[20rem] text-black opacity-5 font-satisfy p-0 m-0 ">
+              <p className="text-[20rem] text-black opacity-5 font-satisfy text-left md:pl-[150px] pl-[0px]  w-full">
                 H
               </p>
-              <div className="flex justify-center items-center flex-col">
+              <div className="flex justify-center items-center flex-col px-8 ">
                 <p className="text-3xl text-center">{t("subtitle")}</p>
 
                 <p className="text-left text-sm pt-4 flex items-center">
