@@ -9,8 +9,8 @@ export function ConnectRes() {
   return (
     <>
       <Link href="/login" className="flex gap-2 justify-center items-center">
-      <div className="w-8 flex justify-center items-center text-center"> <FaRegUser size={14} /></div>
-      <div className="w-8 flex items-start text-center"><p className="text-white text-sm">Login</p></div>
+      <div className="w-8 flex justify-center items-center text-center"> <FaRegUser size={20} /></div>
+      <div className="w-8 flex items-start text-center"><p className="text-white text-xl">Login</p></div>
        
         
       </Link>

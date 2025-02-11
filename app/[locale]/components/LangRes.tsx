@@ -76,9 +76,9 @@ const LangRes: React.FC = () => {
         >
        
           <div className="w-8 flex justify-center items-center text-center">
-            <FiGlobe color="white" size={18} />
+            <FiGlobe color="white" size={22} />
             </div>
-            <div className="w-fit flex items-start text-center">{capitalize(currentLang)}</div>
+            <div className="w-fit flex items-start text-center text-xl">{capitalize(currentLang)}</div>
           
 
           

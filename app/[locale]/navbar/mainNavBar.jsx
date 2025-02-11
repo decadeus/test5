@@ -50,7 +50,7 @@ export default function MainNavBar({ user }) {
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
       <Respon n={n} user={user} />
-      <div className="hidden md:flex items-center justify-between relative">
+      <div className="hidden lg:flex items-center justify-between relative">
         {/* Search & Language Switcher - Completely Left */}
         <div className="flex items-center gap-4 pl-4">
           <Link
@@ -112,7 +112,7 @@ export default function MainNavBar({ user }) {
 function Respon({ n, user }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
-    <div className="flex md:hidden ">
+    <div className="flex lg:hidden ">
       <Button className=" text-black" variant="light" onPress={onOpen}>
         <FiMenu size={24} />
       </Button>
@@ -130,16 +130,16 @@ function Respon({ n, user }) {
                 <div className="flex flex-col gap-4 pl-4 items-start text-sm mt-8">
                   <Link href="/projects" className="flex gap-2">
                     <div className="w-8 flex justify-center items-center text-center">
-                      <IoSearch size={18} />
+                      <IoSearch size={22} />
                     </div>
-                    <div className="w-fit flex items-start text-center">
+                    <div className="w-fit flex items-start text-center text-xl">
                       {n("Rechercher")}
                     </div>
                   </Link>
                   
                   {user && (
                     <Link href="/cproject" className="">
-                      <FaNetworkWired size={20} /> {n("VosProjets")}
+                      <FaNetworkWired size={24} /> {n("VosProjets")}
                     </Link>
                   )}
                   {user ? (
@@ -152,9 +152,9 @@ function Respon({ n, user }) {
                   )}
                   <Link href="/addproject" className="flex gap-2">
                     <div className="w-8 flex justify-center items-center text-center">
-                      <HiOutlinePlusCircle size={20} />
+                      <HiOutlinePlusCircle size={24} />
                     </div>
-                    <div className="w-fit flex items-start text-center">
+                    <div className="w-fit flex items-start text-center text-xl">
                       {n("Ajouter")}
                     </div>
                   </Link>
