@@ -17,7 +17,7 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithOtp({ email });
 
     if (error) {
-      setError('Failed to send magic link. Please try again.');
+      setError('Failed to send magic link. Only register can login. Please try again.');
     } else {
       setMessage('Check your email for the magic link to log in.');
     }

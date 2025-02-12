@@ -221,15 +221,7 @@ export default function Page() {
       </div>
 
       <div className="flex-col sm:flex sm:flex-row h-[200px] sm:mt-[0]  mt-[100px] mb-[100px] ">
-        <div className="flex flex-col sm:justify-center sm:items-center sm:w-1/2 px-4 sm:pr-48 gap-4 bg-red-300">
-          <p className="sm:text-md ">{t("Description")}</p>
-          <Link
-            href="/projects"
-            className="border-2 brownborder p-2 w-fit clearbg browntext rounded hover:bg-[#c9af95] hover:text-[#f6f6f4] hover:border-black transition-all duration-500"
-          >
-            {t("Tous")}
-          </Link>
-        </div>
+      
       </div>
 
       <div className="flex justify-center mt-20 ">

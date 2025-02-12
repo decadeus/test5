@@ -1,6 +1,6 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
-import { Link } from "@/navigation";
+import { Link, useNavigation } from "@/navigation";
 import Image from "next/legacy/image";
 import H from "@/components/H.png";
 import Connect from "./connect";
@@ -20,9 +20,7 @@ import LangRes from "../components/LangRes";
 import {
   Drawer,
   DrawerContent,
-  DrawerHeader,
   DrawerBody,
-  DrawerFooter,
   Button,
   useDisclosure,
 } from "@heroui/react";
@@ -31,7 +29,10 @@ export default function MainNavBar({ user }) {
   const [profile, setProfile] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const supabase = createClient();
+  const navigation = useNavigation();
   const n = useTranslations("Nav");
+
+  console.log("User state:", user); // Vérifier si l'user est bien défini après connexion
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -47,11 +48,27 @@ export default function MainNavBar({ user }) {
     fetchProfile();
   }, [user, supabase]);
 
+  // Écouter les changements d'authentification pour forcer une mise à jour
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        console.log("Auth event:", event, "Session:", session);
+        if (event === "SIGNED_IN" && session?.user) {
+          navigation.refresh(); // Rafraîchir la navigation après connexion
+        }
+      }
+    );
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [navigation, supabase]);
+
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
       <Respon n={n} user={user} />
       <div className="hidden lg:flex items-center justify-between relative">
-        {/* Search & Language Switcher - Completely Left */}
+        {/* Barre de recherche & sélecteur de langue */}
         <div className="flex items-center gap-4 pl-4">
           <Link
             href="/projects"
@@ -62,7 +79,7 @@ export default function MainNavBar({ user }) {
           <LangSwitcher />
         </div>
 
-        {/* Logo - Centered */}
+        {/* Logo au centre */}
         <Link
           href="/"
           className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-3"
@@ -79,7 +96,7 @@ export default function MainNavBar({ user }) {
           </h2>
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* Navigation Desktop */}
         <div className="hidden xl:flex gap-6 items-center">
           {user && (
             <Link
@@ -138,9 +155,12 @@ function Respon({ n, user }) {
                   </Link>
                   
                   {user && (
-                    <Link href="/cproject" className="">
-                      <FaNetworkWired size={24} /> {n("VosProjets")}
-                    </Link>
+                    <div>
+                      <p>Test</p>
+                      <Link href="/cproject" className="">
+                        <FaNetworkWired size={24} /> {n("VosProjets")}
+                      </Link>
+                    </div>
                   )}
                   {user ? (
                     <div className="">
@@ -166,7 +186,7 @@ function Respon({ n, user }) {
         </DrawerContent>
       </Drawer>
 
-      {/* Logo - Centered */}
+      {/* Logo au centre */}
       <Link
         href="/"
         className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-3"

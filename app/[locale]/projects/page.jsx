@@ -373,7 +373,7 @@ function Page() {
           f={f}
         />
       </div>
-      <div className=" w-full flex lg:flex-row flex-col gap-4 ">
+      <div className=" w-full flex lg:flex-row flex-col gap-4 lg:justify-between">
         <div className="lg:w-1/2 flex flex-col">
           <div className="">
             <div className="flex justify-between items-center mb-4 px-2">
@@ -430,14 +430,13 @@ function Page() {
                         </div>
                       </div>
                       <div className="flex justify-between items-center h-1/4">
-                       
                         <div className="flex gap-2 text-sm">
                           <p>{item.project.country}</p>
                           <p>{item.project.city}</p>
                         </div>
                       </div>
                       <div className="h-1/4 flex ">
-                      <p className="text-xs font-bold flex justify-center items-center">
+                        <p className="text-xs font-bold flex justify-center items-center">
                           {item.noprice || item.price === null ? (
                             <span className="italic text-gray-500">
                               undefined
@@ -488,6 +487,14 @@ function Page() {
                                 height={150}
                                 className="rounded-xl h-[250px] w-[250px]"
                               />
+                              <Link
+                                href={`/en/detailproject/${item.project?.codepro}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+                              >
+                                
+                              </Link>
                             </div>
                           </PopoverContent>
                         </Popover>
@@ -746,9 +753,9 @@ function FilterB({
     onFavoritesChange(!showFavorites);
   };
   return (
-    (<div className="">
+    <div className="">
       <div className="hidden lg:block  py-4 w-full">
-        <div className="flex">
+        <div className="flex justify-between">
           <div className="flex gap-2  w-1/2">
             <div className="">
               <select
@@ -805,9 +812,9 @@ function FilterB({
             >
               <p className="pr-2 text-sm text-gray-800">Your favorite</p>
               {showFavorites ? (
-                (<FaHeart size={20} color="#bfae9b" />) // Cœur plein si favori
+                <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
               ) : (
-                (<FaRegHeart size={20} color="#bfae9b" />) // Cœur vide si non favori
+                <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
               )}
             </div>
             <div className="">
@@ -856,10 +863,10 @@ function FilterB({
             </div>
           </div>
 
-          <div className=" flex items-center w-1/2">
-            <div className="flex flex-col justify-center items-center  gap-2 w-full ">
-              <div className="flex w-full">
-                <div className="flex w-3/4 gap-3">
+          <div className=" flex justify-end items-end w-1/2">
+            <div className="flex flex-col gap-2 w-full ">
+              <div className="flex w-full justify-center items-end ">
+                <div className="flex w-3/4  gap-3">
                   {modalData.map(
                     ({ label, range, onRangeChange, min, max, step, id }) => (
                       <div key={id} className="w-full">
@@ -913,9 +920,9 @@ function FilterB({
               aria-label="favorite"
             >
               {showFavorites ? (
-                (<FaHeart size={20} color="#bfae9b" />) // Cœur plein si favori
+                <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
               ) : (
-                (<FaRegHeart size={20} color="#bfae9b" />) // Cœur vide si non favori
+                <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
               )}
               <p className="pl-4">{f("MesFavoris")}</p>
             </div>
@@ -929,6 +936,7 @@ function FilterB({
             </Button>
           </div>
         </div>
+        {/* modal  */}
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
           <ModalContent>
             {(onClose) => (
@@ -1070,6 +1078,6 @@ function FilterB({
           </ModalContent>
         </Modal>
       </div>
-    </div>)
+    </div>
   );
 }
