@@ -1,6 +1,7 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
-import { Link, useNavigation } from "@/navigation";
+import Link from "next/link";
+
 import Image from "next/legacy/image";
 import H from "@/components/H.png";
 import Connect from "./connect";
@@ -15,6 +16,7 @@ import { FaNetworkWired } from "react-icons/fa";
 import { HiOutlinePlusCircle } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { FiMenu } from "react-icons/fi";
+import { useRouter } from "next/navigation"; // ✅ Utilisation de useRouter
 import LangSwitcher from "../components/LangSwitcher";
 import LangRes from "../components/LangRes";
 import {
@@ -29,10 +31,10 @@ export default function MainNavBar({ user }) {
   const [profile, setProfile] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const supabase = createClient();
-  const navigation = useNavigation();
+  const router = useRouter(); // ✅ Utilisation de useRouter
   const n = useTranslations("Nav");
 
-  console.log("User state:", user); // Vérifier si l'user est bien défini après connexion
+  console.log("User state:", user); // Vérifier l'état de l'utilisateur après connexion
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -48,13 +50,13 @@ export default function MainNavBar({ user }) {
     fetchProfile();
   }, [user, supabase]);
 
-  // Écouter les changements d'authentification pour forcer une mise à jour
+  // Écoute des changements d'authentification pour forcer la mise à jour
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         console.log("Auth event:", event, "Session:", session);
         if (event === "SIGNED_IN" && session?.user) {
-          navigation.refresh(); // Rafraîchir la navigation après connexion
+          router.refresh(); // ✅ Rafraîchir la page après connexion
         }
       }
     );
@@ -62,7 +64,7 @@ export default function MainNavBar({ user }) {
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, [navigation, supabase]);
+  }, [router, supabase]);
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FaRegUserCircle } from "react-icons/fa";
-import { Link } from "@/navigation";
+import Link from "next/link";
 
 export function Connect() {
   return (
