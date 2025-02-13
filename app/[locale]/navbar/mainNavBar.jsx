@@ -26,6 +26,8 @@ import {
   Button,
   useDisclosure,
 } from "@heroui/react";
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
+
 
 export default function MainNavBar({ user }) {
   const [profile, setProfile] = useState(null);
@@ -65,6 +67,12 @@ export default function MainNavBar({ user }) {
     };
   }, [router, supabase]);
 
+useEffect(() => {
+  const storedLanguage = localStorage.getItem("selectedLanguage") || "en";
+  setSelectedLanguage(storedLanguage);
+}, []);
+
+
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
       <Respon n={n} user={user} />
@@ -72,7 +80,7 @@ export default function MainNavBar({ user }) {
         {/* Barre de recherche & sélecteur de langue */}
         <div className="flex items-center gap-4 pl-4">
           <Link
-            href="/projects"
+           href={`/${selectedLanguage || "en"}/projects`}
             className="flex items-center gap-2 text-black text-sm"
           >
             <IoSearch size={20} /> {n("Rechercher")}
