@@ -19,7 +19,7 @@ export default function UAvatar({ uid, url, size, classn, width, height}) {
         const url = URL.createObjectURL(data)
         setAvatarUrl(url)
       } catch (error) {
-        console.log('Error downloading image: ', error)
+        
       }
     }
 

@@ -18,7 +18,7 @@ export default function Avatar({ url, width, height }) {
         const url = URL.createObjectURL(data)
         setPic(url)
       } catch (error) {
-        console.log('Error downloading image: ', error)
+      
       }
     }
 

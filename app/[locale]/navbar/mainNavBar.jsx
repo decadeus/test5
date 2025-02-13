@@ -26,6 +26,8 @@ import {
   Button,
   useDisclosure,
 } from "@heroui/react";
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
+
 
 export default function MainNavBar({ user }) {
   const [profile, setProfile] = useState(null);
@@ -34,7 +36,6 @@ export default function MainNavBar({ user }) {
   const router = useRouter(); // ✅ Utilisation de useRouter
   const n = useTranslations("Nav");
 
-  console.log("User state:", user); // Vérifier l'état de l'utilisateur après connexion
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -54,7 +55,7 @@ export default function MainNavBar({ user }) {
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        console.log("Auth event:", event, "Session:", session);
+      
         if (event === "SIGNED_IN" && session?.user) {
           router.refresh(); // ✅ Rafraîchir la page après connexion
         }
@@ -66,6 +67,12 @@ export default function MainNavBar({ user }) {
     };
   }, [router, supabase]);
 
+useEffect(() => {
+  const storedLanguage = localStorage.getItem("selectedLanguage") || "en";
+  setSelectedLanguage(storedLanguage);
+}, []);
+
+
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
       <Respon n={n} user={user} />
@@ -73,7 +80,7 @@ export default function MainNavBar({ user }) {
         {/* Barre de recherche & sélecteur de langue */}
         <div className="flex items-center gap-4 pl-4">
           <Link
-            href="/projects"
+           href={`/${selectedLanguage || "en"}/projects`}
             className="flex items-center gap-2 text-black text-sm"
           >
             <IoSearch size={20} /> {n("Rechercher")}
@@ -101,27 +108,35 @@ export default function MainNavBar({ user }) {
         {/* Navigation Desktop */}
         <div className="hidden xl:flex gap-6 items-center">
           {user && (
+            <div>
             <Link
               href="/cproject"
               className="flex items-center gap-2 text-black text-sm"
             >
               <FaNetworkWired size={20} /> {n("VosProjets")}
             </Link>
+            
+            </div>
+            
           )}
           {user ? (
             <div className="flex items-center gap-3">
               <p className="text-sm text-black">{user.email}</p>
               <Text user={user} />
+              
             </div>
           ) : (
+            <div className="flex items-center gap-3">
             <Connect />
-          )}
-          <Link
+            <Link
             href="/addproject"
             className="flex items-center gap-2 bg-gray-500 text-white px-4 h-full py-2 text-sm"
           >
             <HiOutlinePlusCircle size={20} /> {n("Ajouter")}
           </Link>
+            </div>
+          )}
+          
         </div>
       </div>
     </nav>

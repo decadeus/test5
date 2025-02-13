@@ -27,7 +27,7 @@ export default function AvatarModal({ user }) {
       setAvatarUrl(imageUrl);
       setLoading(false);
     } catch (error) {
-      console.log("Error downloading image: ", error);
+     
       setError(true);
       setLoading(false);
     }

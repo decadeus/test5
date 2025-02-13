@@ -16,9 +16,7 @@ const ResetPassword = () => {
     const token = searchParams.get('token');
     const type = searchParams.get('type');
   
-    // Log parameters to help debug missing values
-    console.log("Token:", token);
-    console.log("Type:", type);
+  
   
     if (!token || type !== 'recovery') {
       setError('Invalid or expired password reset link.'); 

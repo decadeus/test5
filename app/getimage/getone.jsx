@@ -20,7 +20,7 @@ export default function Avatar({ uid, url, id, size, onUpload, classn, width, he
         const url = URL.createObjectURL(data);
         setAvatarUrl(url);
       } catch (error) {
-        console.log('Error downloading image: ', error);
+       
       }
     }
 
