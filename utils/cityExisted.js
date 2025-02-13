@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/client";
 
 const supabase = createClient();
 
-export const countryDataPromise = (async () => {
+export const countryData = (async () => {
     const { data, error } = await supabase.from('project').select('country, city');
 
     if (error) {
