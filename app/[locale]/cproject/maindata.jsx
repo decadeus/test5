@@ -6,6 +6,8 @@ import { IoEye } from "react-icons/io5";
 import { companies } from "@/utils/companies";
 import { countryData } from "@/utils/countryData";
 import { useTranslations } from "next-intl";
+import { FaQuestionCircle } from "react-icons/fa";
+import { Popover, PopoverTrigger, PopoverContent, Button, Divider } from "@heroui/react";
 
 export default function Maindata({
   compagny,
@@ -28,6 +30,7 @@ export default function Maindata({
   child,
   fitness,
   user,
+  fulldescr,
 }) {
   const supabase = createClient();
   const [editableCompagny, setEditableCompagny] = useState(compagny);
@@ -40,11 +43,10 @@ export default function Maindata({
   const [editableCurrency, setEditableCurrency] = useState(cur);
   const [isOnline, setIsOnline] = useState(online);
   const [editableDes, setEditableDes] = useState(des);
+  const [editableFulldescr, setEditableFulldescr] = useState(fulldescr || "");
   const [features, setFeatures] = useState({
     swim,
-
     cctv,
-
     entrance,
     bike,
     disabled,
@@ -79,6 +81,7 @@ export default function Maindata({
       setEditableLink(project.link);
       setIsOnline(project.online);
       setEditableDes(project.des);
+      setEditableFulldescr(data.fulldescr || "");
       setFeatures({
         swim: project.swim,
 
@@ -121,6 +124,7 @@ export default function Maindata({
         cur: editableCurrency,
         link: editableLink,
         des: editableDes,
+        fulldescr: editableFulldescr,
         online: isOnline,
         ...features,
       })
@@ -244,7 +248,6 @@ export default function Maindata({
                 ))}
               </select>
             </div>
-           
           </div>
           <div className="">
             <CountryCitySelector
@@ -294,24 +297,41 @@ export default function Maindata({
               />
             </div>
           </div>
-          <div className="flex flex-col pt-4">
-            <label className="text-black mb-1">{f("Link")}</label>
-            <textarea
-              value={
-                editableDes.length > 300
-                  ? editableDes.slice(0, 300)
-                  : editableDes
-              }
-              onChange={(e) => setEditableDes(e.target.value.slice(0, 300))}
-              rows="3"
-              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black ${bginput}`}
-            />
-            <span className="text-gray-400 text-sm mt-1">
-              {editableDes.length}/300 characters
-            </span>
+          <div className="flex flex-col justify-center">
+          <div className="grid grid-cols-3 gap-4 mt-8">
+            {Object.keys(features).map((feature) => (
+              <div className="relative flex items-center pr-12" key={feature}>
+                <input
+                  type="checkbox"
+                  id={`${feature}Switch`}
+                  checked={features[feature]}
+                  onChange={() => toggleFeature(feature)}
+                  className="hidden"
+                />
+                <label
+                  htmlFor={`${feature}Switch`}
+                  className="flex items-center cursor-pointer w-full"
+                  aria-label={`Toggle ${feature} feature`}
+                >
+                  <div
+                    className={`w-10 h-6 flex-shrink-0 flex items-center rounded-full p-1 ${
+                      features[feature] ? "bg-blue-500" : "bg-gray-600"
+                    }`}
+                  >
+                    <div
+                      className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
+                        features[feature] ? "translate-x-4" : "translate-x-0"
+                      }`}
+                    />
+                  </div>
+                  <p className="ml-2 capitalize truncate">{f(feature)}</p>
+                </label>
+              </div>
+            ))}
           </div>
+        </div>
 
-          <div className="flex flex-col pb-4">
+          <div className="flex flex-col pb-4 mt-8">
             <div className="flex flex-col pt-4">
               <label className="text-black mb-1 flex">
                 {f("ProjetEnLigne")}
@@ -354,74 +374,75 @@ export default function Maindata({
               </label>
             </div>
           </div>
+          <Divider className="my-4" />
 
-         
-
-          <div className="flex flex-col border-2 border-gray-900 p-2 ">
-              <label className={`${label}`}>{f("NomProjet")}</label>
-              <input
-                type="text"
-                value={editableName.length > 50
-                  ? editableName.slice(0, 150)
+          <div className="flex flex-col  ">
+            <label className={`${label}`}>{f("NomProjet")}</label>
+            <input
+              type="text"
+              value={
+                editableName.length > 50
+                  ? editableName.slice(0, 50)
                   : editableName
               }
-                onChange={(e) => setEditableName(e.target.value)}
-                className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500  text-3xl ${bginput}`}
-              />
-               <span className="text-gray-400 text-sm mt-1">
+              onChange={(e) => setEditableName(e.target.value)}
+              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500  text-xl ${bginput}`}
+            />
+            <span className="text-gray-400 text-sm mt-1">
               {editableName.length}/50 characters
             </span>
+          </div>
+          <div className="flex flex-col mt-8 ">
+            <div className="w-fit">
+            <label className="text-black mb-1">{f("DesSEO")}</label>
+            <Popover placement="right">
+              <PopoverTrigger>
+                <Button className="bg-transparent isIconOnly min-w-fit">
+                  <FaQuestionCircle />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <div className="px-1 py-2">
+                  
+                  <p className="text-tiny w-[300px]">{f("DesSEOExplication")}</p>
+                </div>
+              </PopoverContent>
+            </Popover>
             </div>
-          <div className="flex flex-col border-2 border-gray-900 p-2 mt-8 ">
+            <textarea
+              value={
+                editableDes.length > 150
+                  ? editableDes.slice(0, 150)
+                  : editableDes
+              }
+              onChange={(e) => setEditableDes(e.target.value.slice(0, 150))}
+              rows="3"
+              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black ${bginput}`}
+            />
+            <span className="text-gray-400 text-sm mt-1">
+              {editableDes.length}/150 characters
+            </span>
+          </div>
+          <div className="flex flex-col mt-8 ">
             <label className={`${label}`}>{f("DesPro")}</label>
             <textarea
               value={
-                editableDes.length > 1500
-                  ? editableDes.slice(0, 1500)
-                  : editableDes
+                editableFulldescr.length > 1500
+                  ? editableFulldescr.slice(0, 1500)
+                  : editableFulldescr
               }
-              onChange={(e) => setEditableDes(e.target.value.slice(0, 1500))}
+              onChange={(e) =>
+                setEditableFulldescr(e.target.value.slice(0, 1500))
+              }
               rows="13"
               className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput}`}
             />
             <span className="text-gray-400 text-sm mt-1">
-              {editableDes.length}/1500 characters
+              {editableFulldescr ? editableFulldescr.length : 0}/1500 characters
             </span>
           </div>
         </div>
-        <div className="flex flex-col justify-center">
-          <div className="grid grid-cols-1 gap-4">
-            {Object.keys(features).map((feature) => (
-              <div className="relative flex items-center pr-12" key={feature}>
-                <input
-                  type="checkbox"
-                  id={`${feature}Switch`}
-                  checked={features[feature]}
-                  onChange={() => toggleFeature(feature)}
-                  className="hidden"
-                />
-                <label
-                  htmlFor={`${feature}Switch`}
-                  className="flex items-center cursor-pointer w-full"
-                  aria-label={`Toggle ${feature} feature`}
-                >
-                  <div
-                    className={`w-10 h-6 flex-shrink-0 flex items-center rounded-full p-1 ${
-                      features[feature] ? "bg-blue-500" : "bg-gray-600"
-                    }`}
-                  >
-                    <div
-                      className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
-                        features[feature] ? "translate-x-4" : "translate-x-0"
-                      }`}
-                    />
-                  </div>
-                  <p className="ml-2 capitalize truncate">{f(feature)}</p>
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
+        
       </div>
       <button
         onClick={handleSave}

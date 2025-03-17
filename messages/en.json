@@ -72,7 +72,9 @@
         "Rechercher:": "Search",
         "Modifié": "Modified",
         "Data successfully saved": "Data successfully saved.",
-        "DesPro": "Project description"
+        "DesPro": "Project description",
+        "DesSEO": "SEO Description",
+        "DesSEOExplication": "SEO description is used as a meta description for SEO. It helps Google and other search engines understand the content of your project and rank it better."
     },
     "SEO": {
         "Title": "Real estate project references",

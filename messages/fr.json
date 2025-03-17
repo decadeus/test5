@@ -72,7 +72,9 @@
         "Rechercher:": "Rechercher:",
         "Modifié": "Modifié",
         "Data successfully saved": "Données enregistrées avec succès.",
-        "DesPro": "Description du projet"
+        "DesPro": "Description du projet",
+        "DesSEO": "Description pour le SEO",
+        "DesSEOExplication": "La description SEO est utilisée comme métadescription pour le référencement. Elle aide Google et d'autres moteurs de recherche à comprendre le contenu de votre projet et à mieux le classer"
     },
     "SEO": {
         "Title": "Referencement des projets immobiliers",

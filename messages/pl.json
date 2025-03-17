@@ -72,7 +72,9 @@
         "Rechercher:": "Szukaj",
         "Modifié": "Zmodyfikowany",
         "Data successfully saved": "Dane zostały pomyślnie zapisane.",
-        "DesPro": "Opis projektu"
+        "DesPro": "Opis projektu",
+        "DesSEO": "Opis SEO",
+        "DesSEOExplication": "Opis SEO jest używany jako metaopis dla SEO. Pomaga Google i innym wyszukiwarkom zrozumieć treść Twojego projektu i lepiej go ocenić"
     },
     "SEO": {
         "Title": "Projekty mieszkaniowe",

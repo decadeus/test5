@@ -72,7 +72,9 @@
         "Rechercher:": "Suche",
         "Modifié": "Geändert",
         "Data successfully saved": "Daten erfolgreich gespeichert",
-        "DesPro": "Projektbeschreibung"
+        "DesPro": "Projektbeschreibung",
+        "DesSEO": "SEO-Beschreibung",
+        "DesSEOExplication": "Die SEO-Beschreibung wird als Meta-Beschreibung für SEO verwendet. Es hilft Google und anderen Suchmaschinen, den Inhalt Ihres Projekts zu verstehen und es besser zu bewerten"
     },
     "SEO": {
         "Title": "Wohnprojekte",
