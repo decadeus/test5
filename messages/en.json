@@ -12,8 +12,8 @@
         "TitleVacance": "Sustainable housing within reach",
         "EnSavoirPlus": "Learn more"
     },
-    "Filtre":{
-        "Ajouter":"Sign up list your project",
+    "Filtre": {
+        "Ajouter": "Sign up list your project",
         "ListeDesAppartements": "List of apartments",
         "SelectionnezUnPays": "Select a country",
         "SelectionnezUneVille": "Select a city",
@@ -25,34 +25,30 @@
         "Residence": "All filters",
         "AppartementTrouve": "Apartment(s) found",
         "TrierPar": "Sort by",
-        "precedent":"Previous",
-        "suivant":"Next",
-        "VoirPlus":"See more",
-        "Filtre":"Filter"
-
-
+        "precedent": "Previous",
+        "suivant": "Next",
+        "VoirPlus": "See more",
+        "Filtre": "Filter"
     },
-    "Nav":{
-        "Ajouter":"Add a Project",
-        "Rechercher":"Search",
-        "Connexion":"Connection",
-        "Accueil":"Home",
-        "VosProjets":"Your projects"
-
+    "Nav": {
+        "Ajouter": "Add a Project",
+        "Rechercher": "Search",
+        "Connexion": "Connection",
+        "Accueil": "Home",
+        "VosProjets": "Your projects"
     },
-    "Projet":{
-        "Modifier":"Edit project information", 
-        "Compagnie":"Company",
-        "NomProjet":"Project name",
-        "Pays":"Country",
-        "Ville":"City",
-        "Latitude":"Latitude",
-        "Longitude":"Longitude",
-        "Monnaie":"Currency",
-        "LienProjet":"Project link",
-        "ProjetEnLigne":"Your project is",
-        "Link":"Link to project",
-       
+    "Projet": {
+        "Modifier": "Edit project information",
+        "Compagnie": "Company",
+        "NomProjet": "Project name",
+        "Pays": "Country",
+        "Ville": "City",
+        "Latitude": "Latitude",
+        "Longitude": "Longitude",
+        "Monnaie": "Currency",
+        "LienProjet": "Project link",
+        "ProjetEnLigne": "Your project is",
+        "Link": "Link to project",
         "swim": "Swimming pool",
         "cctv": "CCTV",
         "entrance": "Reception at the entrance",
@@ -60,25 +56,26 @@
         "disabled": "Disabled access",
         "child": "Children's area",
         "fitness": "Fitness room",
-        "Sauvegarder":"Save",
-        "Chambres":"Bedrooms",
-        "Etages":"Floors",
-        "Surface":"Surface",
-        "Prix":"Price",
-        "CacherLePrix":"Hide the price",
-        "jardin":"Garden",
-        "InfoSpecial":"Special information",
-        "Ajouter":"Add",
-        "Modifier2":"Edit",
-        "Supprimer":"Delete",
-        "Action":"Action",
-        "NombreAppartement":"Number of apartments",
-        "Rechercher:":"Search",
-        "Modifié":"Modified",
-        "Data successfully saved":"Data successfully saved."
+        "Sauvegarder": "Save",
+        "Chambres": "Bedrooms",
+        "Etages": "Floors",
+        "Surface": "Surface",
+        "Prix": "Price",
+        "CacherLePrix": "Hide the price",
+        "jardin": "Garden",
+        "InfoSpecial": "Special information",
+        "Ajouter": "Add",
+        "Modifier2": "Edit",
+        "Supprimer": "Delete",
+        "Action": "Action",
+        "NombreAppartement": "Number of apartments",
+        "Rechercher:": "Search",
+        "Modifié": "Modified",
+        "Data successfully saved": "Data successfully saved.",
+        "DesPro": "Project description"
     },
-    "SEO":{
-        "Title":"Real estate project references",
-        "Description":"Find the real estate project that suits you by using the search filters according to the apartment and the services in the building."
+    "SEO": {
+        "Title": "Real estate project references",
+        "Description": "Find the real estate project that suits you by using the search filters according to the apartment and the services in the building."
     }
 }

@@ -64,16 +64,15 @@ export default function Avatar({ uid, url, id, size, onUpload, classn, width, he
         />
       ) : (
         <div
-          className="relative h-full flex items-center justify-center bg-white"
-          style={{ width: 300, height: 200 }}
+          className="relative h-full w-full flex items-center justify-center bg-white border border-black"
+        
         >
-          {/* Optionally, add text or an icon to indicate loading */}
-          {/* <span>Loading...</span> */}
+         <p className='text-black'>Download image</p>
         </div>
       )}
       <div className="absolute bg-white w-fit rounded-xl text-center border-2 border-black top-4 left-4 py-2 px-4">
         <label className="hover:cursor-pointer" htmlFor={id}>
-          {uploading ? 'Uploading ...' : <FaDownload />}
+          {uploading ? 'Uploading ...' : <FaDownload color='black' />}
         </label>
         <input
           style={{

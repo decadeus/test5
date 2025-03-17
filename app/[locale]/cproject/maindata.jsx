@@ -176,9 +176,9 @@ export default function Maindata({
     };
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4 text-white w-[900px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4 text-black w-[900px]">
         <div className="flex flex-col">
-          <label className="text-white mb-1">{f("Pays")}</label>
+          <label className="text-black mb-1">{f("Pays")}</label>
           <select
             value={editableCountry}
             onChange={handleCountryChange}
@@ -194,7 +194,7 @@ export default function Maindata({
         </div>
 
         <div className="flex flex-col ">
-          <label className="text-white mb-1">{f("Ville")}</label>
+          <label className="text-black mb-1">{f("Ville")}</label>
           <select
             value={editableCity}
             onChange={handleCityChange}
@@ -213,19 +213,22 @@ export default function Maindata({
     );
   };
 
+  const bginput = "bg-gray-100 text-black";
+  const label = "text-gray-900 mb-1";
+
   return (
-    <div className="mx-auto mt-10 p-6 bg-[#12171E] rounded-lg shadow-xl flex flex-col justify-center items-center mb-8 text-white">
-      <div className="mb-8">
+    <div className=" mt-10 p-6 bg-white rounded-lg shadow-xl flex flex-col justify-center items-center mb-8 text-black">
+      <div className="mb-8 w-full">
         <AvatarComponent user={user} />
       </div>
-      <h2 className="text-2xl font-semibold text-white mb-4">
+      <h2 className="text-2xl font-semibold text-black mb-4">
         {f("Modifier")}
       </h2>
       <div className="flex gap-8">
         <div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-white">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
             <div className="flex flex-col mb-4">
-              <label className="text-white mb-1">{f("Compagnie")}</label>
+              <label className="text-black mb-1">{f("Compagnie")}</label>
               <select
                 value={editableCompagny}
                 onChange={(e) => setEditableCompagny(e.target.value)}
@@ -241,15 +244,7 @@ export default function Maindata({
                 ))}
               </select>
             </div>
-            <div className="flex flex-col">
-              <label className="text-white mb-1">{f("NomProjet")}</label>
-              <input
-                type="text"
-                value={editableName}
-                onChange={(e) => setEditableName(e.target.value)}
-                className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-              />
-            </div>
+           
           </div>
           <div className="">
             <CountryCitySelector
@@ -259,9 +254,9 @@ export default function Maindata({
               setEditableCity={setEditableCity}
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-white">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
             <div className="flex flex-col">
-              <label className="text-white mb-1">{f("Latitude")}</label>
+              <label className={`${label}`}>{f("Latitude")}</label>
               <input
                 type="text"
                 value={editableLat}
@@ -270,7 +265,7 @@ export default function Maindata({
               />
             </div>
             <div className="flex flex-col">
-              <label className="text-white mb-1">{f("Longitude")}</label>
+              <label className="text-black mb-1">{f("Longitude")}</label>
               <input
                 type="text"
                 value={editableLng}
@@ -279,7 +274,7 @@ export default function Maindata({
               />
             </div>
             <div className="flex flex-col">
-              <label className="text-white mb-1">{f("Monnaie")}</label>
+              <label className="text-black mb-1">{f("Monnaie")}</label>
               <select
                 value={editableCurrency}
                 onChange={(e) => setEditableCurrency(e.target.value)}
@@ -290,7 +285,7 @@ export default function Maindata({
               </select>
             </div>
             <div className="flex flex-col">
-              <label className="text-white mb-1">{f("Link")}</label>
+              <label className="text-black mb-1">{f("Link")}</label>
               <input
                 type="text"
                 value={editableLink}
@@ -300,7 +295,7 @@ export default function Maindata({
             </div>
           </div>
           <div className="flex flex-col">
-            <label className="text-white mb-1">{f("Link")}</label>
+            <label className="text-black mb-1">{f("Link")}</label>
             <textarea
               value={
                 editableDes.length > 300
@@ -318,9 +313,9 @@ export default function Maindata({
 
           <div className="flex flex-col">
             <div className="flex flex-col pt-4">
-              <label className="text-white mb-1 flex">
+              <label className="text-black mb-1 flex">
                 {f("ProjetEnLigne")}
-                <span className="text-white flex items-center ml-2">
+                <span className="text-black flex items-center ml-2">
                   <span>{isOnline ? "online" : "offline"}</span>{" "}
                   {/* Corrected this line */}
                   {isOnline ? (
@@ -359,6 +354,40 @@ export default function Maindata({
               </label>
             </div>
           </div>
+
+         
+
+          <div className="flex flex-col border-2 border-gray-900 p-2 ">
+              <label className={`${label}`}>{f("NomProjet")}</label>
+              <input
+                type="text"
+                value={editableName.length > 50
+                  ? editableName.slice(0, 150)
+                  : editableName
+              }
+                onChange={(e) => setEditableName(e.target.value)}
+                className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500  text-3xl ${bginput}`}
+              />
+               <span className="text-gray-400 text-sm mt-1">
+              {editableName.length}/50 characters
+            </span>
+            </div>
+          <div className="flex flex-col border-2 border-gray-900 p-2 mt-8 ">
+            <label className={`${label}`}>{f("DesPro")}</label>
+            <textarea
+              value={
+                editableDes.length > 1500
+                  ? editableDes.slice(0, 1500)
+                  : editableDes
+              }
+              onChange={(e) => setEditableDes(e.target.value.slice(0, 1500))}
+              rows="13"
+              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput}`}
+            />
+            <span className="text-gray-400 text-sm mt-1">
+              {editableDes.length}/1500 characters
+            </span>
+          </div>
         </div>
         <div className="flex flex-col justify-center">
           <div className="grid grid-cols-1 gap-4">
@@ -396,7 +425,7 @@ export default function Maindata({
       </div>
       <button
         onClick={handleSave}
-        className={`mt-8 brownbg text-white px-6 py-2 rounded-md ${
+        className={`mt-8 brownbg text-black px-6 py-2 rounded-md ${
           isSaving ? "opacity-50 cursor-not-allowed" : ""
         }`}
         disabled={isSaving}

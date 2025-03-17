@@ -76,20 +76,25 @@ export default function Text({ user }) {
         <ModalContent>
           {(onClose) => (
             <>
-              
               <ModalBody>
-               
                 <form
                   action="/auth/signout"
                   method="post"
-                  className="flex justify-center flex-col items-center"
+                  className="flex flex-col justify-center items-center p-8 bg-gray-100 rounded-lg shadow-md"
                 >
-                  <div className="flex flex-col justify-center items-center mb-4 p-8">
-                   <h2 className="font-extrabold text-gray-700 text-xl pb-4">Are you Logging Out?</h2>
-                   <p>You can always log back in at any time</p>
-                   </div>
-                  <button type="submit">
-                    <p className="text-white text-2xl text-bold border-2 p-2 rounded-xl bg-black  ">Log out 👋</p>
+                  <div className="flex flex-col justify-center items-center mb-6">
+                    <h2 className="font-extrabold text-gray-800 text-2xl mb-2">
+                      Are you Logging Out?
+                    </h2>
+                    <p className="text-gray-600">
+                      You can always log back in at any time
+                    </p>
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-red-600 text-white text-lg font-bold py-3 px-6 rounded-lg shadow-md hover:bg-red-700 transition duration-300"
+                  >
+                    Log out 👋
                   </button>
                 </form>
               </ModalBody>

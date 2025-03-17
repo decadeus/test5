@@ -420,7 +420,7 @@ useEffect(() => {
             <div className="w-full sm:w-full lg:w-1/3 px-4 sm:pl-2 pt-16">
               <div
                 id="sidebar"
-                className={`w-fulli top-20 
+                className={`w-full top-20 
     lg:sticky lg:top-20 lg:w-96
   `}
               >

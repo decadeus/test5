@@ -49,7 +49,6 @@
         "LienProjet": "Link do projektu",
         "ProjetEnLigne": "Twój projekt jest",
         "Link": "Link do projektu",
-      
         "swim": "Basen",
         "cctv": "Monitoring wideo",
         "entrance": "Recepcja przy wejściu",
@@ -57,7 +56,6 @@
         "disabled": "Dostęp dla niepełnosprawnych",
         "child": "Strefa dzieci",
         "fitness": "Sala fitness",
-      
         "Sauvegarder": "Zapisz",
         "Chambres": "Pokoje",
         "Etages": "Piętra",
@@ -73,11 +71,11 @@
         "NombreAppartement": "Liczba mieszkań",
         "Rechercher:": "Szukaj",
         "Modifié": "Zmodyfikowany",
-        "Data successfully saved": "Dane zostały pomyślnie zapisane."
+        "Data successfully saved": "Dane zostały pomyślnie zapisane.",
+        "DesPro": "Opis projektu"
     },
     "SEO": {
-     "Title": "Projekty mieszkaniowe",
-     "Description": "Dzięki liczbym ofertom projektów nieruchomości znajdź nieruchomość, która Ci odpowiada, korzystając z filtrów wyszukiwania zgodnie z mieszkaniem i usługami w budynku."
+        "Title": "Projekty mieszkaniowe",
+        "Description": "Dzięki liczbym ofertom projektów nieruchomości znajdź nieruchomość, która Ci odpowiada, korzystając z filtrów wyszukiwania zgodnie z mieszkaniem i usługami w budynku."
     }
-
 }

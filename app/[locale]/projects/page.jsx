@@ -492,9 +492,7 @@ function Page() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-                              >
-                                
-                              </Link>
+                              ></Link>
                             </div>
                           </PopoverContent>
                         </Popover>
@@ -602,13 +600,40 @@ function FilterB({
   const [cities, setCities] = useState([]);
   const [editableCountry, setEditableCountry] = useState("");
   const [editableCity, setEditableCity] = useState("Select city");
+  const [countryData, setCountryData] = useState({});
 
   const colorfilter = "text-sm  text-gray-800";
+
+
+  useEffect(() => {
+    async function fetchCountries() {
+      const supabase = createClient();
+      const { data, error } = await supabase.from("project").select("country, city");
+
+      if (error) {
+        console.error("Error fetching countries:", error);
+        return;
+      }
+
+      // 🔹 Transform data into { country: [cities] } format
+      const formattedData = data.reduce((acc, { country, city }) => {
+        if (!acc[country]) acc[country] = [];
+        if (!acc[country].includes(city)) acc[country].push(city);
+        return acc;
+      }, {});
+
+      setCountryData(formattedData);
+    }
+
+    fetchCountries();
+  }, []);
 
   useEffect(() => {
     // Récupération des données depuis localStorage
     const storedCountry = localStorage.getItem("selectedCountry") || "";
     const storedCity = localStorage.getItem("selectedCity") || "";
+  
+    console.log("Données countryData :", countryData);
 
     setEditableCountry(storedCountry);
     onCountryChange([storedCountry]); // Met à jour le state du parent
@@ -626,7 +651,7 @@ function FilterB({
       setEditableCity(defaultCity);
       onCityChange(defaultCity); // Met à jour la ville sélectionnée
     }
-  }, []);
+  }, [countryData]);
 
   const handleCountryChange = (e) => {
     const selectedCountry = e.target.value;
@@ -761,16 +786,16 @@ function FilterB({
               <select
                 value={editableCountry}
                 onChange={handleCountryChange}
-                className="w-[100px] bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 "
+                className="w-[100px] border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 "
               >
                 <option value="" className="text-red-300 ">
                   {f("SelectionnezUnPays")}
                 </option>
-                {Object.keys(countryData).map((country) => (
-                  <option key={country} value={country} className="text-black">
-                    {country}
-                  </option>
-                ))}
+                {Object.keys(countryData).map((country, index) => (
+          <option key={index} value={country}>
+            {country}
+          </option>
+        ))}
               </select>
             </div>
 

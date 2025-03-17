@@ -177,14 +177,14 @@ export default function Projectb({ user }) {
   );
 
   return (
-    <div className="w-full px-4 mt-16 ">
+    <div className="w-full px-4 mt-16  ">
       {/* Champ de recherche */}
 
       {/* Afficher le nombre total d'appartements */}
 
       {filteredProjects.map((project, projectIndex) => (
-        <div key={projectIndex} className="mb-4">
-          <div className="flex flex-col">
+        <div key={projectIndex} className="mb-4 ">
+          <div className="flex flex-col ">
             <Maindata
               compagny={project.compagny}
               country={project.country}

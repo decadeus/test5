@@ -29,7 +29,6 @@
         "suivant": "Suivant",
         "VoirPlus": "Voir plus",
         "Filtre": "Filtre"
- 
     },
     "Nav": {
         "Ajouter": "Ajouter un projet",
@@ -72,10 +71,10 @@
         "NombreAppartement": "Nombre d'appartements",
         "Rechercher:": "Rechercher:",
         "Modifié": "Modifié",
-        "Data successfully saved": "Données enregistrées avec succès."
+        "Data successfully saved": "Données enregistrées avec succès.",
+        "DesPro": "Description du projet"
     },
-    "SEO":
-    {
+    "SEO": {
         "Title": "Referencement des projets immobiliers",
         "Description": "Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement recherché et les services dans l'immeuble."
     }
