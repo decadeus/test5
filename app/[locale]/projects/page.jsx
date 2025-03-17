@@ -632,27 +632,34 @@ function FilterB({
     // Récupération des données depuis localStorage
     const storedCountry = localStorage.getItem("selectedCountry") || "";
     const storedCity = localStorage.getItem("selectedCity") || "";
+    if (storedCity) {
+      setEditableCity(storedCity);
+      onCityChange(storedCity);
+    }
   
-    console.log("Données countryData :", countryData);
-
-    setEditableCountry(storedCountry);
-    onCountryChange([storedCountry]); // Met à jour le state du parent
-
-    if (storedCountry && countryData[storedCountry]) {
-      const availableCities = countryData[storedCountry];
-      setCities(availableCities);
-
-      const defaultCity = availableCities.includes(storedCity)
-        ? storedCity
-        : availableCities.length > 0
-        ? availableCities[0]
-        : "";
-
-      setEditableCity(defaultCity);
-      onCityChange(defaultCity); // Met à jour la ville sélectionnée
+  
+    // Vérifie si les données du pays ont été chargées avant de définir la ville
+    if (Object.keys(countryData).length > 0) {
+      console.log("Données countryData :", countryData);
+  
+      setEditableCountry(storedCountry);
+      onCountryChange([storedCountry]); // Met à jour le state du parent
+  
+      if (storedCountry && countryData[storedCountry]) {
+        const availableCities = countryData[storedCountry];
+        setCities(availableCities);
+  
+        const defaultCity = availableCities.includes(storedCity)
+          ? storedCity
+          : availableCities.length > 0
+          ? availableCities[0]
+          : "";
+  
+        setEditableCity(defaultCity);
+        onCityChange(defaultCity); // Met à jour la ville sélectionnée
+      }
     }
   }, [countryData]);
-
   const handleCountryChange = (e) => {
     const selectedCountry = e.target.value;
     setEditableCountry(selectedCountry);
@@ -806,6 +813,7 @@ function FilterB({
                 className="w-[150px] bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 "
               >
                 {cities.map((city, index) => (
+                  
                   <option key={index} value={city} className="text-black">
                     {city}
                   </option>

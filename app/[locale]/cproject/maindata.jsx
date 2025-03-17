@@ -182,7 +182,7 @@ export default function Maindata({
           <select
             value={editableCountry}
             onChange={handleCountryChange}
-            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px]"
+            className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px] ${bginput} `}
           >
             <option value="__">__</option>
             {Object.keys(countryData).map((country) => (
@@ -198,7 +198,7 @@ export default function Maindata({
           <select
             value={editableCity}
             onChange={handleCityChange}
-            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px]"
+            className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px] ${bginput}`}
             disabled={!editableCountry}
           >
             <option value="">__</option>
@@ -232,7 +232,7 @@ export default function Maindata({
               <select
                 value={editableCompagny}
                 onChange={(e) => setEditableCompagny(e.target.value)}
-                className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px]"
+                className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px] ${bginput}`}
               >
                 <option value="" disabled>
                   {f("SelectCompany")}
@@ -261,7 +261,7 @@ export default function Maindata({
                 type="text"
                 value={editableLat}
                 onChange={(e) => setEditableLat(e.target.value)}
-                className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black ${bginput} `}
               />
             </div>
             <div className="flex flex-col">
@@ -270,7 +270,7 @@ export default function Maindata({
                 type="text"
                 value={editableLng}
                 onChange={(e) => setEditableLng(e.target.value)}
-                className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black ${bginput}`}
               />
             </div>
             <div className="flex flex-col">
@@ -278,7 +278,7 @@ export default function Maindata({
               <select
                 value={editableCurrency}
                 onChange={(e) => setEditableCurrency(e.target.value)}
-                className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px]"
+                className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px] ${bginput}`}
               >
                 <option value="EUR">EUR</option>
                 <option value="PLN">PLN</option>
@@ -290,11 +290,11 @@ export default function Maindata({
                 type="text"
                 value={editableLink}
                 onChange={(e) => setEditableLink(e.target.value)}
-                className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black ${bginput}`}
               />
             </div>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col pt-4">
             <label className="text-black mb-1">{f("Link")}</label>
             <textarea
               value={
@@ -304,14 +304,14 @@ export default function Maindata({
               }
               onChange={(e) => setEditableDes(e.target.value.slice(0, 300))}
               rows="3"
-              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black ${bginput}`}
             />
             <span className="text-gray-400 text-sm mt-1">
               {editableDes.length}/300 characters
             </span>
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col pb-4">
             <div className="flex flex-col pt-4">
               <label className="text-black mb-1 flex">
                 {f("ProjetEnLigne")}

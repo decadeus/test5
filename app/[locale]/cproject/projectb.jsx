@@ -281,7 +281,7 @@ export default function Projectb({ user }) {
                       onChange={(e) => handleNewChange(e, "bed")}
                       className="p-2 border rounded  text-center text-black w-[70px]"
                       placeholder="ex: 1"
-                      min="0" 
+                      min="0"
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-center ">
@@ -291,7 +291,7 @@ export default function Projectb({ user }) {
                       onChange={(e) => handleNewChange(e, "floor")}
                       className="p-2 border rounded  text-center text-black w-[70px]"
                       placeholder="ex: 1"
-                      min="0" 
+                      min="0"
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-center ">
@@ -301,7 +301,7 @@ export default function Projectb({ user }) {
                       onChange={(e) => handleNewChange(e, "surface")}
                       className="p-2 border rounded  text-center text-black w-[100px]"
                       placeholder="ex: 65.10"
-                      min="0" 
+                      min="0"
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-center mx-auto">
@@ -311,7 +311,7 @@ export default function Projectb({ user }) {
                       onChange={(e) => handleNewChange(e, "price")}
                       className="p-2 border rounded  text-center text-black w-[130px]"
                       placeholder="ex: 250000"
-                      min="0" 
+                      min="0"
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-center mx-auto ">
@@ -375,7 +375,7 @@ export default function Projectb({ user }) {
                         <input
                           type="number"
                           value={item.bed}
-                          min="0" 
+                          min="0"
                           onChange={(e) =>
                             handleChange(e, projectIndex, itemIndex, "bed")
                           }
@@ -392,7 +392,7 @@ export default function Projectb({ user }) {
                         <input
                           type="number"
                           value={item.floor}
-                          min="0" 
+                          min="0"
                           onChange={(e) =>
                             handleChange(e, projectIndex, itemIndex, "floor")
                           }
@@ -409,7 +409,7 @@ export default function Projectb({ user }) {
                         <input
                           type="number"
                           value={item.surface}
-                          min="0" 
+                          min="0"
                           onChange={(e) =>
                             handleChange(e, projectIndex, itemIndex, "surface")
                           }
@@ -426,7 +426,7 @@ export default function Projectb({ user }) {
                         <input
                           type="number"
                           value={item.price}
-                          min="0" 
+                          min="0"
                           onChange={(e) =>
                             handleChange(e, projectIndex, itemIndex, "price")
                           }

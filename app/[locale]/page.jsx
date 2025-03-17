@@ -220,9 +220,7 @@ export default function Page() {
         )}
       </div>
 
-      <div className="flex-col sm:flex sm:flex-row h-[200px] sm:mt-[0]  mt-[100px] mb-[100px] ">
-      
-      </div>
+      <div className="flex-col sm:flex sm:flex-row h-[200px] sm:mt-[0]  mt-[100px] mb-[100px] "></div>
 
       <div className="flex justify-center mt-20 ">
         <button
@@ -426,8 +424,8 @@ function Scroll({ projects = [], index, t }) {
                       {item.city}, {item.country}
                     </p>
                     <p className="cleartext sm:text-[12px] font-bold pt-4">
-                      {item.des}
-                    </p>
+  {item.des ? (item.des.length > 300 ? item.des.substring(0, 300) + "..." : item.des) : ""}
+</p>
                   </div>
                 </a>
               </div>
@@ -565,22 +563,19 @@ function Para({ t }) {
 
         {/* Contenu au-dessus de l'image */}
         <div className="relative z-20 flex flex-col justify-between items-center  h-full text-black  xs:py-[150px] gap-0 py-[120px]  xs:gap-8">
-          
-              <h1 className="sm:text-4xl text-2xl font-bold text-center px-8">
-                {t("title")}
-              </h1>
-              <p className="text-[20rem] text-black opacity-5 font-satisfy text-left md:pl-[150px] pl-[0px]  w-full">
-                H
-              </p>
-              <div className="flex justify-center items-center flex-col px-8 ">
-                <p className="text-3xl text-center">{t("subtitle")}</p>
+          <h1 className="sm:text-4xl text-2xl font-bold text-center px-8">
+            {t("title")}
+          </h1>
+          <p className="text-[20rem] text-black opacity-5 font-satisfy text-left md:pl-[150px] pl-[0px]  w-full">
+            H
+          </p>
+          <div className="flex justify-center items-center flex-col px-8 ">
+            <p className="text-3xl text-center">{t("subtitle")}</p>
 
-                <p className="text-left text-sm pt-4 flex items-center">
-                  {t("defiler")} <FaLongArrowAltDown />
-                </p>
-              </div>
-           
-          
+            <p className="text-left text-sm pt-4 flex items-center">
+              {t("defiler")} <FaLongArrowAltDown />
+            </p>
+          </div>
         </div>
       </div>
     </>

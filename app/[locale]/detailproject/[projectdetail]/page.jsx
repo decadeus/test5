@@ -10,7 +10,7 @@ export async function generateMetadata({ params }) {
     .single();
 
   return {
-    title: data?.name || "Project Details",
+    title: data?.name || "Project Title",
     description: data?.metades || "Project Details",
   };
 }

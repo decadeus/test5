@@ -33,6 +33,7 @@ export default function MainNavBar({ user }) {
   const supabase = createClient();
   const router = useRouter(); // ✅ Utilisation de useRouter
   const n = useTranslations("Nav");
+  const [selectedLanguage, setSelectedLanguage] = useState("fr"); 
 
 
   useEffect(() => {
@@ -48,6 +49,11 @@ export default function MainNavBar({ user }) {
     };
     fetchProfile();
   }, [user, supabase]);
+
+  useEffect(() => {
+    const lang = localStorage.getItem("selectedLanguage") || "fr";
+    setSelectedLanguage(lang);
+  }, []);
 
   // Écoute des changements d'authentification pour forcer la mise à jour
   useEffect(() => {
@@ -72,7 +78,7 @@ export default function MainNavBar({ user }) {
         {/* Barre de recherche & sélecteur de langue */}
         <div className="flex items-center gap-4 pl-4">
           <Link
-            href="/projects"
+            href={`/${selectedLanguage}//projects`}
             className="flex items-center gap-2 text-black text-sm"
           >
             <IoSearch size={20} /> {n("Rechercher")}
@@ -82,7 +88,7 @@ export default function MainNavBar({ user }) {
 
         {/* Logo au centre */}
         <Link
-          href="/"
+          href={`/${selectedLanguage}/`}
           className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-3"
         >
           <Image
@@ -102,7 +108,7 @@ export default function MainNavBar({ user }) {
           {user && (
             <div>
             <Link
-              href="/cproject"
+              href={`/${selectedLanguage}/cproject`}
               className="flex items-center gap-2 text-black text-sm"
             >
               <FaNetworkWired size={20} /> {n("VosProjets")}
@@ -121,7 +127,7 @@ export default function MainNavBar({ user }) {
             <div className="flex items-center gap-3">
             <Connect />
             <Link
-            href="/addproject"
+            href={`/${selectedLanguage}//addproject`}
             className="flex items-center gap-2 bg-gray-500 text-white px-4 h-full py-2 text-sm"
           >
             <HiOutlinePlusCircle size={20} /> {n("Ajouter")}
@@ -154,7 +160,7 @@ function Respon({ n, user }) {
             <>
               <DrawerBody color="primary">
                 <div className="flex flex-col gap-4 pl-4 items-start text-sm mt-8">
-                  <Link href="/projects" className="flex gap-2">
+                  <Link href={`/${selectedLanguage}//projects`} className="flex gap-2">
                     <div className="w-8 flex justify-center items-center text-center">
                       <IoSearch size={22} />
                     </div>
@@ -166,7 +172,7 @@ function Respon({ n, user }) {
                   {user && (
                     <div>
                       <p>Test</p>
-                      <Link href="/cproject" className="">
+                      <Link href={`/${selectedLanguage}//cproject`} className="">
                         <FaNetworkWired size={24} /> {n("VosProjets")}
                       </Link>
                     </div>
@@ -179,7 +185,7 @@ function Respon({ n, user }) {
                   ) : (
                     <ConnectRes />
                   )}
-                  <Link href="/addproject" className="flex gap-2">
+                  <Link href={`/${selectedLanguage}/addproject`} className="flex gap-2">
                     <div className="w-8 flex justify-center items-center text-center">
                       <HiOutlinePlusCircle size={24} />
                     </div>
