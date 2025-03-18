@@ -239,7 +239,7 @@ export default function Maindata({
                 className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px] ${bginput}`}
               >
                 <option value="" disabled>
-                  {f("SelectCompany")}
+                  {f("Compagnie")}
                 </option>
                 {companies.map((company) => (
                   <option key={company.id} value={company.name}>
