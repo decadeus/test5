@@ -31,11 +31,36 @@ export default function DynamicMetadata() {
     document.title = generateTitle();
   }, [city, country]); // Met à jour le titre si `city` ou `country` change
 
+  const generateDescription = () => {
+    if (!city) return "Découvrez nos projets immobiliers.";
+    return country === "Polska"
+      ? `Odkryj nasze projekty budownictwa mieszkaniowego w ${city}.`
+      : `Découvrez nos projets d'immeuble résidentiel à ${city}.`;
+  };
+
+  useEffect(() => {
+    if (city) {
+      document.title = generateTitle();
+
+      // 🔥 Met à jour la meta description dynamiquement
+      let metaDescription = document.querySelector('meta[name="description"]');
+
+      if (metaDescription) {
+        metaDescription.setAttribute("content", generateDescription());
+      } else {
+        metaDescription = document.createElement("meta");
+        metaDescription.name = "description";
+        metaDescription.content = generateDescription();
+        document.head.appendChild(metaDescription);
+      }
+    }
+  }, [city, country]);
+
   return (
     <>
       <Head>
         <title>{generateTitle()}</title>
-        <meta name="description" content={`Découvrez nos projets à ${city || "votre ville"}.`} />
+        <meta name="description" content={generateDescription()} />
       </Head>
 
       <Main />
