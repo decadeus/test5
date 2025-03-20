@@ -426,9 +426,9 @@ export default function ListProjectPage() {
               >
                 <div className="flex flex-col md:flex-row  gap-4 lg:flex-col border text-gray-700 bg-white shadow-xl rounded-lg w-full p-8 mb-4">
                   <div className="w-full lg:w-full">
-                    <h1 className="mb-6 font-semibold text-2xl sm:text-3xl text-gray-800">
+                    <h2 className="mb-6 font-semibold text-2xl sm:text-3xl text-gray-800">
                       More Information
-                    </h1>
+                    </h2>
                     <p className="text-gray-600 mb-4 text-sm sm:text-base">
                       Learn more about the property details and features.
                     </p>
