@@ -196,6 +196,8 @@ export default function Projectb({ user }) {
               online={project.online}
               link={project.link}
               des={project.des}
+              coam={project.coam}
+              aponsel={project.aponsel}
               user={user}
             />
           </div>

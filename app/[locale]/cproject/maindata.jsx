@@ -7,7 +7,13 @@ import { companies } from "@/utils/companies";
 import { countryData } from "@/utils/countryData";
 import { useTranslations } from "next-intl";
 import { FaQuestionCircle } from "react-icons/fa";
-import { Popover, PopoverTrigger, PopoverContent, Button, Divider } from "@heroui/react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Button,
+  Divider,
+} from "@heroui/react";
 
 export default function Maindata({
   compagny,
@@ -31,6 +37,8 @@ export default function Maindata({
   fitness,
   user,
   fulldescr,
+  coam,
+  aponsel,
 }) {
   const supabase = createClient();
   const [editableCompagny, setEditableCompagny] = useState(compagny);
@@ -43,6 +51,8 @@ export default function Maindata({
   const [editableCurrency, setEditableCurrency] = useState(cur);
   const [isOnline, setIsOnline] = useState(online);
   const [editableDes, setEditableDes] = useState(des);
+  const [editableCoam, setEditableCoam] = useState(coam);
+  const [editableAponsel, setEditableAponsel] = useState(aponsel);
   const [editableFulldescr, setEditableFulldescr] = useState(fulldescr || "");
   const [features, setFeatures] = useState({
     swim,
@@ -81,6 +91,8 @@ export default function Maindata({
       setEditableLink(project.link);
       setIsOnline(project.online);
       setEditableDes(project.des);
+      setEditableAponsel(project.aponsel);
+      setEditableCoam(project.coam);
       setEditableFulldescr(data.fulldescr || "");
       setFeatures({
         swim: project.swim,
@@ -124,6 +136,8 @@ export default function Maindata({
         cur: editableCurrency,
         link: editableLink,
         des: editableDes,
+        coam: editableCoam,
+        aponsel: editableAponsel,
         fulldescr: editableFulldescr,
         online: isOnline,
         ...features,
@@ -221,7 +235,7 @@ export default function Maindata({
   const label = "text-gray-900 mb-1";
 
   return (
-    <div className=" mt-10 p-6 bg-white rounded-lg shadow-xl flex flex-col justify-center items-center mb-8 text-black">
+    <div className=" mt-10 p-6 bg-white rounded-lg flex flex-col justify-center items-center mb-8 text-black">
       <div className="mb-8 w-full">
         <AvatarComponent user={user} />
       </div>
@@ -297,39 +311,7 @@ export default function Maindata({
               />
             </div>
           </div>
-          <div className="flex flex-col justify-center">
-          <div className="grid grid-cols-3 gap-4 mt-8">
-            {Object.keys(features).map((feature) => (
-              <div className="relative flex items-center pr-12" key={feature}>
-                <input
-                  type="checkbox"
-                  id={`${feature}Switch`}
-                  checked={features[feature]}
-                  onChange={() => toggleFeature(feature)}
-                  className="hidden"
-                />
-                <label
-                  htmlFor={`${feature}Switch`}
-                  className="flex items-center cursor-pointer w-full"
-                  aria-label={`Toggle ${feature} feature`}
-                >
-                  <div
-                    className={`w-10 h-6 flex-shrink-0 flex items-center rounded-full p-1 ${
-                      features[feature] ? "bg-blue-500" : "bg-gray-600"
-                    }`}
-                  >
-                    <div
-                      className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
-                        features[feature] ? "translate-x-4" : "translate-x-0"
-                      }`}
-                    />
-                  </div>
-                  <p className="ml-2 capitalize truncate">{f(feature)}</p>
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
+          <div className="flex flex-col justify-center"></div>
 
           <div className="flex flex-col pb-4 mt-8">
             <div className="flex flex-col pt-4">
@@ -394,20 +376,21 @@ export default function Maindata({
           </div>
           <div className="flex flex-col mt-8 ">
             <div className="w-fit">
-            <label className="text-black mb-1">{f("DesSEO")}</label>
-            <Popover placement="right">
-              <PopoverTrigger>
-                <Button className="bg-transparent isIconOnly min-w-fit">
-                  <FaQuestionCircle />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent>
-                <div className="px-1 py-2">
-                  
-                  <p className="text-tiny w-[300px]">{f("DesSEOExplication")}</p>
-                </div>
-              </PopoverContent>
-            </Popover>
+              <label className="text-black mb-1">{f("DesSEO")}</label>
+              <Popover placement="right">
+                <PopoverTrigger>
+                  <Button className="bg-transparent isIconOnly min-w-fit">
+                    <FaQuestionCircle />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <div className="px-1 py-2">
+                    <p className="text-tiny w-[300px]">
+                      {f("DesSEOExplication")}
+                    </p>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
             <textarea
               value={
@@ -416,7 +399,7 @@ export default function Maindata({
                   : editableDes
               }
               onChange={(e) => setEditableDes(e.target.value.slice(0, 150))}
-              rows="3"
+              rows="2"
               className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black ${bginput}`}
             />
             <span className="text-gray-400 text-sm mt-1">
@@ -441,8 +424,74 @@ export default function Maindata({
               {editableFulldescr ? editableFulldescr.length : 0}/1500 characters
             </span>
           </div>
+          <div className="flex flex-col mt-8 ">
+            <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
+              Community Amenities
+            </h2>
+            <textarea
+              value={
+                editableCoam.length > 1000
+                  ? editableCoam.slice(0, 1000)
+                  : editableCoam
+              }
+              onChange={(e) => setEditableCoam(e.target.value.slice(0, 1000))}
+              rows="9"
+              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput} mt-2`}
+            />
+            <span className="text-gray-400 text-sm mt-1">
+              {editableCoam ? editableCoam.length : 0}/1000 characters
+            </span>
+            <div className="grid grid-cols-3 gap-4 mt-4">
+              {Object.keys(features).map((feature) => (
+                <div className="relative flex items-center pr-12" key={feature}>
+                  <input
+                    type="checkbox"
+                    id={`${feature}Switch`}
+                    checked={features[feature]}
+                    onChange={() => toggleFeature(feature)}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor={`${feature}Switch`}
+                    className="flex items-center cursor-pointer w-full"
+                    aria-label={`Toggle ${feature} feature`}
+                  >
+                    <div
+                      className={`w-10 h-6 flex-shrink-0 flex items-center rounded-full p-1 ${
+                        features[feature] ? "bg-blue-500" : "bg-gray-600"
+                      }`}
+                    >
+                      <div
+                        className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
+                          features[feature] ? "translate-x-4" : "translate-x-0"
+                        }`}
+                      />
+                    </div>
+                    <p className="ml-2 capitalize truncate">{f(feature)}</p>
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-col mt-8 ">
+            <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
+              Appartments on sell
+            </h2>
+            <textarea
+              value={
+                editableAponsel.length > 1000
+                  ? editableAponsel.slice(0, 1000)
+                  : editableAponsel
+              }
+              onChange={(e) => setEditableAponsel(e.target.value.slice(0, 1000))}
+              rows="9"
+              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput} mt-2`}
+            />
+            <span className="text-gray-400 text-sm mt-1">
+              {editableAponsel ? editableAponsel.length : 0}/1000 characters
+            </span>
+          </div>
         </div>
-        
       </div>
       <button
         onClick={handleSave}

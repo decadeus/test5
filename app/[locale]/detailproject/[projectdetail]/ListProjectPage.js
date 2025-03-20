@@ -102,8 +102,11 @@ export default function ListProjectPage() {
     name = "Non défini",
     adress = "Non défini",
     des = "Non défini",
+    aponsel = "Non défini",
+    fulldescr = "Non défini",
     metades = "Non défini",
     compagny = "Non défini",
+    coam = "Non défini",
     en = false,
     fr = false,
     ru = false,
@@ -171,12 +174,10 @@ export default function ListProjectPage() {
     return <FaSort />;
   };
 
-
-
-useEffect(() => {
-  const storedLanguage = localStorage.getItem("selectedLanguage") || "en";
-  setSelectedLanguage(storedLanguage);
-}, []);
+  useEffect(() => {
+    const storedLanguage = localStorage.getItem("selectedLanguage") || "en";
+    setSelectedLanguage(storedLanguage);
+  }, []);
 
   return (
     <div className="w-full mt-16 text-sm">
@@ -237,12 +238,11 @@ useEffect(() => {
                     </span>
                   </Link>
                   /
-                 
                   <Link href={`/${selectedLanguage || "en"}/projects`}>
-  <span className="text-blue-500 px-1 hover:underline cursor-pointer">
-    {displayCity}
-  </span>
-</Link>
+                    <span className="text-blue-500 px-1 hover:underline cursor-pointer">
+                      {displayCity}
+                    </span>
+                  </Link>
                   /<span className="pl-1">{name}</span>
                 </p>
               </div>
@@ -252,18 +252,18 @@ useEffect(() => {
                   {name}
                 </h1>
 
-                <p className="text-gray-600 text-base ">
-                  <span>{adress}</span>, <span>{city}</span>,{" "}
+                <p className="text-gray-600 text-base flex gap-4 ">
+                  <span>{city}</span>
                   <span>{country}</span>
                 </p>
               </div>
 
               {/* Metadatas */}
               <div className="">
-                <h2 className="font-semibold text-lg sm:text-xl mb-2 text-gray-700">
-                  {metades}
-                </h2>
+                
                 <p className="text-gray-600 whitespace-pre-line">{des}</p>
+                < br/>
+                <p className="text-gray-600 whitespace-pre-line">{fulldescr}</p>
               </div>
 
               {/* Community Amenities */}
@@ -271,7 +271,7 @@ useEffect(() => {
                 <h2 className="font-semibold text-lg sm:text-xl mb-2 text-gray-700">
                   Community Amenities
                 </h2>
-                <p className="text-gray-600 whitespace-pre-line">{des}</p>
+                <p className="text-gray-600 whitespace-pre-line">{coam}</p>
                 <div className="flex flex-wrap gap-6 mt-4">
                   {amenitiesIcons.map((Icon, i) => (
                     <div key={i} className="w-24 sm:w-24 md:w-24">
@@ -285,7 +285,7 @@ useEffect(() => {
                 <h2 className="font-semibold text-lg sm:text-xl mb-2 text-gray-700">
                   Appartments on sell
                 </h2>
-                <p className="text-gray-600">{des}</p>
+                <p className="text-gray-600">{aponsel}</p>
 
                 <div className="overflow-x-auto">
                   <table className="table-auto w-full border border-gray-300 text-gray-700 text-xs sm:text-sm mt-6">
@@ -351,7 +351,7 @@ useEffect(() => {
                             {item.floor}
                           </td>
                           <td className="border p-3 font-semibold">
-                            zł {item.price}
+                           {item.price} zł 
                           </td>
                           <td className="border p-3 text-center">
                             {item.garden && (
