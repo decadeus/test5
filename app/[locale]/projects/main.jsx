@@ -454,7 +454,7 @@ function Main() {
                           )}
                         </p>
                         {item.des ? (
-                          <p className="bg-white rounded-lg text-gray-700 px-2 py-1 text-xs text-center">
+                          <p className="bg-white rounded-lg text-red-500 px-2 py-1 text-xs text-center">
                             {item.des}
                           </p>
                         ) : (

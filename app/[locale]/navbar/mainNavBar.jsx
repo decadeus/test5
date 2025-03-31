@@ -73,7 +73,7 @@ export default function MainNavBar({ user }) {
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
-      <Respon n={n} user={user} />
+      <Respon n={n} user={user} selectedLanguage={selectedLanguage} />
       <div className="hidden lg:flex items-center justify-between relative">
         {/* Barre de recherche & sélecteur de langue */}
         <div className="flex items-center gap-4 pl-4">
@@ -141,7 +141,7 @@ export default function MainNavBar({ user }) {
   );
 }
 
-function Respon({ n, user }) {
+function Respon({ n, user, selectedLanguage }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <div className="flex lg:hidden ">
