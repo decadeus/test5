@@ -341,7 +341,7 @@ function Main() {
   const latLngExtremes = getLatLngExtremes(filteredProjects);
 
   return (
-    <div className="flex flex-col w-full sm:pt-4 mt-12 bgfull text-gray-700 mb-16 px-4">
+    <div className="flex flex-col w-full sm:pt-4 mt-12 bgfull text-gray-700 mb-16">
       <div className="w-full border-b-1 border-gray-300">
         <FilterB
           selectedCountries={selectedCountries}
@@ -375,16 +375,18 @@ function Main() {
           f={f}
         />
       </div>
-      <div className=" w-full flex lg:flex-row flex-col gap-4 lg:justify-between">
+      <div className=" w-full flex lg:flex-row flex-col gap-4 lg:justify-between mt-4">
         <div className="lg:w-1/2 flex flex-col">
           <div className="">
-            <div className="flex justify-between items-center mb-4 px-2">
+            <div className="flex flex-col gap-4 items-center justify-center mb-4 px-2">
+              <div>
               <p className="flex text-md text-center text-gray-800 w-full">
                 Total: {filteredProjects.length} {f("AppartementTrouve")}
               </p>
-              <div className="flex sm:flex-row flex-col sm:items-center items-end sm:w-full w-1/2">
+              </div>
+              <div className="flex w-full">
                 <label
-                  className="text-xs mr-2 w-[300px] text-right text-gray-500"
+                  className="text-xs mr-2 text-right text-gray-500 w-1/2"
                   htmlFor="sort-select"
                 >
                   {f("TrierPar")} (high to low)
@@ -546,9 +548,9 @@ function Main() {
           </div>
         </div>
       </div>
-      <div className="mt-12">
+      <div className="mt-24">
         {selectedCity !== "Select a city" && (
-          <p className=" text-2xl mb-8 pl-4 text-gray-700">
+          <p className="text-md md:text-2xl mb-8 pl-4 text-gray-700">
             Les derniers projets à{" "}
             <span className="font-extrabold">{selectedCity}</span>
           </p>
@@ -945,7 +947,7 @@ function FilterB({
         </div>
       </div>
       <div className="block lg:hidden py-4 ">
-        <div className="flex justify-between items-center px-4 pb-4 ">
+        <div className="flex justify-between items-center px-4 ">
           <div className="flex justify-center items-center pl-5">
             <div
               onClick={handleIconClick}

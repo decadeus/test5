@@ -50,7 +50,7 @@ function Gallery({ city, compagny, project }) {
 
   if (projects.length === 1) {
     return (
-      <div className="grid grid-cols-2 grid-rows-1 gap-4 h-[600px] ">
+      <div className="grid grid-cols-1 grid-rows-1 gap-4 h-[300px] md:h-[600px]  ">
         {/* La première image occupe deux colonnes et trois lignes */}
         <div className="">
           <div className="relative h-full w-full">
@@ -76,7 +76,7 @@ function Gallery({ city, compagny, project }) {
 
   if (projects.length === 2) {
     return (
-      <div className="grid grid-cols-2 grid-rows-1 gap-4 h-[600px] ">
+      <div className="grid grid-cols-1 md:grid-cols-2 md:grid-rows-1 gap-4 h-[300px] md:h-[600px] ">
         {/* La première image occupe deux colonnes et trois lignes */}
         <div className="">
           <div className="relative h-full w-full">
@@ -124,7 +124,7 @@ function Gallery({ city, compagny, project }) {
 
   if (projects.length === 3) {
     return (
-      <div className="grid grid-cols-4 grid-rows-2 gap-4 h-[600px] ">
+      <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[300px] md:h-[600px]  ">
         {/* La première image occupe deux colonnes et trois lignes */}
         <div className="col-span-2 row-span-2">
           <div className="relative h-full w-full">
@@ -192,7 +192,7 @@ function Gallery({ city, compagny, project }) {
 
   if (projects.length === 4) {
     return (
-      <div className="grid grid-cols-4 grid-rows-3 gap-4 h-[600px] ">
+      <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-3 gap-4 h-[300px] md:h-[600px] ">
         {/* La première image occupe deux colonnes et trois lignes */}
         <div className="col-span-2 row-span-3">
           <div className="relative h-full w-full">
@@ -300,7 +300,7 @@ function Gallery({ city, compagny, project }) {
 
   if (projects.length === 5) {
     return (
-      <div className="grid grid-cols-4 grid-rows-2 gap-4 h-[600px] ">
+      <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[300px] md:h-[600px]  ">
         {/* La première image occupe deux colonnes et trois lignes */}
         <div className="col-span-2 row-span-2">
           <div className="relative h-full w-full">
@@ -408,7 +408,7 @@ function Gallery({ city, compagny, project }) {
 
   if (projects.length === 6) {
     return (
-      <div className="grid grid-cols-3 grid-rows-4 gap-4 h-[600px] ">
+      <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-4 gap-4 h-[300px] md:h-[600px] ">
         {/* La première image occupe deux colonnes et trois lignes */}
         <div className="col-span-2 row-span-2">
           <div className="relative h-full w-full">
@@ -536,7 +536,7 @@ function Gallery({ city, compagny, project }) {
 
   if (projects.length === 7) {
     return (
-      <div className="grid grid-cols-6 grid-rows-3 gap-4 h-[600px] ">
+      <div className="grid grid-cols-1 md:grid-cols-6 grid-rows-3 gap-4 h-[300px] md:h-[600px] ">
         {/* La première image occupe deux colonnes et trois lignes */}
         <div className="col-span-3">
           <div className="relative h-full w-full">

@@ -423,7 +423,7 @@ function Scroll({ projects = [], index, t }) {
                     <p className="cleartext sm:text-[12px]">
                       {item.city}, {item.country}
                     </p>
-                    <p className="cleartext sm:text-[12px] font-bold pt-4">
+                    <p className="cleartext sm:text-[6px] text-[12px] pt-4">
   {item.des ? (item.des.length > 300 ? item.des.substring(0, 300) + "..." : item.des) : ""}
 </p>
                   </div>
