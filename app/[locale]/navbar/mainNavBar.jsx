@@ -33,8 +33,7 @@ export default function MainNavBar({ user }) {
   const supabase = createClient();
   const router = useRouter(); // ✅ Utilisation de useRouter
   const n = useTranslations("Nav");
-  const [selectedLanguage, setSelectedLanguage] = useState("fr"); 
-
+  const [selectedLanguage, setSelectedLanguage] = useState("fr");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -59,7 +58,6 @@ export default function MainNavBar({ user }) {
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
-      
         if (event === "SIGNED_IN" && session?.user) {
           router.refresh(); // ✅ Rafraîchir la page après connexion
         }
@@ -107,34 +105,30 @@ export default function MainNavBar({ user }) {
         <div className="hidden xl:flex gap-6 items-center">
           {user && (
             <div>
-            <Link
-              href={`/${selectedLanguage}/cproject`}
-              className="flex items-center gap-2 text-black text-sm"
-            >
-              <FaNetworkWired size={20} /> {n("VosProjets")}
-            </Link>
-            
+              <Link
+                href={`/${selectedLanguage}/cproject`}
+                className="flex items-center gap-2 text-black text-sm"
+              >
+                <FaNetworkWired size={20} /> {n("VosProjets")}
+              </Link>
             </div>
-            
           )}
           {user ? (
             <div className="flex items-center gap-3">
               <p className="text-sm text-black">{user.email}</p>
               <Text user={user} />
-              
             </div>
           ) : (
             <div className="flex items-center gap-3">
-            <Connect selectedLanguage={selectedLanguage} />
-            <Link
-            href={`/${selectedLanguage}//addproject`}
-            className="flex items-center gap-2 bg-gray-500 text-white px-4 h-full py-2 text-sm"
-          >
-            <HiOutlinePlusCircle size={20} /> {n("Ajouter")}
-          </Link>
+              <Connect selectedLanguage={selectedLanguage} />
+              <Link
+                href={`/${selectedLanguage}//addproject`}
+                className="flex items-center gap-2 bg-gray-500 text-white px-4 h-full py-2 text-sm"
+              >
+                <HiOutlinePlusCircle size={20} /> {n("Ajouter")}
+              </Link>
             </div>
           )}
-          
         </div>
       </div>
     </nav>
@@ -160,7 +154,10 @@ function Respon({ n, user, selectedLanguage }) {
             <>
               <DrawerBody color="primary">
                 <div className="flex flex-col gap-4 pl-4 items-start text-sm mt-8">
-                  <Link href={`/${selectedLanguage}//projects`} className="flex gap-2">
+                  <Link
+                    href={`/${selectedLanguage}//projects`}
+                    className="flex gap-2"
+                  >
                     <div className="w-8 flex justify-center items-center text-center">
                       <IoSearch size={22} />
                     </div>
@@ -168,11 +165,14 @@ function Respon({ n, user, selectedLanguage }) {
                       {n("Rechercher")}
                     </div>
                   </Link>
-                  
+
                   {user && (
                     <div>
                       <p>Test</p>
-                      <Link href={`/${selectedLanguage}//cproject`} className="">
+                      <Link
+                        href={`/${selectedLanguage}//cproject`}
+                        className=""
+                      >
                         <FaNetworkWired size={24} /> {n("VosProjets")}
                       </Link>
                     </div>
@@ -185,7 +185,10 @@ function Respon({ n, user, selectedLanguage }) {
                   ) : (
                     <ConnectRes />
                   )}
-                  <Link href={`/${selectedLanguage}/addproject`} className="flex gap-2">
+                  <Link
+                    href={`/${selectedLanguage}/addproject`}
+                    className="flex gap-2"
+                  >
                     <div className="w-8 flex justify-center items-center text-center">
                       <HiOutlinePlusCircle size={24} />
                     </div>
