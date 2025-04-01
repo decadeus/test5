@@ -97,7 +97,7 @@ export default function MainNavBar({ user }) {
             className="rounded-full"
           />
           <h2 className="text-black text-lg font-bold hidden sm:block">
-            Hoomge.com
+            Hoomger.com
           </h2>
         </Link>
 
