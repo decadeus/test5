@@ -424,8 +424,12 @@ function Scroll({ projects = [], index, t }) {
                       {item.city}, {item.country}
                     </p>
                     <p className="cleartext sm:text-[6px] text-[12px] pt-4">
-  {item.des ? (item.des.length > 300 ? item.des.substring(0, 300) + "..." : item.des) : ""}
-</p>
+                      {item.des
+                        ? item.des.length > 300
+                          ? item.des.substring(0, 300) + "..."
+                          : item.des
+                        : ""}
+                    </p>
                   </div>
                 </a>
               </div>
@@ -506,7 +510,7 @@ function Demi({ projects, index, t }) {
         {projects.link && (
           <a href={projects.link} target="_blank" rel="noopener noreferrer">
             <p className="browntext hover:underline">
-              {t("EnSavoirPlus")} <span>{projects.name}</span>
+              {t("EnSavoirPlus")}
             </p>
           </a>
         )}

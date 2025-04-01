@@ -125,7 +125,7 @@ export default function MainNavBar({ user }) {
             </div>
           ) : (
             <div className="flex items-center gap-3">
-            <Connect />
+            <Connect selectedLanguage={selectedLanguage} />
             <Link
             href={`/${selectedLanguage}//addproject`}
             className="flex items-center gap-2 bg-gray-500 text-white px-4 h-full py-2 text-sm"
