@@ -7,7 +7,7 @@ export default function cgu() {
         <h1 className="text-4xl font-semibold">Terms and Conditions of Use</h1>
       <div className={para}>
         <h2 className="text-black text-xl">
-          1. Rôle de la Plateforme dans les CGU
+          1. Rôle de la Plateforme dans les CGU nn
         </h2>
         <p>
           Responsabilité de la Plateforme en tant qu’Hébergeur d’Informations
