@@ -22,6 +22,7 @@ import {
 import { createClient } from "@/utils/supabase/client";
 import { FaEuroSign, FaHeart, FaRegHeart } from "react-icons/fa";
 import { TbCurrencyZloty } from "react-icons/tb";
+import { Heart, ExternalLink, MapPin, BedDouble, Ruler } from "lucide-react";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Avatar from "@/app/getimage/project";
@@ -57,7 +58,10 @@ const LazyMap = dynamic(() => import("@/app/[locale]/map/index"), {
     </div>
   ),
 });
-export const metadata = generateMetadata("Page d'accueil", "Bienvenue sur notre site !");
+export const metadata = generateMetadata(
+  "Page d'accueil",
+  "Bienvenue sur notre site !"
+);
 
 function Main() {
   const [projects, setProjects] = useState([]);
@@ -94,7 +98,7 @@ function Main() {
     const { data, error } = await supabase
       .from("projectlist")
       .select(
-        "*, project(*, created_at, city, lat, lng, mainpic_url, swim, fitness, child, disabled, bike, cctv, entrance, country)"
+        "*, project(*, created_at, city, lat, lng, mainpic_url, swim, fitness, child, disabled, bike, cctv, entrance, country, compagny)"
       )
       .order(sortKey, { ascending: false });
     if (error) {
@@ -341,7 +345,7 @@ function Main() {
   const latLngExtremes = getLatLngExtremes(filteredProjects);
 
   return (
-    <div className="flex flex-col w-full sm:pt-4 mt-12 bgfull text-gray-700 mb-16">
+    <div className="flex flex-col w-full bg-gray-50 sm:pt-4 mt-12 text-gray-700 mb-16">
       <div className="w-full border-b-1 border-gray-300">
         <FilterB
           selectedCountries={selectedCountries}
@@ -378,11 +382,11 @@ function Main() {
       <div className=" w-full flex lg:flex-row flex-col gap-4 lg:justify-between mt-4">
         <div className="lg:w-1/2 flex flex-col">
           <div className="">
-            <div className="flex flex-col gap-4 items-center justify-center mb-4 px-2">
-              <div>
-              <p className="flex text-md text-center text-gray-800 w-full">
-                Total: {filteredProjects.length} {f("AppartementTrouve")}
-              </p>
+            <div className="flex gap-4 items-center justify-center mb-4 px-2 w-full">
+              <div className="flex w-full">
+                <p className="flex text-xs text-center text-gray-800 w-full">
+                  Total: {filteredProjects.length} {f("AppartementTrouve")}
+                </p>
               </div>
               <div className="flex w-full">
                 <label
@@ -413,34 +417,62 @@ function Main() {
             </div>
           </div>
           <div className="">
-            <ScrollArea className="h-fit w-full px-2 sm:pb-4">
+            <ScrollArea className="h-fit w-full px-1 sm:pb-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 ">
                 {projects.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col w-full shadow-sm rounded-sm border border-gray-300"
-                  >
-                    <div className="flex flex-col gap-2 w-full px-2">
-                      <div className="pt-2 w-full h-1/4">
-                        <div className="flex justify-between items-center text-gray-500 text-xs">
-                          <div className="flex gap-2">
-                            <p>{item.surface} m²</p>
-                            <span>|</span>
-                            <p>{item.bed} beds</p>
-                            <p className="text-md font-bold">
-                              {item.project.name}
-                            </p>
+                  <div key={index} className="bg-white rounded-2xl shadow p-2">
+                    <div className="flex flex-col  w-full px-1">
+                      <div className="pt-1 w-full h-1/4">
+                        {/* Title + favorite */}
+                        <div className="flex items-center justify-between">
+                          <h3 className="font-semibold text-sm truncate">
+                            {" "}
+                            {item.project.name}
+                          </h3>
+                          <Button
+                            onClick={() => handleToggleFavorite(item)}
+                            className="inline-flex leading-none bg-transparent text-white hover:bg-opacity-10 p-0 m-0"
+                            aria-label="favorite"
+                            isIconOnly
+                          >
+                            {isFavorite(item) ? (
+                              <FaHeart fill="#bfae9b" size={15} />
+                            ) : (
+                              <FaRegHeart fill="#bfae9b" size={15} />
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Location under title */}
+
+                      <p className="text-sm text-gray-600 truncate mt-0 mb-1">
+                        {item.project.city}
+                      </p>
+                      {/* Details: surface, beds, optional comment */}
+                      <div className="flex items-center text-gray-600 gap-4 mt-2 mb-1 text-xs w-full">
+                        <div className="w-1/2 flex flex-col gap-1">
+                          <div className="flex items-center gap-1">
+                            <Ruler className="w-4 h-4" />
+                            {item.surface} m²
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <BedDouble className="w-4 h-4" />
+                            {item.bed}
                           </div>
                         </div>
+                        {item.des && (
+                          <div className="flex items-center gap-1 text-rose-700">
+                            <p className="text-xs" title={item.des}>
+                              {item.des}
+                            </p>
+                          </div>
+                        )}
                       </div>
-                      <div className="flex justify-between items-center h-1/4">
-                        <div className="flex gap-2 text-sm">
-                          <p>{item.project.country}</p>
-                          <p>{item.project.city}</p>
-                        </div>
-                      </div>
-                      <div className="h-1/4 flex ">
-                        <p className="text-xs font-bold flex justify-center items-center">
+
+                      {/* Price, promoter, link at bottom */}
+                      <div className="flex items-center pt-2">
+                        <span className="text-gray-600 font-bold text-base">
                           {item.noprice || item.price === null ? (
                             <span className="italic text-gray-500">
                               undefined
@@ -454,52 +486,11 @@ function Main() {
                               {item.price} <FaEuroSign size={10} />
                             </span>
                           )}
-                        </p>
-                        {item.des ? (
-                          <p className="bg-white rounded-lg text-red-500 px-2 py-1 text-xs text-center">
-                            {item.des}
-                          </p>
-                        ) : (
-                          <span className="invisible">Placeholder</span>
-                        )}
-                      </div>
-
-                      <div className="flex justify-center items-center gap-4 h-1/4">
-                        <Button
-                          onClick={() => handleToggleFavorite(item)}
-                          className="bg-transparent text-white hover:bg-opacity-10"
-                          aria-label="favorite"
-                          isIconOnly
-                        >
-                          {isFavorite(item) ? (
-                            <FaHeart fill="#bfae9b" size={15} />
-                          ) : (
-                            <FaRegHeart fill="#bfae9b" size={15} />
-                          )}
-                        </Button>
-                        <Popover placement="top" showArrow>
-                          <PopoverTrigger>
-                            <Button className="bg-transparent" isIconOnly>
-                              <PiEyeThin size={20} />
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent>
-                            <div className="h-[350px] w-[350px] rounded-xl">
-                              <Avatar
-                                url={item.project.mainpic_url}
-                                width={250}
-                                height={150}
-                                className="rounded-xl h-[250px] w-[250px]"
-                              />
-                              <Link
-                                href={`/en/detailproject/${item.project?.codepro}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-                              ></Link>
-                            </div>
-                          </PopoverContent>
-                        </Popover>
+                        </span>
+                        <span className="flex-grow text-gray-500 text-sm text-center truncate">
+                          {item.project.compagny}
+                        </span>
+                        <ExternalLink className="ml-auto w-5 h-5 text-gray-500 hover:text-primary-600 cursor-pointer" />
                       </div>
                     </div>
                   </div>
@@ -608,11 +599,12 @@ function FilterB({
 
   const colorfilter = "text-sm  text-gray-800";
 
-
   useEffect(() => {
     async function fetchCountries() {
       const supabase = createClient();
-      const { data, error } = await supabase.from("project").select("country, city");
+      const { data, error } = await supabase
+        .from("project")
+        .select("country, city");
 
       if (error) {
         console.error("Error fetching countries:", error);
@@ -640,25 +632,22 @@ function FilterB({
       setEditableCity(storedCity);
       onCityChange(storedCity);
     }
-  
-  
+
     // Vérifie si les données du pays ont été chargées avant de définir la ville
     if (Object.keys(countryData).length > 0) {
-     
-  
       setEditableCountry(storedCountry);
       onCountryChange([storedCountry]); // Met à jour le state du parent
-  
+
       if (storedCountry && countryData[storedCountry]) {
         const availableCities = countryData[storedCountry];
         setCities(availableCities);
-  
+
         const defaultCity = availableCities.includes(storedCity)
           ? storedCity
           : availableCities.length > 0
           ? availableCities[0]
           : "";
-  
+
         setEditableCity(defaultCity);
         onCityChange(defaultCity); // Met à jour la ville sélectionnée
       }
@@ -803,10 +792,10 @@ function FilterB({
                   {f("SelectionnezUnPays")}
                 </option>
                 {Object.keys(countryData).map((country, index) => (
-          <option key={index} value={country}>
-            {country}
-          </option>
-        ))}
+                  <option key={index} value={country}>
+                    {country}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -817,7 +806,6 @@ function FilterB({
                 className="w-[150px] bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 "
               >
                 {cities.map((city, index) => (
-                  
                   <option key={index} value={city} className="text-black">
                     {city}
                   </option>

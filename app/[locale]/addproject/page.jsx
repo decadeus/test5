@@ -2,9 +2,74 @@
 
 import { FaArrowRight } from "react-icons/fa";
 import Form from "./form";
-import { useMemo } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
+
+
+const images = {
+  step_1: "/secure.png",
+  step_2: "/secure.png",
+  step_3: "/secure.png",
+  step_4: "/secure.png",
+};
 
 export default function MainPage() {
+
+  const [selected, setSelected] = useState("step_1");
+  const [fade, setFade] = useState(true);
+  const [indicatorStyle, setIndicatorStyle] = useState({});
+
+  const refs = {
+    step_1: useRef(null),
+    step_2: useRef(null),
+    step_3: useRef(null),
+    step_4: useRef(null),
+  };
+
+  useEffect(() => {
+    const el = refs[selected].current;
+    if (el) {
+      setIndicatorStyle({
+        width: `${el.offsetWidth}px`,
+        left: `${el.offsetLeft}px`,
+      });
+    }
+  }, [selected]);
+
+  const tabColors = {
+    step_1: "#FF0066",
+    step_2: "#FF4500",
+    step_3: "#0066FF",
+    step_4: "#B060FF",
+  };
+
+  const tabRGB = {
+    step_1: "255, 0, 102",
+    step_2: "255, 69, 0",
+    step_3: "0, 102, 255",
+    step_4: "255, 52, 255",
+  };
+
+  const tabClass = (tab) => {
+    const base =
+      "relative z-10 px-4 text-center py-2 text-base font-bold rounded-full transition-all duration-300 ease-in-out transform";
+    const selectedTab = selected === tab;
+    return `${base} ${
+      selectedTab
+        ? `text-white bg-[${tabColors[tab]}]  scale-105`
+        : "bg-white text-gray-500  hover:text-black scale-100"
+    }`;
+  };
+
+  const handleTabClick = (tab) => {
+    if (tab !== selected) {
+      setFade(false);
+      setTimeout(() => {
+        setSelected(tab);
+        setFade(true);
+      }, 150);
+    }
+  };
+
   const containerStyle =
     "flex flex-col items-center w-full px-32 pt-32 pb-32 px-4";
   const headerStyle = "text-4xl font-bold text-black text-center mb-8";
@@ -49,55 +114,85 @@ export default function MainPage() {
   };
 
   return (
-    <div className={containerStyle}>
-      <h1 className={headerStyle}>
-        With Hoomge, easily and freely add your real estate project
+    <main className="flex flex-col items-center gap-12 p-12 min-h-screen mt-[100px] w-full">
+       <h1 className="text-7xl font-light text-center mb-6">
+        Bienvenue sur la page des animaux
       </h1>
-      <p className={subheaderStyle}>
-        Join the many real estate projects already listed on Hoomge. With our intuitive tools, you can easily find buyers by offering a streamlined search experience. Visitors can filter apartments by criteria such as surface area, number of bedrooms, services, and more.
+      <p className="max-w-2xl text-center text-gray-600 text-xl leading-relaxed">
+        Cette page est dédiée à la découverte de quelques-uns de nos compagnons
+        les plus fidèles et fascinants. Que ce soit le step_1, symbole
+        d'indépendance et de mystère ; le step_2, loyal et protecteur ; ou le
+        step_3, majestueux et libre — chacun de ces animaux occupe une place
+        unique dans notre vie et notre imaginaire. Faites votre choix ci-dessous
+        pour en apprendre davantage.
       </p>
-
-      {/* Steps Container */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 grid-rows-1 gap-8 w-full mb-16">
-        {stepContainerStyle.map(({ step, title, para, nb }, index) => (
-          <div
-            key={index}
-            className="relative text-white bg-gray-800 p-6 rounded-xl flex flex-col justify-between h-full group mx-4"
-          >
-            <div className="flex flex-col h-full justify-between">
-              {/* Step Block */}
-              <div className="flex items-start pb-4">
-                <p className="text-sm lg:text-lg pt-4">
-                  {step} {nb}
-                </p>
-              </div>
-
-              {/* Title Block */}
-              <div className="flex items-start pb-4">
-                <h2 className="text-2xl font-semibold">{title}</h2>
-              </div>
-
-              {/* Description Block */}
-              <div className="flex items-start flex-grow">
-                <p className="text-base">{para}</p>
-              </div>
-
-              {/* Call to Action Button */}
-              <div className="flex justify-center mt-6 mb-4">
-                <button
-                  onClick={scrollToSection}
-                  className="bg-[#bfae9ba4] text-white py-2 px-6 rounded-lg hover:bg-[#bfae9ba4/50] transition-all duration-300"
-                >
-                  Start adding your project
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="rounded-3xl border-[25px] border-black bg-black">
+      <div
+        className={` bg-black h-fit flex items-center justify-center transition-opacity duration-300 ${
+          fade ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <img
+          src={images[selected]}
+          alt={selected}
+          className="w-[800px] h-[600px] object-cover rounded-2xl"
+        />
+      </div>
       </div>
 
+      <div
+        className="rounded-full"
+        style={{
+          boxShadow: `0 0 42px 4px rgba(${tabRGB[selected]}, 0.3)`,
+          transition: "box-shadow 400ms ease, background-color 400ms ease",
+        }}
+      >
+        <div className="relative w-fit max-w-md ">
+          <div className="relative flex gap-2 justify-center bg-white rounded-full py-3 px-4 border border-transparent transition-colors duration-500 ease-in-out">
+            <div
+              className="absolute top-2 bottom-2 rounded-full transition-all duration-300 ease-in-out"
+              style={{
+                backgroundColor: `rgba(${tabRGB[selected]})`,
+                transition:
+                  "background-color 200ms ease, left 300ms ease, width 300ms ease",
+                ...indicatorStyle,
+              }}
+            />
+            <button
+              ref={refs.step_1}
+              onClick={() => handleTabClick("step_1")}
+              className={tabClass("step_1")}
+            >
+              Step 1
+            </button>
+            <button
+              ref={refs.step_2}
+              onClick={() => handleTabClick("step_2")}
+              className={tabClass("step_2")}
+            >
+              Step 2
+            </button>
+            <button
+              ref={refs.step_3}
+              onClick={() => handleTabClick("step_3")}
+              className={tabClass("step_3")}
+            >
+              Step 3
+            </button>
+            <button
+              ref={refs.step_4}
+              onClick={() => handleTabClick("step_4")}
+              className={tabClass("step_4")}
+            >
+              Step 4
+            </button>
+          </div>
+        </div>
+      </div>
+   
+    
       {/* Real Estate Project Information Section */}
-      <div className="w-full flex flex-col justify-center my-8 bg-gray-100 p-8">
+      <div className="w-full flex flex-col justify-center my-8 bg-white p-8">
         <h2 className="text-3xl font-medium text-center mb-6">
           Real Estate Project Information
         </h2>
@@ -118,7 +213,7 @@ export default function MainPage() {
       </div>
 
       {/* Update Apartment List Section */}
-      <div className="w-full flex flex-col bg-gray-100 p-8">
+      <div className="w-full flex flex-col bg-white p-8">
         <div className="w-full flex flex-col gap-4 justify-center items-center mb-8">
           <h2 className="text-3xl font-medium text-center">
             Update the list of apartments for sale
@@ -142,6 +237,6 @@ export default function MainPage() {
       <div id="formulaire" className="mt-4 w-full flex justify-center">
         <Form />
       </div>
-    </div>
+    </main>
   );
 }

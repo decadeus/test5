@@ -17,12 +17,12 @@ export default function Foot() {
         <div className="flex flex-col items-center sm:items-start">
           <LinK
          
-            href="/en/cgu">Terms and Conditions
+            href="/en/GDPR">GDPR
           
           </LinK>
           <LinK
          
-         href="/en/pdc">Privacy Policy
+         href="/en/privacy">Privacy Policy
        
        </LinK>
         </div>
