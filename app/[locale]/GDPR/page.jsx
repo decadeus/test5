@@ -23,7 +23,7 @@ export default function PrivacyPolicyPage() {
         <ul className="list-disc list-inside space-y-2">
           <li><strong>Personal data:</strong> any information relating to an identified or identifiable natural person.</li>
           <li><strong>Processing:</strong> any operation performed on personal data (collection, storage, etc.).</li>
-          <li><strong>Data subject:</strong> the individual whose personal data are processed.</li>
+          <li><strong>Data subject:</strong> the individual whose personal data are processed</li>
         </ul>
       </section>
 
@@ -43,7 +43,7 @@ export default function PrivacyPolicyPage() {
         <table className="w-full text-sm border border-gray-200 divide-y divide-gray-200">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-2 text-left">Category</th>
+              <th className="p-2 text-left">Category  test</th>
               <th className="p-2 text-left">Examples</th>
               <th className="p-2 text-left">Legal Basis</th>
               <th className="p-2 text-left">Retention</th>
