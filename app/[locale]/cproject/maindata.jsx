@@ -430,7 +430,7 @@ export default function Maindata({
             </h2>
             <textarea
               value={
-                editableCoam.length > 1000
+                (editableCoam && editableCoam.length > 1000) 
                   ? editableCoam.slice(0, 1000)
                   : editableCoam
               }
@@ -479,7 +479,7 @@ export default function Maindata({
             </h2>
             <textarea
               value={
-                editableAponsel.length > 1000
+                (editableAponsel && editableAponsel.length > 1000) 
                   ? editableAponsel.slice(0, 1000)
                   : editableAponsel
               }

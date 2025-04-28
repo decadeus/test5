@@ -166,7 +166,7 @@ export default function Projectb({ user }) {
   const filteredProjects = projects.map((project) => ({
     ...project,
     projectlist: project.projectlist.filter((item) =>
-      item.ref.toLowerCase().includes(searchRef.toLowerCase())
+      item.ref && item.ref.toLowerCase().includes(searchRef.toLowerCase()) // Vérification si item.ref existe
     ),
   }));
 

@@ -70,7 +70,7 @@ export default function DynamicMetadata() {
         />
       </Head>
 
-      <Main />
+      <Main  />
     </>
   );
 }
