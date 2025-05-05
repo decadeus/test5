@@ -14,15 +14,14 @@ import {
   PopoverTrigger,
   PopoverContent,
   Divider,
-} from "@heroui/react";
-import {
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalFooter,
   Button,
-} from "@nextui-org/react";
+} from "@heroui/react";
+
 
 export default function Maindata({
   compagny,
