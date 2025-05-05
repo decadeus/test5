@@ -309,7 +309,7 @@ export default function Maindata({
                 className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px] ${bginput}`}
               >
                 <option value="EUR">EUR</option>
-                <option value="PLN">PLN</option>
+                <option value="PLN">PLON</option>
               </select>
             </div>
             <div className="flex flex-col">
