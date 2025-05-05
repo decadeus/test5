@@ -74,7 +74,16 @@
         "Data successfully saved": "Dane zostały pomyślnie zapisane.",
         "DesPro": "Opis projektu",
         "DesSEO": "Opis SEO",
-        "DesSEOExplication": "Opis SEO jest używany jako metaopis dla SEO. Pomaga Google i innym wyszukiwarkom zrozumieć treść Twojego projektu i lepiej go ocenić"
+        "DesSEOExplication": "Opis SEO jest używany jako metaopis dla SEO. Pomaga Google i innym wyszukiwarkom zrozumieć treść Twojego projektu i lepiej go ocenić",
+        "IA": "Wygeneruj za pomocą AI",
+        "IASEO": "Wygeneruj opis SEO",
+        "IADESCRIPTION": "Wygeneruj opis projektu",
+        "IADESCRIPTIONNOMPROJET": "Nazwa projektu",
+        "IADESCRIPTIONVILLE": "Miasto",
+        "IADESCRIPTIONTYPE": "Typ apartamentu",
+        "IADESCRIPTIONATOUT": "Atuty",
+        "IADESCRIPTIONSTYLE": "Styl architektoniczny",
+        "IADESCRIPTIONPUBLIC": "Grupa docelowa"
     },
     "SEO": {
         "Title": "Projekty mieszkaniowe",

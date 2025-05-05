@@ -74,7 +74,16 @@
         "Data successfully saved": "Daten erfolgreich gespeichert",
         "DesPro": "Projektbeschreibung",
         "DesSEO": "SEO-Beschreibung",
-        "DesSEOExplication": "Die SEO-Beschreibung wird als Meta-Beschreibung für SEO verwendet. Es hilft Google und anderen Suchmaschinen, den Inhalt Ihres Projekts zu verstehen und es besser zu bewerten"
+        "DesSEOExplication": "Die SEO-Beschreibung wird als Meta-Beschreibung für SEO verwendet. Es hilft Google und anderen Suchmaschinen, den Inhalt Ihres Projekts zu verstehen und es besser zu bewerten",
+        "IA": "Mit KI generieren",
+  "IASEO": "SEO-Beschreibung generieren",
+  "IADESCRIPTION": "Projektbeschreibung generieren",
+  "IADESCRIPTIONNOMPROJET": "Projektname",
+  "IADESCRIPTIONVILLE": "Stadt",
+  "IADESCRIPTIONTYPE": "Wohnungstyp",
+  "IADESCRIPTIONATOUT": "Vorteile",
+  "IADESCRIPTIONSTYLE": "Architekturstil",
+  "IADESCRIPTIONPUBLIC": "Zielgruppe"
     },
     "SEO": {
         "Title": "Wohnprojekte",

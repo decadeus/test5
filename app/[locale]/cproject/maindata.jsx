@@ -6,14 +6,23 @@ import { IoEye } from "react-icons/io5";
 import { companies } from "@/utils/companies";
 import { countryData } from "@/utils/countryData";
 import { useTranslations } from "next-intl";
+import IASEO from "./iaseo";
+import IACOMMUNITY from "./iacommunity";
 import { FaQuestionCircle } from "react-icons/fa";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  Button,
   Divider,
 } from "@heroui/react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+} from "@nextui-org/react";
 
 export default function Maindata({
   compagny,
@@ -64,7 +73,10 @@ export default function Maindata({
     fitness,
   });
   const [isSaving, setIsSaving] = useState(false);
+  const [openModalSEO, setOpenModalSEO] = useState(false);
+  const [openModalCommunity, setOpenModalCommunity] = useState(false);
   const f = useTranslations("Projet");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     fetchProjects();
@@ -312,6 +324,37 @@ export default function Maindata({
             </div>
           </div>
           <div className="flex flex-col justify-center"></div>
+          <div className="grid grid-cols-3 gap-4 mt-8">
+            {Object.keys(features).map((feature) => (
+              <div className="relative flex items-center pr-12" key={feature}>
+                <input
+                  type="checkbox"
+                  id={`${feature}Switch`}
+                  checked={features[feature]}
+                  onChange={() => toggleFeature(feature)}
+                  className="hidden"
+                />
+                <label
+                  htmlFor={`${feature}Switch`}
+                  className="flex items-center cursor-pointer w-full"
+                  aria-label={`Toggle ${feature} feature`}
+                >
+                  <div
+                    className={`w-10 h-6 flex-shrink-0 flex items-center rounded-full p-1 ${
+                      features[feature] ? "bg-blue-500" : "bg-gray-600"
+                    }`}
+                  >
+                    <div
+                      className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
+                        features[feature] ? "translate-x-4" : "translate-x-0"
+                      }`}
+                    />
+                  </div>
+                  <p className="ml-2 capitalize truncate">{f(feature)}</p>
+                </label>
+              </div>
+            ))}
+          </div>
 
           <div className="flex flex-col pb-4 mt-8">
             <div className="flex flex-col pt-4">
@@ -359,7 +402,9 @@ export default function Maindata({
           <Divider className="my-4" />
 
           <div className="flex flex-col  ">
-            <label className={`${label}`}>{f("NomProjet")}</label>
+            <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
+              {f("NomProjet")}
+            </h2>
             <input
               type="text"
               value={
@@ -368,19 +413,22 @@ export default function Maindata({
                   : editableName
               }
               onChange={(e) => setEditableName(e.target.value)}
-              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500  text-xl ${bginput}`}
+              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500  text-xl ${bginput} mt-2`}
             />
             <span className="text-gray-400 text-sm mt-1">
               {editableName.length}/50 characters
             </span>
           </div>
+
           <div className="flex flex-col mt-8 ">
-            <div className="w-fit">
-              <label className="text-black mb-1">{f("DesSEO")}</label>
+            <div className="w-full flex items-center justify-between">
+              <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
+                {f("DesPro")}
+              </h2>
               <Popover placement="right">
                 <PopoverTrigger>
                   <Button className="bg-transparent isIconOnly min-w-fit">
-                    <FaQuestionCircle />
+                    🤖 Générer avec l'IA
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent>
@@ -394,22 +442,6 @@ export default function Maindata({
             </div>
             <textarea
               value={
-                editableDes.length > 150
-                  ? editableDes.slice(0, 150)
-                  : editableDes
-              }
-              onChange={(e) => setEditableDes(e.target.value.slice(0, 150))}
-              rows="2"
-              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black ${bginput}`}
-            />
-            <span className="text-gray-400 text-sm mt-1">
-              {editableDes.length}/150 characters
-            </span>
-          </div>
-          <div className="flex flex-col mt-8 ">
-            <label className={`${label}`}>{f("DesPro")}</label>
-            <textarea
-              value={
                 editableFulldescr.length > 1500
                   ? editableFulldescr.slice(0, 1500)
                   : editableFulldescr
@@ -418,19 +450,39 @@ export default function Maindata({
                 setEditableFulldescr(e.target.value.slice(0, 1500))
               }
               rows="13"
-              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput}`}
+              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput} mt-2`}
             />
             <span className="text-gray-400 text-sm mt-1">
               {editableFulldescr ? editableFulldescr.length : 0}/1500 characters
             </span>
           </div>
           <div className="flex flex-col mt-8 ">
-            <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
-              Community Amenities
-            </h2>
+            <div className="w-full flex items-center justify-between">
+              <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
+                Community Amenities
+              </h2>
+              <>
+              <Button className="bg-transparent isIconOnly min-w-fit" onClick={() => setOpenModalCommunity(true)}>
+            🤖 Générer avec l'IA
+          </Button>
+          <Modal isOpen={openModalCommunity} onClose={() => setOpenModalCommunity(false)} backdrop="blur" size="lg" scrollBehavior="inside">
+                  <ModalContent>
+                    <ModalHeader>Générateur IA</ModalHeader>
+                    <ModalBody>
+                      <IACOMMUNITY/>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="danger" onClick={() => setOpen(false)}>
+                        Fermer
+                      </Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
+              </>
+            </div>
             <textarea
               value={
-                (editableCoam && editableCoam.length > 1000) 
+                editableCoam && editableCoam.length > 1000
                   ? editableCoam.slice(0, 1000)
                   : editableCoam
               }
@@ -441,54 +493,44 @@ export default function Maindata({
             <span className="text-gray-400 text-sm mt-1">
               {editableCoam ? editableCoam.length : 0}/1000 characters
             </span>
-            <div className="grid grid-cols-3 gap-4 mt-4">
-              {Object.keys(features).map((feature) => (
-                <div className="relative flex items-center pr-12" key={feature}>
-                  <input
-                    type="checkbox"
-                    id={`${feature}Switch`}
-                    checked={features[feature]}
-                    onChange={() => toggleFeature(feature)}
-                    className="hidden"
-                  />
-                  <label
-                    htmlFor={`${feature}Switch`}
-                    className="flex items-center cursor-pointer w-full"
-                    aria-label={`Toggle ${feature} feature`}
-                  >
-                    <div
-                      className={`w-10 h-6 flex-shrink-0 flex items-center rounded-full p-1 ${
-                        features[feature] ? "bg-blue-500" : "bg-gray-600"
-                      }`}
-                    >
-                      <div
-                        className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform ${
-                          features[feature] ? "translate-x-4" : "translate-x-0"
-                        }`}
-                      />
-                    </div>
-                    <p className="ml-2 capitalize truncate">{f(feature)}</p>
-                  </label>
-                </div>
-              ))}
-            </div>
           </div>
           <div className="flex flex-col mt-8 ">
-            <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
-              Appartments on sell
-            </h2>
+            <div className="w-full flex items-center justify-between">
+              <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
+                {f("DesSEO")}
+              </h2>
+              <>
+              <Button className="bg-transparent isIconOnly min-w-fit" onClick={() => setOpenModalSEO(true)}>
+            🤖 Générer avec l'IA
+          </Button>
+
+          <Modal isOpen={openModalSEO} onClose={() => setOpenModalSEO(false)} backdrop="blur" size="lg" scrollBehavior="inside">
+                  <ModalContent>
+                    <ModalHeader>Générateur IA</ModalHeader>
+                    <ModalBody>
+                      <IASEO />
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="danger" onClick={() => setOpen(false)}>
+                        Fermer
+                      </Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
+              </>
+            </div>
             <textarea
               value={
-                (editableAponsel && editableAponsel.length > 1000) 
-                  ? editableAponsel.slice(0, 1000)
-                  : editableAponsel
+                editableDes.length > 150
+                  ? editableDes.slice(0, 150)
+                  : editableDes
               }
-              onChange={(e) => setEditableAponsel(e.target.value.slice(0, 1000))}
-              rows="9"
-              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput} mt-2`}
+              onChange={(e) => setEditableDes(e.target.value.slice(0, 150))}
+              rows="2"
+              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black ${bginput}`}
             />
             <span className="text-gray-400 text-sm mt-1">
-              {editableAponsel ? editableAponsel.length : 0}/1000 characters
+              {editableDes.length}/150 characters
             </span>
           </div>
         </div>

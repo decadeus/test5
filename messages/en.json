@@ -74,7 +74,16 @@
         "Data successfully saved": "Data successfully saved.",
         "DesPro": "Project description",
         "DesSEO": "SEO Description",
-        "DesSEOExplication": "SEO description is used as a meta description for SEO. It helps Google and other search engines understand the content of your project and rank it better."
+        "DesSEOExplication": "SEO description is used as a meta description for SEO. It helps Google and other search engines understand the content of your project and rank it better.",
+        "IA": "Generate with AI",
+  "IASEO": "Generate a SEO description",
+  "IADESCRIPTION": "Generate a project description",
+  "IADESCRIPTIONNOMPROJET": "Project Name",
+  "IADESCRIPTIONVILLE": "City",
+  "IADESCRIPTIONTYPE": "Apartment type",
+  "IADESCRIPTIONATOUT": "Assets",
+  "IADESCRIPTIONSTYLE": "Architectural style",
+  "IADESCRIPTIONPUBLIC": "Target audience"
     },
     "SEO": {
         "Title": "Real estate project references",

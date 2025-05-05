@@ -29,6 +29,7 @@ export default function Projectb({ user }) {
   const [searchRef, setSearchRef] = useState(""); // État pour la recherche
 
   const p = useTranslations("Projet");
+  const bginput = "bg-gray-100 text-black";
 
   useEffect(() => {
     if (user?.id) {
@@ -214,9 +215,9 @@ export default function Projectb({ user }) {
                 {p("NombreAppartement")}: {totalRows}
               </p>
             </div>
-            <table className="w-full bg-[#12171E] shadow-md rounded-lg overflow-hidden">
-              <thead className="bg-[#12171E] text-white">
-                <tr className="text-white">
+            <table className={`w-full ${bginput} shadow-md rounded-lg overflow-hidden border-2 border-black`}>
+              <thead className={`${bginput} text-black border-2 border-gray-300`}>
+                <tr className="text-black">
                   <th
                     className="py-2 px-4 border-b text-center cursor-pointer "
                     onClick={() => sortTable("ref")}
@@ -265,7 +266,7 @@ export default function Projectb({ user }) {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-[#12171E] text-white">
+                <tr className="bginput text-black">
                   <td className="py-2 px-4 border-b text-center ">
                     <input
                       type="text"
@@ -352,7 +353,7 @@ export default function Projectb({ user }) {
                 </tr>
 
                 {project.projectlist.map((item, itemIndex) => (
-                  <tr key={itemIndex} className="bg-[#12171E] text-white">
+                  <tr key={itemIndex} className={`${bginput} text-black`}>
                     <td className="py-2 px-4 border-b text-center ">
                       {editing &&
                       editing.projectIndex === projectIndex &&
