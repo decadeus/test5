@@ -167,7 +167,7 @@
   /* disable browser handling of all panning and zooming gestures on touch devices */
   touch-action: none;
 
-  background: rgb(0, 0, 0);
+  background: rgb(226, 226, 226);
   transition: background 160ms ease-out;
   border-radius: 3px;
   
@@ -239,9 +239,9 @@
 
 .scrolling-text-item {
   padding-right: 2rem;
-  color: gray;
+  color: rgb(0, 0, 0);
   font-size: 50px;
-  opacity: 10%; /* Espace entre les items */
+  
 }
 
 .cursor-follow {
@@ -351,4 +351,14 @@
   100% {
     transform: translateX(-50%); /* Défile jusqu'à -50% de la largeur pour boucler */
   }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.rotate-slow {
+  animation: spin 40s linear infinite;
+  transform-origin: center;
 }
