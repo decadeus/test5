@@ -64,7 +64,7 @@ const DualLayerFadeSection = () => {
       transform,
       opacity,
       zIndex,
-      backgroundColor:"#f7f7f7" // Couleur uniforme pour chaque carte
+      backgroundColor: "#f7f7f7", // Couleur uniforme pour chaque carte
     };
   };
 
@@ -76,9 +76,47 @@ const DualLayerFadeSection = () => {
           className={headerStyle}
           style={{ borderTopLeftRadius: "20px", borderTopRightRadius: "20px" }} // Assurer que le header a aussi des coins arrondis
         >
-          <p className="bg-white px-3 py-2 overflow-hidden text-black rounded">
-            Text for Card 1
+          <p className="bg-white px-3 py-2 overflow-hidden text-black rounded text-left">
+            Les informations sur le projet
           </p>
+        </div>
+        <div className="p-4 flex gap-4">
+          <div className="w-1/2 flex flex-col gap-4 h-full">
+            <div className="h-fit">
+              <p>company</p>
+              <p className="w-full bg-white h-8 border"></p>
+            </div>
+            <div className="h-fit">
+              <p>company</p>
+              <p className="w-full bg-white h-8 border"></p>
+            </div>
+            <div className="h-fit">
+              <p>company</p>
+              <p className="w-full bg-white h-8 border"></p>
+            </div>
+            <div className="h-fit">
+              <p>company</p>
+              <p className="w-full bg-white h-8 border"></p>
+            </div>
+          </div>
+          <div className="w-1/2 flex flex-col gap-4 h-full">
+            <div className="h-fit">
+              <p>company</p>
+              <p className="w-full bg-white h-8 border"></p>
+            </div>
+            <div className="h-fit">
+              <p>company</p>
+              <p className="w-full bg-white h-8 border"></p>
+            </div>
+            <div className="h-fit">
+              <p>company</p>
+              <p className="w-full bg-white h-8 border"></p>
+            </div>
+            <div className="h-fit">
+              <p>company</p>
+              <p className="w-full bg-white h-8 border"></p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -88,9 +126,113 @@ const DualLayerFadeSection = () => {
           className={headerStyle}
           style={{ borderTopLeftRadius: "20px", borderTopRightRadius: "20px" }} // Assurer que le header a aussi des coins arrondis
         >
-          <p className="bg-white px-3 py-2 overflow-hidden text-black rounded">
-            Text for Card 2
+          <p className="bg-white px-3 py-2 overflow-hidden text-black rounded text-left">
+            Services partagés
           </p>
+        </div>
+        <div className="flex justify-center items-center w-full pl-12 pt-8">
+          <div className="flex flex-col gap-6 w-1/3 justify-center ">
+            <div>
+              <div>
+                <p className="text-sm">Garden</p>
+              </div>
+              <div class="w-9 h-5 rounded-full bg-gray-300 relative">
+                <div class="w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 left-0.5 transition-all"></div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <p className="text-sm">Garden</p>
+              </div>
+              <div class="w-9 h-5 rounded-full bg-blue-500 relative">
+                <div class="w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 left-[18px] transition-all"></div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <p className="text-sm">Garden</p>
+              </div>
+              <div class="w-9 h-5 rounded-full bg-gray-300 relative">
+                <div class="w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 left-0.5 transition-all"></div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <p className="text-sm">Garden</p>
+              </div>
+              <div class="w-9 h-5 rounded-full bg-gray-300 relative">
+                <div class="w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 left-0.5 transition-all"></div>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-6 w-1/3">
+            <div>
+              <div>
+                <p className="text-sm">Garden</p>
+              </div>
+              <div class="w-9 h-5 rounded-full bg-gray-300 relative">
+                <div class="w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 left-0.5 transition-all"></div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <p className="text-sm">Reception</p>
+              </div>
+              <div class="w-9 h-5 rounded-full bg-blue-500 relative">
+                <div class="w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 left-[18px] transition-all"></div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <p className="text-sm">Bike parking</p>
+              </div>
+              <div class="w-9 h-5 rounded-full bg-blue-500 relative">
+                <div class="w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 left-[18px] transition-all"></div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <p className="text-sm">Children's area</p>
+              </div>
+              <div class="w-9 h-5 rounded-full bg-gray-300 relative">
+                <div class="w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 left-0.5 transition-all"></div>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-6 w-1/3 ">
+            <div>
+              <div>
+                <p className="text-sm">Disabled access</p>
+              </div>
+              <div class="w-9 h-5 rounded-full bg-blue-500 relative">
+                <div class="w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 left-[18px] transition-all"></div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <p className="text-sm">Fitness-room</p>
+              </div>
+              <div class="w-9 h-5 rounded-full bg-blue-500 relative">
+                <div class="w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 left-[18px] transition-all"></div>
+              </div>
+            </div>
+            <div className="">
+              <div>
+                <p className="text-sm text-left">CCTV</p>
+              </div>
+              <div class="w-9 h-5 rounded-full bg-blue-500 relative">
+                <div class="w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 left-[18px] transition-all"></div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <p className="text-sm">Swimming-pool</p>
+              </div>
+              <div class="w-9 h-5 rounded-full bg-gray-300 relative">
+                <div class="w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 left-0.5 transition-all"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -100,7 +242,7 @@ const DualLayerFadeSection = () => {
           className={headerStyle}
           style={{ borderTopLeftRadius: "20px", borderTopRightRadius: "20px" }} // Assurer que le header a aussi des coins arrondis
         >
-          <p className="bg-white px-3 py-2 overflow-hidden text-black rounded">
+          <p className="bg-white px-3 py-2 overflow-hidden text-black rounded text-left">
             Text for Card 3
           </p>
         </div>

@@ -11,7 +11,6 @@ import * as ScrollArea from "@radix-ui/react-scroll-area";
 import useCustomCursor from "@/components/useCustomCursor";
 import Loading from "./loading";
 import Lp1Component from "@/app/[locale]/component/lp1";
-import buildwhite from "@/public/buildwhite.jpg";
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
