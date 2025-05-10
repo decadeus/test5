@@ -309,7 +309,7 @@ export default function Maindata({
                 className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px] ${bginput}`}
               >
                 <option value="EUR">EUR</option>
-                <option value="PLN">PLON</option>
+                <option value="PLN">PLN</option>
               </select>
             </div>
             <div className="flex flex-col">
@@ -415,7 +415,8 @@ export default function Maindata({
               className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500  text-xl ${bginput} mt-2`}
             />
             <span className="text-gray-400 text-sm mt-1">
-              {editableName.length}/50 characters
+              {editableName ? editableName.length : 0}/50 characters
+              
             </span>
           </div>
 
@@ -529,7 +530,7 @@ export default function Maindata({
               className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black ${bginput}`}
             />
             <span className="text-gray-400 text-sm mt-1">
-              {editableDes.length}/150 characters
+              {editableDes ?  editableDes.length : 0}/150 characters
             </span>
           </div>
         </div>

@@ -30,7 +30,7 @@ export default function Foot() {
         {/* Right Section */}
         <div className="flex flex-col items-center sm:items-start text-gray-300">
           <p className="text-xs sm:text-sm hover:text-white cursor-pointer">
-            DEBEAUMONT@DECADEUS.COM
+            HOOMGE@DECADEUS.COM
           </p>
           <div className="flex space-x-2 mt-1">
             <a href="#" className="hover:text-white">
