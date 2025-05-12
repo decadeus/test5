@@ -104,7 +104,6 @@ export default function Page() {
       />
 
       <div className="w-full flex flex-col xl:mb-32 lg:mb-28 md:mb-20 sm:mb-10">
-        
         <ScrollProjectList
           projects={projects}
           t={t}
@@ -113,6 +112,8 @@ export default function Page() {
           totalApartments={totalApartments}
         />
       </div>
+
+      <Interet />
       <ScrollingText />
       <Lp1Component />
     </>
@@ -249,7 +250,6 @@ function IntroSection({
             </div>
           </div>
         </div>
-        
       </div>
     </>
   );
@@ -271,10 +271,8 @@ function ScrollProjectList({
   } = useCustomCursor(t("EnSavoirPlus"));
 
   return (
-    <div className="flex flex-col justify-center mx-auto xl:w-[1100px] lg:w-[950px] md:w-[700px] sm:w-[550px] w-[350px] overflow-x-auto relative pt-14">
-      <h2 className="font-macondo text-black text-4xl ">
-          {t("TitleNew")}
-        </h2>
+    <div className="flex flex-col justify-center mx-auto xl:w-[1100px] lg:w-[950px] md:w-[700px] sm:w-[550px] w-[350px] overflow-x-auto relative pt-24">
+      <h2 className="font-macondo text-black text-4xl ">{t("TitleNew")}</h2>
       <ScrollArea.Root className="ScrollAreaRoot" type="always">
         <ScrollArea.Viewport className="w-full">
           <div className="flex gap-8 mb-4 ml-4">
@@ -383,27 +381,23 @@ function Statistics({ uniqueCompanies, uniqueIdeas, totalApartments }) {
     animateAll();
   }, [uniqueCompanies.size, uniqueIdeas.size, totalApartments]);
 
-  const boxStyle =
-    "mt-2 text-center rounded-xl p-4 sm:w-[150px] w-[120px]";
+  const boxStyle = "mt-2 text-center rounded-xl p-4 sm:w-[150px] w-[120px]";
   const numberStyle = "font-semibold text-gray-700 font-macondo text-5xl";
   const labelStyle = "text-gray-600 sm:text-lg text-sm";
 
   return (
     <div className="flex gap-4 xl:gap-8 items-center my-8 transition-shadow duration-300 transform hover:-translate-y-1 animate-fadeIn">
       <div className={boxStyle}>
-      <span className={numberStyle}>{displayedCompanies}</span>
+        <span className={numberStyle}>{displayedCompanies}</span>
         <p className={labelStyle}>Companies</p>
-       
       </div>
       <div className={boxStyle}>
-      <span className={numberStyle}>{displayedIdeas}</span>
+        <span className={numberStyle}>{displayedIdeas}</span>
         <p className={labelStyle}>Projets</p>
-        
       </div>
       <div className={boxStyle}>
-      <span className={numberStyle}>{displayedApartments}</span>
+        <span className={numberStyle}>{displayedApartments}</span>
         <p className={labelStyle}>Appartements</p>
-      
       </div>
     </div>
   );
@@ -426,7 +420,7 @@ function ScrollingText() {
   ];
 
   return (
-    <div className="scrolling-text-container">
+    <div className="scrolling-text-container pt-24">
       <div
         className="scrolling-text-inner"
         style={{ "--marquee-speed": "50s" }}
@@ -444,5 +438,48 @@ function ScrollingText() {
         </div>
       </div>
     </div>
+  );
+}
+
+function Interet() {
+  return (
+    <section className="relative py-16 text-white bg-black w-full">
+      <div className="grid md:grid-cols-2 gap-12 items-center px-28 py-24">
+        {/* Texte explicatif */}
+        <div className="">
+          <h2 className="text-3xl font-bold mb-6 text-gray-200">
+            Concentrez-vous sur vos projets, on s’occupe du reste
+          </h2>
+          <p className="text-lg leading-relaxed text-gray-200">
+            Hoomge a été conçue avec un objectif clair :{" "}
+            <strong>mettre en valeur vos projets immobiliers sur Google</strong>{" "}
+            grâce à une structure optimisée pour le SEO.
+            <br />
+            <br />
+            Chaque projet est{" "}
+            <strong>géré directement par le promoteur ou son agence</strong>,
+            pour garantir des informations toujours à jour et pertinentes.
+            <br />
+            <br />
+            Plus besoin de manipuler des CMS complexes : vous vous concentrez
+            sur les projets,{" "}
+            <strong>nous nous occupons de la visibilité</strong>.
+          </p>
+        </div>
+
+        {/* Illustration ou visuel */}
+        <div className="w-full h-64 relative rounded-2xl overflow-hidden border border-white/20">
+        <Image
+            src="/Land.jpg"
+            alt="Background"
+            layout="fill"
+            objectFit="cover"
+            priority
+            quality={50}
+            className="object-center"
+          />
+        </div>
+      </div>
+    </section>
   );
 }

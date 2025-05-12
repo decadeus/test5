@@ -407,7 +407,7 @@ export default function Maindata({
             <input
               type="text"
               value={
-                editableName.length > 50
+                editableName && editableName.length > 50
                   ? editableName.slice(0, 50)
                   : editableName
               }
