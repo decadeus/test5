@@ -11,7 +11,8 @@ import * as ScrollArea from "@radix-ui/react-scroll-area";
 import useCustomCursor from "@/components/useCustomCursor";
 import Loading from "./loading";
 import Lp1Component from "@/app/[locale]/component/lp1";
-import SubscriptionButtons from '@/app/[locale]/component/SubscriptionButtons';
+import SubscribeButton from "@/app/[locale]/components/SubscribeButton";
+
 import Link from "next/link";
 export default function Page() {
   const [projects, setProjects] = useState([]);
@@ -125,21 +126,9 @@ export default function Page() {
       <h2 className="text-2xl font-semibold mb-4">Choisissez votre formule</h2>
 
       <div className="grid md:grid-cols-2 gap-6">
-        <div className="border rounded-xl p-6 shadow">
-          <h3 className="text-xl font-bold mb-2">Formule 1 projet</h3>
-          <p className="mb-4">147 PLN/mois pour référencer 1 projet en ligne.</p>
-          <Link href={`/${locale}/abonnement?offre=1`}>
-            <button className="w-full py-2 bg-blue-600 text-white rounded">S’abonner</button>
-          </Link>
-        </div>
+        
+        <SubscribeButton />
 
-        <div className="border rounded-xl p-6 shadow">
-          <h3 className="text-xl font-bold mb-2">Formule 5 projets</h3>
-          <p className="mb-4">500 PLN/mois pour gérer jusqu’à 5 projets en simultané.</p>
-          <Link href={`/${locale}/abonnement?offre=5`}>
-            <button className="w-full py-2 bg-green-600 text-white rounded">S’abonner</button>
-          </Link>
-        </div>
       </div>
     </>
   );
