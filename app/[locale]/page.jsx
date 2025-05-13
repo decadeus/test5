@@ -11,6 +11,7 @@ import * as ScrollArea from "@radix-ui/react-scroll-area";
 import useCustomCursor from "@/components/useCustomCursor";
 import Loading from "./loading";
 import Lp1Component from "@/app/[locale]/component/lp1";
+import SubscriptionButtons from '@/app/[locale]/component/SubscriptionButtons';
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
@@ -116,6 +117,7 @@ export default function Page() {
       <Interet />
       <ScrollingText />
       <Lp1Component />
+      <SubscriptionButtons />
     </>
   );
 }
@@ -443,14 +445,17 @@ function ScrollingText() {
 
 function Interet() {
   return (
-    <section className="relative py-16 text-white bg-black w-full">
+    <section
+  className="relative py-16 text-black w-full"
+  style={{ backgroundColor: '#e8e9eb' }}
+>
       <div className="grid md:grid-cols-2 gap-12 items-center px-28 py-24">
         {/* Texte explicatif */}
         <div className="">
-          <h2 className="text-3xl font-bold mb-6 text-gray-200">
+          <h2 className="text-3xl font-bold mb-6 text-gray-800">
             Concentrez-vous sur vos projets, on s’occupe du reste
           </h2>
-          <p className="text-lg leading-relaxed text-gray-200">
+          <p className="text-lg leading-relaxed text-gray-800">
             Hoomge a été conçue avec un objectif clair :{" "}
             <strong>mettre en valeur vos projets immobiliers sur Google</strong>{" "}
             grâce à une structure optimisée pour le SEO.
