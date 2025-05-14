@@ -118,7 +118,7 @@ export default function Page() {
       <Interet />
       <ScrollingText />
       <Lp1Component />
-      <h1 className="text-4xl font-bold mb-6">Optimisezz la visibilité de vos projets immobiliers</h1>
+      <h1 className="text-4xl font-bold mb-6">Optimisezz la visibilité de vos projets immobiliers..</h1>
       <p className="text-lg mb-8 text-gray-700">
         Notre plateforme vous permet de référencer rapidement vos projets pour gagner en visibilité auprès de vos prospects.
       </p>
