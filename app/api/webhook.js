@@ -35,6 +35,8 @@ export default async function handler(req, res) {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
+  console.log('📩 Événement reçu :', event.type);
+
   // 🎯 Paiement confirmé
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
@@ -82,21 +84,18 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Customer missing email' });
     }
 
-    // Vérifie si l'utilisateur existe déjà dans auth.users
-    const { data: existingUsers, error: checkError } = await supabase
-      .from('users')
-      .select('id')
-      .eq('email', email);
-
+    // ✅ utilise auth.admin.listUsers au lieu de .from('users')
+    const { data: userList, error: checkError } = await supabase.auth.admin.listUsers();
     if (checkError) {
-      console.error('❌ Erreur lecture Supabase users :', checkError.message);
-      return res.status(500).json({ error: 'Supabase read error' });
+      console.error('❌ Erreur récupération liste utilisateurs Supabase :', checkError.message);
+      return res.status(500).json({ error: 'Erreur liste utilisateurs' });
     }
 
+    const existingUser = userList.users.find((u) => u.email === email);
     let userId;
 
-    if (existingUsers.length > 0) {
-      userId = existingUsers[0].id;
+    if (existingUser) {
+      userId = existingUser.id;
       console.log(`ℹ️ Utilisateur existant trouvé pour ${email}`);
     } else {
       const password = crypto.randomUUID();
@@ -114,7 +113,6 @@ export default async function handler(req, res) {
 
       userId = newUser.user.id;
 
-      // Insère un profil lié
       const { error: insertProfileError } = await supabase.from('profiles').insert({
         id: userId,
         email,
