@@ -6,24 +6,23 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2022-11-15',
 });
 
-export async function POST(req) {
-  const body = await req.json();
-  const { priceId } = body;
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const sessionId = searchParams.get('session_id');
 
-  if (!priceId) {
-    return new Response(JSON.stringify({ error: 'priceId manquant' }), { status: 400 });
+  if (!sessionId) {
+    return new Response(JSON.stringify({ error: 'Missing session_id' }), { status: 400 });
   }
 
-  const session = await stripe.checkout.sessions.create({
-    mode: 'subscription',
-    payment_method_types: ['card'],
-    line_items: [{ price: priceId, quantity: 1 }],
-    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cancel`,
-  });
+  try {
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-  return new Response(JSON.stringify({ sessionId: session.id }), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' },
-  });
+    return new Response(JSON.stringify({ status: session.status }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (err) {
+    console.error('Erreur vérification session Stripe:', err);
+    return new Response(JSON.stringify({ error: 'Stripe error' }), { status: 500 });
+  }
 }
