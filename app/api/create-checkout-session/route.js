@@ -18,8 +18,8 @@ export async function POST(req) {
     mode: 'subscription',
     payment_method_types: ['card'],
     line_items: [{ price: priceId, quantity: 1 }],
-    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cancel`,
+    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/fr/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/fr/cancel`,
   });
 
   return new Response(JSON.stringify({ sessionId: session.id }), {
