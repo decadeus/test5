@@ -118,14 +118,9 @@ export default function Page() {
       <Interet />
       <ScrollingText />
       <Lp1Component />
-      <h1 className="text-4xl font-bold mb-6">Optimisez la visibilité de vos projets immobiliers</h1>
-      <p className="text-lg mb-8 text-gray-700">
-        Notre plateforme vous permet de référencer rapidement vos projets pour gagner en visibilité auprès de vos prospects.
-      </p>
+     
 
-      <h2 className="text-2xl font-semibold mb-4">Choisissez votre formule</h2>
-
-      <div className="gflex justify-center items-center px-4 py-12 w-full">
+      <div className="gflex justify-center items-center px-4 py-12 w-full bg-gray-700">
         
         <SubscribeButton />
 
