@@ -20,29 +20,36 @@ export async function POST(req) {
     console.log(`Webhook Error: ${err.message}`);
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
+if (event.type === 'customer.subscription.created') {
+  const subscription = event.data.object;
 
-  if (event.type === 'customer.subscription.created') {
-    const subscription = event.data.object;
+  let email = null;
+  try {
+    const customer = await stripe.customers.retrieve(subscription.customer);
+    email = customer.email || null;
+  } catch (err) {
+    console.warn('⚠️ Impossible de récupérer l’email du client :', err.message);
+  }
 
-    const { error } = await supabase
-      .from('subscriptions')
-      .insert([
-        {
-          id: subscription.id,
-          customer_id: subscription.customer,
-          email: subscription.customer_email,
-          status: subscription.status,
-          created_at: new Date(subscription.created * 1000).toISOString(),
-          description: subscription.lines.data.description,
-         
-        
-        },
-      ]);
+  const { error } = await supabase
+    .from('subscriptions')
+    .insert([
+      {
+        id: subscription.id,
+        customer_id: subscription.customer,
+        email,
+        status: subscription.status,
+        created_at: new Date(subscription.created * 1000).toISOString(),
+      },
+    ]);
 
-    if (error) {
-      console.error('Error inserting subscription:', error);
-      return new Response('Error inserting subscription', { status: 500 });
-    }
+  if (error) {
+    console.error('Error inserting subscription:', error);
+    return new Response('Error inserting subscription', { status: 500 });
+  }
+
+  console.log(`✅ Subscription ${subscription.id} insérée avec email : ${email}`);
+
   }
 
   return new Response(JSON.stringify({ received: true }), { status: 200 });
