@@ -33,6 +33,7 @@ export async function POST(req) {
           email: subscription.customer_email,
           status: subscription.status,
           created_at: new Date(subscription.created * 1000).toISOString(),
+          description: subscription.lines.data.description,
          
         
         },
