@@ -2,15 +2,16 @@ import { createClient } from '@/utils/supabase/client';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-const supabase = createClient();
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
 
 export async function POST(req) {
   console.log('Webhook handler called');
   const rawBody = await req.text();
   const sig = req.headers.get('stripe-signature');
 
-  console.log('Raw Body:', rawBody);
-  console.log('Stripe Signature:', sig);
 
   let event;
 
