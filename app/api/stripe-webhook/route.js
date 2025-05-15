@@ -32,6 +32,7 @@ export async function POST(req) {
           customer_id: subscription.customer,
           status: subscription.status,
           created_at: new Date(subscription.created * 1000).toISOString(),
+          email: subscription.email,
         },
       ]);
 
