@@ -22,35 +22,38 @@ export async function POST(req) {
   }
 if (event.type === 'customer.subscription.created') {
   const subscription = event.data.object;
+  console.log('📦 Subscription object:', subscription);
 
   let email = null;
   try {
     const customer = await stripe.customers.retrieve(subscription.customer);
+    console.log('📨 Customer object:', customer);
     email = customer.email || null;
   } catch (err) {
-    console.warn('⚠️ Impossible de récupérer l’email du client :', err.message);
+    console.warn('⚠️ Impossible de récupérer l’email :', err.message);
   }
 
-  const { error } = await supabase
-    .from('subscriptions')
-    .insert([
-      {
-        id: subscription.id,
-        customer_id: subscription.customer,
-        email,
-        status: subscription.status,
-        created_at: new Date(subscription.created * 1000).toISOString(),
-      },
-    ]);
+  console.log('📨 Email récupéré:', email);
+
+  const insertPayload = {
+    id: subscription.id,
+    customer_id: subscription.customer,
+    email,
+    status: subscription.status,
+    created_at: new Date(subscription.created * 1000).toISOString(),
+  };
+
+  console.log('📤 Données envoyées vers Supabase:', insertPayload);
+
+  const { error } = await supabase.from('subscriptions').insert([insertPayload]);
 
   if (error) {
-    console.error('Error inserting subscription:', error);
-    return new Response('Error inserting subscription', { status: 500 });
+    console.error('❌ Erreur d’insertion Supabase :', error.message);
+    return new Response('Erreur insertion subscription', { status: 500 });
   }
 
-  console.log(`✅ Subscription ${subscription.id} insérée avec email : ${email}`);
-
-  }
+  console.log('✅ Insertion Supabase réussie pour', subscription.id);
+}
 
   return new Response(JSON.stringify({ received: true }), { status: 200 });
 }
