@@ -43,7 +43,7 @@ export default function SubscribeButton() {
       </h2>
       <p className="text-lg text-white pb-10">
         Pour publier vos projets immobiliers sur notre plateforme, commencez par
-        creer un compte promoteur et choissisez la formule adaptée à vos besoins
+        creer un compte promoteur et choissisez la formule adaptée à vos besoins...
       </p>
       <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-3 max-w-6xl w-full">
         {[
