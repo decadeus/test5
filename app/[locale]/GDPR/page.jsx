@@ -13,7 +13,7 @@ export default function PrivacyPolicyPage() {
         <p>
           This Privacy Policy explains how <strong>HOOMGE</strong> (the “Application”),
           operated by <strong>DEBEAUMONT Johann</strong> (“we”, “us”), collects, uses,
-          and protects your personal data in compliance with Regulation (EU) 2016/679
+          and protects your personal data in compliance with Regulation. (EU) 2016/679
           (the “GDPR”).
         </p>
       </section>
