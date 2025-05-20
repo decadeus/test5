@@ -12,6 +12,7 @@ import useCustomCursor from "@/components/useCustomCursor";
 import Loading from "./loading";
 import Lp1Component from "@/app/[locale]/component/lp1";
 import SubscribeButton from "@/app/[locale]/components/SubscribeButton";
+import Promoteur from "@/app/[locale]/components/landingPage/promoteurIcone";
 
 import Link from "next/link";
 export default function Page() {
@@ -116,14 +117,11 @@ export default function Page() {
       </div>
 
       <Interet />
+      <Promoteur />
       <ScrollingText />
       <Lp1Component />
-     
-
-      <div className="gflex justify-center items-center px-4 py-12 w-full bg-gray-700">
-        
+<div className="gflex justify-center items-center px-4 py-12 w-full bg-gray-700">
         <SubscribeButton />
-
       </div>
     </>
   );
@@ -453,9 +451,9 @@ function ScrollingText() {
 function Interet() {
   return (
     <section
-  className="relative py-16 text-black w-full"
-  style={{ backgroundColor: '#e8e9eb' }}
->
+      className="relative py-16 text-black w-full"
+      style={{ backgroundColor: "#e8e9eb" }}
+    >
       <div className="grid md:grid-cols-2 gap-12 items-center px-28 py-24">
         {/* Texte explicatif */}
         <div className="">
@@ -481,7 +479,7 @@ function Interet() {
 
         {/* Illustration ou visuel */}
         <div className="w-full h-64 relative rounded-2xl overflow-hidden border border-white/20">
-        <Image
+          <Image
             src="/Land.jpg"
             alt="Background"
             layout="fill"

@@ -37,7 +37,7 @@ export default function SubscribeButton() {
   };
 
   return (
-    <div className="flex justify-center px-4 py-12 flex-col items-center">
+    <div className="flex justify-center px-4 py-12 flex-col items-center bg-slate-700 w-full">
       <h2 className="text-4xl font-bold text-white pb-10">
         Souscription à un abonnement
       </h2>

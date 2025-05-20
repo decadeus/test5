@@ -91,7 +91,7 @@ const DualLayerFadeSection = () => {
               <p className="w-full bg-white h-8 border"></p>
             </div>
             <div className="h-fit">
-              <p>company</p>
+              <p></p>
               <p className="w-full bg-white h-8 border"></p>
             </div>
             <div className="h-fit">

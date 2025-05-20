@@ -1,17 +1,21 @@
 import React from "react";
 import Projectb from "./projectb";
-import { createClient } from '@/utils/supabase/server'
+import Projectc from "./projectc";
+import { createClient } from "@/utils/supabase/server";
+import Navbar from "./Temp/navbar";
 
 export default async function Page() {
-    const supabase = createClient()
-    const {
-        data: { user },
-      } = await supabase.auth.getUser()
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
-    <div className="w-full ">
-  
-  
-      <Projectb user={user} />
+    <div className="flex w-full pt-24">
+      <Navbar user={user} />
+      {/* Tu peux éventuellement afficher les projets ici */}
+      {/* <Projectb /> */}
+      {/* <Projectc /> */}
     </div>
   );
 }
