@@ -1,66 +1,60 @@
-import { createClient } from '@supabase/supabase-js';
-import crypto from 'crypto';
+'use client';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+export default function TempLoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-export async function GET() {
-  const testEmail = 'test@hoomge.com';
-  const password = crypto.randomUUID();
+  useEffect(() => {
+    const emailFromUrl = searchParams.get('email');
+    const passwordFromUrl = searchParams.get('password');
+    if (emailFromUrl) setEmail(emailFromUrl);
+    if (passwordFromUrl) setPassword(passwordFromUrl);
+  }, [searchParams]);
 
-  // Étape 1 : Crée un utilisateur
-  const { data: userData, error: userError } = await supabase.auth.admin.createUser({
-    email: testEmail,
-    password,
-    email_confirm: true,
-  });
-
-  let userId = userData?.user?.id ?? null;
-
-  // Si l'utilisateur existe déjà, on le récupère
-  if (userError) {
-    const { data: existingUser, error: fetchError } = await supabase.auth.admin.listUsers({
-      email: testEmail,
+  const handleLogin = async () => {
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
-
-    if (fetchError || !existingUser?.users?.length) {
-      return new Response(JSON.stringify({ success: false, step: 'fetchUser', error: fetchError }), {
-        status: 500,
-      });
-    }
-
-    userId = existingUser.users[0].id;
-  }
-
-  // Étape 2 : Vérifie si un profil existe déjà
-  const { data: existingProfile, error: profileCheckError } = await supabase
-    .from('profiles')
-    .select('id')
-    .eq('id', userId)
-    .single();
-
-  if (profileCheckError || !existingProfile) {
-    const { data, error } = await supabase.from('profiles').insert([
-      {
-        id: userId,
-        email: testEmail,
-      },
-    ]);
 
     if (error) {
-      return new Response(JSON.stringify({ success: false, step: 'insertProfile', error }), {
-        status: 500,
-      });
+      setErrorMsg(error.message);
+    } else {
+      router.push('/');
     }
+  };
 
-    return new Response(JSON.stringify({ success: true, userId, data }), {
-      status: 200,
-    });
-  }
-
-  return new Response(JSON.stringify({ success: true, userId, note: 'Profil déjà existant' }), {
-    status: 200,
-  });
+  return (
+    <div className="max-w-md mx-auto p-6">
+      <h1 className="text-xl font-bold mb-4">Connexion de test</h1>
+      <input
+        className="w-full border px-3 py-2 mb-3"
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        className="w-full border px-3 py-2 mb-3"
+        type="password"
+        placeholder="Mot de passe"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      {errorMsg && <p className="text-red-600 mb-2">{errorMsg}</p>}
+      <button
+        onClick={handleLogin}
+        className="w-full bg-blue-600 text-white px-4 py-2 rounded"
+      >
+        Se connecter
+      </button>
+    </div>
+  );
 }
