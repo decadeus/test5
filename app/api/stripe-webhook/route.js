@@ -102,20 +102,26 @@ export async function POST(req) {
             console.error(insertError);
           } else {
             console.log(`✅ Profil promoteur créé : ${email}`);
-            // 🧪 Enregistrement login de test
-            const { error: testLoginError } = await supabase.from('test_logins').insert([
-              {
-                email,
-                password,
-                created_at: new Date().toISOString(),
-              },
-            ]);
-            if (testLoginError) {
-              console.error('❌ Échec insertion dans test_logins :', testLoginError.message);
-            }
           }
         } else {
           console.log(`ℹ️ Profil déjà existant pour : ${email}`);
+        }
+
+        // 🧪 Enregistrement login de test
+        if (password && userId) {
+          const { error: testLoginError } = await supabase.from('test_logins').insert([
+            {
+              email,
+              password,
+              created_at: new Date().toISOString(),
+            },
+          ]);
+          if (testLoginError) {
+            console.error('❌ Échec insertion dans test_logins :', testLoginError.message);
+            console.error(testLoginError);
+          } else {
+            console.log('✅ Insertion test_logins réussie');
+          }
         }
       }
     } // <-- fin du if (email)
