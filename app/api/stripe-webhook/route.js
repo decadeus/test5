@@ -68,14 +68,18 @@ export async function POST(req) {
       }
 
       if (userId) {
-        const { data: existingProfile, error: profileCheckError } = await supabase
+        console.log('📤 Données envoyées au upsert :', {
+          id: userId,
+          email,
+          role: 'promoteur',
+          subscribed_at: new Date().toISOString(),
+          stripe_customer_id: subscription.customer,
+          stripe_subscription_id: subscription.id,
+          is_active: true,
+        });
+        const { error: upsertError } = await supabase
           .from('profiles')
-          .select('id')
-          .eq('id', userId)
-          .single();
-
-        if (profileCheckError || !existingProfile) {
-          const { error: insertError } = await supabase.from('profiles').insert([
+          .upsert([
             {
               id: userId,
               email,
@@ -85,15 +89,13 @@ export async function POST(req) {
               stripe_subscription_id: subscription.id,
               is_active: true,
             },
-          ]);
+          ])
+          .eq('id', userId);
 
-          if (insertError) {
-            console.error('❌ Erreur insertion profil :', insertError.message);
-          } else {
-            console.log(`✅ Profil promoteur créé : ${email}`);
-          }
+        if (upsertError) {
+          console.error('❌ Erreur upsert profil :', upsertError.message);
         } else {
-          console.log(`ℹ️ Profil déjà existant pour : ${email}`);
+          console.log(`✅ Profil promoteur inséré ou mis à jour : ${email}`);
         }
 
         if (userData?.user?.id) {
