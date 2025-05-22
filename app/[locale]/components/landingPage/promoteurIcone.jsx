@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const logos = [
   {
-    src: "/logos/erply.png",
+   
     alt: "Erply",
     bg: "bg-cyan-500",
     offset: "translate-y-1",
@@ -12,7 +12,7 @@ const logos = [
     link: "https://www.adobe.com",
   },
   {
-    src: "/logos/retailrealm.png",
+   
     alt: "RetailRealm",
     bg: "bg-white",
     offset: "-translate-y-3",
@@ -20,7 +20,7 @@ const logos = [
     link: "https://www.adobe.com",
   },
   {
-    src: "/logos/ingenico.png",
+   
     alt: "Ingenico",
     bg: "bg-white",
     offset: "translate-y-3",
@@ -28,7 +28,7 @@ const logos = [
     link: "https://www.adobe.com",
   },
   {
-    src: "/logos/oracle.png",
+    
     alt: "Oracle",
     bg: "bg-red-600",
     offset: "-translate-y-2",
@@ -39,7 +39,7 @@ const logos = [
 
 const logos2 = [
   {
-    src: "/logos/adobe.png",
+    
     alt: "Adobe",
     bg: "bg-red-600",
     offset: "translate-y-2",
@@ -47,7 +47,7 @@ const logos2 = [
     link: "https://www.adobe.com",
   },
   {
-    src: "/logos/freedompay.png",
+    
     alt: "FreedomPay",
     bg: "bg-white",
     offset: "-translate-y-4",
@@ -55,7 +55,7 @@ const logos2 = [
     link: "https://www.adobe.com",
   },
   {
-    src: "/logos/erply.png",
+    
     alt: "Erply",
     bg: "bg-cyan-500",
     offset: "translate-y-1",
@@ -80,13 +80,7 @@ export default function LogoCloud() {
               rel="noopener noreferrer"
              
             ></a>
-            <Image
-              src={logo.src}
-              alt={logo.alt}
-              width={60}
-              height={60}
-              className="object-contain"
-            />
+           
           </div>
         ))}
       </div>

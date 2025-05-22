@@ -11,6 +11,11 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
+console.log('🔗 Test Supabase SELECT');
+const { data: testData, error: testError } = await supabase.from('profiles').select('*').limit(1);
+if (testError) console.error('❌ Supabase SELECT test échoué :', testError.message);
+else console.log('✅ Supabase SELECT OK');
+
 export async function POST(req) {
   console.log('✅ Webhook handler called');
   const rawBody = await req.text();
@@ -47,20 +52,62 @@ export async function POST(req) {
     if (email) {
       const password = crypto.randomUUID();
 
-      const { data: userData, error: userError } =
-        await supabase.auth.admin.createUser({
-          email,
-          password,
-          email_confirm: true,
-        });
+      console.log('📨 Tentative de création Supabase user pour :', email);
+      const { data: userData, error: userError } = await supabase.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+      });
+      console.log('📤 Résultat création user Supabase :', userData, userError);
+
+      let userId = userData?.user?.id ?? null;
 
       if (userError) {
-        console.error('❌ Erreur création utilisateur Supabase :', userError.message);
-        // ⚠️ Tu peux continuer même si l’utilisateur existe déjà
-      } else {
-        console.log(`✅ Utilisateur créé dans Supabase : ${email}`);
+        console.warn('⚠️ Utilisateur déjà existant, tentative de récupération...');
+        const { data: existingUser, error: fetchError } = await supabase.auth.admin.listUsers({
+          email,
+        });
+
+        if (!fetchError && existingUser?.users?.length) {
+          userId = existingUser.users[0].id;
+          console.log(`🔁 Utilisateur existant trouvé : ${userId}`);
+        } else {
+          console.error('❌ Impossible de récupérer l’utilisateur existant :', fetchError?.message);
+        }
       }
-    }
+
+      if (userId) {
+        const { data: existingProfile, error: profileCheckError } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('id', userId)
+          .single();
+
+        if (profileCheckError || !existingProfile) {
+          console.log('📌 Insertion profil avec ID :', userId);
+          const { error: insertError } = await supabase.from('profiles').insert([
+            {
+              id: userId,
+              email,
+              role: 'promoteur',
+              subscribed_at: new Date().toISOString(),
+              stripe_customer_id: subscription.customer,
+              stripe_subscription_id: subscription.id,
+              is_active: true,
+            },
+          ]);
+
+          if (insertError) {
+            console.error('❌ Échec insertion profil :', insertError.message);
+            console.error(insertError);
+          } else {
+            console.log(`✅ Profil promoteur créé : ${email}`);
+          }
+        } else {
+          console.log(`ℹ️ Profil déjà existant pour : ${email}`);
+        }
+      }
+    } // <-- fin du if (email)
 
     // 💾 Insère la subscription dans Supabase
     const { error: insertError } = await supabase.from('subscriptions').insert([
