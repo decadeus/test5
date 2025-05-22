@@ -74,7 +74,7 @@ export default function Layout() {
         const { data: collabs, error: collabError } = await supabase
           .from("collaborators")
           .select("*")
-          .eq("user_id", user.id);
+          .eq("promoter_id", user.id);
 
         if (collabError) {
           console.error("Erreur collaborateurs", collabError);
