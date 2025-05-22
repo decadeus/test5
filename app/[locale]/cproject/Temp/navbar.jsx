@@ -259,7 +259,7 @@ function Navbar({ setActiveView, user, projects, setSelectedProject, isCollabora
                     onClick={() => setActiveView("collaborators")}
                     className="text-gray-200 hover:text-white block p-2 text-left w-full"
                   >
-                    Projet/Collaborateur
+                    Projets/Collaborateurs
                   </button>
                 </li>
                 <li className="mb-2 flex items-center">
