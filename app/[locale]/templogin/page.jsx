@@ -1,135 +1,52 @@
-import Stripe from 'stripe';
-import crypto from 'crypto';
-import { createClient } from '@supabase/supabase-js';
+'use client';
+import { useEffect, useState } from 'react';
+import { createClient } from '@/utils/supabase/client';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2022-11-15',
-});
+export default function TestLoginsPage() {
+  const [logins, setLogins] = useState([]);
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+  useEffect(() => {
+    const fetchData = async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from('test_logins')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (!error) setLogins(data);
+    };
+    fetchData();
+  }, []);
 
-export async function POST(req) {
-  console.log('✅ Webhook handler called');
-  const rawBody = await req.text();
-  const sig = req.headers.get('stripe-signature');
-
-  let event;
-
-  try {
-    event = stripe.webhooks.constructEvent(
-      rawBody,
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET
-    );
-  } catch (err) {
-    console.error(`❌ Webhook Error: ${err.message}`);
-    return new Response(`Webhook Error: ${err.message}`, { status: 400 });
-  }
-
-  if (event.type === 'customer.subscription.created') {
-    const subscription = event.data.object;
-
-    let email = null;
-    try {
-      const customer = await stripe.customers.retrieve(subscription.customer);
-      email = customer.email;
-      console.log('📧 Email client Stripe :', email);
-    } catch (err) {
-      console.warn('⚠️ Impossible de récupérer l’email client :', err.message);
-    }
-
-    if (email) {
-      console.log('📨 Traitement de l’email :', email);
-      const password = crypto.randomUUID();
-      console.log('🔐 Password généré :', password);
-
-      let userId = null;
-
-      const { data: userData, error: userError } = await supabase.auth.admin.createUser({
-        email,
-        password,
-        email_confirm: true,
-      });
-      console.log('📤 Résultat création user Supabase :', userData, userError);
-
-      if (userData?.user?.id) {
-        userId = userData.user.id;
-      } else if (userError) {
-        const { data: existingUser, error: fetchError } = await supabase.auth.admin.listUsers({ email });
-        if (existingUser?.users?.[0]?.id) {
-          userId = existingUser.users[0].id;
-          console.log('🔁 Utilisateur existant trouvé :', userId);
-        } else {
-          console.error('❌ Impossible de récupérer un utilisateur existant :', fetchError?.message);
-        }
-      }
-
-      if (userId) {
-        const { data: existingProfile, error: profileCheckError } = await supabase
-          .from('profiles')
-          .select('id')
-          .eq('id', userId)
-          .single();
-
-        if (profileCheckError || !existingProfile) {
-          const { error: insertError } = await supabase.from('profiles').insert([
-            {
-              id: userId,
-              email,
-              role: 'promoteur',
-              subscribed_at: new Date().toISOString(),
-              stripe_customer_id: subscription.customer,
-              stripe_subscription_id: subscription.id,
-              is_active: true,
-            },
-          ]);
-
-          if (insertError) {
-            console.error('❌ Erreur insertion profil :', insertError.message);
-          } else {
-            console.log(`✅ Profil promoteur créé : ${email}`);
-          }
-        } else {
-          console.log(`ℹ️ Profil déjà existant pour : ${email}`);
-        }
-
-        if (userData?.user?.id) {
-          const { error: testLoginError } = await supabase.from('test_logins').insert([
-            {
-              email,
-              password,
-              created_at: new Date().toISOString(),
-            },
-          ]);
-          if (testLoginError) {
-            console.error('❌ Échec insertion dans test_logins :', testLoginError.message);
-          } else {
-            console.log('✅ Insertion test_logins réussie');
-          }
-        }
-      }
-    }
-
-    const { error: insertError } = await supabase.from('subscriptions').insert([
-      {
-        id: subscription.id,
-        customer_id: subscription.customer,
-        email,
-        status: subscription.status,
-        created_at: new Date(subscription.created * 1000).toISOString(),
-      },
-    ]);
-
-    if (insertError) {
-      console.error('❌ Erreur insertion subscription :', insertError.message);
-      return new Response('Erreur insertion subscription', { status: 500 });
-    }
-
-    console.log(`✅ Subscription insérée : ${subscription.id}`);
-  }
-
-  return new Response(JSON.stringify({ received: true }), { status: 200 });
+  return (
+    <div className="p-6 max-w-3xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Test logins</h1>
+      <table className="w-full table-auto border-collapse border border-gray-300">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border px-4 py-2 text-left">Email</th>
+            <th className="border px-4 py-2 text-left">Mot de passe</th>
+            <th className="border px-4 py-2 text-left">Date</th>
+            <th className="border px-4 py-2 text-left">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {logins.map((login) => (
+            <tr key={login.id}>
+              <td className="border px-4 py-2">{login.email}</td>
+              <td className="border px-4 py-2">{login.password}</td>
+              <td className="border px-4 py-2">{new Date(login.created_at).toLocaleString()}</td>
+              <td className="border px-4 py-2">
+                <a
+                  href={`/templogin?email=${encodeURIComponent(login.email)}&password=${encodeURIComponent(login.password)}`}
+                  className="text-blue-600 underline"
+                >
+                  Se connecter
+                </a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
