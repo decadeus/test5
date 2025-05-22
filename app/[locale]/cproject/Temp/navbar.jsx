@@ -36,6 +36,7 @@ export default function Layout() {
       }
 
       setUser(user);
+      console.log("🔍 Utilisateur connecté :", user);
 
       // Vérifie si l'utilisateur est un collaborateur
       const { data: collabRecord } = await supabase
@@ -60,6 +61,7 @@ export default function Layout() {
         setProjects(access?.map((a) => a.project) || []);
       } else {
         // Promoteur
+        console.log("🔁 Recherche collaborateurs pour user_id =", user.id);
         const { data: projs, error: projError } = await supabase
           .from("project")
           .select("*")
@@ -95,11 +97,12 @@ export default function Layout() {
       newLastName &&
       user
     ) {
+      console.log("➕ Insertion collaborateur avec user_id :", user?.id);
       const { data, error } = await supabase
         .from("collaborators")
         .insert([
           {
-            promoter_id: user.id,
+            user_id: user.id,
             email: newEmail,
             first_name: newFirstName,
             last_name: newLastName,
