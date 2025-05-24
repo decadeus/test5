@@ -2,7 +2,7 @@ import React from "react";
 import Projectb from "./projectb";
 import Projectc from "./projectc";
 import { createClient } from "@/utils/supabase/server";
-import Navbar from "./Temp/navbar";
+import Navbar from "./navbar";
 
 export default async function Page() {
   const supabase = createClient();

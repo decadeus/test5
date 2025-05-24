@@ -22,102 +22,75 @@ import {
   Button,
 } from "@heroui/react";
 
-
-export default function Maindata({
-  compagny,
-  name,
-  country,
-  link,
-  city,
-  lat,
-  lng,
-  cur,
-  online,
-  des,
-  swim,
-  closed,
-  cctv,
-  fenced,
-  entrance,
-  bike,
-  disabled,
-  child,
-  fitness,
-  user,
-  fulldescr,
-  coam,
-  aponsel,
-}) {
+export default function Maindata({ project, onProjectUpdate }) {
   const supabase = createClient();
-  const [editableCompagny, setEditableCompagny] = useState(compagny);
-  const [editableName, setEditableName] = useState(name);
-  const [editableCountry, setEditableCountry] = useState(country);
-  const [editableCity, setEditableCity] = useState(city);
-  const [editableLat, setEditableLat] = useState(lat);
-  const [editableLng, setEditableLng] = useState(lng);
-  const [editableLink, setEditableLink] = useState(link);
-  const [editableCurrency, setEditableCurrency] = useState(cur);
-  const [isOnline, setIsOnline] = useState(online);
-  const [editableDes, setEditableDes] = useState(des);
-  const [editableCoam, setEditableCoam] = useState(coam);
-  const [editableAponsel, setEditableAponsel] = useState(aponsel);
-  const [editableFulldescr, setEditableFulldescr] = useState(fulldescr || "");
+  const f = useTranslations("Projet");
+
+  // Contrôle local via les props projet (pas besoin de fetch initial)
+  const [editableCompagny, setEditableCompagny] = useState(
+    project?.compagny || ""
+  );
+  const [user, setUser] = useState(null);
+
+  const [editableName, setEditableName] = useState(project?.name || "");
+  const [editableCountry, setEditableCountry] = useState(
+    project?.country || ""
+  );
+  const [editableCity, setEditableCity] = useState(project?.city || "");
+  const [editableLat, setEditableLat] = useState(project?.lat || "");
+  const [editableLng, setEditableLng] = useState(project?.lng || "");
+  const [editableLink, setEditableLink] = useState(project?.link || "");
+  const [editableCurrency, setEditableCurrency] = useState(
+    project?.cur || ""
+  );
+  const [isOnline, setIsOnline] = useState(project?.online || false);
+  const [editableDes, setEditableDes] = useState(project?.des || "");
+  const [editableCoam, setEditableCoam] = useState(project?.coam || "");
+  const [editableAponsel, setEditableAponsel] = useState(
+    project?.aponsel || ""
+  );
+  const [editableFulldescr, setEditableFulldescr] = useState(
+    project?.fulldescr || ""
+  );
   const [features, setFeatures] = useState({
-    swim,
-    cctv,
-    entrance,
-    bike,
-    disabled,
-    child,
-    fitness,
+    swim: project?.swim || false,
+    cctv: project?.cctv || false,
+    entrance: project?.entrance || false,
+    bike: project?.bike || false,
+    disabled: project?.disabled || false,
+    child: project?.child || false,
+    fitness: project?.fitness || false,
   });
   const [isSaving, setIsSaving] = useState(false);
-  const [openModalSEO, setOpenModalSEO] = useState(false);
-  const [openModalCommunity, setOpenModalCommunity] = useState(false);
-  const f = useTranslations("Projet");
-  const [open, setOpen] = useState(false);
 
+  // Update les états quand le projet change
   useEffect(() => {
-    fetchProjects();
-  }, []);
+    setEditableCompagny(project?.compagny || "");
+    setEditableName(project?.name || "");
+    setEditableCountry(project?.country || "");
+    setEditableCity(project?.city || "");
+    setEditableLat(project?.lat || "");
+    setEditableLng(project?.lng || "");
+    setEditableLink(project?.link || "");
+    setEditableCurrency(project?.cur || "");
+    setIsOnline(project?.online || false);
+    setEditableDes(project?.des || "");
+    setEditableCoam(project?.coam || "");
+    setEditableAponsel(project?.aponsel || "");
+    setEditableFulldescr(project?.fulldescr || "");
+    setFeatures({
+      swim: project?.swim || false,
+      cctv: project?.cctv || false,
+      entrance: project?.entrance || false,
+      bike: project?.bike || false,
+      disabled: project?.disabled || false,
+      child: project?.child || false,
+      fitness: project?.fitness || false,
+    });
+  }, [project]);
 
-  const fetchProjects = async () => {
-    const { data, error } = await supabase
-      .from("project")
-      .select(`*`)
-      .eq("ide", user.id)
-      .single();
-
-    if (error) {
-      console.error("Erreur lors de la récupération des projets :", error);
-    } else {
-      const project = data;
-      setEditableCompagny(project.compagny);
-      setEditableName(project.name);
-      setEditableCountry(project.country);
-      setEditableCity(project.city);
-      setEditableLat(project.lat);
-      setEditableLng(project.lng);
-      setEditableCurrency(project.currency);
-      setEditableLink(project.link);
-      setIsOnline(project.online);
-      setEditableDes(project.des);
-      setEditableAponsel(project.aponsel);
-      setEditableCoam(project.coam);
-      setEditableFulldescr(data.fulldescr || "");
-      setFeatures({
-        swim: project.swim,
-
-        cctv: project.cctv,
-
-        entrance: project.entrance,
-        bike: project.bike,
-        disabled: project.disabled,
-        child: project.child,
-        fitness: project.fitness,
-      });
-    }
-  };
+  const [openModalCommunity, setOpenModalCommunity] = useState(false);
+  const [openModalSEO, setOpenModalSEO] = useState(false);
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -126,7 +99,7 @@ export default function Maindata({
       !editableCompagny ||
       !editableName ||
       !editableCountry ||
-      !editableCity || // Ensure city is selected
+      !editableCity ||
       !editableLat ||
       !editableLng
     ) {
@@ -135,36 +108,57 @@ export default function Maindata({
       return;
     }
 
+    // Construire l'objet updates sans inclure pricetype vide
+    const updates = {
+      compagny: editableCompagny,
+      name: editableName,
+      country: editableCountry,
+      city: editableCity,
+      lat: editableLat,
+      lng: editableLng,
+      cur: editableCurrency,
+      link: editableLink,
+      des: editableDes,
+      coam: editableCoam,
+      aponsel: editableAponsel,
+      fulldescr: editableFulldescr,
+      online: isOnline,
+      ...features,
+    };
+    // N'inclure pricetype que s’il est défini et non vide
+    if (project.pricetype) {
+      updates.pricetype = project.pricetype;
+    }
+
     const { error } = await supabase
       .from("project")
-      .update({
-        compagny: editableCompagny,
-        name: editableName,
-        country: editableCountry,
-        city: editableCity,
-        lat: editableLat,
-        lng: editableLng,
-        cur: editableCurrency,
-        link: editableLink,
-        des: editableDes,
-        coam: editableCoam,
-        aponsel: editableAponsel,
-        fulldescr: editableFulldescr,
-        online: isOnline,
-        ...features,
-      })
-      .eq("ide", user.id);
+      .update(updates)
+      .eq("id", project.id); // C'EST BIEN project.id ICI
 
     if (error) {
-      console.error("Error saving data: ", error);
+      console.error("❌ Supabase update error:", {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      });
       alert("Failed to save data.");
     } else {
+      // Recharger le projet et appeler onProjectUpdate
+      const { data: updatedProject, error: fetchError } = await supabase
+        .from("project")
+        .select("*")
+        .eq("id", project.id)
+        .single();
+
+      if (!fetchError && updatedProject && onProjectUpdate) {
+        onProjectUpdate(updatedProject);
+      }
+
       alert("Data successfully saved");
     }
 
     setIsSaving(false);
   };
-
   const toggleFeature = (feature) => {
     setFeatures((prevFeatures) => ({
       ...prevFeatures,
@@ -248,7 +242,7 @@ export default function Maindata({
   return (
     <div className=" mt-10 p-6 bg-white rounded-lg flex flex-col justify-center items-center mb-8 text-black">
       <div className="mb-8 w-full">
-        <AvatarComponent user={user} />
+        {user && <AvatarComponent user={user} />}
       </div>
       <h2 className="text-2xl font-semibold text-black mb-4">
         {f("Modifier")}
@@ -416,7 +410,6 @@ export default function Maindata({
             />
             <span className="text-gray-400 text-sm mt-1">
               {editableName ? editableName.length : 0}/50 characters
-              
             </span>
           </div>
 
@@ -462,14 +455,23 @@ export default function Maindata({
                 Community Amenities
               </h2>
               <>
-              <Button className="bg-transparent isIconOnly min-w-fit" onClick={() => setOpenModalCommunity(true)}>
-            🤖 Générer avec l'IA
-          </Button>
-          <Modal isOpen={openModalCommunity} onClose={() => setOpenModalCommunity(false)} backdrop="blur" size="lg" scrollBehavior="inside">
+                <Button
+                  className="bg-transparent isIconOnly min-w-fit"
+                  onClick={() => setOpenModalCommunity(true)}
+                >
+                  🤖 Générer avec l'IA
+                </Button>
+                <Modal
+                  isOpen={openModalCommunity}
+                  onClose={() => setOpenModalCommunity(false)}
+                  backdrop="blur"
+                  size="lg"
+                  scrollBehavior="inside"
+                >
                   <ModalContent>
                     <ModalHeader>Générateur IA</ModalHeader>
                     <ModalBody>
-                      <IACOMMUNITY/>
+                      <IACOMMUNITY />
                     </ModalBody>
                     <ModalFooter>
                       <Button color="danger" onClick={() => setOpen(false)}>
@@ -500,11 +502,20 @@ export default function Maindata({
                 {f("DesSEO")}
               </h2>
               <>
-              <Button className="bg-transparent isIconOnly min-w-fit" onClick={() => setOpenModalSEO(true)}>
-            🤖 Générer avec l'IA
-          </Button>
+                <Button
+                  className="bg-transparent isIconOnly min-w-fit"
+                  onClick={() => setOpenModalSEO(true)}
+                >
+                  🤖 Générer avec l'IA
+                </Button>
 
-          <Modal isOpen={openModalSEO} onClose={() => setOpenModalSEO(false)} backdrop="blur" size="lg" scrollBehavior="inside">
+                <Modal
+                  isOpen={openModalSEO}
+                  onClose={() => setOpenModalSEO(false)}
+                  backdrop="blur"
+                  size="lg"
+                  scrollBehavior="inside"
+                >
                   <ModalContent>
                     <ModalHeader>Générateur IA</ModalHeader>
                     <ModalBody>
@@ -530,7 +541,7 @@ export default function Maindata({
               className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black ${bginput}`}
             />
             <span className="text-gray-400 text-sm mt-1">
-              {editableDes ?  editableDes.length : 0}/150 characters
+              {editableDes ? editableDes.length : 0}/150 characters
             </span>
           </div>
         </div>
@@ -542,7 +553,7 @@ export default function Maindata({
         }`}
         disabled={isSaving}
       >
-        {isSaving ? f("Saving...") : f("Sauvegarder")}
+        {isSaving ? f("Saving") : f("Sauvegarder")}
       </button>
     </div>
   );

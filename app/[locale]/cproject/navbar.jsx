@@ -1,11 +1,13 @@
-"use client";
+"use client"
 
 import React, { useState, useRef, useEffect } from "react";
-import { FaCreditCard, FaUsers, FaShieldAlt } from "react-icons/fa";
+import { FaCreditCard, FaUsers, FaShieldAlt, FaBuilding } from "react-icons/fa";
 import CollaboratorManager from "./ProjetManagement";
 import ProjectForm from "./ProjectForm";
 import PermissionMatrix from "./PermissionMatrix";
-import FullDetail from "./fulldetail"; // adapte le chemin si besoin
+import FullDetail from "./fulldetail";
+import Projectb from "./projectb";
+import Generale from "./generale";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default function Layout() {
@@ -13,7 +15,6 @@ export default function Layout() {
 
   const [activeView, setActiveView] = useState("collaborators");
   const [selectedProject, setSelectedProject] = useState(null);
-
   const [user, setUser] = useState(null);
   const [isCollaborator, setIsCollaborator] = useState(false);
   const [collaborators, setCollaborators] = useState([]);
@@ -38,7 +39,6 @@ export default function Layout() {
       setUser(user);
       console.log("🔍 Utilisateur connecté :", user);
 
-      // Vérifie si l'utilisateur est un collaborateur
       const { data: collabRecord } = await supabase
         .from("collaborators")
         .select("id")
@@ -46,13 +46,9 @@ export default function Layout() {
         .maybeSingle();
 
       const isCollab = !!collabRecord;
-
       setIsCollaborator(isCollab);
 
       if (isCollab && collabRecord?.id) {
-        // Collaborateur
-        setCollaborators([]);
-
         const { data: access } = await supabase
           .from("collaborator_project_access")
           .select("project(*)")
@@ -60,8 +56,6 @@ export default function Layout() {
 
         setProjects(access?.map((a) => a.project) || []);
       } else {
-        // Promoteur
-        console.log("🔁 Recherche collaborateurs pour user_id =", user.id);
         const { data: projs, error: projError } = await supabase
           .from("project")
           .select("*")
@@ -70,7 +64,23 @@ export default function Layout() {
         if (projError) {
           console.error("Erreur projets", projError);
         } else {
-          setProjects(projs || []);
+          // Ajout récupération des accès et enrichissement avec editorCount
+          const { data: accessList } = await supabase
+            .from("collaborator_project_access")
+            .select("project_id,canEdit");
+          console.log("AccessList = ", accessList);
+          if (!accessList) {
+            console.error("AccessList is empty or failed to load");
+          }
+
+          const projectsWithEditors = (projs || []).map((p) => {
+            const editors = accessList?.filter(
+              (a) => a.project_id === p.id && a.canEdit
+            );
+            return { ...p, editorCount: editors?.length ?? 0 };
+          });
+
+          setProjects(projectsWithEditors);
         }
 
         const { data: collabs, error: collabError } = await supabase
@@ -97,7 +107,6 @@ export default function Layout() {
       newLastName &&
       user
     ) {
-      console.log("➕ Insertion collaborateur avec user_id :", user?.id);
       const { data, error } = await supabase
         .from("collaborators")
         .insert([
@@ -130,18 +139,114 @@ export default function Layout() {
     }
   };
 
+  // Ajout de la fonction refreshProjects avant le return
+  const refreshProjects = async () => {
+    if (isCollaborator && user?.email) {
+      const { data: collabRecord } = await supabase
+        .from("collaborators")
+        .select("id")
+        .eq("email", user.email)
+        .maybeSingle();
+
+      if (collabRecord?.id) {
+        const { data: access } = await supabase
+          .from("collaborator_project_access")
+          .select("project(*)")
+          .eq("collaborator_id", collabRecord.id);
+
+        setProjects(access?.map((a) => a.project) || []);
+      }
+    } else if (user?.id) {
+      const { data: updatedProjects, error } = await supabase
+        .from("project")
+        .select("*")
+        .eq("user_id", user.id);
+      if (!error) {
+        setProjects(updatedProjects || []);
+      } else {
+        console.error("Erreur refresh projets", error);
+      }
+    }
+  };
+
   return (
     <div className="flex h-screen w-full">
-      <Navbar
-        user={user}
-        projects={projects}
-        setActiveView={setActiveView}
-        setSelectedProject={setSelectedProject}
-        isCollaborator={isCollaborator}
+      <div className="w-64 bg-gray-800 text-white p-4 flex flex-col h-full">
+        <h2 className="text-sm font-bold mb-4">
+          Bienvenue, {user ? user.email : "Invité"}
+        </h2>
+
+        <ul className="flex-grow">
+          <li className="mb-4">
+            <h3 className="text-xs font-semibold uppercase mb-2">Générale</h3>
+            <ul>
+              <li className="mb-2 flex items-center">
+                <FaBuilding className="mr-2" />
+                <button
+                  onClick={() => {
+                    setSelectedProject(null);
+                    setActiveView("overview");
+                  }}
+                  className="text-left w-full"
+                >
+                  Vue d’ensemble ({projects.length} projets)
+                </button>
+              </li>
+            </ul>
+          </li>
+
+          {!isCollaborator && (
+            <li className="mb-4">
+              <h3 className="text-xs font-semibold uppercase mb-2">Administration</h3>
+              <ul>
+                <li className="mb-2 flex items-center">
+                  <FaCreditCard className="mr-2" />
+                  <a href="#" className="text-gray-200 hover:text-white">
+                    Abonnement
+                  </a>
+                </li>
+                <li className="mb-2 flex items-center">
+                  <FaUsers className="mr-2" />
+                  <button onClick={() => setActiveView("collaborators")} className="text-left w-full">
+                    Projets / Collaborateurs
+                  </button>
+                </li>
+                <li className="mb-2 flex items-center">
+                  <FaShieldAlt className="mr-2" />
+                  <button onClick={() => setActiveView("privileges")} className="text-left w-full">
+                    Privilèges
+                  </button>
+                </li>
+              </ul>
+            </li>
+          )}
+
+        {projects.map((project) => (
+  <li key={project.id} className="mb-2">
+    <button
+      onClick={() => {
+        setSelectedProject(project);
+        setActiveView("appartements");
+      }}
+      className="flex items-center hover:text-white text-left w-full"
+    >
+      <FaBuilding
+        className={`mr-2 text-xl ${
+          project.online === true || project.online === "TRUE"
+            ? "text-green-500"
+            : "text-gray-500"
+        }`}
       />
+      <span className="text-gray-200">{project.name}</span>
+    </button>
+  </li>
+))}
+
+        </ul>
+      </div>
 
       <div className="w-full flex flex-col overflow-hidden">
-       {selectedProject && !activeView && <FullDetail project={selectedProject} />}
+        {selectedProject && !activeView && <FullDetail project={selectedProject} />}
 
         {activeView === "collaborators" && !isCollaborator && (
           <div className="p-6 overflow-y-auto">
@@ -182,114 +287,25 @@ export default function Layout() {
             />
           </div>
         )}
-      </div>
-    </div>
-  );
-}
 
-
-
-function Navbar({ setActiveView, user, projects, setSelectedProject, isCollaborator }) {
-  const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
-  const dropdownRef = useRef(null);
-  let timeoutId;
-
-  const handleMouseEnter = () => {
-    clearTimeout(timeoutId);
-    setIsAdminMenuOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    timeoutId = setTimeout(() => {
-      setIsAdminMenuOpen(false);
-    }, 300);
-  };
-
-  useEffect(() => {
-    if (dropdownRef.current) {
-      dropdownRef.current.style.maxHeight = isAdminMenuOpen
-        ? dropdownRef.current.scrollHeight + "px"
-        : "0px";
-    }
-  }, [isAdminMenuOpen]);
-
-  const preventDefault = (e) => e.preventDefault();
-
-  return (
-    <div className="w-64 bg-gray-800 text-white p-4 flex flex-col h-full">
-      <h2 className="text-sm font-bold mb-4">
-        Bienvenue, {user ? user.email : "Invité"}
-      </h2>
-     
-      <ul className="flex-grow">
-        {!isCollaborator && (
-          <li
-            className="mb-2"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <a
-              href="#"
-              onClick={preventDefault}
-              className="text-gray-200 hover:text-white block p-2"
-            >
-              Administration
-            </a>
-            <div
-              ref={dropdownRef}
-              className={`overflow-hidden transition-max-height duration-500 ease-in-out ${
-                isAdminMenuOpen ? "opacity-100" : "opacity-0"
-              }`}
-              style={{ maxHeight: "0px" }}
-            >
-              <ul className="bg-gray-700 text-white p-2 rounded shadow-lg">
-                <li className="mb-2 flex items-center">
-                  <FaCreditCard className="mr-2" />
-                  <a
-                    href="#"
-                    onClick={preventDefault}
-                    className="text-gray-200 hover:text-white block p-2"
-                  >
-                    Abonnement
-                  </a>
-                </li>
-                <li className="mb-2 flex items-center">
-                  <FaUsers className="mr-2" />
-                  <button
-                    onClick={() => setActiveView("collaborators")}
-                    className="text-gray-200 hover:text-white block p-2 text-left w-full"
-                  >
-                    Projets/Collaborateurs
-                  </button>
-                </li>
-                <li className="mb-2 flex items-center">
-                  <FaShieldAlt className="mr-2" />
-                  <button
-                    onClick={() => setActiveView("privileges")}
-                    className="text-gray-200 hover:text-white block p-2 text-left w-full"
-                  >
-                    Privilèges
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </li>
-        )}
-<hr />
-        {projects.map((project) => (
-          <li key={project.id} className="mb-2">
-            <button
-              onClick={() => {
-                setSelectedProject(project);
-                setActiveView(null);
+        {selectedProject && activeView === "appartements" && (
+          <div className="flex-1 p-6 overflow-auto">
+            <Projectb
+              key={selectedProject.id}
+              project={selectedProject}
+              user={user}
+              onProjectUpdate={(updatedProject) => {
+                setSelectedProject(updatedProject);
+                refreshProjects();
               }}
-              className="text-gray-200 hover:text-white block p-2 text-left w-full"
-            >
-              {project.name}
-            </button>
-          </li>
-        ))}
-      </ul>
+            />
+          </div>
+        )}
+
+        {activeView === "overview" && !isCollaborator && (
+          <Generale projects={projects} />
+        )}
+      </div>
     </div>
   );
 }
