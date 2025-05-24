@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import SubscribeButton from "@/app/[locale]/components/SubscribeButton";
+import SubscribeButton from "@/app/[locale]/components/landingPage/SubscribeButton";
 import Main from "@/app/[locale]/components/addproject/main";
 
 export default function PromoGuidePage() {
