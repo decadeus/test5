@@ -179,6 +179,7 @@ export default function Layout() {
         <ul className="flex-grow">
           <li className="mb-4">
             <h3 className="text-xs font-semibold uppercase mb-2">Générale</h3>
+            
             <ul>
               <li className="mb-2 flex items-center">
                 <FaBuilding className="mr-2" />
@@ -189,11 +190,13 @@ export default function Layout() {
                   }}
                   className="text-left w-full"
                 >
-                  Vue d’ensemble ({projects.length} projets)
+                  Vue d’ensemble 
                 </button>
               </li>
             </ul>
           </li>
+          <hr className="pb-4"/>
+          
 
           {!isCollaborator && (
             <li className="mb-4">
@@ -220,7 +223,8 @@ export default function Layout() {
               </ul>
             </li>
           )}
-
+    <hr className="pb-4"/>
+      <h3 className="text-xs font-semibold uppercase mb-2">Projets</h3>
         {projects.map((project) => (
   <li key={project.id} className="mb-2">
     <button

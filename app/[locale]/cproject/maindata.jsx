@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import ProjectImages from "./ProjectImages";
 import { createClient } from "@/utils/supabase/client";
-import AvatarComponent from "../cproject/image";
+
 import { IoMdEyeOff } from "react-icons/io";
 import { IoEye } from "react-icons/io5";
 import { companies } from "@/utils/companies";
@@ -30,7 +31,6 @@ export default function Maindata({ project, onProjectUpdate }) {
   const [editableCompagny, setEditableCompagny] = useState(
     project?.compagny || ""
   );
-  const [user, setUser] = useState(null);
 
   const [editableName, setEditableName] = useState(project?.name || "");
   const [editableCountry, setEditableCountry] = useState(
@@ -242,7 +242,7 @@ export default function Maindata({ project, onProjectUpdate }) {
   return (
     <div className=" mt-10 p-6 bg-white rounded-lg flex flex-col justify-center items-center mb-8 text-black">
       <div className="mb-8 w-full">
-        {user && <AvatarComponent user={user} />}
+        <ProjectImages projectId={project?.id} />
       </div>
       <h2 className="text-2xl font-semibold text-black mb-4">
         {f("Modifier")}

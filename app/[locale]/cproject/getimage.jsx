@@ -10,21 +10,29 @@ export default function Avatar({ uid, url, id, size, onUpload, classn, width, he
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
 
-  useEffect(() => {
-    async function downloadImage(path) {
-      try {
-        const { data, error } = await supabase.storage.from('project').download(path);
-        if (error) throw error;
+useEffect(() => {
+  let urlObject;
 
-        const url = URL.createObjectURL(data);
-        setAvatarUrl(url);
-      } catch (error) {
-       
-      }
+  async function downloadImage(path) {
+    try {
+      const { data, error } = await supabase.storage.from('project').download(path);
+      if (error) throw error;
+
+      urlObject = URL.createObjectURL(data);
+      setAvatarUrl(urlObject);
+    } catch (error) {
+      // Silently fail or add optional error state
     }
+  }
 
-    if (url) downloadImage(url);
-  }, [url]);
+  if (url) downloadImage(url);
+
+  return () => {
+    if (urlObject) {
+      URL.revokeObjectURL(urlObject);
+    }
+  };
+}, [url]);
 
   const uploadAvatar = async (event) => {
     try {
@@ -52,24 +60,21 @@ export default function Avatar({ uid, url, id, size, onUpload, classn, width, he
 
   return (
     <div className="relative h-full">
-      {avatarUrl ? (
-        <Image
-          src={avatarUrl}
-          alt="Avatar"
-          className={classn}
-          layout="fill"
-          objectFit="cover"
-          width={width}
-          height={height}
-        />
-      ) : (
-        <div
-          className="relative h-full w-full flex items-center justify-center bg-white border border-black"
-        
-        >
-         <p className='text-black'>Download image</p>
-        </div>
-      )}
+      <div className="relative h-full w-full flex items-center justify-center bg-white border border-black">
+        {avatarUrl ? (
+          <Image
+            src={avatarUrl}
+            alt="Avatar"
+            className={classn}
+            layout="fill"
+            objectFit="cover"
+            width={width}
+            height={height}
+          />
+        ) : (
+          <p className='text-black'>Download image</p>
+        )}
+      </div>
       <div className="absolute bg-white w-fit rounded-xl text-center border-2 border-black top-4 left-4 py-2 px-4">
         <label className="hover:cursor-pointer" htmlFor={id}>
           {uploading ? 'Uploading ...' : <FaDownload color='black' />}
@@ -86,6 +91,11 @@ export default function Avatar({ uid, url, id, size, onUpload, classn, width, he
           disabled={uploading}
         />
       </div>
+      {uploading && (
+        <div className="absolute inset-0 bg-white/50 flex items-center justify-center">
+          <p className="text-black">Uploading...</p>
+        </div>
+      )}
     </div>
   );
 }

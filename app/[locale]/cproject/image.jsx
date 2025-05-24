@@ -89,7 +89,8 @@ export default function AvatarComponent({ user }) {
           id="mainpic_url"
           uid={user?.id}
           url={images.mainpic_url}
-          size={550}
+          width={550}
+          height={400}
           onUpload={(url) => handleAvatarUpload("mainpic_url", url)}
         />
       </div>
@@ -98,9 +99,10 @@ export default function AvatarComponent({ user }) {
           id="pic2"
           uid={user?.id}
           url={images.pic2}
-          
           onUpload={(url) => handleAvatarUpload("pic2", url)}
           className="h-full"
+          width={200}
+          height={150}
         />
       </div>
       <div className="col-start-4">
@@ -108,9 +110,10 @@ export default function AvatarComponent({ user }) {
           id="pic3"
           uid={user?.id}
           url={images.pic3}
-         
           onUpload={(url) => handleAvatarUpload("pic3", url)}
           className="h-full"
+          width={200}
+          height={150}
         />
       </div>
       <div className="col-start-3 row-start-2 ">
@@ -118,9 +121,10 @@ export default function AvatarComponent({ user }) {
           id="pic4"
           uid={user?.id}
           url={images.pic4}
-          
           onUpload={(url) => handleAvatarUpload("pic4", url)}
           className="h-full"
+          width={200}
+          height={150}
         />
       </div>
       <div className="col-start-4 row-start-2">
@@ -128,9 +132,10 @@ export default function AvatarComponent({ user }) {
           id="pic5"
           uid={user?.id}
           url={images.pic5}
-        
           onUpload={(url) => handleAvatarUpload("pic5", url)}
           className="h-full"
+          width={200}
+          height={150}
         />
       </div>
     </div>
