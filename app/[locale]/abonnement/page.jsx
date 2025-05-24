@@ -1,4 +1,4 @@
-import SubscribeForm from '@/app/[locale]/component/landingPage/SubscribeForm';
+import SubscribeForm from '@/app/[locale]/components/landingPage/SubscribeForm';
 
 export default function AbonnementPage() {
   return (
