@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import DualLayerFadeSection from "./DualLayerFadeSection";
 
 const BouncingShapesSection = ({
@@ -18,21 +18,21 @@ const BouncingShapesSection = ({
         <h2 className="text-6xl text-gray-700 font-bold flex flex-col">
           <span>Rejoignez</span>
           <span>Hoomge</span>
-          <p className="text-lg pt-8">Ajouter gratuitement votre projet</p>
-          <button className="bg-[#FF0066] text-white rounded-full px-4 py-2 mt-4 flex items-center justify-center">
-            <a
-              href="https://hoomge.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-lg font-bold w-full h-full text-center"
-            >
-              En savoir plus
-            </a>
-          </button>
         </h2>
-        
+        <p className="text-lg pt-8">Ajouter gratuitement votre projet</p>
+        <button className="bg-[#FF0066] text-white rounded-full px-4 py-2 mt-4 flex items-center justify-center">
+          <a
+            href="https://hoomge.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-lg font-bold w-full h-full text-center"
+          >
+            En savoir plus
+          </a>
+        </button>
       </div>
     </div>
+
     <div className="fade-container w-2/3">
       <DualLayerFadeSection />
     </div>
@@ -53,9 +53,6 @@ const BouncingShapesSection = ({
         mix-blend-mode: multiply;
         animation-iteration-count: infinite;
         animation-timing-function: ease-in-out;
-      }
-       {
-        /* Pink */
       }
       .shape1 {
         width: 65vw;

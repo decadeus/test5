@@ -3,9 +3,7 @@
 import { loadStripe } from "@stripe/stripe-js";
 import { useState } from "react";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export default function SubscribeButton() {
   const [loading, setLoading] = useState(false);
@@ -36,6 +34,27 @@ export default function SubscribeButton() {
     }
   };
 
+  const plans = [
+    {
+      title: "1 projet",
+      users: "Jusqu'à 2 utilisateurs",
+      price: "S'abonner - 147 PLN / mois",
+      priceId: "price_1ROPn5RQdIKmYv9arYhFrW3S",
+    },
+    {
+      title: "5 projets",
+      users: "Jusqu'à 6 utilisateurs",
+      price: "S'abonner - 500 PLN / mois",
+      priceId: "price_1ROOd1RQdIKmYv9a4xzLVZAi",
+    },
+    {
+      title: "10 projets",
+      users: "Jusqu'à 11 utilisateurs",
+      price: "S'abonner - 750 PLN / mois",
+      priceId: "price_1ROizERQdIKmYv9aTyeA27hh",
+    },
+  ];
+
   return (
     <div className="flex justify-center px-4 py-12 flex-col items-center bg-slate-700 w-full">
       <h2 className="text-4xl font-bold text-white pb-10">
@@ -43,45 +62,22 @@ export default function SubscribeButton() {
       </h2>
       <p className="text-lg text-white pb-10">
         Pour publier vos projets immobiliers sur notre plateforme, commencez par
-        creer un compte promoteur et choissisez la formule adaptée à vos besoins...
+        créer un compte promoteur et choisissez la formule adaptée à vos besoins...
       </p>
       <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-3 max-w-6xl w-full">
-        {[
-          {
-            title: "1 projet",
-            users: "Jusqu'à 2 utilisateurs",
-            price: "S'abonner - 147 PLN / mois",
-           
-            priceId: "price_1ROPn5RQdIKmYv9arYhFrW3S",
-          },
-          {
-            title: "5 projets",
-            users: "Jusqu'à 6 utilisateurs",
-            price: "S'abonner - 500 PLN / mois",
-            priceId: "price_1ROOd1RQdIKmYv9a4xzLVZAi",
-          },
-          {
-            title: "10 projets",
-            users: "Jusqu'à 11 utilisateurs",
-            price: "S'abonner - 750 PLN / mois",
-            priceId: "price_1ROizERQdIKmYv9aTyeA27hh",
-          },
-        ].map((item, i) => (
+        {plans.map(({ title, users, price, priceId }, i) => (
           <div
             key={i}
             className="border border-gray-300 rounded-sm p-6 shadow-sm bg-gray-100 text-center"
           >
-            <h2 className="text-base font-semibold mb-2 text-gray-800">
-              {item.title}
-            </h2>
-           
-            <p className="text-lg font-bold text-gray-900 mb-6">
-              {item.price}
-            </p>
-          <p className="text-sm">{item.users}</p>
+            <h3 className="text-base font-semibold mb-2 text-gray-800">{title}</h3>
+            <p className="text-lg font-bold text-gray-900 mb-6">{price}</p>
+            <p className="text-sm mb-4">{users}</p>
             <button
-              onClick={() => handleSubscribe(item.priceId)}
+              onClick={() => handleSubscribe(priceId)}
               disabled={loading}
+              type="button"
+              aria-label={`Choisir la formule ${title}`}
               className="w-full px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition text-sm"
             >
               {loading ? "Redirection..." : "Choisir cette formule"}
