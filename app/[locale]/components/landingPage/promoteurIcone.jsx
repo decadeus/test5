@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-
 const logos = [
   {
    
@@ -66,46 +64,53 @@ const logos2 = [
 
 export default function LogoCloud() {
   return (
-    <div className="py-20 px-4 bg-white">
-      <div className="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
-        {logos.map((logo, index) => (
-          <div
-            key={index}
-            className={`rounded-full shadow-2xl flex items-center justify-center ${logo.bg} ${logo.offset} ${logo.size}`}
-          >
-            <a
-              key={index}
-              href={logo.link}
-              target="_blank"
-              rel="noopener noreferrer"
-             
-            ></a>
-           
-          </div>
-        ))}
+    <div className="flex md:flex-row w-full">
+      <div className="w-full md:w-1/2 p-6 flex flex-col justify-center">
+        <h2 className="text-3xl font-bold mb-4">Optimisez la commercialisation de vos projets immobiliers résidentiels</h2>
+        <p className="mb-4">Une web app dédiée aux promoteurs immobiliers. Centralisez vos projets, invitez vos collaborateurs, et précisez les équipements proposés dans chaque programme.</p>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>Suivi par ville, projet, contact</li>
+          <li>Gestion des collaborateurs selon l'abonnement</li>
+          <li>Tableau de bord personnalisé</li>
+          <li>Formules simples et sans engagement</li>
+        </ul>
       </div>
-      <div className="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
-        {logos2.map((logo, index) => (
-          <div
-            key={index}
-            className={`rounded-full shadow-2xl flex items-center justify-center ${logo.bg} ${logo.offset} ${logo.size}`}
-          >
-            <a
+
+      <div className="w-full md:w-1/2 flex flex-col gap-8 items-center justify-center">
+        <div className="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
+          {logos.map((logo, index) => (
+            <div
               key={index}
-              href={logo.link}
-              target="_blank"
-              rel="noopener noreferrer"
-             
-            ></a>
-            <Image
-              src={logo.src}
-              alt={logo.alt}
-              width={60}
-              height={60}
-              className="object-contain"
-            />
-          </div>
-        ))}
+              className={`rounded-full shadow-2xl flex items-center justify-center ${logo.bg} ${logo.offset} ${logo.size}`}
+            >
+              <a
+                href={logo.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${logo.bg === "bg-white" || logo.bg === "bg-cyan-500" ? "text-black" : "text-white"} font-semibold text-center`}
+              >
+                {logo.alt}
+              </a>
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
+          {logos2.map((logo, index) => (
+            <div
+              key={index}
+              className={`rounded-full shadow-2xl flex items-center justify-center ${logo.bg} ${logo.offset} ${logo.size}`}
+            >
+              <a
+                href={logo.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              ></a>
+              <span className={`${logo.bg === "bg-white" || logo.bg === "bg-cyan-500" ? "text-black" : "text-white"} font-semibold text-center`}>
+                {logo.alt}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
