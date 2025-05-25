@@ -650,8 +650,7 @@ export const countryData = {
       "Lipno",
       "Lipsk",
       "Lipsko",
-    
-      "Lubaczów",
+    "Lubaczów",
       "Lubartów",
       "Lubawa",
       "Lubawka",

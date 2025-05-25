@@ -46,7 +46,7 @@ export default function IntroSection({
         />
       </div>
 
-      <div className="absolute inset-0 bg-white opacity-60 z-10" />
+      <div className="absolute inset-0 bg-white opacity-70 z-10" />
 
       <div className="relative z-20 flex flex-col justify-between px-4 text-black">
         <div className="flex flex-col items-center gap-6 mt-16 sm:mt-24 text-center">
