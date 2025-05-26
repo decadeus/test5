@@ -6,7 +6,7 @@ export async function generateMetadata({ params }) {
   const { data } = await supabase
     .from("project")
     .select("name, des")
-    .eq("codepro", params.projectdetail)
+    .eq("id", params.projectdetail)
     .single();
 
   return {

@@ -1,21 +1,26 @@
+// app/page.jsx
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
-export default function IACOMMUNITY() {
-  const [listEquipement, setListEquipement] = useState("");
-  const [detail, setDetail] = useState("");
+export default function IAGENERALE({ nomProjet, ville }) {
+  const [types, setTypes] = useState("");
+  const [atouts, setAtouts] = useState("");
+  const [style, setStyle] = useState("");
+  const [publicCible, setPublicCible] = useState("");
   const [langue, setLangue] = useState("fr");
   const [resultat, setResultat] = useState("");
   const [chargement, setChargement] = useState(false);
+  const f = useTranslations("Projet");
 
   const handleGenerate = async () => {
     setChargement(true);
 
-    const response = await fetch("/api/generateCommunity", {
+    const response = await fetch("/api/generateGenerale", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ listEquipement, detail, langue }),
+      body: JSON.stringify({ nomProjet, ville, types, atouts, style, publicCible, langue }),
     });
 
     const data = await response.json();
@@ -36,29 +41,16 @@ export default function IACOMMUNITY() {
 
   return (
     <main className="flex flex-col items-center gap-6 p-8 min-h-screen w-full">
-      <h1 className="text-4xl font-light text-center">
-        Générateur de texte pour mettre en avant les équipements du projet de construction de l’immeuble résidentiel
-      </h1>
+      <h1 className="text-4xl font-light text-center">Générateur de présentation générale d’un projet immobilier</h1>
 
       <div className="flex flex-col gap-4 w-full max-w-2xl">
-        <input
-          className="border p-2 rounded"
-          placeholder="Équipements du projet (ex : piscine, salle de sport, parking)"
-          value={listEquipement}
-          onChange={(e) => setListEquipement(e.target.value)}
-        />
-        <input
-          className="border p-2 rounded"
-          placeholder="Informations complémentaires (ex : quartier calme, proche transports, vue dégagée)"
-          value={detail}
-          onChange={(e) => setDetail(e.target.value)}
-        />
+        {/* Removed nomProjet and ville input fields */}
+        <input className="border p-2 rounded" placeholder="Type d'appartements (T1 à T5, etc.)" value={types} onChange={(e) => setTypes(e.target.value)} />
+        <input className="border p-2 rounded" placeholder="Atouts (piscine, jardin, etc.)" value={atouts} onChange={(e) => setAtouts(e.target.value)} />
+        <input className="border p-2 rounded" placeholder="Style architectural (moderne, classique...)" value={style} onChange={(e) => setStyle(e.target.value)} />
+        <input className="border p-2 rounded" placeholder="Public cible (familles, investisseurs...)" value={publicCible} onChange={(e) => setPublicCible(e.target.value)} />
 
-        <select
-          className="border p-2 rounded"
-          value={langue}
-          onChange={(e) => setLangue(e.target.value)}
-        >
+        <select className="border p-2 rounded" value={langue} onChange={(e) => setLangue(e.target.value)}>
           <option value="fr">Français</option>
           <option value="en">Anglais</option>
           <option value="pl">Polonais</option>

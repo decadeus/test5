@@ -7,7 +7,7 @@ const supabase = createClient();
 
 export default function AvatarComponent({ user }) {
   const [images, setImages] = useState({
-    mainpic_url: null,
+    main_pic: null,
     pic2: null,
     pic3: null,
     pic4: null,
@@ -25,14 +25,14 @@ export default function AvatarComponent({ user }) {
         setError(null);
         const { data, error } = await supabase
           .from("project")
-          .select("mainpic_url, pic2, pic3, pic4, pic5")
-          .eq("ide", user.id)
+          .select("main_pic, pic2, pic3, pic4, pic5")
+          .eq("user_id", user.id)
           .single();
 
         if (error) throw error;
 
         setImages({
-          mainpic_url: data.mainpic_url,
+          main_pic: data.main_pic,
           pic2: data.pic2,
           pic3: data.pic3,
           pic4: data.pic4,
@@ -56,7 +56,7 @@ export default function AvatarComponent({ user }) {
         const { error } = await supabase
           .from("project")
           .update({ [field]: value })
-          .eq("ide", user.id)
+          .eq("user_id", user.id)
           .single();
 
         if (error) throw error;
@@ -86,12 +86,12 @@ export default function AvatarComponent({ user }) {
       
       <div className="col-span-2 row-span-2 h-[400px]">
         <Avatar
-          id="mainpic_url"
+          id="main_pic"
           uid={user?.id}
-          url={images.mainpic_url}
+          url={images.main_pic}
           width={550}
           height={400}
-          onUpload={(url) => handleAvatarUpload("mainpic_url", url)}
+          onUpload={(url) => handleAvatarUpload("main_pic", url)}
         />
       </div>
       <div className="col-start-3">

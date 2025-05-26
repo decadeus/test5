@@ -1,101 +1,95 @@
 "use client";
+
 import React, { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
-import Image from "next/legacy/image";
-import { FaDownload } from "react-icons/fa";
+import Avatar from './getimage';
 
 const supabase = createClient();
 
-export default function Avatar({ uid, url, id, size, onUpload, classn, width, height }) {
-  const [avatarUrl, setAvatarUrl] = useState(null);
-  const [uploading, setUploading] = useState(false);
+export default function ImagePage({ uid }) {
+  const [images, setImages] = useState({
+    mainpic_url: null,
+    pic2: null,
+    pic3: null,
+    pic4: null,
+    pic5: null,
+  });
 
-useEffect(() => {
-  let urlObject;
+  useEffect(() => {
+    async function fetchImages() {
+      const { data, error } = await supabase
+        .from('project')
+        .select('mainpic_url, pic2, pic3, pic4, pic5')
+        .eq('uid', uid)
+        .single();
 
-  async function downloadImage(path) {
-    try {
-      const { data, error } = await supabase.storage.from('project').download(path);
-      if (error) throw error;
-
-      urlObject = URL.createObjectURL(data);
-      setAvatarUrl(urlObject);
-    } catch (error) {
-      // Silently fail or add optional error state
-    }
-  }
-
-  if (url) downloadImage(url);
-
-  return () => {
-    if (urlObject) {
-      URL.revokeObjectURL(urlObject);
-    }
-  };
-}, [url]);
-
-  const uploadAvatar = async (event) => {
-    try {
-      setUploading(true);
-
-      if (!event.target.files || event.target.files.length === 0) {
-        throw new Error('You must select an image to upload.');
+      if (error) {
+        console.error(error);
+        return;
       }
 
-      const file = event.target.files[0];
-      const fileExt = file.name.split('.').pop();
-      const filePath = `${uid}-${Math.random()}.${fileExt}`;
+      setImages({
+        mainpic_url: data.mainpic_url,
+        pic2: data.pic2,
+        pic3: data.pic3,
+        pic4: data.pic4,
+        pic5: data.pic5,
+      });
+    }
 
-      const { error: uploadError } = await supabase.storage.from('project').upload(filePath, file);
+    fetchImages();
+  }, [uid]);
 
-      if (uploadError) throw uploadError;
+  const handleAvatarUpload = (field) => async (filePath) => {
+    const updates = { uid };
+    updates[field] = filePath;
 
-      onUpload(filePath);
-    } catch (error) {
-      alert('Error uploading avatar!');
-    } finally {
-      setUploading(false);
+    const { error } = await supabase
+      .from('project')
+      .upsert(updates);
+
+    if (error) {
+      alert('Error uploading image!');
+    } else {
+      setImages((prev) => ({
+        ...prev,
+        [field]: filePath,
+      }));
     }
   };
 
   return (
-    <div className="relative h-full">
-      <div className="relative h-full w-full flex items-center justify-center bg-white border border-black">
-        {avatarUrl ? (
-          <Image
-            src={avatarUrl}
-            alt="Avatar"
-            className={classn}
-            layout="fill"
-            objectFit="cover"
-            width={width}
-            height={height}
-          />
-        ) : (
-          <p className='text-black'>Download image</p>
-        )}
-      </div>
-      <div className="absolute bg-white w-fit rounded-xl text-center border-2 border-black top-4 left-4 py-2 px-4">
-        <label className="hover:cursor-pointer" htmlFor={id}>
-          {uploading ? 'Uploading ...' : <FaDownload color='black' />}
-        </label>
-        <input
-          style={{
-            visibility: 'hidden',
-            position: 'absolute',
-          }}
-          type="file"
-          id={id}
-          accept="image/*"
-          onChange={uploadAvatar}
-          disabled={uploading}
-        />
-      </div>
-      {uploading && (
-        <div className="absolute inset-0 bg-white/50 flex items-center justify-center">
-          <p className="text-black">Uploading...</p>
-        </div>
-      )}
+    <div>
+      <Avatar
+        uid={uid}
+        url={images.mainpic_url}
+        id="main_pic"
+        onUpload={handleAvatarUpload('main_pic')}
+      />
+      <Avatar
+        uid={uid}
+        url={images.pic2}
+        id="pic2"
+        onUpload={handleAvatarUpload('pic2')}
+      />
+      <Avatar
+        uid={uid}
+        url={images.pic3}
+        id="pic3"
+        onUpload={handleAvatarUpload('pic3')}
+      />
+      <Avatar
+        uid={uid}
+        url={images.pic4}
+        id="pic4"
+        onUpload={handleAvatarUpload('pic4')}
+      />
+      <Avatar
+        uid={uid}
+        url={images.pic5}
+        id="pic5"
+        onUpload={handleAvatarUpload('pic5')}
+      />
     </div>
   );
 }

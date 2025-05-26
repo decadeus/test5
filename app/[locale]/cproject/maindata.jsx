@@ -8,6 +8,7 @@ import { companies } from "@/utils/companies";
 import { countryData } from "@/utils/countryData";
 import { useTranslations } from "next-intl";
 import IASEO from "./iaseo";
+import IAGENERALE from "./iagenerale";
 import IACOMMUNITY from "./iacommunity";
 import { FaQuestionCircle } from "react-icons/fa";
 import {
@@ -91,6 +92,7 @@ export default function Maindata({ project, onProjectUpdate }) {
 
   const [openModalCommunity, setOpenModalCommunity] = useState(false);
   const [openModalSEO, setOpenModalSEO] = useState(false);
+  const [openModalGenerale, setOpenModalGenerale] = useState(false);
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -418,20 +420,34 @@ export default function Maindata({ project, onProjectUpdate }) {
               <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
                 {f("DesPro")}
               </h2>
-              <Popover placement="right">
-                <PopoverTrigger>
-                  <Button className="bg-transparent isIconOnly min-w-fit">
-                    🤖 Générer avec l'IA
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent>
-                  <div className="px-1 py-2">
-                    <p className="text-tiny w-[300px]">
-                      {f("DesSEOExplication")}
-                    </p>
-                  </div>
-                </PopoverContent>
-              </Popover>
+                 <>
+                <Button
+                  className="bg-transparent isIconOnly min-w-fit"
+                  onClick={() => setOpenModalGenerale(true)}
+                >
+                  🤖 Générer avec l'IA
+                </Button>
+
+                <Modal
+                  isOpen={openModalGenerale}
+                  onClose={() => setOpenModalGenerale(false)}
+                  backdrop="blur"
+                  size="lg"
+                  scrollBehavior="inside"
+                >
+                  <ModalContent>
+                    <ModalHeader>Générateur IA</ModalHeader>
+                    <ModalBody>
+                      <IAGENERALE nomProjet={editableName} ville={editableCity} />
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="danger" onClick={() => setOpen(false)}>
+                        Fermer
+                      </Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
+              </>
             </div>
             <textarea
               value={
@@ -439,14 +455,12 @@ export default function Maindata({ project, onProjectUpdate }) {
                   ? editableFulldescr.slice(0, 1500)
                   : editableFulldescr
               }
-              onChange={(e) =>
-                setEditableFulldescr(e.target.value.slice(0, 1500))
-              }
-              rows="13"
+              onChange={(e) => setEditableFulldescr(e.target.value.slice(0, 1500))}
+              rows="14"
               className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput} mt-2`}
             />
             <span className="text-gray-400 text-sm mt-1">
-              {editableFulldescr ? editableFulldescr.length : 0}/1500 characters
+              {editableFulldescr ? editableFulldescr.length : 0}/1500 caractères
             </span>
           </div>
           <div className="flex flex-col mt-8 ">
@@ -519,7 +533,7 @@ export default function Maindata({ project, onProjectUpdate }) {
                   <ModalContent>
                     <ModalHeader>Générateur IA</ModalHeader>
                     <ModalBody>
-                      <IASEO />
+                      <IASEO project={project} />
                     </ModalBody>
                     <ModalFooter>
                       <Button color="danger" onClick={() => setOpen(false)}>

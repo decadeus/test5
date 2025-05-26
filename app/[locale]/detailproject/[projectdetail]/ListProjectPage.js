@@ -1,14 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Image from "next/legacy/image";
 import { useParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import i1 from "@/components/image/appart1.jpg";
-import i2 from "@/components/image/appart2.jpg";
-import i3 from "@/components/image/appart3.jpg";
-import i4 from "@/components/image/beach.jpg";
-import i5 from "@/components/image/beach2.jpg";
 import Lift from "@/components/svg/lift.js";
 import Swim from "@/components/svg/swim.js";
 import Reception from "@/components/svg/reception.js";
@@ -37,6 +31,7 @@ export default function ListProjectPage() {
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState(null);
+  const [imageUrls, setImageUrls] = useState([]);
   useEffect(() => {
     if (!projectdetail) return;
 
@@ -45,13 +40,36 @@ export default function ListProjectPage() {
         const { data, error } = await supabase
           .from("project")
           .select("*, projectlist(*)")
-          .eq("codepro", projectdetail)
+          .eq("id", projectdetail)
           .single();
 
         if (error) throw error;
 
         setProjectData(data);
         setSortedData(data.projectlist || []);
+
+        // Récupérer les images du projet depuis le storage
+        const fetchProjectImages = async () => {
+          const { data: files, error } = await supabase.storage.from("project").list(data.id);
+          if (error || !files) return;
+
+          const imageBlobs = await Promise.all(
+            files
+              .filter(f => f.name.startsWith("image"))
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map(async (file) => {
+                const { data: fileData, error: downloadError } = await supabase.storage.from("project").download(`${data.id}/${file.name}`);
+                if (!downloadError && fileData) {
+                  return URL.createObjectURL(fileData);
+                }
+                return null;
+              })
+          );
+
+          setImageUrls(imageBlobs.filter(Boolean));
+        };
+
+        fetchProjectImages();
 
         // Récupérer les projets associés
         if (data) {
@@ -184,13 +202,7 @@ export default function ListProjectPage() {
       {projectData ? (
         <>
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-2">
-            {[
-              projectData?.mainpic_url,
-              projectData?.pic2,
-              projectData?.pic3,
-              projectData?.pic4,
-              projectData?.pic5,
-            ].map((img, index) => (
+            {imageUrls.map((img, index) => (
               <div
                 key={index}
                 className={`relative ${
@@ -202,14 +214,13 @@ export default function ListProjectPage() {
         index === 0
           ? "h-[200px] lg:h-[500px] md:h-[200px] sm:h-[100px]"
           : "h-[94px] lg:h-[245px] md:h-[120px] sm:h-[80px]"
-      }
-      `}
+      }`}
               >
                 {img ? (
                   <Avatar
                     url={img}
                     alt={`Project Image ${index + 1}`}
-                    className={`w-full object-cover rounded-xl transition-transform duration-300 hover:scale-105 h-full`}
+                    className="w-full object-cover rounded-xl transition-transform duration-300 hover:scale-105 hover:brightness-110 h-full"
                   />
                 ) : (
                   <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-600 rounded-xl">
@@ -275,7 +286,7 @@ export default function ListProjectPage() {
                 <div className="flex flex-wrap gap-6 mt-4">
                   {amenitiesIcons.map((Icon, i) => (
                     <div key={i} className="w-24 sm:w-24 md:w-24">
-                      <Icon className="transform transition-transform duration-300 hover:scale-110" />
+                      <Icon title="Amenity Icon" className="transform transition-transform duration-300 hover:scale-110 hover:brightness-110" />
                     </div>
                   ))}
                 </div>
@@ -342,7 +353,7 @@ export default function ListProjectPage() {
                       {sortedData.map((item, i) => (
                         <tr
                           key={i}
-                          className="odd:bg-gray-50 hover:bg-gray-200"
+                          className="odd:bg-gray-50 hover:bg-gray-200 border-l-4 border-transparent hover:border-blue-400 shadow-sm"
                         >
                           <td className="border p-3">{item.ref}</td>
                           <td className="border p-3 text-center">{item.bed}</td>
@@ -399,7 +410,7 @@ export default function ListProjectPage() {
                             )}
 
                             {/* Bouton qui apparaît au survol */}
-                            <Link href={`/en/detailproject/${project.codepro}`}>
+                            <Link href={`/en/detailproject/${project.id}`}>
                               <button className="absolute inset-0 flex items-center justify-center bg-black/60 text-white text-base font-semibold rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                                 Details
                               </button>
@@ -447,9 +458,13 @@ export default function ListProjectPage() {
                     {languages.length > 0 && (
                       <p className="mt-6 text-gray-500 text-sm">
                         Language:{" "}
-                        <span className="font-semibold">
-                          {languages.join(", ")}
-                        </span>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {languages.map((lang, i) => (
+                            <span key={i} className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                              {lang}
+                            </span>
+                          ))}
+                        </div>
                       </p>
                     )}
                   </div>

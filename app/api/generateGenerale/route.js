@@ -13,42 +13,42 @@ export async function POST(req) {
       return NextResponse.json({ text: "Informations manquantes." }, { status: 400 });
     }
 
-    // Génération dynamique des textes selon la langue pour une meta description SEO
+    // Génération dynamique des textes selon la langue
     let labels = {
-      intro: "Rédige une meta description SEO efficace pour un projet immobilier :",
+      intro: "Rédige un texte professionnel pour présenter un projet immobilier :",
       nom: "Nom",
       localisation: "Localisation",
       types: "Types d'appartements",
       atouts: "Points forts",
       style: "Style architectural",
       cible: "Public cible",
-      instruction: "Le texte doit être concis, informatif et contenir des mots-clés pertinents pour améliorer le référencement naturel.",
-      limite: "Maximum 160 caractères.",
+      instruction: "Le texte doit être fluide, engageant et donner envie de découvrir le projet.",
+      limite: "Entre 1100 et 1400 caractères.",
     };
 
     if (langue === "en") {
       labels = {
-        intro: "Write an effective SEO meta description for a real estate project:",
+        intro: "Write a professional text to present a real estate project:",
         nom: "Name",
         localisation: "Location",
         types: "Types of apartments",
         atouts: "Key features",
         style: "Architectural style",
         cible: "Target audience",
-        instruction: "Text should be concise, informative and include relevant keywords to improve organic ranking.",
-        limite: "Maximum 160 characters.",
+        instruction: "The text must be fluent, engaging, and encourage discovery of the project.",
+        limite: "Between 1100 and 1400 characters.",
       };
     } else if (langue === "pl") {
       labels = {
-        intro: "Napisz skuteczny opis meta SEO dla projektu nieruchomości:",
+        intro: "Napisz profesjonalny tekst przedstawiający projekt nieruchomości:",
         nom: "Nazwa",
         localisation: "Lokalizacja",
         types: "Typy apartamentów",
         atouts: "Główne atuty",
         style: "Styl architektoniczny",
         cible: "Docelowa grupa odbiorców",
-        instruction: "Tekst powinien być zwięzły, informacyjny i zawierać odpowiednie słowa kluczowe dla poprawy pozycjonowania.",
-        limite: "Maksymalnie 160 znaków.",
+        instruction: "Tekst powinien być płynny, angażujący i zachęcający do odkrycia projektu.",
+        limite: "Od 1100 do 1400 znaków.",
       };
     }
 
@@ -60,7 +60,7 @@ ${labels.intro}
 - ${labels.atouts}: ${atouts}
 - ${labels.style}: ${style}
 - ${labels.cible}: ${publicCible}
-${labels.instruction} La ville doit être clairement mentionnée.
+${labels.instruction}
 ${labels.limite}
 `;
 
