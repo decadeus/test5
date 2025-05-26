@@ -1,24 +1,30 @@
-import { createClient } from "@/utils/supabase/server";
+import { POST as generateMetaDescription } from "@/app/api/metaFromProject/route";
 
 export async function generateMetadata({ params }) {
-  const supabase = createClient();
-  const { data } = await supabase
-    .from("project")
-    .select("name, coam, fulldescr, city")
-    .eq("id", params.projectdetail)
-    .single();
+  const projectId = parseInt(params.projectdetail, 10);
 
-  if (!data) {
+  if (isNaN(projectId)) return {};
+
+  try {
+    const response = await generateMetaDescription(
+      new Request("http://localhost", {
+        method: "POST",
+        body: JSON.stringify({ projectId, langue: params.locale }),
+        headers: { "Content-Type": "application/json" },
+      })
+    );
+
+    const { metaDescription, title } = await response.json();
+
     return {
-      title: "Détails du projet",
-      description: "Découvrez les détails de ce projet résidentiel.",
+      title: title || "Projet immobilier",
+      description: metaDescription || "",
+    };
+  } catch (error) {
+    console.error("Erreur lors de la génération de la meta description :", error);
+    return {
+      title: "Projet immobilier",
+      description: "",
     };
   }
-
-  const { name, coam, fulldescr, city } = data;
-
-  return {
-    title: `${name} - ${city} | ${coam}`,
-    description: fulldescr?.slice(0, 1500) || "Découvrez ce projet immobilier résidentiel situé à " + city + ".",
-  };
 }

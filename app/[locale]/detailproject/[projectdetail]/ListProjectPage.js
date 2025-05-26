@@ -15,6 +15,7 @@ import Flower from "@/components/svg/flower.js";
 import Bike from "@/components/svg/bike.js";
 import PageM from "@/components/nmap.jsx";
 import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
+import Image from "next/image";
 import Avatar from "@/app/getimage/project";
 import Link from "next/link";
 import Loading from "@/app/[locale]/loading";
@@ -217,10 +218,17 @@ export default function ListProjectPage() {
       }`}
               >
                 {img ? (
-                  <Avatar
-                    url={img}
-                    alt={`Project Image ${index + 1}`}
-                    className="w-full object-cover rounded-xl transition-transform duration-300 hover:scale-105 hover:brightness-110 h-full"
+                  <Image
+                    src={img}
+                    alt={
+                      index === 0
+                        ? `${name}. Budynek mieszkalny w ${city} - ${index + 1}`
+                        : `Project Image ${index + 1}`
+                    }
+                    fill
+                    className="object-cover rounded-xl transition-transform duration-300 hover:scale-105 hover:brightness-110"
+                    sizes="100vw"
+                    priority={index === 0}
                   />
                 ) : (
                   <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-600 rounded-xl">
@@ -396,12 +404,13 @@ export default function ListProjectPage() {
                           {/* Conteneur de l'image avec effet de hover */}
                           <div className="relative w-full h-[150px] md:h-[150px] lg:h-[200px] rounded-xl overflow-hidden cursor-pointer group">
                             {project.mainpic_url ? (
-                              <Avatar
-                                url={project.mainpic_url}
-                                width={400} // Largeur améliorée
-                                height={400} // Hauteur améliorée
-                                alt="Project Image"
+                              <Image
+                                src={project.mainpic_url}
+                                width={400}
+                                height={400}
+                                alt={`${project.name}. Budynek mieszkalny w ${project.city || 'mieście nieznanym'}`}
                                 className="rounded-xl w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                sizes="(max-width: 768px) 100vw, 400px"
                               />
                             ) : (
                               <div className="flex items-center justify-center w-full h-full bg-gray-200 rounded-xl">

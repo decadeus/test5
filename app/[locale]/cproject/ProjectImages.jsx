@@ -1,10 +1,12 @@
 'use client'
 
+import Image from "next/image";
+
 import { useState, useEffect } from "react";
 import { MdImageNotSupported, MdUpload } from "react-icons/md";
 import { createClient } from "@/utils/supabase/client";
 
-export default function ProjectImages({ projectId }) {
+export default function ProjectImages({ projectId, projectName, projectCity }) {
   const supabase = createClient();
   const [images, setImages] = useState([null, null, null, null, null]);
   // Memorize the file names for each image slot
@@ -12,7 +14,7 @@ export default function ProjectImages({ projectId }) {
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    const loadExistingImages = async () => {
+   const loadExistingImages = async () => {
       if (!projectId) return;
 
       const loadedImages = await Promise.all(
@@ -98,28 +100,40 @@ export default function ProjectImages({ projectId }) {
   };
 
   // Rendu d'une image avec son upload intégré
-  const renderZone = (img, index) => (
-    <div
-      key={index}
-      className="relative w-full h-full bg-gray-100 flex items-center justify-center overflow-hidden"
-    >
-      {img ? (
-        <img src={img} alt={`Image ${index + 1}`} className="w-full h-full object-cover" />
-      ) : (
-        <MdImageNotSupported className="text-5xl text-gray-400" />
-      )}
-      <label className="absolute bottom-2 right-2 cursor-pointer text-blue-600 hover:text-blue-800 bg-white bg-opacity-80 rounded-full p-1 shadow">
-        <MdUpload className="text-xl" />
-        <input
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          onChange={(e) => handleFileChange(e, index)}
-          disabled={uploading}
-          className="hidden"
-        />
-      </label>
-    </div>
-  );
+  const renderZone = (img, index) => {
+    const projectNom = projectName?.trim() || "inconnu";
+    const projectVille = projectCity?.trim() || "ville inconnue";
+    const altText = `Image du projet ${projectNom} à ${projectVille} - ${index + 1}`;
+    return (
+      <div
+        key={index}
+        className="relative w-full h-full bg-gray-100 flex items-center justify-center overflow-hidden"
+      >
+        {img ? (
+          <Image
+            src={img || "https://via.placeholder.com/400x300?text=Image+indisponible"}
+            alt={altText}
+            fill
+            style={{ objectFit: "cover" }}
+            sizes="100vw"
+            priority
+          />
+        ) : (
+          <MdImageNotSupported className="text-5xl text-gray-400" />
+        )}
+        <label className="absolute bottom-2 right-2 cursor-pointer text-blue-600 hover:text-blue-800 bg-white bg-opacity-80 rounded-full p-1 shadow">
+          <MdUpload className="text-xl" />
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={(e) => handleFileChange(e, index)}
+            disabled={uploading}
+            className="hidden"
+          />
+        </label>
+      </div>
+    );
+  };
 
   // Nouvelle grille personnalisée avec grid-area pour chaque image
   return (

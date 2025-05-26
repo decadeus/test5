@@ -103,4 +103,3 @@ const Fitness = () => {
   };
   
   export default Fitness;
-  

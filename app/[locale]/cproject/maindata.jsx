@@ -244,7 +244,11 @@ export default function Maindata({ project, onProjectUpdate }) {
   return (
     <div className=" mt-10 p-6 bg-white rounded-lg flex flex-col justify-center items-center mb-8 text-black">
       <div className="mb-8 w-full">
-        <ProjectImages projectId={project?.id} />
+        <ProjectImages
+          projectId={project?.id}
+          projectName={project?.name}
+          projectCity={project?.city}
+        />
       </div>
       <h2 className="text-2xl font-semibold text-black mb-4">
         {f("Modifier")}
