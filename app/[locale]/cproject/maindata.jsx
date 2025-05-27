@@ -250,9 +250,7 @@ export default function Maindata({ project, onProjectUpdate }) {
           projectCity={project?.city}
         />
       </div>
-      <h2 className="text-2xl font-semibold text-black mb-4">
-        {f("Modifier")}
-      </h2>
+     <h2 className="text-2xl font-semibold text-gray-800">{editableName}</h2>
       <div className="flex gap-8">
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
@@ -398,181 +396,158 @@ export default function Maindata({ project, onProjectUpdate }) {
               </label>
             </div>
           </div>
-          <Divider className="my-4" />
-
-          <div className="flex flex-col  ">
-            <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
-              {f("NomProjet")}
-            </h2>
-            <input
-              type="text"
-              value={
-                editableName && editableName.length > 50
-                  ? editableName.slice(0, 50)
-                  : editableName
-              }
-              onChange={(e) => setEditableName(e.target.value)}
-              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500  text-xl ${bginput} mt-2`}
-            />
-            <span className="text-gray-400 text-sm mt-1">
-              {editableName ? editableName.length : 0}/50 characters
-            </span>
-          </div>
-
-          <div className="flex flex-col mt-8 ">
-            <div className="w-full flex items-center justify-between">
-              <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
-                {f("DesPro")}
-              </h2>
-                 <>
-                <Button
-                  className="bg-transparent isIconOnly min-w-fit"
-                  onClick={() => setOpenModalGenerale(true)}
-                >
-                  🤖 Générer avec l'IA
-                </Button>
-
-                <Modal
-                  isOpen={openModalGenerale}
-                  onClose={() => setOpenModalGenerale(false)}
-                  backdrop="blur"
-                  size="lg"
-                  scrollBehavior="inside"
-                >
-                  <ModalContent>
-                    <ModalHeader>Générateur IA</ModalHeader>
-                    <ModalBody>
-                      <IAGENERALE nomProjet={editableName} ville={editableCity} />
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button color="danger" onClick={() => setOpen(false)}>
-                        Fermer
-                      </Button>
-                    </ModalFooter>
-                  </ModalContent>
-                </Modal>
-              </>
+{/* Séparateur visuel avant la section Description */}
+            <div className="flex items-center gap-4 mt-6">
+              <h3 className="text-lg font-semibold text-gray-700">Description</h3>
+              <Divider className="flex-1 bg-gray-300 h-[1px]" />
             </div>
-            <textarea
-              value={
-                editableFulldescr.length > 1500
-                  ? editableFulldescr.slice(0, 1500)
-                  : editableFulldescr
-              }
-              onChange={(e) => setEditableFulldescr(e.target.value.slice(0, 1500))}
-              rows="14"
-              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput} mt-2`}
-            />
-            <span className="text-gray-400 text-sm mt-1">
-              {editableFulldescr ? editableFulldescr.length : 0}/1500 caractères
-            </span>
-          </div>
-          <div className="flex flex-col mt-8 ">
-            <div className="w-full flex items-center justify-between">
-              <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
-                Community Amenities
-              </h2>
-              <>
-                <Button
-                  className="bg-transparent isIconOnly min-w-fit"
-                  onClick={() => setOpenModalCommunity(true)}
-                >
-                  🤖 Générer avec l'IA
-                </Button>
-                <Modal
-                  isOpen={openModalCommunity}
-                  onClose={() => setOpenModalCommunity(false)}
-                  backdrop="blur"
-                  size="lg"
-                  scrollBehavior="inside"
-                >
-                  <ModalContent>
-                    <ModalHeader>Générateur IA</ModalHeader>
-                    <ModalBody>
-                      <IACOMMUNITY />
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button color="danger" onClick={() => setOpen(false)}>
-                        Fermer
-                      </Button>
-                    </ModalFooter>
-                  </ModalContent>
-                </Modal>
-              </>
-            </div>
-            <textarea
-              value={
-                editableCoam && editableCoam.length > 1000
-                  ? editableCoam.slice(0, 1000)
-                  : editableCoam
-              }
-              onChange={(e) => setEditableCoam(e.target.value.slice(0, 1000))}
-              rows="9"
-              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput} mt-2`}
-            />
-            <span className="text-gray-400 text-sm mt-1">
-              {editableCoam ? editableCoam.length : 0}/1000 characters
-            </span>
-          </div>
-          <div className="flex flex-col mt-8 ">
-            <div className="w-full flex items-center justify-between">
-              <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
-                {f("DesSEO")}
-              </h2>
-              <>
-                <Button
-                  className="bg-transparent isIconOnly min-w-fit"
-                  onClick={() => setOpenModalSEO(true)}
-                >
-                  🤖 Générer avec l'IA
-                </Button>
+          {/* Bloc description + SEO refait en flex */}
+          <div className="flex flex-col gap-8 mt-8">
+            {/* Bloc pleine largeur : description + community, ENCADRÉ */}
+            <div className="bg-white border border-gray-200 rounded-md p-6 shadow-sm">
+              <div className="flex flex-col gap-8 w-full">
+                {/* Description du projet */}
+                <div className="flex flex-col bg-gray-50 p-4 rounded-md shadow-sm">
+                  <div className="w-full flex items-center justify-between">
+                    <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
+                      {f("DesPro")}
+                    </h2>
+                    <Button
+                      className="bg-transparent isIconOnly min-w-fit"
+                      onClick={() => setOpenModalGenerale(true)}
+                    >
+                      🤖 Générer avec l'IA
+                    </Button>
+                  </div>
+                  <textarea
+                    value={
+                      editableFulldescr.length > 1500
+                        ? editableFulldescr.slice(0, 1500)
+                        : editableFulldescr
+                    }
+                    onChange={(e) => setEditableFulldescr(e.target.value.slice(0, 1500))}
+                    rows="14"
+                    className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput} mt-2`}
+                  />
+                  <span className="text-gray-400 text-sm mt-1">
+                    {editableFulldescr ? editableFulldescr.length : 0}/1500 caractères
+                  </span>
+                </div>
 
-                <Modal
-                  isOpen={openModalSEO}
-                  onClose={() => setOpenModalSEO(false)}
-                  backdrop="blur"
-                  size="lg"
-                  scrollBehavior="inside"
-                >
-                  <ModalContent>
-                    <ModalHeader>Générateur IA</ModalHeader>
-                    <ModalBody>
-                      <IASEO project={project} />
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button color="danger" onClick={() => setOpen(false)}>
-                        Fermer
-                      </Button>
-                    </ModalFooter>
-                  </ModalContent>
-                </Modal>
-              </>
+                {/* Community Amenities */}
+                <div className="flex flex-col bg-gray-50 p-4 rounded-md shadow-sm">
+                  <div className="w-full flex items-center justify-between">
+                    <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
+                      Community Amenities
+                    </h2>
+                    <Button
+                      className="bg-transparent isIconOnly min-w-fit"
+                      onClick={() => setOpenModalCommunity(true)}
+                    >
+                      🤖 Générer avec l'IA
+                    </Button>
+                  </div>
+                  <textarea
+                    value={
+                      editableCoam && editableCoam.length > 1000
+                        ? editableCoam.slice(0, 1000)
+                        : editableCoam
+                    }
+                    onChange={(e) => setEditableCoam(e.target.value.slice(0, 1000))}
+                    rows="9"
+                    className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput} mt-2`}
+                  />
+                  <span className="text-gray-400 text-sm mt-1">
+                    {editableCoam ? editableCoam.length : 0}/1000 characters
+                  </span>
+                </div>
+              </div>
             </div>
-            <textarea
-              value={
-                editableDes.length > 150
-                  ? editableDes.slice(0, 150)
-                  : editableDes
-              }
-              onChange={(e) => setEditableDes(e.target.value.slice(0, 150))}
-              rows="2"
-              className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black ${bginput}`}
-            />
-            <span className="text-gray-400 text-sm mt-1">
-              {editableDes ? editableDes.length : 0}/150 characters
-            </span>
+
+            {/* Section SEO encadrée */}
+            <div className="bg-white border border-gray-200 rounded-md p-6 shadow-sm mt-6">
+              <div className="flex items-center gap-4 mb-4">
+                <h3 className="text-lg font-semibold text-gray-700">SEO</h3>
+                <Divider className="flex-1 bg-gray-300 h-[1px]" />
+              </div>
+              <div className="flex flex-wrap gap-8">
+                <div className="flex-1 min-w-[300px] bg-gray-50 p-4 rounded-md shadow-sm">
+                  {/* SEO Title */}
+                  <div className="flex flex-col">
+                    <div className="w-full flex items-center justify-between">
+                      <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
+                        {f("DesSEOTitle")}
+                      </h2>
+                      <Button
+                        className="bg-transparent isIconOnly min-w-fit"
+                        onClick={() => setOpenModalSEO(true)}
+                      >
+                        🤖 Générer avec l'IA
+                      </Button>
+                    </div>
+                    <textarea
+                      value={
+                        editableDes.length > 150
+                          ? editableDes.slice(0, 150)
+                          : editableDes
+                      }
+                      onChange={(e) => setEditableDes(e.target.value.slice(0, 150))}
+                      rows="3"
+                      className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput}`}
+                    />
+                    <span className="text-gray-400 text-sm mt-1">
+                      {editableDes ? editableDes.length : 0}/150 characters
+                    </span>
+                  </div>
+                </div>
+                <div className="flex-1 min-w-[300px] bg-gray-50 p-4 rounded-md shadow-sm">
+                  {/* SEO Description */}
+                  <div className="flex flex-col">
+                    <div className="w-full flex items-center justify-between">
+                      <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
+                        {f("DesSEO")}
+                      </h2>
+                      <Button
+                        className="bg-transparent isIconOnly min-w-fit"
+                        onClick={() => setOpenModalSEO(true)}
+                      >
+                        🤖 Générer avec l'IA
+                      </Button>
+                    </div>
+                    <textarea
+                      value={
+                        editableDes.length > 150
+                          ? editableDes.slice(0, 150)
+                          : editableDes
+                      }
+                      onChange={(e) => setEditableDes(e.target.value.slice(0, 150))}
+                      rows="3"
+                      className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput}`}
+                    />
+                    <span className="text-gray-400 text-sm mt-1">
+                      {editableDes ? editableDes.length : 0}/150 characters
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <button
-        onClick={handleSave}
-        className={`mt-8 brownbg text-black px-6 py-2 rounded-md ${
-          isSaving ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-        disabled={isSaving}
-      >
-        {isSaving ? f("Saving") : f("Sauvegarder")}
-      </button>
+      <div className="w-full mt-10 p-4 border border-yellow-300 bg-yellow-50 rounded-md text-center">
+        <p className="text-sm text-yellow-800 mb-3">
+          N'oubliez pas de sauvegarder si vous avez apporté des modifications.
+        </p>
+        <button
+          onClick={handleSave}
+          className={`brownbg text-black px-6 py-2 rounded-md ${
+            isSaving ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={isSaving}
+        >
+          {isSaving ? f("Saving") : f("Sauvegarder")}
+        </button>
+      </div>
     </div>
   );
 }

@@ -226,7 +226,10 @@ export default function Layout() {
     <hr className="pb-4"/>
       <h3 className="text-xs font-semibold uppercase mb-2">Projets</h3>
         {projects.map((project) => (
-  <li key={project.id} className="mb-2">
+  <li
+    key={project.id}
+    className={`mb-2 ${selectedProject?.id === project.id ? "bg-blue-800 rounded-md px-2 py-1 border-white border-1" : ""}`}
+  >
     <button
       onClick={() => {
         setSelectedProject(project);

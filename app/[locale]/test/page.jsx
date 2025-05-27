@@ -1,137 +1,61 @@
-// app/page.jsx
-"use client";
+import Image from 'next/image';
 
-import { useState, useRef, useEffect } from "react";
-
-const images = {
-  chat: "/secure.png",
-  chien: "/secure.png",
-  cheval: "/secure.png",
-};
-
-export default function HomePage() {
-  const [selected, setSelected] = useState("chat");
-  const [fade, setFade] = useState(true);
-  const [indicatorStyle, setIndicatorStyle] = useState({});
-
-  const refs = {
-    chat: useRef(null),
-    chien: useRef(null),
-    cheval: useRef(null),
-  };
-
-  useEffect(() => {
-    const el = refs[selected].current;
-    if (el) {
-      setIndicatorStyle({
-        width: `${el.offsetWidth}px`,
-        left: `${el.offsetLeft}px`,
-      });
+function Main() {
+  const sections = [
+    {
+      title: "Présentation de l'intelligence du moteur",
+      image: "/ia_demo.png",
+      text: "Notre moteur analyse et valorise vos projets avec des règles simples et puissantes, tout en restant totalement transparent pour vous."
+    },
+    {
+      title: "Informations de base simplifiées",
+      image: "/maininfo.png",
+      text: "Ajoutez les informations essentielles de votre projet en quelques clics : nom, ville, société, devise et localisation."
+    },
+    {
+      title: "Saisie assistée des lots",
+      image: "/ia_demo.png",
+      text: "Ajoutez vos appartements avec précision : typologie, surface, prix, statut. Import possible depuis Excel."
+    },
+    {
+      title: "Une vue claire et graphique de l’offre",
+      image: "/list_appart.png",
+      text: "Chaque lot est affiché avec ses attributs de manière lisible et esthétique pour vos clients comme pour votre équipe."
     }
-  }, [selected]);
-
-  const tabColors = {
-    chat: "#FF0066",
-    chien: "#FF4500",
-    cheval: "#0066FF",
-  };
-
-  const tabRGB = {
-    chat: "255, 0, 102",
-    chien: "255, 69, 0",
-    cheval: "0, 102, 255",
-  };
-
-  const tabClass = (tab) => {
-    const base =
-      "relative z-10 px-4 text-center py-2 text-base font-bold rounded-full transition-all duration-300 ease-in-out transform";
-    const selectedTab = selected === tab;
-    return `${base} ${
-      selectedTab
-        ? `text-white bg-[${tabColors[tab]}]  scale-105`
-        : "bg-white text-gray-500  hover:text-black scale-100"
-    }`;
-  };
-
-  const handleTabClick = (tab) => {
-    if (tab !== selected) {
-      setFade(false);
-      setTimeout(() => {
-        setSelected(tab);
-        setFade(true);
-      }, 150);
-    }
-  };
+  ];
 
   return (
-    <main className="flex flex-col items-center gap-12 p-12 min-h-screen mt-[100px] w-full">
-      <h1 className="text-7xl font-light text-center mb-6">
-        Bienvenue sur la page des animaux
-      </h1>
-      <p className="max-w-2xl text-center text-gray-600 text-xl leading-relaxed">
-        Cette page est dédiée à la découverte de quelques-uns de nos compagnons
-        les plus fidèles et fascinants. Que ce soit le chat, symbole
-        d'indépendance et de mystère ; le chien, loyal et protecteur ; ou le
-        cheval, majestueux et libre — chacun de ces animaux occupe une place
-        unique dans notre vie et notre imaginaire. Faites votre choix ci-dessous
-        pour en apprendre davantage.
-      </p>
-      <div className="rounded-3xl border-[25px] border-black bg-black">
-      <div
-        className={` bg-black h-fit flex items-center justify-center transition-opacity duration-300 ${
-          fade ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <img
-          src={images[selected]}
-          alt={selected}
-          className="w-[800px] h-[600px] object-cover rounded-2xl"
-        />
-      </div>
-      </div>
+    <div className="flex flex-col gap-24 px-6 md:px-24 py-12 bg-gradient-to-b from-gray-50 via-white to-gray-100">
+      {sections.map((section, index) => (
+        <div
+          key={index}
+          className={`flex flex-col ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-12 animate-fade-in-up`}
+        >
+          {/* Texte */}
+          <div className="w-full md:w-1/2 text-center md:text-left space-y-6 bg-white p-8 rounded-xl shadow-lg">
+            <h2 className="text-3xl font-bold text-blue-800">{section.title}</h2>
+            <p className="text-lg text-gray-700 leading-relaxed">{section.text}</p>
+          </div>
 
-      <div
-        className="rounded-full"
-        style={{
-          boxShadow: `0 0 42px 4px rgba(${tabRGB[selected]}, 0.3)`,
-          transition: "box-shadow 400ms ease, background-color 400ms ease",
-        }}
-      >
-        <div className="relative w-fit max-w-md ">
-          <div className="relative flex gap-2 justify-center bg-white rounded-full py-3 px-4 border border-transparent transition-colors duration-500 ease-in-out">
-            <div
-              className="absolute top-2 bottom-2 rounded-full transition-all duration-300 ease-in-out"
-              style={{
-                backgroundColor: `rgba(${tabRGB[selected]})`,
-                transition:
-                  "background-color 200ms ease, left 300ms ease, width 300ms ease",
-                ...indicatorStyle,
-              }}
-            />
-            <button
-              ref={refs.chat}
-              onClick={() => handleTabClick("chat")}
-              className={tabClass("chat")}
-            >
-              Chat
-            </button>
-            <button
-              ref={refs.chien}
-              onClick={() => handleTabClick("chien")}
-              className={tabClass("chien")}
-            >
-              Chien
-            </button>
-            <button
-              ref={refs.cheval}
-              onClick={() => handleTabClick("cheval")}
-              className={tabClass("cheval")}
-            >
-              Cheval
-            </button>
+          {/* Image + fond cercle */}
+          <div className="w-full md:w-1/2 flex justify-center">
+            <div className="relative max-w-[500px] aspect-square rounded-full bg-gray-200/30 shadow-lg">
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[350px] shadow-lg">
+                <Image
+                  src={section.image}
+                  alt="Illustration"
+                  width={300}
+                  height={600}
+                  className="object-cover w-full h-full rounded-2xl"
+                />
+              </div>
+              <div className="absolute bottom-6 right-6 bg-white rounded-full w-[70%] aspect-square shadow-md" />
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      ))}
+    </div>
   );
 }
+
+export default Main;

@@ -2,15 +2,35 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { FaBuilding, FaUsers } from 'react-icons/fa';
-import { MdApartment } from 'react-icons/md';
-import { MdOnlinePrediction } from 'react-icons/md';
+import { MdApartment, MdOnlinePrediction } from 'react-icons/md';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend } from 'chart.js';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
+
+function getGlobalDateRange(projects) {
+  const allDates = [
+    ...new Set(
+      projects
+        .filter(p => p.created_at)
+        .map(p => p.created_at.slice(0, 10))
+    ),
+  ].sort((a, b) => {
+    const da = new Date(a + 'T00:00:00');
+    const db = new Date(b + 'T00:00:00');
+    return da - db;
+  });
+  return allDates;
+}
 
 export default function Generale() {
   const supabase = createClient();
   const [projects, setProjects] = useState([]);
+  const [projectStats, setProjectStats] = useState([]);
 
   useEffect(() => {
-    async function fetchProjects() {
+    async function fetchData() {
       const {
         data: { user },
         error: userError,
@@ -21,6 +41,7 @@ export default function Generale() {
         return;
       }
 
+      // StatCard : project_edit_count
       const { data, error } = await supabase
         .from('project_edit_count')
         .select('project_id, name, online, edit_count, apart_count')
@@ -31,9 +52,22 @@ export default function Generale() {
       } else {
         setProjects(data);
       }
+
+      // Graph : project
+      const { data: projectData, error: projectError } = await supabase
+        .from('projectlist')
+        .select('id, ide, created_at');
+
+      if (projectError) {
+        console.error('Erreur de chargement des projets :', projectError);
+        return;
+      }
+
+      setProjectStats(projectData);
+      console.log("projectData:", projectData);
     }
 
-    fetchProjects();
+    fetchData();
   }, [supabase]);
 
   function StatCard({ label, value }) {
@@ -45,42 +79,95 @@ export default function Generale() {
     );
   }
 
+  function generateChartData(project, allProjects, uniqueDates) {
+    const labels = [];
+    const dataPoints = [];
+
+    for (let i = 0; i < uniqueDates.length; i++) {
+      const current = uniqueDates[i];
+      const [year, month, day] = current.split('-');
+      labels.push(`${day}/${month}/${year}`);
+
+      const count = allProjects.filter(p =>
+        p.ide === project.ide &&
+        p.created_at.slice(0, 10) === current
+      ).length;
+
+      dataPoints.push(count);
+    }
+
+    console.log('generateChartData', { ide: project.ide, uniqueDates, dataPoints });
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: 'Appartements',
+          data: dataPoints,
+          borderColor: 'rgba(75,192,192,1)',
+          backgroundColor: function (context) {
+            const chart = context.chart;
+            const {ctx, chartArea} = chart;
+            if (!chartArea) return null;
+            const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            gradient.addColorStop(0, 'rgba(75,192,192,0.3)');
+            gradient.addColorStop(1, 'rgba(75,192,192,0)');
+            return gradient;
+          },
+          tension: 0.3,
+        },
+      ],
+    };
+  }
+
   return (
     <div className="p-6 overflow-y-auto">
       <h1 className="text-xl font-bold text-gray-700 mb-4">
         Vue d’ensemble des projets
       </h1>
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard label="Projets" value={projects.length} />
         <StatCard label="En ligne" value={projects.filter(p => p.online).length} />
         <StatCard label="Collaborateurs" value={projects.reduce((sum, p) => sum + p.edit_count, 0)} />
         <StatCard label="Appartements" value={projects.reduce((sum, p) => sum + p.apart_count, 0)} />
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {projects.map((project) => (
-          <div key={project.project_id} className="bg-white rounded shadow p-4">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center gap-2">
-              <FaBuilding className="text-gray-500" /> {project.name}
-            </h3>
-            <p className="mb-1">
-              <MdOnlinePrediction className="inline-block mr-2 text-gray-500" />
-              <span className={project.online ? "text-green-600 font-semibold" : "text-gray-500"}>
-                {project.online ? "En ligne" : "Hors ligne"}
-              </span>
-            </p>
-            <p className="mb-1">
-              <FaUsers className="inline-block mr-2 text-gray-500" />
-              {project.edit_count} collaborateurs
-            </p>
-            <p className="mb-3">
-              <MdApartment className="inline-block mr-2 text-gray-500" />
-              {project.apart_count} appartements
-            </p>
-            <div className="bg-gray-100 h-32 rounded flex items-center justify-center text-gray-400 text-sm">
-              [Graphique projet #{project.project_id}]
-            </div>
-          </div>
-        ))}
+        {[...new Set(projectStats.map(p => p.ide))].map((ide) => {
+          const projectGroup = projectStats.filter(p => p.ide === ide);
+          // Récupérer le nom du projet depuis projects
+          const matchingProject = projects.find(p => p.project_id === ide);
+          const projectName = matchingProject?.name || `Projet ${ide}`;
+          const uniqueDates = getGlobalDateRange(projectGroup);
+          const chartData = generateChartData({ ide }, projectStats, uniqueDates);
+          const chartOptions = {
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1,
+                  callback: function (value) {
+                    return Number.isInteger(value) ? value : null;
+                  }
+                }
+              }
+            }
+          };
+
+          return (
+            <Card key={ide}>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <FaBuilding className="text-muted-foreground" /> {projectName}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Line data={chartData} options={chartOptions} />
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );
