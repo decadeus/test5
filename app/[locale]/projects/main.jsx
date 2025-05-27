@@ -292,13 +292,13 @@ function Main() {
           </div>
           {/* Liste appartements */}
           <ScrollArea className="h-fit w-full px-1 sm:pb-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 ">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
               {projects.map((item, index) => (
                 <div key={index} className="bg-white rounded-2xl shadow p-2">
                   <div className="flex flex-col w-full px-1">
                     {/* Titre + favori */}
-                    <div className="flex items-center justify-between pt-1 w-full h-1/4">
-                      <h3 className="font-semibold text-sm truncate">{item.project.name}</h3>
+                    <div className="flex items-center justify-between pt-1 w-full">
+                      <h3 className="font-semibold text-xs sm:text-sm truncate">{item.project.name}</h3>
                       <button
                         onClick={() => handleToggleFavorite(item)}
                         className="inline-flex leading-none bg-transparent text-white hover:bg-opacity-10 p-0 m-0"
@@ -306,29 +306,29 @@ function Main() {
                         type="button"
                       >
                         {isFavorite(item) ? (
-                          <FaHeart fill="#bfae9b" size={15} />
+                          <FaHeart fill="#bfae9b" size={12} className="sm:w-[15px] sm:h-[15px]" />
                         ) : (
-                          <FaRegHeart fill="#bfae9b" size={15} />
+                          <FaRegHeart fill="#bfae9b" size={12} className="sm:w-[15px] sm:h-[15px]" />
                         )}
                       </button>
                     </div>
                     {/* Ville */}
-                    <p className="text-sm text-gray-600 truncate mt-0 mb-1">{item.project.city}</p>
+                    <p className="text-xs sm:text-sm text-gray-600 truncate mt-0 mb-1">{item.project.city}</p>
                     {/* Détails */}
-                    <div className="flex items-center text-gray-600 gap-4 mt-2 mb-1 text-xs w-full">
+                    <div className="flex items-center text-gray-600 gap-2 sm:gap-4 mt-2 mb-1 text-[10px] sm:text-xs w-full">
                       <div className="w-1/2 flex flex-col gap-1">
                         <div className="flex items-center gap-1">
-                          <Ruler className="w-4 h-4" />
+                          <Ruler className="w-3 h-3 sm:w-4 sm:h-4" />
                           {item.surface} m²
                         </div>
                         <div className="flex items-center gap-1">
-                          <BedDouble className="w-4 h-4" />
+                          <BedDouble className="w-3 h-3 sm:w-4 sm:h-4" />
                           {item.bed}
                         </div>
                       </div>
                       {item.des && (
                         <div className="flex items-center gap-1 text-rose-700">
-                          <p className="text-xs" title={item.des}>
+                          <p className="text-[10px] sm:text-xs" title={item.des}>
                             {item.des}
                           </p>
                         </div>
@@ -336,27 +336,27 @@ function Main() {
                     </div>
                     {/* Prix, promoteur, lien */}
                     <div className="flex items-center pt-2">
-                      <span className="text-gray-600 font-bold text-base">
+                      <span className="text-gray-600 font-bold text-xs sm:text-base">
                         {item.noprice || item.price === null ? (
                           <span className="italic text-gray-500">undefined</span>
                         ) : item.project.cur === "PLN" ? (
-                          <span className="flex">
-                            {item.price} <TbCurrencyZloty size={15} />
+                          <span className="flex items-center">
+                            {item.price} <TbCurrencyZloty size={12} className="sm:w-[15px] sm:h-[15px]" />
                           </span>
                         ) : (
-                          <span className="flex">
-                            {item.price} <FaEuroSign size={10} />
+                          <span className="flex items-center">
+                            {item.price} <FaEuroSign size={8} className="sm:w-[10px] sm:h-[10px]" />
                           </span>
                         )}
                       </span>
-                      <span className="flex-grow text-gray-500 text-sm text-center truncate">
+                      <span className="flex-grow text-gray-500 text-[10px] sm:text-sm text-center truncate">
                         {item.project.compagny}
                       </span>
                       <a
                         href={`/${locale}/detailproject/${item.project.id}`}
-                        className="ml-auto w-5 h-5 text-gray-500 hover:text-primary-600 cursor-pointer"
+                        className="ml-auto w-4 h-4 sm:w-5 sm:h-5 text-gray-500 hover:text-primary-600 cursor-pointer"
                       >
-                        <ExternalLink />
+                        <ExternalLink className="w-full h-full" />
                       </a>
                     </div>
                   </div>

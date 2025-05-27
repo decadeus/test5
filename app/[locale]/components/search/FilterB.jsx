@@ -1,14 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import {
-  Checkbox,
-  CheckboxGroup,
-  Slider,
-  Button,
-  Modal,
-  ModalContent,
-  useDisclosure,
-} from "@heroui/react";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Slider } from "@/components/ui/slider";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import Filter from "@/components/svg/filter";
 
@@ -43,7 +43,7 @@ const FilterB = ({
   onFavoritesChange,
   f,
 }) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [isOpen, setIsOpen] = useState(false);
   const [isSurfaceModalOpen, setIsSurfaceModalOpen] = useState(false);
   const [isBedsModalOpen, setIsBedsModalOpen] = useState(false);
   const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
@@ -148,6 +148,7 @@ const FilterB = ({
 
   return (
     <div>
+      {/* Version Desktop */}
       <div className="hidden lg:block py-4 w-full">
         <div className="flex justify-between">
           <div className="flex gap-2 w-1/2">
@@ -214,7 +215,7 @@ const FilterB = ({
             {/* Résidence (modal équipements) */}
             <div>
               <Button
-                onClick={() => onOpenChange(true)}
+                onClick={() => setIsOpen(true)}
                 variant="light"
                 radius="none"
                 className="w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-3"
@@ -225,31 +226,6 @@ const FilterB = ({
                 </p>
                 <Filter className="w-8 h-8" />
               </Button>
-              <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                <ModalContent>
-                  <div className="flex flex-col gap-2 p-4">
-                    {facilities.map(
-                      ({ id, label, value, selected, onChange }) => (
-                        <CheckboxGroup
-                          key={id}
-                          id={id}
-                          value={selected ? [value] : []}
-                          onChange={onChange}
-                          color="bgmap"
-                          orientation="horizontal"
-                          aria-label={label}
-                        >
-                          <Checkbox value={value}>
-                            <div className="flex items-center">
-                              <p className="mr-2">{label}</p>
-                            </div>
-                          </Checkbox>
-                        </CheckboxGroup>
-                      )
-                    )}
-                  </div>
-                </ModalContent>
-              </Modal>
             </div>
           </div>
           {/* Sliders */}
@@ -292,7 +268,127 @@ const FilterB = ({
           </div>
         </div>
       </div>
-      {/* Version mobile : tu peux garder ton modal mobile d'origine ici si tu veux */}
+
+      {/* Version Mobile */}
+      <div className="lg:hidden w-full py-2 px-4">
+        <div className="flex flex-wrap gap-2 justify-between items-center">
+          {/* Bouton Filtres */}
+          <button
+            onClick={() => setIsOpen(true)}
+            className="flex items-center gap-2 bg-white border border-gray-300 rounded-xl px-3 py-2"
+          >
+            <Filter className="w-5 h-5" />
+            <span className="text-sm text-gray-800">{f("Filtres")}</span>
+          </button>
+
+          {/* Favoris Mobile */}
+          <button
+            onClick={handleIconClick}
+            className={`flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 ${
+              showFavorites ? "text-red-500" : "text-gray-600"
+            }`}
+          >
+            {showFavorites ? (
+              <FaHeart size={18} color="#bfae9b" />
+            ) : (
+              <FaRegHeart size={18} color="#bfae9b" />
+            )}
+          </button>
+        </div>
+
+        {/* Modal Mobile */}
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogContent className="sm:max-w-[90%] h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-lg font-medium">Filtres</DialogTitle>
+            </DialogHeader>
+            
+            <div className="flex flex-col gap-4 p-4">
+              {/* Pays et Ville */}
+              <div className="flex flex-col gap-3">
+                <select
+                  value={editableCountry}
+                  onChange={handleCountryChange}
+                  className="w-full border border-gray-300 rounded-xl text-sm p-2"
+                >
+                  <option value="">{f("SelectionnezUnPays")}</option>
+                  {Object.keys(countryData).map((country, index) => (
+                    <option key={index} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={editableCity}
+                  onChange={handleCityChange}
+                  className="w-full border border-gray-300 rounded-xl text-sm p-2"
+                >
+                  {cities.map((city, index) => (
+                    <option key={index} value={city}>
+                      {city}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Jardin */}
+              <div className="border border-gray-300 rounded-xl p-3">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedGarden}
+                    onChange={(e) => onGardenChange(e.target.checked)}
+                    className="rounded-full"
+                  />
+                  <span className="text-sm text-gray-800">{f("AvecJardin")}</span>
+                </label>
+              </div>
+
+              {/* Équipements */}
+              <div className="flex flex-col gap-3">
+                <p className="font-medium text-sm">{f("Residence")}</p>
+                {facilities.map(({ id, label, value, selected, onChange }) => (
+                  <div key={id} className="border border-gray-300 rounded-xl p-3">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={selected}
+                        onChange={(e) => onChange(e.target.checked)}
+                        className="rounded"
+                      />
+                      <span className="text-sm">{label}</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              {/* Sliders */}
+              <div className="flex flex-col gap-4">
+                {modalData.map(({ label, range, onRangeChange, min, max, step, id }) => (
+                  <div key={id} className="w-full">
+                    <div className="flex justify-between text-sm mb-2">
+                      <p>{label}</p>
+                      <p>
+                        {range[0]} - {range[1]}
+                      </p>
+                    </div>
+                    <input
+                      type="range"
+                      min={min}
+                      max={max}
+                      step={step}
+                      value={range[1]}
+                      onChange={(e) => onRangeChange([range[0], parseInt(e.target.value)])}
+                      className="w-full"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   );
 };

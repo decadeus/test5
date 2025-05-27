@@ -76,23 +76,22 @@ function Gallery({ city, compagny, project }) {
 
   if (projects.length === 1) {
     return (
-      <div className="grid grid-cols-1 grid-rows-1 gap-4 h-[300px] md:h-[600px]  ">
-        {/* La première image occupe deux colonnes et trois lignes */}
-        <div className="">
+      <div className="grid grid-cols-1 grid-rows-1 gap-2 sm:gap-4 h-[250px] sm:h-[400px] md:h-[600px]">
+        <div className="w-full h-full">
           <div className="relative h-full w-full">
             <Avatar
-              url={projects[0]?.mainpic_url} // Image 1
+              url={projects[0]?.mainpic_url}
               width={250}
               height={150}
-              className="rounded-xl p-0 m-0"
+              className="rounded-lg sm:rounded-xl p-0 m-0"
             />
-             <Link
-               href={`/en/detailproject/${projects[0]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            <Link
+              href={`/en/detailproject/${projects[0]?.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 transition-all duration-300 text-white rounded-lg sm:rounded-xl"
             >
-              <p className={SBI}>{projects[0]?.name}</p>
+              <p className="bg-yellow-700 px-2 py-1 sm:p-2 rounded-sm text-white text-sm sm:text-base">{projects[0]?.name}</p>
             </Link>
           </div>
         </div>
@@ -102,664 +101,289 @@ function Gallery({ city, compagny, project }) {
 
   if (projects.length === 2) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 md:grid-rows-1 gap-4 h-[300px] md:h-[600px] ">
-        {/* La première image occupe deux colonnes et trois lignes */}
-        <div className="">
-          <div className="relative h-full w-full">
-            <Avatar
-              url={projects[0]?.mainpic_url} // Image 1
-              width={250}
-              height={150}
-              className="rounded-xl p-0 m-0"
-            />
-            <Link
-               href={`/en/detailproject/${projects[0]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[0]?.name}</p>
-            </Link>
-          </div>
-        </div>
-
-        {/* Les images suivantes */}
-        {projects[1] && (
-          <div className="">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 h-[250px] sm:h-[400px] md:h-[600px]">
+        {projects.map((project, index) => (
+          <div key={index} className="w-full h-full">
             <div className="relative h-full w-full">
               <Avatar
-                url={projects[1]?.mainpic_url} // Image 2
+                url={project?.mainpic_url}
                 width={250}
                 height={150}
-                className="rounded-xl p-0 m-0"
+                className="rounded-lg sm:rounded-xl p-0 m-0"
               />
-               <Link
-              href={`/en/detailproject/${projects[1]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[1]?.name}</p>
-            </Link>
+              <Link
+                href={`/en/detailproject/${project?.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 transition-all duration-300 text-white rounded-lg sm:rounded-xl"
+              >
+                <p className="bg-yellow-700 px-2 py-1 sm:p-2 rounded-sm text-white text-sm sm:text-base">{project?.name}</p>
+              </Link>
             </div>
           </div>
-        )}
+        ))}
       </div>
     );
   }
 
   if (projects.length === 3) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[300px] md:h-[600px]  ">
-        {/* La première image occupe deux colonnes et trois lignes */}
-        <div className="col-span-2 row-span-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 h-[400px] sm:h-[500px] md:h-[600px]">
+        <div className="sm:col-span-2 md:row-span-2 h-full">
           <div className="relative h-full w-full">
             <Avatar
-              url={projects[0]?.mainpic_url} // Image 1
+              url={projects[0]?.mainpic_url}
               width={250}
               height={150}
-              className="rounded-xl p-0 m-0"
+              className="rounded-lg sm:rounded-xl p-0 m-0"
             />
-             <Link
+            <Link
               href={`/en/detailproject/${projects[0]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 transition-all duration-300 text-white rounded-lg sm:rounded-xl"
             >
-              <p className={SBI}>{projects[0]?.name}</p>
+              <p className="bg-yellow-700 px-2 py-1 sm:p-2 rounded-sm text-white text-sm sm:text-base">{projects[0]?.name}</p>
             </Link>
           </div>
         </div>
-
-        {/* Les images suivantes */}
-        {projects[1] && (
-          <div className="col-span-2 col-start-3">
+        {projects.slice(1).map((project, index) => (
+          <div key={index} className="sm:col-span-1 md:col-span-2 h-full">
             <div className="relative h-full w-full">
               <Avatar
-                url={projects[1]?.mainpic_url} // Image 2
+                url={project?.mainpic_url}
                 width={250}
                 height={150}
-                className="rounded-xl p-0 m-0"
+                className="rounded-lg sm:rounded-xl p-0 m-0"
               />
-               <Link
-              href={`/en/detailproject/${projects[1]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[1]?.name}</p>
-            </Link>
+              <Link
+                href={`/en/detailproject/${project?.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 transition-all duration-300 text-white rounded-lg sm:rounded-xl"
+              >
+                <p className="bg-yellow-700 px-2 py-1 sm:p-2 rounded-sm text-white text-sm sm:text-base">{project?.name}</p>
+              </Link>
             </div>
           </div>
-        )}
-        {projects[2] && (
-          <div className="col-span-2 col-start-3">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[2]?.mainpic_url} // Image 3
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-               href={`/en/detailproject/${projects[2]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[2]?.name}</p>
-            </Link>
-            </div>
-          </div>
-        )}
+        ))}
       </div>
     );
   }
 
   if (projects.length === 4) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-3 gap-4 h-[300px] md:h-[600px] ">
-        {/* La première image occupe deux colonnes et trois lignes */}
-        <div className="col-span-2 row-span-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 h-[400px] sm:h-[500px] md:h-[600px]">
+        <div className="sm:col-span-2 md:col-span-2 md:row-span-2 h-full">
           <div className="relative h-full w-full">
             <Avatar
-              url={projects[0]?.mainpic_url} // Image 1
+              url={projects[0]?.mainpic_url}
               width={250}
               height={150}
-              className="rounded-xl p-0 m-0"
+              className="rounded-lg sm:rounded-xl p-0 m-0"
             />
-             <Link
+            <Link
               href={`/en/detailproject/${projects[0]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 transition-all duration-300 text-white rounded-lg sm:rounded-xl"
             >
-              <p className={SBI}>{projects[0]?.name}</p>
+              <p className="bg-yellow-700 px-2 py-1 sm:p-2 rounded-sm text-white text-sm sm:text-base">{projects[0]?.name}</p>
             </Link>
           </div>
         </div>
-
-        {/* Les images suivantes */}
-        {projects[1] && (
-          <div className="col-span-2 col-start-3">
+        {projects.slice(1).map((project, index) => (
+          <div key={index} className="sm:col-span-1 md:col-span-2 h-full">
             <div className="relative h-full w-full">
               <Avatar
-                url={projects[1]?.mainpic_url} // Image 2
+                url={project?.mainpic_url}
                 width={250}
                 height={150}
-                className="rounded-xl p-0 m-0"
+                className="rounded-lg sm:rounded-xl p-0 m-0"
               />
-               <Link
-               href={`/en/detailproject/${projects[1]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[1]?.name}</p>
-            </Link>
+              <Link
+                href={`/en/detailproject/${project?.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 transition-all duration-300 text-white rounded-lg sm:rounded-xl"
+              >
+                <p className="bg-yellow-700 px-2 py-1 sm:p-2 rounded-sm text-white text-sm sm:text-base">{project?.name}</p>
+              </Link>
             </div>
           </div>
-        )}
-        {projects[2] && (
-          <div className="col-span-2 col-start-3">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[2]?.mainpic_url} // Image 3
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-              href={`/en/detailproject/${projects[2]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[2]?.name}</p>
-            </Link>
-            </div>
-          </div>
-        )}
-        {projects[3] && (
-          <div className="col-span-2 col-start-3 row-start-2">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[3]?.mainpic_url} // Image 4
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-               href={`/en/detailproject/${projects[3]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[3]?.name}</p>
-            </Link>
-            </div>
-          </div>
-        )}
-        {projects[4] && (
-          <div className="col-span-2 col-start-3 row-start-3">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[4]?.mainpic_url} // Image 5
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-              href={`/en/detailproject/${projects[4]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[4]?.name}</p>
-            </Link>
-            </div>
-          </div>
-        )}
+        ))}
       </div>
     );
   }
 
   if (projects.length === 5) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[300px] md:h-[600px]  ">
-        {/* La première image occupe deux colonnes et trois lignes */}
-        <div className="col-span-2 row-span-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 h-[500px] sm:h-[600px] md:h-[700px]">
+        <div className="sm:col-span-2 md:row-span-2 h-full">
           <div className="relative h-full w-full">
             <Avatar
-              url={projects[0]?.mainpic_url} // Image 1
+              url={projects[0]?.mainpic_url}
               width={250}
               height={150}
-              className="rounded-xl p-0 m-0"
+              className="rounded-lg sm:rounded-xl p-0 m-0"
             />
-             <Link
+            <Link
               href={`/en/detailproject/${projects[0]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 transition-all duration-300 text-white rounded-lg sm:rounded-xl"
             >
-              <p className={SBI}>{projects[0]?.name}</p>
+              <p className="bg-yellow-700 px-2 py-1 sm:p-2 rounded-sm text-white text-sm sm:text-base">{projects[0]?.name}</p>
             </Link>
           </div>
         </div>
-
-        {/* Les images suivantes */}
-        {projects[1] && (
-          <div className="col-start-3">
+        {projects.slice(1).map((project, index) => (
+          <div key={index} className="h-full">
             <div className="relative h-full w-full">
               <Avatar
-                url={projects[1]?.mainpic_url} // Image 2
+                url={project?.mainpic_url}
                 width={250}
                 height={150}
-                className="rounded-xl p-0 m-0"
+                className="rounded-lg sm:rounded-xl p-0 m-0"
               />
-               <Link
-               href={`/en/detailproject/${projects[1]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[1]?.name}</p>
-            </Link>
+              <Link
+                href={`/en/detailproject/${project?.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 transition-all duration-300 text-white rounded-lg sm:rounded-xl"
+              >
+                <p className="bg-yellow-700 px-2 py-1 sm:p-2 rounded-sm text-white text-sm sm:text-base">{project?.name}</p>
+              </Link>
             </div>
           </div>
-        )}
-        {projects[2] && (
-          <div className="col-start-4">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[2]?.mainpic_url} // Image 3
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-               href={`/en/detailproject/${projects[2]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[2]?.name}</p>
-            </Link>
-            </div>
-          </div>
-        )}
-        {projects[3] && (
-          <div className="col-start-3 row-start-2">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[3]?.mainpic_url} // Image 4
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-              href={`/en/detailproject/${projects[3]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[3]?.name}</p>
-            </Link>
-            </div>
-          </div>
-        )}
-        {projects[4] && (
-          <div className="col-start-4 row-start-2">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[4]?.mainpic_url} // Image 5
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-              href={`/en/detailproject/${projects[4]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[4]?.name}</p>
-            </Link>
-            </div>
-          </div>
-        )}
+        ))}
       </div>
     );
   }
 
   if (projects.length === 6) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-4 gap-4 h-[300px] md:h-[600px] ">
-        {/* La première image occupe deux colonnes et trois lignes */}
-        <div className="col-span-2 row-span-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 h-[600px] sm:h-[700px] md:h-[800px]">
+        <div className="sm:col-span-2 md:col-span-2 h-full">
           <div className="relative h-full w-full">
             <Avatar
-              url={projects[0]?.mainpic_url} // Image 1
+              url={projects[0]?.mainpic_url}
               width={250}
               height={150}
-              className="rounded-xl p-0 m-0"
+              className="rounded-lg sm:rounded-xl p-0 m-0"
             />
-             <Link
+            <Link
               href={`/en/detailproject/${projects[0]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 transition-all duration-300 text-white rounded-lg sm:rounded-xl"
             >
-              <p className={SBI}>{projects[0]?.name}</p>
+              <p className="bg-yellow-700 px-2 py-1 sm:p-2 rounded-sm text-white text-sm sm:text-base">{projects[0]?.name}</p>
             </Link>
           </div>
         </div>
 
-        {/* Les images suivantes */}
-        {projects[1] && (
-          <div className="col-start-3">
+        {projects.slice(1, 3).map((project, index) => (
+          <div key={index} className="md:col-start-3 h-full">
             <div className="relative h-full w-full">
               <Avatar
-                url={projects[1]?.mainpic_url} // Image 2
+                url={project?.mainpic_url}
                 width={250}
                 height={150}
-                className="rounded-xl p-0 m-0"
+                className="rounded-lg sm:rounded-xl p-0 m-0"
               />
-               <Link
-              href={`/en/detailproject/${projects[1]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[1]?.name}</p>
-            </Link>
+              <Link
+                href={`/en/detailproject/${project?.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 transition-all duration-300 text-white rounded-lg sm:rounded-xl"
+              >
+                <p className="bg-yellow-700 px-2 py-1 sm:p-2 rounded-sm text-white text-sm sm:text-base">{project?.name}</p>
+              </Link>
             </div>
           </div>
-        )}
-        {projects[2] && (
-          <div className="col-start-3 row-start-2">
+        ))}
+
+        {projects.slice(3).map((project, index) => (
+          <div key={index} className="h-full">
             <div className="relative h-full w-full">
               <Avatar
-                url={projects[2]?.mainpic_url} // Image 3
+                url={project?.mainpic_url}
                 width={250}
                 height={150}
-                className="rounded-xl p-0 m-0"
+                className="rounded-lg sm:rounded-xl p-0 m-0"
               />
-               <Link
-               href={`/en/detailproject/${projects[2]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[2]?.name}</p>
-            </Link>
+              <Link
+                href={`/en/detailproject/${project?.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 transition-all duration-300 text-white rounded-lg sm:rounded-xl"
+              >
+                <p className="bg-yellow-700 px-2 py-1 sm:p-2 rounded-sm text-white text-sm sm:text-base">{project?.name}</p>
+              </Link>
             </div>
           </div>
-        )}
-        {projects[3] && (
-          <div className="row-start-3">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[3]?.mainpic_url} // Image 4
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-              href={`/en/detailproject/${projects[3]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[3]?.name}</p>
-            </Link>
-            </div>
-          </div>
-        )}
-        {projects[4] && (
-          <div className="col-start-1 row-start-4">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[4]?.mainpic_url} // Image 5
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-               href={`/en/detailproject/${projects[4]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[4]?.name}</p>
-            </Link>
-            </div>
-          </div>
-        )}
-        {projects[5] && (
-          <div className="col-span-2 row-span-2 col-start-2 row-start-3">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[5]?.mainpic_url} // Image 5
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-               href={`/en/detailproject/${projects[5]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[5]?.name}</p>
-            </Link>
-            </div>
-          </div>
-        )}
+        ))}
       </div>
     );
   }
 
   if (projects.length === 7) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-6 grid-rows-3 gap-4 h-[300px] md:h-[600px] ">
-        {/* La première image occupe deux colonnes et trois lignes */}
-        <div className="col-span-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-4 h-[700px] sm:h-[800px] md:h-[900px]">
+        <div className="sm:col-span-3 md:col-span-3 h-full">
           <div className="relative h-full w-full">
             <Avatar
-              url={projects[0]?.mainpic_url} // Image 1
+              url={projects[0]?.mainpic_url}
               width={250}
               height={150}
-              className="rounded-xl p-0 m-0"
+              className="rounded-lg sm:rounded-xl p-0 m-0"
             />
-             <Link
-               href={`/en/detailproject/${projects[0]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
+            <Link
+              href={`/en/detailproject/${projects[0]?.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 transition-all duration-300 text-white rounded-lg sm:rounded-xl"
             >
-              <p className={SBI}>{projects[0]?.name}</p>
+              <p className="bg-yellow-700 px-2 py-1 sm:p-2 rounded-sm text-white text-sm sm:text-base">{projects[0]?.name}</p>
             </Link>
-            <div className="absolute bottom-0 left-0 p-2">
-              <Textcp
-                project={projects[0]?.name}
-                company={projects[0]?.compagny}
-              />
-            </div>
           </div>
         </div>
 
-        {/* Les images suivantes */}
-        {projects[1] && (
-          <div className="col-span-3 col-start-4">
+        {projects.slice(1).map((project, index) => (
+          <div key={index} className="sm:col-span-1 md:col-span-2 h-full">
             <div className="relative h-full w-full">
               <Avatar
-                url={projects[1]?.mainpic_url} // Image 2
+                url={project?.mainpic_url}
                 width={250}
                 height={150}
-                className="rounded-xl p-0 m-0"
+                className="rounded-lg sm:rounded-xl p-0 m-0"
               />
-               <Link
-              href={`/en/detailproject/${projects[1]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[1]?.name}</p>
-            </Link>
-              <div className="absolute bottom-0 left-0 p-2">
-                <Textcp
-                  project={projects[1]?.name}
-                  company={projects[1]?.compagny}
-                />
-              </div>
+              <Link
+                href={`/en/detailproject/${project?.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 transition-all duration-300 text-white rounded-lg sm:rounded-xl"
+              >
+                <p className="bg-yellow-700 px-2 py-1 sm:p-2 rounded-sm text-white text-sm sm:text-base">{project?.name}</p>
+              </Link>
             </div>
           </div>
-        )}
-        {projects[2] && (
-          <div className="col-span-2 row-span-2 row-start-2">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[2]?.mainpic_url} // Image 3
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-              href={`/en/detailproject/${projects[2]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[2]?.name}</p>
-            </Link>
-              <div className="absolute bottom-0 left-0 p-2">
-                <Textcp
-                  project={projects[2]?.name}
-                  company={projects[2]?.compagny}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-        {projects[3] && (
-          <div className="col-span-2 col-start-3 row-start-2">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[3]?.mainpic_url} // Image 4
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-               href={`/en/detailproject/${projects[3]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[3]?.name}</p>
-            </Link>
-              <div className="absolute bottom-0 left-0 p-2">
-                <Textcp
-                  project={projects[3]?.name}
-                  company={projects[3]?.compagny}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-        {projects[4] && (
-          <div className="col-span-2 col-start-3 row-start-3">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[4]?.mainpic_url} // Image 5
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-               href={`/en/detailproject/${projects[4]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[4]?.name}</p>
-            </Link>
-              <div className="absolute bottom-0 left-0 p-2">
-                <Textcp
-                  project={projects[4]?.name}
-                  company={projects[4]?.compagny}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-        {projects[5] && (
-          <div className="col-span-2 col-start-5 row-start-2">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[5]?.mainpic_url} // Image 5
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-               href={`/en/detailproject/${projects[5]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[5]?.name}</p>
-            </Link>
-              <div className="absolute bottom-0 left-0 p-2">
-                <Textcp
-                  project={projects[5]?.name}
-                  company={projects[5]?.compagny}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-        {projects[6] && (
-          <div className="col-span-2 col-start-5 row-start-3">
-            <div className="relative h-full w-full">
-              <Avatar
-                url={projects[6]?.mainpic_url} // Image 5
-                width={250}
-                height={150}
-                className="rounded-xl p-0 m-0"
-              />
-               <Link
-               href={`/en/detailproject/${projects[6]?.id}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="absolute top-0 left-0 w-full h-full flex items-center justify-center hover:bg-gray-50/20 hover:bg-opacity-50 text-white rounded-xl"
-            >
-              <p className={SBI}>{projects[6]?.name}</p>
-            </Link>
-              <div className="absolute bottom-0 left-0 p-2">
-                <Textcp
-                  project={projects[6]?.name}
-                  company={projects[6]?.compagny}
-                />
-              </div>
-            </div>
-          </div>
-        )}
+        ))}
       </div>
     );
   }
 
-  return <div></div>;
+  return null;
 }
-
-export default Gallery;
 
 function Textcp({ project, company }) {
   return (
-    <div className="flex flex-col bg-gray-900/50 p-2">
-      <p className="text-white">{project}</p>
-      <p className="text-white">{company}</p>
+    <div className="flex flex-col bg-gray-900/50 p-2 sm:p-3 backdrop-blur-sm">
+      <p className="text-white text-sm sm:text-base font-medium truncate">{project}</p>
+      <p className="text-white/80 text-xs sm:text-sm truncate">{company}</p>
     </div>
   );
 }
+
+export default Gallery;
