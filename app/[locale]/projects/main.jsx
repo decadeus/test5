@@ -217,7 +217,7 @@ function Main() {
     setCurrentPage((p) => Math.max(p - 1, 1));
 
   return (
-    <div className="flex flex-col w-full bg-gray-50 sm:pt-4 mt-12 text-gray-700 mb-16 px-10">
+    <div className="flex flex-col w-full bg-gray-50 sm:pt-4 mt-12 text-gray-700 mb-16 px-5">
       {/* Barre de filtre */}
       <div className="w-full border-b-1 border-gray-300">
         <FilterB
