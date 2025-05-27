@@ -79,7 +79,7 @@ export default function Page() {
         router={router}
       />
 
-      <div className="w-full flex flex-col xl:mb-32 lg:mb-28 md:mb-20 sm:mb-10">
+      <div className="w-full flex flex-col mb-10 sm:mb-14 md:mb-20 lg:mb-28 xl:mb-32 px-4 sm:px-6 md:px-10 xl:px-16">
         <ScrollProjectList
           projects={projects}
           t={t}

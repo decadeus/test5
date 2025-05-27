@@ -15,14 +15,16 @@ const DualLayerFadeSection = () => {
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    width: "600px",
-    height: "400px",
+    width: "100%",
+    maxWidth: "600px",
+    height: "auto",
+    aspectRatio: "3 / 2",
   };
 
   const baseCardStyle = {
     position: "absolute",
-    width: "600px",
-    height: "400px",
+    width: "100%",
+    height: "100%",
     transition: "transform 1s ease, opacity 1s ease, top 1s ease",
     borderRadius: "20px",
     opacity: 0.7,
@@ -89,8 +91,8 @@ const CardProjectInfo = () => (
           ["Currency", "PLN"]
         ].map(([label, value], i) => (
           <div key={i}>
-            <p>{label}</p>
-            <p className="w-full bg-white h-8 border px-2 flex items-center">{value}</p>
+            <p className="text-xs sm:text-sm md:text-base">{label}</p>
+            <p className="w-full bg-white h-8 border px-2 flex items-center text-xs sm:text-sm md:text-base">{value}</p>
           </div>
         ))}
       </div>
@@ -102,8 +104,8 @@ const CardProjectInfo = () => (
           ["", ""]
         ].map(([label, value], i) => (
           <div key={i}>
-            <p>{label}</p>
-            <p className="w-full bg-white h-8 border px-2 flex items-center">{value}</p>
+            <p className="text-xs sm:text-sm md:text-base">{label}</p>
+            <p className="w-full bg-white h-8 border px-2 flex items-center text-xs sm:text-sm md:text-base">{value}</p>
           </div>
         ))}
       </div>
@@ -131,7 +133,7 @@ const CardSharedServices = () => {
           <div key={col} className="flex flex-col gap-6 w-1/3">
             {services.slice(col * 3, col * 3 + 3).map(([name, enabled], i) => (
               <div key={i}>
-                <p className="text-sm">{name}</p>
+                <p className="text-xs sm:text-sm md:text-base">{name}</p>
                 <div className={`w-9 h-5 rounded-full relative ${enabled ? "bg-blue-500" : "bg-gray-300"}`}>
                   <div
                     className={`w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 ${enabled ? "left-[18px]" : "left-0.5"} transition-all`}
@@ -153,9 +155,9 @@ const CardPlaceholder = () => (
       <table className="w-full table-auto border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-100">
-            <th className="border border-gray-300 px-4 py-2 text-left">Nom</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">Rôle</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">Accès aux projets</th>
+            <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Nom</th>
+            <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Rôle</th>
+            <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Accès aux projets</th>
           </tr>
         </thead>
         <tbody>
@@ -165,9 +167,9 @@ const CardPlaceholder = () => (
             ["Anna Zielinska", "Marketing", "Tous"]
           ].map(([nom, role, acces], idx) => (
             <tr key={idx} className={idx % 2 === 1 ? "bg-gray-50" : ""}>
-              <td className="border border-gray-300 px-4 py-2">{nom}</td>
-              <td className="border border-gray-300 px-4 py-2">{role}</td>
-              <td className="border border-gray-300 px-4 py-2">{acces}</td>
+              <td className="border border-gray-300 px-4 py-2 text-xs sm:text-sm md:text-base">{nom}</td>
+              <td className="border border-gray-300 px-4 py-2 text-xs sm:text-sm md:text-base">{role}</td>
+              <td className="border border-gray-300 px-4 py-2 text-xs sm:text-sm md:text-base">{acces}</td>
             </tr>
           ))}
         </tbody>
@@ -190,28 +192,28 @@ const CardApartmentInfo = () => {
         <table className="w-full table-fixed border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border border-gray-300 px-4 py-2 text-left">Reference</th>
-              <th className="border border-gray-300 px-4 py-2 text-left">Surface</th>
-              <th className="border border-gray-300 px-4 py-2 text-left">Étage</th>
-              <th className="border border-gray-300 px-4 py-2 text-left">Chambres</th>
-              <th className="border border-gray-300 px-4 py-2 text-left">Prix</th>
-              <th className="border border-gray-300 px-4 py-2 text-left">Commentaire</th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Reference</th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Surface</th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Étage</th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Chambres</th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Prix</th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Commentaire</th>
             </tr>
           </thead>
           <tbody>
             <tr className="bg-blue-50 hover:bg-blue-100 cursor-pointer transition">
-              <td colSpan={6} className="text-center py-3 text-blue-600 font-medium">
+              <td colSpan={6} className="text-center py-3 text-blue-600 font-medium text-xs sm:text-sm md:text-base">
                 + Ajouter un nouvel appartement
               </td>
             </tr>
             {apartments.map((apt, idx) => (
               <tr key={idx} className={idx % 2 === 1 ? "bg-gray-50/80" : "bg-gray-200/80"}>
-                <td className="border border-gray-300 px-4 py-2">{apt.type}</td>
-                <td className="border border-gray-300 px-4 py-2">{apt.surface}</td>
-                <td className="border border-gray-300 px-4 py-2">{apt.etage}</td>
-                <td className="border border-gray-300 px-4 py-2">{apt.chambres}</td>
-                <td className="border border-gray-300 px-4 py-2">{apt.prix}</td>
-                <td className="border border-gray-300 px-4 py-2">{apt.commentaire}</td>
+                <td className="border border-gray-300 px-4 py-2 text-xs sm:text-sm md:text-base">{apt.type}</td>
+                <td className="border border-gray-300 px-4 py-2 text-xs sm:text-sm md:text-base">{apt.surface}</td>
+                <td className="border border-gray-300 px-4 py-2 text-xs sm:text-sm md:text-base">{apt.etage}</td>
+                <td className="border border-gray-300 px-4 py-2 text-xs sm:text-sm md:text-base">{apt.chambres}</td>
+                <td className="border border-gray-300 px-4 py-2 text-xs sm:text-sm md:text-base">{apt.prix}</td>
+                <td className="border border-gray-300 px-4 py-2 text-xs sm:text-sm md:text-base">{apt.commentaire}</td>
               </tr>
             ))}
           </tbody>

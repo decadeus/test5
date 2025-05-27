@@ -7,25 +7,25 @@ const BouncingShapesSection = ({
   width = "100%",
   height = "90vh",
 }) => (
-  <section className="bouncing-section" style={{ width, height }}>
+  <section className="bouncing-section flex flex-col lg:flex-row" style={{ width, height }}>
     {/* Grandes formes animées en background */}
     <div className="shape shape1" />
     <div className="shape shape2" />
 
     {/* Texte centré avec cartes animées */}
-    <div className="w-1/3 flex flex-col items-center justify-center">
+    <div className="w-full lg:w-1/3 flex flex-col items-center justify-center px-4 sm:px-6">
       <div className="flex items-start flex-col">
-        <h2 className="text-6xl text-gray-700 font-bold flex flex-col">
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl text-gray-700 font-bold flex flex-col">
           <span>Rejoignez</span>
           <span>Hoomge</span>
         </h2>
-        <p className="text-lg pt-8">Ajouter gratuitement votre projet</p>
+        <p className="text-sm sm:text-base md:text-lg pt-4 sm:pt-6 md:pt-8">Ajouter gratuitement votre projet</p>
         <button className="bg-[#FF0066] text-white rounded-full px-4 py-2 mt-4 flex items-center justify-center">
           <a
             href="https://hoomge.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-lg font-bold w-full h-full text-center"
+            className="text-sm sm:text-base md:text-lg font-bold w-full h-full text-center"
           >
             En savoir plus
           </a>
@@ -33,7 +33,7 @@ const BouncingShapesSection = ({
       </div>
     </div>
 
-    <div className="fade-container w-2/3">
+    <div className="fade-container w-full lg:w-2/3 px-4 sm:px-6">
       <DualLayerFadeSection />
     </div>
 
@@ -42,9 +42,6 @@ const BouncingShapesSection = ({
         background: #fff;
         position: relative;
         overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
       }
       .shape {
         position: absolute;

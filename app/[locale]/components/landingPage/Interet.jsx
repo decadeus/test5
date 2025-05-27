@@ -6,7 +6,7 @@ export default function Interet() {
       className="relative py-16 text-black w-full"
       style={{ backgroundColor: "#e8e9eb" }}
     >
-      <div className="grid md:grid-cols-2 gap-12 items-center px-28 py-24">
+      <div className="grid md:grid-cols-2 gap-12 items-center px-6 sm:px-12 md:px-20 lg:px-28 py-12 sm:py-16 md:py-20 lg:py-24">
         <div>
           <h2 className="text-3xl font-bold mb-6 text-gray-800">
             Concentrez-vous sur vos projets, on s’occupe du reste
@@ -28,7 +28,7 @@ export default function Interet() {
           </p>
         </div>
 
-        <div className="w-full h-64 relative rounded-2xl overflow-hidden border border-white/20">
+        <div className="w-full h-48 sm:h-64 md:h-80 relative rounded-2xl overflow-hidden border border-white/20">
           <Image
             src="/Land.jpg"
             alt="Background"
