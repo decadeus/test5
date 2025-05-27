@@ -9,8 +9,12 @@ export default function UAvatar({ uid, url, size, classn, width, height}) {
 
 
   useEffect(() => {
-    if (url?.startsWith("blob:")) {
-      setAvatarUrl(url);
+    if (typeof url === "string") {
+      if (url.startsWith("blob:")) {
+        setAvatarUrl(url);
+      } else if (url.startsWith("/storage/")) {
+        setAvatarUrl(`https://igoqwthxpqjrnflhpkil.supabase.co${url}`);
+      }
     }
   }, [url]);
 

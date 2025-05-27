@@ -4,6 +4,24 @@ import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/app/getimage/project";
 import Link from "next/link";
 
+// Fonction utilitaire pour récupérer l'URL de l'image principale d'un projet
+const getMainImageUrl = async (supabase, projectId) => {
+  const { data: files, error: listError } = await supabase.storage.from("project").list(projectId);
+  if (listError || !files) return null;
+
+  const match = files
+    .filter((f) => f.name.startsWith("image1-"))
+    .sort((a, b) => b.name.localeCompare(a.name))[0];
+
+  if (!match) return null;
+
+  const path = `${projectId}/${match.name}`;
+  const { data: fileData, error: downloadError } = await supabase.storage.from("project").download(path);
+  if (downloadError || !fileData) return null;
+
+  return URL.createObjectURL(fileData);
+};
+
 function Gallery({ city, compagny, project }) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,26 +49,11 @@ function Gallery({ city, compagny, project }) {
     if (error) {
       setError(error);
     } else if (data) {
-      // Nouvelle logique d'enrichissement, similaire à ScrollProjectList
+      // Utilise la fonction utilitaire pour chaque projet
       const enriched = await Promise.all(
         data.map(async (project) => {
-          const { data: files, error: listError } = await supabase.storage.from("project").list(project.id);
-          if (listError || !files) return { ...project, mainpic_url: null };
-
-          const match = files
-            .filter((f) => f.name.startsWith("image1-"))
-            .sort((a, b) => b.name.localeCompare(a.name))[0];
-
-          if (match) {
-            const path = `${project.id}/${match.name}`;
-            const { data: fileData, error: downloadError } = await supabase.storage.from("project").download(path);
-            if (!downloadError && fileData) {
-              const blobUrl = URL.createObjectURL(fileData);
-              return { ...project, mainpic_url: blobUrl };
-            }
-          }
-
-          return { ...project, mainpic_url: null };
+          const mainpic_url = await getMainImageUrl(supabase, project.id);
+          return { ...project, mainpic_url };
         })
       );
       setProjects(enriched);

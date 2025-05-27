@@ -5,12 +5,13 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import L from "leaflet";
-import Avatar from "@/app/getimage/project";
+import UAvatar from "@/app/getimage/project";
 import Link from "next/link";
 import a from "@/components/image/appart1.jpg";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import Point from "@/components/svg/point";
 import { usePathname } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
 
 const createTextIcon = () => {
   const flowerSVG = ReactDOMServer.renderToStaticMarkup(<Point />);
@@ -53,11 +54,60 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
     mLng || 2.341876947781295,
   ]);
 
+  const [imageUrls, setImageUrls] = useState({});
+
   useEffect(() => {
     if (todos.length > 0) {
       const bounds = getMapBounds(todos);
       setCenter(bounds.getCenter());
     }
+  }, [todos]);
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    async function fetchImages() {
+      const newImageUrls = {};
+
+      await Promise.all(todos.map(async (todo) => {
+        if (!todo.id) {
+          console.warn("⛔ Projet sans ID détecté :", todo);
+          return;
+        }
+
+        console.log("🔍 Listing files for:", todo.id, todo.name);
+        const { data: files, error } = await supabase.storage.from("project").list(todo.id.toString());
+        if (error || !files) {
+          console.warn(`⚠️ Erreur lors du listing des fichiers pour ${todo.name} (${todo.id})`, error);
+          return;
+        }
+
+        console.log(`📂 Fichiers pour ${todo.name}:`, files.map(f => f.name));
+
+        const match = files
+          .filter(f => f.name.startsWith("image1-"))
+          .sort((a, b) => b.name.localeCompare(a.name))[0];
+
+        if (match) {
+          console.log(`✅ Match trouvé pour ${todo.name}:`, match.name);
+          const path = `${todo.id}/${match.name}`;
+          const { data: fileData, error: downloadError } = await supabase.storage.from("project").download(path);
+          if (downloadError || !fileData) {
+            console.warn(`❌ Erreur téléchargement image pour ${todo.name}:`, downloadError);
+            return;
+          }
+          const blobUrl = URL.createObjectURL(fileData);
+          newImageUrls[todo.id] = blobUrl;
+          console.log(`🖼️ Blob URL assigné pour ${todo.name}:`, blobUrl);
+        } else {
+          console.log(`🚫 Aucun fichier image1- trouvé pour ${todo.name}`);
+        }
+      }));
+
+      setImageUrls(newImageUrls);
+    }
+
+    fetchImages();
   }, [todos]);
 
   const bounds = getMapBounds(todos);
@@ -115,12 +165,12 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
                     {todo.name}
                   </h2>
                   <div className="relative h-48 w-full">
-                    <Avatar
-                      url={todo.mainpic_url || a}
+                    <UAvatar
+                      url={imageUrls[todo.id]}
                       width={500}
                       height={200}
-                      className="object-cover w-full h-full"
-                      alt="Project Image"
+                      classn="object-cover w-full h-full"
+                      alt={`Image projet ${todo.name}`}
                     />
                   </div>
                   <div className="text-gray-700 text-sm">
@@ -130,17 +180,13 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
                   </div>
 
                   <div className="w-full flex items-center justify-center my-2">
-                    <div className="w-full flex justify-center items-center text-sm mb-2">
-                      {todo.qty} Appartment(s)
-                    </div>
+                   
                     <div className="w-full flex justify-center">
-                      {locale && (
-                        <Link href={`/${locale}/detailproject/${todo.codepro}`}>
-                          <button className="w-full py-1 px-6 flex items-center justify-center text-white text-base font-semibold bg-gradient-to-r from-yellow-800 to-yellow-700 rounded-md shadow-xl">
-                            Details
-                          </button>
-                        </Link>
-                      )}
+                      <Link href={`/${locale}/detailproject/${todo.id}`}>
+                        <button className="w-full py-1 px-6 flex items-center justify-center text-white text-base font-semibold bg-gradient-to-r from-yellow-800 to-yellow-700 rounded-md shadow-xl">
+                          Details
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

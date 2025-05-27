@@ -75,6 +75,39 @@ export default function ScrollProjectList({ projects, t, uniqueCompanies, unique
   const { showCursor, setShowCursor, cursorLink, setCursorLink, CursorComponent } =
     useCustomCursor(t("EnSavoirPlus"));
 
+  // Added state and effect to load images for todos (assuming todos is projects here)
+  const [imageUrls, setImageUrls] = useState({});
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    async function fetchImages() {
+      const newImageUrls = {};
+
+      await Promise.all(projects.map(async (todo) => {
+        const { data: files, error } = await supabase.storage.from("project").list(todo.id);
+        if (error || !files) return;
+
+        const match = files
+          .filter((f) => f.name.startsWith("image1-"))
+          .sort((a, b) => b.name.localeCompare(a.name))[0];
+
+        if (match) {
+          const path = `${todo.id}/${match.name}`;
+          const { data: fileData, error: downloadError } = await supabase.storage.from("project").download(path);
+          if (!downloadError && fileData) {
+            const blobUrl = URL.createObjectURL(fileData);
+            newImageUrls[todo.id] = blobUrl;
+          }
+        }
+      }));
+
+      setImageUrls(newImageUrls);
+    }
+
+    fetchImages();
+  }, [projects]);
+
   return (
     <div className="flex flex-col justify-center mx-auto w-[350px] sm:w-[550px] md:w-[700px] lg:w-[950px] xl:w-[1100px] overflow-x-auto relative pt-24">
       <h2 className="font-macondo text-black text-4xl">{t("TitleNew")}</h2>
@@ -92,6 +125,7 @@ export default function ScrollProjectList({ projects, t, uniqueCompanies, unique
       item={item}
       setShowCursor={setShowCursor}
       setCursorLink={setCursorLink}
+      url={imageUrls[item.id]}
     />
 ))}
           </div>

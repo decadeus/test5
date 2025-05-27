@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
+import { useParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { FaEuroSign, FaHeart, FaRegHeart } from "react-icons/fa";
 import { TbCurrencyZloty } from "react-icons/tb";
@@ -34,6 +35,7 @@ const LazyMap = dynamic(() => import("@/app/[locale]/map/index"), {
 
 function Main() {
   // States principaux
+  const { locale } = useParams();
   const [projects, setProjects] = useState([]);
   const [originalProjects, setOriginalProjects] = useState([]);
   const [error, setError] = useState(null);
@@ -350,7 +352,12 @@ function Main() {
                       <span className="flex-grow text-gray-500 text-sm text-center truncate">
                         {item.project.compagny}
                       </span>
-                      <ExternalLink className="ml-auto w-5 h-5 text-gray-500 hover:text-primary-600 cursor-pointer" />
+                      <a
+                        href={`/${locale}/detailproject/${item.project.id}`}
+                        className="ml-auto w-5 h-5 text-gray-500 hover:text-primary-600 cursor-pointer"
+                      >
+                        <ExternalLink />
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -391,6 +398,7 @@ function Main() {
                 mainpic_url: project?.mainpic_url,
                 link: project?.link,
                 codepro: project?.codepro,
+                id: project?.id,
               }))}
               maxLat={latLngExtremes.maxLat}
               minLng={latLngExtremes.minLng}
