@@ -51,15 +51,20 @@ export default function ListProjectPage() {
 
         // Récupérer les images du projet depuis le storage
         const fetchProjectImages = async () => {
-          const { data: files, error } = await supabase.storage.from("project").list(data.id);
+          const { data: files, error } = await supabase.storage
+            .from("project")
+            .list(data.id);
           if (error || !files) return;
 
           const imageBlobs = await Promise.all(
             files
-              .filter(f => f.name.startsWith("image"))
+              .filter((f) => f.name.startsWith("image"))
               .sort((a, b) => a.name.localeCompare(b.name))
               .map(async (file) => {
-                const { data: fileData, error: downloadError } = await supabase.storage.from("project").download(`${data.id}/${file.name}`);
+                const { data: fileData, error: downloadError } =
+                  await supabase.storage
+                    .from("project")
+                    .download(`${data.id}/${file.name}`);
                 if (!downloadError && fileData) {
                   return URL.createObjectURL(fileData);
                 }
@@ -221,9 +226,9 @@ export default function ListProjectPage() {
                   <Image
                     src={img}
                     alt={
-                      index === 0
-                        ? `${name}. Budynek mieszkalny w ${city} - ${index + 1}`
-                        : `Project Image ${index + 1}`
+                   
+                         `${name}. Budynek mieszkalny w ${city} - ${index + 1}`
+                        
                     }
                     fill
                     className="object-cover  transition-transform duration-300  hover:brightness-110"
@@ -279,9 +284,8 @@ export default function ListProjectPage() {
 
               {/* Metadatas */}
               <div className="">
-                
                 <p className="text-gray-600 whitespace-pre-line">{des}</p>
-                < br/>
+                <br />
                 <p className="text-gray-600 whitespace-pre-line">{fulldescr}</p>
               </div>
 
@@ -294,7 +298,10 @@ export default function ListProjectPage() {
                 <div className="flex flex-wrap gap-6 mt-4">
                   {amenitiesIcons.map((Icon, i) => (
                     <div key={i} className="w-24 sm:w-24 md:w-24">
-                      <Icon title="Amenity Icon" className="transform transition-transform duration-300 hover:scale-110 hover:brightness-110" />
+                      <Icon
+                        title="Amenity Icon"
+                        className="transform transition-transform duration-300 hover:scale-110 hover:brightness-110"
+                      />
                     </div>
                   ))}
                 </div>
@@ -370,7 +377,7 @@ export default function ListProjectPage() {
                             {item.floor}
                           </td>
                           <td className="border p-3 font-semibold">
-                           {item.price} zł 
+                            {item.price} zł
                           </td>
                           <td className="border p-3 text-center">
                             {item.garden && (
@@ -408,7 +415,7 @@ export default function ListProjectPage() {
                                 src={project.mainpic_url}
                                 width={400}
                                 height={400}
-                                alt={`${project.name}. Budynek mieszkalny w ${project.city || 'mieście nieznanym'}`}
+                                alt={`${project.name}. Budynek mieszkalny w ${project.city || "mieście nieznanym"}`}
                                 className="rounded-xl w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                                 sizes="(max-width: 768px) 100vw, 400px"
                               />
@@ -469,7 +476,10 @@ export default function ListProjectPage() {
                         Language:{" "}
                         <div className="flex flex-wrap gap-2 mt-2">
                           {languages.map((lang, i) => (
-                            <span key={i} className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                            <span
+                              key={i}
+                              className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
+                            >
                               {lang}
                             </span>
                           ))}
