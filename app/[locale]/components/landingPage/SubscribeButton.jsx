@@ -2,11 +2,13 @@
 
 import { loadStripe } from "@stripe/stripe-js";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export default function SubscribeButton() {
   const [loading, setLoading] = useState(false);
+  const t = useTranslations("Subscribe");
 
   const handleSubscribe = async (priceId) => {
     setLoading(true);
@@ -36,21 +38,21 @@ export default function SubscribeButton() {
 
   const plans = [
     {
-      title: "1 projet",
-      users: "Jusqu'à 2 utilisateurs",
-      price: "S'abonner - 147 PLN / mois",
+      title: t("plan1.title"),
+      users: t("plan1.users"),
+      price: t("plan1.price"),
       priceId: "price_1ROPn5RQdIKmYv9arYhFrW3S",
     },
     {
-      title: "5 projets",
-      users: "Jusqu'à 6 utilisateurs",
-      price: "S'abonner - 500 PLN / mois",
+      title: t("plan2.title"),
+      users: t("plan2.users"),
+      price: t("plan2.price"),
       priceId: "price_1ROOd1RQdIKmYv9a4xzLVZAi",
     },
     {
-      title: "10 projets",
-      users: "Jusqu'à 11 utilisateurs",
-      price: "S'abonner - 750 PLN / mois",
+      title: t("plan3.title"),
+      users: t("plan3.users"),
+      price: t("plan3.price"),
       priceId: "price_1ROizERQdIKmYv9aTyeA27hh",
     },
   ];
@@ -58,11 +60,10 @@ export default function SubscribeButton() {
   return (
     <div className="flex justify-center px-4 py-12 flex-col items-center bg-slate-700 w-full">
       <h2 className="text-4xl font-bold text-white pb-10">
-        Souscription à un abonnement
+        {t("title")}
       </h2>
       <p className="text-lg text-white pb-10">
-        Pour publier vos projets immobiliers sur notre plateforme, commencez par
-        créer un compte promoteur et choisissez la formule adaptée à vos besoins...
+        {t("description")}
       </p>
       <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-3 max-w-6xl w-full">
         {plans.map(({ title, users, price, priceId }, i) => (
@@ -80,18 +81,18 @@ export default function SubscribeButton() {
               aria-label={`Choisir la formule ${title}`}
               className="w-full px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition text-sm"
             >
-              {loading ? "Redirection..." : "Choisir cette formule"}
+              {loading ? t("loading") : t("choosePlan")}
             </button>
           </div>
         ))}
 
         <div className="sm:col-span-1 lg:col-span-3 text-center mt-6 text-white">
-          Besoin de plus de 10 projets ou d'utilisateurs supplémentaires ?<br />
+          {t("needMore")}<br />
           <a
             href="mailto:contact@hoomge.com"
             className="inline-block mt-2 text-white underline hover:text-black font-medium"
           >
-            Contactez-nous pour une offre sur mesure
+            {t("contactUs")}
           </a>
         </div>
       </div>

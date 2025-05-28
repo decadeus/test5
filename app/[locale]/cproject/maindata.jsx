@@ -8,6 +8,7 @@ import { companies } from "@/utils/companies";
 import { countryData } from "@/utils/countryData";
 import { useTranslations } from "next-intl";
 import IASEO from "./iaseo";
+import IASEOTitle from "./iaseotitle";
 import IAGENERALE from "./iagenerale";
 import IACOMMUNITY from "./iacommunity";
 import { FaQuestionCircle } from "react-icons/fa";
@@ -26,7 +27,7 @@ import {
 
 export default function Maindata({ project, onProjectUpdate }) {
   const supabase = createClient();
-  const f = useTranslations("Projet");
+  const t = useTranslations("Projet");
 
   // Contrôle local via les props projet (pas besoin de fetch initial)
   const [editableCompagny, setEditableCompagny] = useState(
@@ -53,6 +54,7 @@ export default function Maindata({ project, onProjectUpdate }) {
   const [editableFulldescr, setEditableFulldescr] = useState(
     project?.fulldescr || ""
   );
+  const [editableTitle, setEditableTitle] = useState(project?.title || "");
   const [features, setFeatures] = useState({
     swim: project?.swim || false,
     cctv: project?.cctv || false,
@@ -77,7 +79,7 @@ export default function Maindata({ project, onProjectUpdate }) {
     setIsOnline(project?.online || false);
     setEditableDes(project?.des || "");
     setEditableCoam(project?.coam || "");
-    setEditableAponsel(project?.aponsel || "");
+    setEditableTitle(project?.title || "");
     setEditableFulldescr(project?.fulldescr || "");
     setFeatures({
       swim: project?.swim || false,
@@ -92,6 +94,7 @@ export default function Maindata({ project, onProjectUpdate }) {
 
   const [openModalCommunity, setOpenModalCommunity] = useState(false);
   const [openModalSEO, setOpenModalSEO] = useState(false);
+  const [openModalSEOTitle, setOpenModalSEOTitle] = useState(false);
   const [openModalGenerale, setOpenModalGenerale] = useState(false);
 
   const handleSave = async () => {
@@ -122,12 +125,12 @@ export default function Maindata({ project, onProjectUpdate }) {
       link: editableLink,
       des: editableDes,
       coam: editableCoam,
-      aponsel: editableAponsel,
+      title: editableTitle,
       fulldescr: editableFulldescr,
       online: isOnline,
       ...features,
     };
-    // N'inclure pricetype que s’il est défini et non vide
+    // N'inclure pricetype que s'il est défini et non vide
     if (project.pricetype) {
       updates.pricetype = project.pricetype;
     }
@@ -203,7 +206,7 @@ export default function Maindata({ project, onProjectUpdate }) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4 text-black w-[900px]">
         <div className="flex flex-col">
-          <label className="text-black mb-1">{f("Pays")}</label>
+          <label className="text-black mb-1">{t("Pays")}</label>
           <select
             value={editableCountry}
             onChange={handleCountryChange}
@@ -219,7 +222,7 @@ export default function Maindata({ project, onProjectUpdate }) {
         </div>
 
         <div className="flex flex-col ">
-          <label className="text-black mb-1">{f("Ville")}</label>
+          <label className="text-black mb-1">{t("Ville")}</label>
           <select
             value={editableCity}
             onChange={handleCityChange}
@@ -241,6 +244,20 @@ export default function Maindata({ project, onProjectUpdate }) {
   const bginput = "bg-gray-100 text-black";
   const label = "text-gray-900 mb-1";
 
+  // Fonction pour obtenir la langue en fonction du pays
+  const getLanguageFromCountry = (country) => {
+    switch (country) {
+      case 'France':
+        return 'fr';
+      case 'Polska':
+        return 'pl';
+      case 'Deutschland':
+        return 'de';
+      default:
+        return 'fr'; // Langue par défaut
+    }
+  };
+
   return (
     <div className=" mt-10 p-6 bg-white rounded-lg flex flex-col justify-center items-center mb-8 text-black">
       <div className="mb-8 w-full">
@@ -250,19 +267,19 @@ export default function Maindata({ project, onProjectUpdate }) {
           projectCity={project?.city}
         />
       </div>
-     <h2 className="text-2xl font-semibold text-gray-800">{editableName}</h2>
+      <h2 className="text-2xl font-semibold text-gray-800">{editableName}</h2>
       <div className="flex gap-8">
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
             <div className="flex flex-col mb-4">
-              <label className="text-black mb-1">{f("Compagnie")}</label>
+              <label className="text-black mb-1">{t("COMPAGNIE")}</label>
               <select
                 value={editableCompagny}
                 onChange={(e) => setEditableCompagny(e.target.value)}
                 className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px] ${bginput}`}
               >
                 <option value="" disabled>
-                  {f("Compagnie")}
+                  {t("SELECT_COMPAGNIE")}
                 </option>
                 {companies.map((company) => (
                   <option key={company.id} value={company.name}>
@@ -282,7 +299,7 @@ export default function Maindata({ project, onProjectUpdate }) {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
             <div className="flex flex-col">
-              <label className={`${label}`}>{f("Latitude")}</label>
+              <label className={`${label}`}>{t("LATITUDE")}</label>
               <input
                 type="text"
                 value={editableLat}
@@ -291,7 +308,7 @@ export default function Maindata({ project, onProjectUpdate }) {
               />
             </div>
             <div className="flex flex-col">
-              <label className="text-black mb-1">{f("Longitude")}</label>
+              <label className="text-black mb-1">{t("LONGITUDE")}</label>
               <input
                 type="text"
                 value={editableLng}
@@ -300,7 +317,7 @@ export default function Maindata({ project, onProjectUpdate }) {
               />
             </div>
             <div className="flex flex-col">
-              <label className="text-black mb-1">{f("Monnaie")}</label>
+              <label className="text-black mb-1">{t("MONNAIE")}</label>
               <select
                 value={editableCurrency}
                 onChange={(e) => setEditableCurrency(e.target.value)}
@@ -311,7 +328,7 @@ export default function Maindata({ project, onProjectUpdate }) {
               </select>
             </div>
             <div className="flex flex-col">
-              <label className="text-black mb-1">{f("Link")}</label>
+              <label className="text-black mb-1">{t("LIEN")}</label>
               <input
                 type="text"
                 value={editableLink}
@@ -347,7 +364,7 @@ export default function Maindata({ project, onProjectUpdate }) {
                       }`}
                     />
                   </div>
-                  <p className="ml-2 capitalize truncate">{f(feature)}</p>
+                  <p className="ml-2 capitalize truncate">{t(feature)}</p>
                 </label>
               </div>
             ))}
@@ -356,10 +373,9 @@ export default function Maindata({ project, onProjectUpdate }) {
           <div className="flex flex-col pb-4 mt-8">
             <div className="flex flex-col pt-4">
               <label className="text-black mb-1 flex">
-                {f("ProjetEnLigne")}
+                {t("PROJET_EN_LIGNE")}
                 <span className="text-black flex items-center ml-2">
-                  <span>{isOnline ? "online" : "offline"}</span>{" "}
-                  {/* Corrected this line */}
+                  <span>{isOnline ? t("ONLINE") : t("OFFLINE")}</span>
                   {isOnline ? (
                     <IoEye className="ml-2 text-xl text-green-600" />
                   ) : (
@@ -369,7 +385,7 @@ export default function Maindata({ project, onProjectUpdate }) {
               </label>
             </div>
 
-            <div className="relative flex  ">
+            <div className="relative flex">
               <input
                 type="checkbox"
                 id="onlineSwitch"
@@ -380,10 +396,10 @@ export default function Maindata({ project, onProjectUpdate }) {
               <label
                 htmlFor="onlineSwitch"
                 className="flex items-center cursor-pointer"
-                aria-label="Toggle project online status"
+                aria-label={t("TOGGLE_ONLINE_STATUS")}
               >
                 <div
-                  className={`w-10 h-6 flex  items-center rounded-full p-1 ${
+                  className={`w-10 h-6 flex items-center rounded-full p-1 ${
                     isOnline ? "bg-green-500" : "bg-red-600"
                   }`}
                 >
@@ -396,11 +412,13 @@ export default function Maindata({ project, onProjectUpdate }) {
               </label>
             </div>
           </div>
-{/* Séparateur visuel avant la section Description */}
-            <div className="flex items-center gap-4 mt-6">
-              <h3 className="text-lg font-semibold text-gray-700">Description</h3>
-              <Divider className="flex-1 bg-gray-300 h-[1px]" />
-            </div>
+
+          {/* Séparateur visuel avant la section Description */}
+          <div className="flex items-center gap-4 mt-6">
+            <h3 className="text-lg font-semibold text-gray-700">{t("DESCRIPTION")}</h3>
+            <Divider className="flex-1 bg-gray-300 h-[1px]" />
+          </div>
+
           {/* Bloc description + SEO refait en flex */}
           <div className="flex flex-col gap-8 mt-8">
             {/* Bloc pleine largeur : description + community, ENCADRÉ */}
@@ -410,13 +428,13 @@ export default function Maindata({ project, onProjectUpdate }) {
                 <div className="flex flex-col bg-gray-50 p-4 rounded-md shadow-sm">
                   <div className="w-full flex items-center justify-between">
                     <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
-                      {f("DesPro")}
+                      {t("DESCRIPTION_PROJET")}
                     </h2>
                     <Button
                       className="bg-transparent isIconOnly min-w-fit"
                       onClick={() => setOpenModalGenerale(true)}
                     >
-                      🤖 Générer avec l'IA
+                      🤖 {t("GENERER_IA")}
                     </Button>
                   </div>
                   <textarea
@@ -430,7 +448,7 @@ export default function Maindata({ project, onProjectUpdate }) {
                     className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput} mt-2`}
                   />
                   <span className="text-gray-400 text-sm mt-1">
-                    {editableFulldescr ? editableFulldescr.length : 0}/1500 caractères
+                    {editableFulldescr ? editableFulldescr.length : 0}/1500 {t("CARACTERES")}
                   </span>
                 </div>
 
@@ -438,13 +456,13 @@ export default function Maindata({ project, onProjectUpdate }) {
                 <div className="flex flex-col bg-gray-50 p-4 rounded-md shadow-sm">
                   <div className="w-full flex items-center justify-between">
                     <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
-                      Community Amenities
+                      {t("COMMUNITY_AMENITIES")}
                     </h2>
                     <Button
                       className="bg-transparent isIconOnly min-w-fit"
                       onClick={() => setOpenModalCommunity(true)}
                     >
-                      🤖 Générer avec l'IA
+                      🤖 {t("GENERER_IA")}
                     </Button>
                   </div>
                   <textarea
@@ -458,7 +476,7 @@ export default function Maindata({ project, onProjectUpdate }) {
                     className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput} mt-2`}
                   />
                   <span className="text-gray-400 text-sm mt-1">
-                    {editableCoam ? editableCoam.length : 0}/1000 characters
+                    {editableCoam ? editableCoam.length : 0}/1000 {t("CARACTERES")}
                   </span>
                 </div>
               </div>
@@ -471,61 +489,56 @@ export default function Maindata({ project, onProjectUpdate }) {
                 <Divider className="flex-1 bg-gray-300 h-[1px]" />
               </div>
               <div className="flex flex-wrap gap-8">
+                {/* SEO Title */}
                 <div className="flex-1 min-w-[300px] bg-gray-50 p-4 rounded-md shadow-sm">
-                  {/* SEO Title */}
                   <div className="flex flex-col">
-                    <div className="w-full flex items-center justify-between">
+                    <div className="w-full flex items-center justify-between mb-2">
                       <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
-                        {f("DesSEOTitle")}
+                        {t("DesSEOTitle")}
                       </h2>
                       <Button
                         className="bg-transparent isIconOnly min-w-fit"
-                        onClick={() => setOpenModalSEO(true)}
+                        onClick={() => setOpenModalSEOTitle(true)}
                       >
-                        🤖 Générer avec l'IA
+                        🤖 {t("GENERER_IA")}
                       </Button>
                     </div>
                     <textarea
-                      value={
-                        editableDes.length > 150
-                          ? editableDes.slice(0, 150)
-                          : editableDes
-                      }
-                      onChange={(e) => setEditableDes(e.target.value.slice(0, 150))}
-                      rows="3"
+                      value={editableTitle}
+                      onChange={(e) => setEditableTitle(e.target.value.slice(0, 60))}
+                      placeholder={t("PLACEHOLDER_SEO_TITLE")}
+                      rows="2"
                       className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput}`}
                     />
                     <span className="text-gray-400 text-sm mt-1">
-                      {editableDes ? editableDes.length : 0}/150 characters
+                      {editableTitle ? editableTitle.length : 0}/60 {t("CARACTERES")}
                     </span>
                   </div>
                 </div>
+
+                {/* SEO Description */}
                 <div className="flex-1 min-w-[300px] bg-gray-50 p-4 rounded-md shadow-sm">
-                  {/* SEO Description */}
                   <div className="flex flex-col">
-                    <div className="w-full flex items-center justify-between">
+                    <div className="w-full flex items-center justify-between mb-2">
                       <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
-                        {f("DesSEO")}
+                        {t("DesSEO")}
                       </h2>
                       <Button
                         className="bg-transparent isIconOnly min-w-fit"
                         onClick={() => setOpenModalSEO(true)}
                       >
-                        🤖 Générer avec l'IA
+                        🤖 {t("GENERER_IA")}
                       </Button>
                     </div>
                     <textarea
-                      value={
-                        editableDes.length > 150
-                          ? editableDes.slice(0, 150)
-                          : editableDes
-                      }
+                      value={editableDes}
                       onChange={(e) => setEditableDes(e.target.value.slice(0, 150))}
+                      placeholder={t("PLACEHOLDER_SEO_DESCRIPTION")}
                       rows="3"
                       className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${bginput}`}
                     />
                     <span className="text-gray-400 text-sm mt-1">
-                      {editableDes ? editableDes.length : 0}/150 characters
+                      {editableDes ? editableDes.length : 0}/150 {t("CARACTERES")}
                     </span>
                   </div>
                 </div>
@@ -536,7 +549,7 @@ export default function Maindata({ project, onProjectUpdate }) {
       </div>
       <div className="w-full mt-10 p-4 border border-yellow-300 bg-yellow-50 rounded-md text-center">
         <p className="text-sm text-yellow-800 mb-3">
-          N'oubliez pas de sauvegarder si vous avez apporté des modifications.
+          {t("SAVE_REMINDER")}
         </p>
         <button
           onClick={handleSave}
@@ -545,9 +558,62 @@ export default function Maindata({ project, onProjectUpdate }) {
           }`}
           disabled={isSaving}
         >
-          {isSaving ? f("Saving") : f("Sauvegarder")}
+          {isSaving ? t("SAVING") : t("SAUVEGARDER")}
         </button>
       </div>
+
+      {/* Modales IA */}
+      <Modal 
+        isOpen={openModalSEOTitle} 
+        onClose={() => setOpenModalSEOTitle(false)}
+        size="sm"
+        className="min-h-[200px]"
+      >
+        <ModalContent>
+          <ModalHeader className="text-xl">{t("MODAL_TITLE_SEO")}</ModalHeader>
+          <ModalBody>
+            <IASEOTitle 
+              project={{...project, langue: getLanguageFromCountry(editableCountry)}}
+              onClose={(text) => {
+                if (text) {
+                  setEditableTitle(text);
+                }
+                setOpenModalSEOTitle(false);
+              }} 
+            />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={openModalSEO} onClose={() => setOpenModalSEO(false)}>
+        <ModalContent>
+          <ModalHeader>{t("MODAL_TITLE_SEO_DESCRIPTION")}</ModalHeader>
+          <ModalBody>
+            <IASEO 
+              project={{...project, langue: getLanguageFromCountry(editableCountry)}}
+              onClose={() => setOpenModalSEO(false)} 
+            />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={openModalGenerale} onClose={() => setOpenModalGenerale(false)}>
+        <ModalContent>
+          <ModalHeader>{t("MODAL_TITLE_DESCRIPTION")}</ModalHeader>
+          <ModalBody>
+            <IAGENERALE project={{...project, langue: getLanguageFromCountry(editableCountry)}} onClose={() => setOpenModalGenerale(false)} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={openModalCommunity} onClose={() => setOpenModalCommunity(false)}>
+        <ModalContent>
+          <ModalHeader>{t("MODAL_TITLE_COMMUNITY")}</ModalHeader>
+          <ModalBody>
+            <IACOMMUNITY project={{...project, langue: getLanguageFromCountry(editableCountry)}} onClose={() => setOpenModalCommunity(false)} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }

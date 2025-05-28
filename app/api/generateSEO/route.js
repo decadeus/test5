@@ -13,68 +13,67 @@ export async function POST(req) {
       return NextResponse.json({ text: "Informations manquantes." }, { status: 400 });
     }
 
-    // Génération dynamique des textes selon la langue pour une meta description SEO
-    let labels = {
-      intro: "Rédige une meta description SEO efficace pour un projet immobilier :",
-      nom: "Nom",
-      localisation: "Localisation",
-      types: "Types d'appartements",
-      atouts: "Points forts",
-      style: "Style architectural",
-      cible: "Public cible",
-      instruction: "Le texte doit être concis, informatif et contenir des mots-clés pertinents pour améliorer le référencement naturel.",
-      limite: "Maximum 160 caractères.",
+    // Génération dynamique des textes selon la langue
+    const prompts = {
+      fr: {
+        intro: "Génère une meta description SEO optimisée pour un projet immobilier avec ces caractéristiques :",
+        instruction: "La description doit :\n- Être limitée à 160 caractères maximum\n- Inclure la ville et le type de bien\n- Mettre en avant les points forts uniques\n- Utiliser des mots-clés immobiliers pertinents\n- Être attractive et incitative\n- Respecter la structure : [Type de bien] à [Ville] - [Points forts principaux]"
+      },
+      en: {
+        intro: "Generate an optimized SEO meta description for a real estate project with these characteristics:",
+        instruction: "The description must:\n- Be limited to 160 characters maximum\n- Include the city and property type\n- Highlight unique selling points\n- Use relevant real estate keywords\n- Be attractive and compelling\n- Follow the structure: [Property type] in [City] - [Main features]"
+      },
+      pl: {
+        intro: "Wygeneruj zoptymalizowany opis meta SEO dla projektu nieruchomości o następujących cechach:",
+        instruction: "Opis musi:\n- Być ograniczony do maksymalnie 160 znaków\n- Zawierać miasto i typ nieruchomości\n- Podkreślać unikalne punkty sprzedaży\n- Używać odpowiednich słów kluczowych\n- Być atrakcyjny i przekonujący\n- Zachować strukturę: [Typ nieruchomości] w [Miasto] - [Główne cechy]"
+      }
     };
 
-    if (langue === "en") {
-      labels = {
-        intro: "Write an effective SEO meta description for a real estate project:",
-        nom: "Name",
-        localisation: "Location",
-        types: "Types of apartments",
-        atouts: "Key features",
-        style: "Architectural style",
-        cible: "Target audience",
-        instruction: "Text should be concise, informative and include relevant keywords to improve organic ranking.",
-        limite: "Maximum 160 characters.",
-      };
-    } else if (langue === "pl") {
-      labels = {
-        intro: "Napisz skuteczny opis meta SEO dla projektu nieruchomości:",
-        nom: "Nazwa",
-        localisation: "Lokalizacja",
-        types: "Typy apartamentów",
-        atouts: "Główne atuty",
-        style: "Styl architektoniczny",
-        cible: "Docelowa grupa odbiorców",
-        instruction: "Tekst powinien być zwięzły, informacyjny i zawierać odpowiednie słowa kluczowe dla poprawy pozycjonowania.",
-        limite: "Maksymalnie 160 znaków.",
-      };
-    }
+    const selectedPrompt = prompts[langue] || prompts.fr;
 
     const prompt = `
-${labels.intro}
-- ${labels.nom}: ${nomProjet}
-- ${labels.localisation}: ${ville}
-- ${labels.types}: ${types}
-- ${labels.atouts}: ${atouts}
-- ${labels.style}: ${style}
-- ${labels.cible}: ${publicCible}
-${labels.instruction} La ville doit être clairement mentionnée.
-${labels.limite}
+${selectedPrompt.intro}
+
+PROJET: ${nomProjet}
+VILLE: ${ville}
+TYPES: ${types}
+ATOUTS: ${atouts}
+STYLE: ${style}
+PUBLIC: ${publicCible}
+
+${selectedPrompt.instruction}
+
+IMPORTANT: La description générée doit être SEO-friendly et ne pas dépasser 160 caractères.
 `;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: prompt }],
+      messages: [
+        {
+          role: "system",
+          content: "Tu es un expert en SEO immobilier. Ta mission est de créer des meta descriptions optimisées pour le référencement naturel tout en restant attractives pour les utilisateurs."
+        },
+        { role: "user", content: prompt }
+      ],
       temperature: 0.7,
+      max_tokens: 100,
     });
 
     const generatedText = completion.choices[0]?.message?.content.trim() || "";
 
+    // Vérification de la longueur
+    if (generatedText.length > 160) {
+      return NextResponse.json({
+        text: generatedText.substring(0, 157) + "..."
+      });
+    }
+
     return NextResponse.json({ text: generatedText });
   } catch (error) {
     console.error("Erreur d'appel OpenAI:", error);
-    return NextResponse.json({ text: "Erreur lors de la génération." }, { status: 500 });
+    return NextResponse.json(
+      { text: "Erreur lors de la génération de la description." },
+      { status: 500 }
+    );
   }
 }

@@ -226,12 +226,12 @@ export default function ListProjectPage() {
                         : `Project Image ${index + 1}`
                     }
                     fill
-                    className="object-cover rounded-xl transition-transform duration-300 hover:scale-105 hover:brightness-110"
+                    className="object-cover  transition-transform duration-300  hover:brightness-110"
                     sizes="100vw"
                     priority={index === 0}
                   />
                 ) : (
-                  <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-600 rounded-xl">
+                  <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-600 ">
                     Image non disponible
                   </div>
                 )}
@@ -458,7 +458,7 @@ export default function ListProjectPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <button className="bg-[#755808] text-white px-6 py-3 w-full rounded-lg text-lg shadow-md transition-colors duration-300 hover:bg-[#6c4a07] transform active:scale-95">
+                        <button className="bg-[#1a73e8] text-white px-6 py-3 w-full rounded-lg text-lg shadow-md transition-colors duration-300 hover:bg-[#1a7308] transform active:scale-95">
                           Go to Property Developer
                         </button>
                       </a>

@@ -306,9 +306,9 @@ function Main() {
                         type="button"
                       >
                         {isFavorite(item) ? (
-                          <FaHeart fill="#bfae9b" size={12} className="sm:w-[15px] sm:h-[15px]" />
+                          <FaHeart fill="#c20265" size={12} className="sm:w-[15px] sm:h-[15px]" />
                         ) : (
-                          <FaRegHeart fill="#bfae9b" size={12} className="sm:w-[15px] sm:h-[15px]" />
+                          <FaRegHeart fill="#c20265" size={12} className="sm:w-[15px] sm:h-[15px]" />
                         )}
                       </button>
                     </div>

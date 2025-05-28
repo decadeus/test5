@@ -6,6 +6,7 @@ const BouncingShapesSection = ({
   subtitle = "Sous-titre",
   width = "100%",
   height = "90vh",
+  locale = "fr"
 }) => (
   <section className="bouncing-section flex flex-col lg:flex-row" style={{ width, height }}>
     {/* Grandes formes animées en background */}
@@ -19,10 +20,10 @@ const BouncingShapesSection = ({
           <span>Rejoignez</span>
           <span>Hoomge</span>
         </h2>
-        <p className="text-sm sm:text-base md:text-lg pt-4 sm:pt-6 md:pt-8">Ajouter gratuitement votre projet</p>
+        <p className="text-sm sm:text-base md:text-lg pt-4 sm:pt-6 md:pt-8">En moyenne, il suffit de 20 minutes pour ajouter votre projet</p>
         <button className="bg-[#FF0066] text-white rounded-full px-4 py-2 mt-4 flex items-center justify-center">
           <a
-            href="https://hoomge.com"
+            href={`https://hoomge.com/${locale}/addproject`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm sm:text-base md:text-lg font-bold w-full h-full text-center"

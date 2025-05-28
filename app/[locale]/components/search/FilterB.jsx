@@ -207,9 +207,9 @@ const FilterB = ({
             >
               <p className="pr-2 text-sm text-gray-800">Your favorite</p>
               {showFavorites ? (
-                <FaHeart size={20} color="#bfae9b" />
+                <FaHeart size={20} color="#c20265" />
               ) : (
-                <FaRegHeart size={20} color="#bfae9b" />
+                <FaRegHeart size={20} color="#c20265" />
               )}
             </div>
             {/* Résidence (modal équipements) */}
