@@ -13,12 +13,15 @@ import Disabled from "@/components/svg/disabled.js";
 
 import Flower from "@/components/svg/flower.js";
 import Bike from "@/components/svg/bike.js";
-import PageM from "@/components/nmap.jsx";
+import dynamic from "next/dynamic";
+
 import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 import Image from "next/image";
 import Avatar from "@/app/getimage/project";
 import Link from "next/link";
 import Loading from "@/app/[locale]/loading";
+
+const PageM = dynamic(() => import("@/components/nmap"), { ssr: false });
 
 export default function ListProjectPage() {
   const { projectdetail } = useParams();
@@ -207,46 +210,39 @@ export default function ListProjectPage() {
     <div className="w-full mt-16 text-sm">
       {projectData ? (
         <>
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-2">
-            {imageUrls.map((img, index) => (
-              <div
-                key={index}
-                className={`relative ${
-                  index === 0
-                    ? "col-span-2 sm:col-span-2 lg:col-span-2 row-span-2"
-                    : "col-span-1"
-                } 
-      ${
-        index === 0
-          ? "h-[200px] lg:h-[500px] md:h-[200px] sm:h-[100px]"
-          : "h-[94px] lg:h-[245px] md:h-[120px] sm:h-[80px]"
-      }`}
-              >
-                {img ? (
+          <div className="flex flex-col md:flex-row w-full md:px-10 items-stretch h-full">
+            <div className="w-full md:w-1/2 pr-1 mb-2 md:mb-0 flex min-h-[200px] md:min-h-0">
+              {imageUrls[0] && (
+                <div className="relative w-full h-full min-h-[200px] md:min-h-full">
+                  <Image
+                    src={imageUrls[0]}
+                    alt={`${name}. Budynek mieszkalny w ${city} - 1`}
+                    fill
+                    className="object-cover transition-transform duration-300 hover:brightness-110"
+                    sizes="100vw"
+                    priority
+                  />
+                </div>
+              )}
+            </div>
+            <div className="w-full md:w-1/2 grid grid-cols-2 gap-2 pl-1 content-stretch h-full">
+              {imageUrls.slice(1, 5).map((img, index) => (
+                <div key={index} className="relative aspect-[1/1]">
                   <Image
                     src={img}
-                    alt={
-                   
-                         `${name}. Budynek mieszkalny w ${city} - ${index + 1}`
-                        
-                    }
+                    alt={`Image ${index + 2} du projet ${name} situé à ${city || "une ville inconnue"}`}
                     fill
-                    className="object-cover  transition-transform duration-300  hover:brightness-110"
+                    className="object-cover transition-transform duration-300 hover:brightness-110"
                     sizes="100vw"
-                    priority={index === 0}
                   />
-                ) : (
-                  <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-600 ">
-                    Image non disponible
-                  </div>
-                )}
-              </div>
-            ))}
+                </div>
+              ))}
+            </div>
           </div>
 
           <div
             id="content-container"
-            className=" w-full flex-col px-4 md:px-10 mt-8 lg:flex-row flex"
+            className="w-full flex-col px-4 md:px-10 mt-8 lg:flex-row flex min-h-[800px]"
           >
             <div className="w-full lg:w-2/3 pl-2 pr-2 flex flex-col gap-12">
               <div>
