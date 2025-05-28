@@ -4,6 +4,8 @@ import { useState } from "react";
 export default function EmailProspectButton() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
+  const [email, setEmail] = useState("hoomge@decadeus.com");
+  const [name, setName] = useState("Monsieur Dupont");
 
   const handleSendEmail = async () => {
     setLoading(true);
@@ -16,8 +18,8 @@ export default function EmailProspectButton() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            email: "prospect@email.com",
-            name: "Monsieur Dupont",
+            email: email,
+            name: name,
           }),
         }
       );
@@ -29,6 +31,7 @@ export default function EmailProspectButton() {
         setStatus(`❌ Erreur : ${errorText}`);
       }
     } catch (error) {
+      console.error("Error sending email:", error);
       setStatus("❌ Erreur réseau");
     }
 
@@ -37,6 +40,20 @@ export default function EmailProspectButton() {
 
   return (
     <div className="flex flex-col items-center gap-2 mt-4">
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Entrez votre email"
+        className="px-4 py-2 border rounded-lg"
+      />
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Entrez votre nom"
+        className="px-4 py-2 border rounded-lg"
+      />
       <button
         onClick={handleSendEmail}
         disabled={loading}
