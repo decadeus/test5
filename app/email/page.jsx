@@ -32,7 +32,7 @@ export default function EmailProspectButton() {
       }
     } catch (error) {
       console.error("Error sending email:", error);
-      setStatus("❌ Erreur réseau");
+      setStatus(`❌ Erreur réseau: ${error.message}`);
     }
 
     setLoading(false);
