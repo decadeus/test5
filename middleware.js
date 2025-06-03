@@ -24,8 +24,8 @@ export function middleware(request) {
     return NextResponse.next();
   }
 
-  // Redirige vers la page de code d'accès
-  const codeUrl = request.nextUrl.clone();
-  codeUrl.pathname = '/code';
-  return NextResponse.redirect(codeUrl);
+  // Redirige vers la page de maintenance
+  const maintenanceUrl = request.nextUrl.clone();
+  maintenanceUrl.pathname = '/maintenance';
+  return NextResponse.redirect(maintenanceUrl);
 } 
