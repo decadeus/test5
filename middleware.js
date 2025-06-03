@@ -1,21 +1,36 @@
 import { NextResponse } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
 
 const ACCESS_CODE = '1010'; // Le code d'accès à donner
 const COOKIE_NAME = 'maintenance_bypass';
 
-export function middleware(request) {
-  console.log('MIDDLEWARE EXECUTED', request.nextUrl.pathname);
-  const { pathname } = request.nextUrl;
+const intlMiddleware = createMiddleware({
+  locales: ['fr', 'en', 'pl', 'de', 'ru'],
+  defaultLocale: 'fr'
+});
 
-  // Autorise l'accès à la page de code, à la page maintenance, et aux assets
-  if (
-    pathname.startsWith('/maintenance') ||
-    pathname.startsWith('/code') ||
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/api') ||
-    pathname.startsWith('/favicon') ||
-    pathname.startsWith('/public')
-  ) {
+export function middleware(request) {
+  // 1. Appliquer la logique de locale
+  const intlResponse = intlMiddleware(request);
+  if (intlResponse instanceof NextResponse) {
+    // Si la locale doit être redirigée, on la laisse faire
+    return intlResponse;
+  }
+
+  // 2. Appliquer la logique de maintenance
+  const { pathname, locale } = request.nextUrl;
+
+  // Autorise uniquement les routes locales /[locale]/maintenance et /[locale]/code, et les assets
+  const allowed = [
+    /^\/[a-z]{2}(?:-[A-Z]{2})?\/maintenance/,
+    /^\/[a-z]{2}(?:-[A-Z]{2})?\/code/,
+    /^\/_next/,
+    /^\/api/,
+    /^\/favicon/,
+    /^\/public/
+  ];
+
+  if (allowed.some((regex) => regex.test(pathname))) {
     return NextResponse.next();
   }
 
@@ -25,8 +40,12 @@ export function middleware(request) {
     return NextResponse.next();
   }
 
-  // Redirige vers la page de maintenance
+  // Redirige vers la page de maintenance de la locale courante
   const maintenanceUrl = request.nextUrl.clone();
-  maintenanceUrl.pathname = '/maintenance';
+  maintenanceUrl.pathname = `/${locale || 'fr'}/maintenance`;
   return NextResponse.redirect(maintenanceUrl);
-} 
+}
+
+export const config = {
+  matcher: ['/((?!_next|api|favicon|public).*)'],
+}; 
