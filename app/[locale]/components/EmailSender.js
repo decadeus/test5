@@ -1,18 +1,27 @@
 // components/EmailSender.jsx
-'use client'
+'use client'; // Ensure this component is a client component
 import { useState } from 'react';
+import { useSession } from '@supabase/auth-helpers-react'; // Import the session hook
 
 const EmailSender = () => {
+  const { session } = useSession(); // Get the current session
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!session) {
+      setResponseMessage('You must be logged in to send an email.');
+      return;
+    }
+
     const res = await fetch('/api/send-email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`, // Include the token
       },
       body: JSON.stringify({ email, message }),
     });

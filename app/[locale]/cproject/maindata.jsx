@@ -38,6 +38,7 @@ export default function Maindata({ project, onProjectUpdate }) {
   const [editableCountry, setEditableCountry] = useState(
     project?.country || ""
   );
+  const [editableRegion, setEditableRegion] = useState(project?.region || "");
   const [editableCity, setEditableCity] = useState(project?.city || "");
   const [editableLat, setEditableLat] = useState(project?.lat || "");
   const [editableLng, setEditableLng] = useState(project?.lng || "");
@@ -71,6 +72,7 @@ export default function Maindata({ project, onProjectUpdate }) {
     setEditableCompagny(project?.compagny || "");
     setEditableName(project?.name || "");
     setEditableCountry(project?.country || "");
+    setEditableRegion(project?.region || "");
     setEditableCity(project?.city || "");
     setEditableLat(project?.lat || "");
     setEditableLng(project?.lng || "");
@@ -92,6 +94,17 @@ export default function Maindata({ project, onProjectUpdate }) {
     });
   }, [project]);
 
+  // Reset région et ville quand le pays change
+  useEffect(() => {
+    setEditableRegion("");
+    setEditableCity("");
+  }, [editableCountry]);
+
+  // Reset ville quand la région change
+  useEffect(() => {
+    setEditableCity("");
+  }, [editableRegion]);
+
   const [openModalCommunity, setOpenModalCommunity] = useState(false);
   const [openModalSEO, setOpenModalSEO] = useState(false);
   const [openModalSEOTitle, setOpenModalSEOTitle] = useState(false);
@@ -104,6 +117,7 @@ export default function Maindata({ project, onProjectUpdate }) {
       !editableCompagny ||
       !editableName ||
       !editableCountry ||
+      !editableRegion ||
       !editableCity ||
       !editableLat ||
       !editableLng
@@ -118,6 +132,7 @@ export default function Maindata({ project, onProjectUpdate }) {
       compagny: editableCompagny,
       name: editableName,
       country: editableCountry,
+      region: editableRegion,
       city: editableCity,
       lat: editableLat,
       lng: editableLng,
@@ -174,29 +189,42 @@ export default function Maindata({ project, onProjectUpdate }) {
   const CountryCitySelector = ({
     editableCountry,
     setEditableCountry,
+    editableRegion,
+    setEditableRegion,
     editableCity,
     setEditableCity,
   }) => {
+    const [regions, setRegions] = useState([]);
     const [cities, setCities] = useState([]);
 
     useEffect(() => {
       if (editableCountry && countryData[editableCountry]) {
-        setCities(countryData[editableCountry]);
+        setRegions(Object.keys(countryData[editableCountry]));
+      } else {
+        setRegions([]);
+      }
+    }, [editableCountry]);
+
+    useEffect(() => {
+      if (
+        editableCountry &&
+        editableRegion &&
+        countryData[editableCountry] &&
+        countryData[editableCountry][editableRegion]
+      ) {
+        setCities(countryData[editableCountry][editableRegion]);
       } else {
         setCities([]);
       }
-    }, [editableCountry]);
+    }, [editableRegion, editableCountry]);
 
     const handleCountryChange = (e) => {
       const selectedCountry = e.target.value;
       setEditableCountry(selectedCountry);
+    };
 
-      // Ensure city is cleared when switching countries
-      if (countryData[selectedCountry]) {
-        setEditableCity(countryData[selectedCountry][0]);
-      } else {
-        setEditableCity("");
-      }
+    const handleRegionChange = (e) => {
+      setEditableRegion(e.target.value);
     };
 
     const handleCityChange = (e) => {
@@ -204,7 +232,7 @@ export default function Maindata({ project, onProjectUpdate }) {
     };
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4 text-black w-[900px]">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4 text-black w-[900px]">
         <div className="flex flex-col">
           <label className="text-black mb-1">{t("Pays")}</label>
           <select
@@ -220,14 +248,29 @@ export default function Maindata({ project, onProjectUpdate }) {
             ))}
           </select>
         </div>
-
+        <div className="flex flex-col ">
+          <label className="text-black mb-1">{t("Région")}</label>
+          <select
+            value={editableRegion}
+            onChange={handleRegionChange}
+            className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px] ${bginput}`}
+            disabled={!editableCountry}
+          >
+            <option value="">__</option>
+            {regions.map((region) => (
+              <option key={region} value={region}>
+                {region}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="flex flex-col ">
           <label className="text-black mb-1">{t("Ville")}</label>
           <select
             value={editableCity}
             onChange={handleCityChange}
             className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black h-[42px] ${bginput}`}
-            disabled={!editableCountry}
+            disabled={!editableRegion}
           >
             <option value="">__</option>
             {cities.map((city) => (
@@ -293,6 +336,8 @@ export default function Maindata({ project, onProjectUpdate }) {
             <CountryCitySelector
               editableCountry={editableCountry}
               setEditableCountry={setEditableCountry}
+              editableRegion={editableRegion}
+              setEditableRegion={setEditableRegion}
               editableCity={editableCity}
               setEditableCity={setEditableCity}
             />
