@@ -4,6 +4,7 @@ const ACCESS_CODE = '1010'; // Le code d'accès à donner
 const COOKIE_NAME = 'maintenance_bypass';
 
 export function middleware(request) {
+  console.log('MIDDLEWARE EXECUTED', request.nextUrl.pathname);
   const { pathname } = request.nextUrl;
 
   // Autorise l'accès à la page de code, à la page maintenance, et aux assets
