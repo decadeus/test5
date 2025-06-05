@@ -65,56 +65,10 @@ const LangRes: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center">
-      <div ref={menuRef} className="relative">
-        {/* Toggle Button */}
-        <button
-          aria-expanded={isOptionsExpanded}
-          aria-controls="language-options"
-          aria-label="Select language"
-          onClick={() => setIsOptionsExpanded(!isOptionsExpanded)}
-          className="flex items-center gap-2  transition-all"
-        >
-       
-          <div className="w-8 flex justify-center items-center text-center">
-            <FiGlobe color="white" size={22} />
-            </div>
-            <div className="w-fit flex items-start text-center text-xl">{capitalize(currentLang)}</div>
-          
-
-          
-        </button>
-
-        {/* Dropdown Menu */}
-        {isOptionsExpanded && (
-          <div
-            id="language-options"
-            className="absolute right-0 left-1 top-full mt-2 ml-4 w-48 shadow-lg rounded-md z-50 border"
-          >
-            <div role="menu" aria-orientation="vertical">
-              {options.map((lang) => (
-                <Link
-                  key={lang.code}
-                  href={`/${lang.code}/${urlSegments.join("/")}`}
-                  onClick={() => handleLanguageChange(lang.code)}
-                >
-                  <button
-                    lang={lang.code}
-                    onMouseDown={(e) => e.preventDefault()}
-                    className={`block w-full px-4 py-2 text-left text-sm transition-colors 
-                      ${
-                        pathname.startsWith(`/${lang.code}`)
-                          ? "brownbg text-white"
-                          : "bg-gray-100 text-gray-800 hover:bg-gray-300"
-                      }`}
-                  >
-                    {capitalize(lang.country)}
-                  </button>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+      <Link href={`/${selectedLanguage || "fr"}/projects`} className="flex items-center gap-2 p-2 rounded-md transition-all bg-gray-200 hover:bg-gray-300">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" /></svg>
+        <span className="text-sm font-medium">{typeof window !== 'undefined' ? (require('next-intl').useTranslations("Nav")("Rechercher")) : "Rechercher"}</span>
+      </Link>
     </div>
   );
 };
