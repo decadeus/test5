@@ -10,7 +10,13 @@
         "TitleNew": "They just joined Hoomge",
         "TitleBeau": "The most beautiful residences",
         "TitleVacance": "Sustainable housing within reach",
-        "EnSavoirPlus": "Learn more"
+        "EnSavoirPlus": "Learn more",
+        "searchPlaceholder": "Piaseczno, Warsaw, ...",
+        "companies": "Developers",
+        "projects": "Projects",
+        "apartments": "Apartments",
+        "focusTitle": "Focus on your projects, we take care of the rest",
+        "focusText": "Hoomge was designed with a clear goal: to showcase your real estate projects on Google thanks to an SEO-optimized structure. Each project is managed directly by the developer or their agency, ensuring information is always up-to-date and relevant. No more dealing with complex CMS: you focus on the projects, we handle the visibility."
     },
     "Filtre": {
         "Ajouter": "Sign up list your project",
@@ -170,7 +176,8 @@
         "PLACEHOLDER_SERVICES": "Supermarket, school...",
         "SECURITE": "Security",
         "PLACEHOLDER_SECURITE": "Fire safety, cameras...",
-        "MODAL_TITLE_COMMUNITY": "Community amenities"
+        "MODAL_TITLE_COMMUNITY": "Community amenities",
+        "addNewApartment": "+ Add a new apartment"
     },
     "SEO": {
         "Title": "Real estate project references",
@@ -198,5 +205,64 @@
         "loading": "Redirecting...",
         "needMore": "Need more than 10 projects or additional users?",
         "contactUs": "Contact us for a custom offer"
+    },
+    "Lp1": {
+        "join": "Join",
+        "addProject": "Add your project for free",
+        "learnMore": "Learn more"
+    },
+    "PromoBlock": {
+        "title": "Optimize the marketing of your residential real estate projects",
+        "desc": "A web app dedicated to real estate developers. Centralize your projects, invite your collaborators, and specify the amenities offered in each program.",
+        "item1": "Tracking by city, project, contact",
+        "item2": "Manage collaborators according to the subscription",
+        "item3": "Custom dashboard",
+        "item4": "Simple and commitment-free plans"
+    },
+    "DualLayer": {
+        "projectInfo": "Project information",
+        "company": "Company",
+        "companyValue": "Bouygues Immobilier",
+        "projectName": "Project name",
+        "projectNameValue": "Résidence Solaris",
+        "city": "City",
+        "cityValue": "Krakow",
+        "currency": "Currency",
+        "currencyValue": "PLN",
+        "latitude": "Latitude",
+        "latitudeValue": "50.061947",
+        "longitude": "Longitude",
+        "longitudeValue": "19.936856",
+        "sharedServices": "Shared services",
+        "garden": "Garden",
+        "reception": "Reception",
+        "bikeParking": "Bike parking",
+        "childArea": "Children's area",
+        "disabledAccess": "Disabled access",
+        "fitnessRoom": "Fitness room",
+        "cctv": "CCTV",
+        "swimmingPool": "Swimming pool",
+        "collaborators": "Collaborators",
+        "name": "Name",
+        "role": "Role",
+        "access": "Project access",
+        "sophie": "Sophie Nowak",
+        "commercial": "Sales",
+        "solar": "Solaris",
+        "jean": "Jean Dupont",
+        "chef": "Project manager",
+        "vistula": "Vistula",
+        "anna": "Anna Zielinska",
+        "marketing": "Marketing",
+        "all": "All",
+        "reference": "Reference",
+        "surface": "Surface",
+        "etage": "Floor",
+        "chambres": "Rooms",
+        "prix": "Price",
+        "commentaire": "Comment",
+        "achat": "Ideal first purchase",
+        "famille": "Perfect for a family",
+        "vue": "Top floor with a view"
     }
 }

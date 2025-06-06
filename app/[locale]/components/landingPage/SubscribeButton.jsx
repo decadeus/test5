@@ -3,8 +3,14 @@
 import { loadStripe } from "@stripe/stripe-js";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { createClient } from "@supabase/supabase-js";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
 
 export default function SubscribeButton() {
   const [loading, setLoading] = useState(false);

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 const DualLayerFadeSection = () => {
   const [activeCard, setActiveCard] = useState(0);
+  const t = useTranslations("DualLayer");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -54,12 +56,12 @@ const DualLayerFadeSection = () => {
   return (
     <div className="w-full">
       <div className="w-full">
-        <CardApartmentInfo />
+        <CardApartmentInfo t={t} />
       </div>
       <div style={{ ...containerStyle, marginTop: "-120px", margin: "auto" }}>
-        <div style={getCardStyle(0)}><CardProjectInfo /></div>
-        <div style={getCardStyle(1)}><CardSharedServices /></div>
-        <div style={getCardStyle(2)}><CardPlaceholder /></div>
+        <div style={getCardStyle(0)}><CardProjectInfo t={t} /></div>
+        <div style={getCardStyle(1)}><CardSharedServices t={t} /></div>
+        <div style={getCardStyle(2)}><CardPlaceholder t={t} /></div>
       </div>
     </div>
   );
@@ -79,16 +81,16 @@ const SectionHeader = ({ title }) => (
   </div>
 );
 
-const CardProjectInfo = () => (
+const CardProjectInfo = ({ t }) => (
   <>
-    <SectionHeader title="Les informations sur le projet" />
+    <SectionHeader title={t("projectInfo")} />
     <div className="p-4 flex gap-4">
       <div className="w-1/2 flex flex-col gap-4">
         {[
-          ["Company", "Bouygues Immobilier"],
-          ["Project name", "Résidence Solaris"],
-          ["City", "Cracovie"],
-          ["Currency", "PLN"]
+          [t("company"), t("companyValue")],
+          [t("projectName"), t("projectNameValue")],
+          [t("city"), t("cityValue")],
+          [t("currency"), t("currencyValue")]
         ].map(([label, value], i) => (
           <div key={i}>
             <p className="text-xs sm:text-sm md:text-base">{label}</p>
@@ -98,8 +100,8 @@ const CardProjectInfo = () => (
       </div>
       <div className="w-1/2 flex flex-col gap-4">
         {[
-          ["Latitude", "50.061947"],
-          ["Longitude", "19.936856"],
+          [t("latitude"), t("latitudeValue")],
+          [t("longitude"), t("longitudeValue")],
           ["", ""],
           ["", ""]
         ].map(([label, value], i) => (
@@ -113,21 +115,21 @@ const CardProjectInfo = () => (
   </>
 );
 
-const CardSharedServices = () => {
+const CardSharedServices = ({ t }) => {
   const services = [
-    ["Garden", false],
-    ["Reception", true],
-    ["Bike parking", true],
-    ["Children's area", false],
-    ["Disabled access", true],
-    ["Fitness-room", true],
-    ["CCTV", true],
-    ["Swimming-pool", false]
+    [t("garden"), false],
+    [t("reception"), true],
+    [t("bikeParking"), true],
+    [t("childArea"), false],
+    [t("disabledAccess"), true],
+    [t("fitnessRoom"), true],
+    [t("cctv"), true],
+    [t("swimmingPool"), false]
   ];
 
   return (
     <>
-      <SectionHeader title="Services partagés" />
+      <SectionHeader title={t("sharedServices")} />
       <div className="flex justify-center items-start w-full pl-12 pt-8">
         {[0, 1, 2].map((col) => (
           <div key={col} className="flex flex-col gap-6 w-1/3">
@@ -148,23 +150,23 @@ const CardSharedServices = () => {
   );
 };
 
-const CardPlaceholder = () => (
+const CardPlaceholder = ({ t }) => (
   <>
-    <SectionHeader title="Collaborateurs" />
+    <SectionHeader title={t("collaborators")} />
     <div className="p-4 overflow-auto max-h-[340px]">
       <table className="w-full table-auto border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-100">
-            <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Nom</th>
-            <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Rôle</th>
-            <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Accès aux projets</th>
+            <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">{t("name")}</th>
+            <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">{t("role")}</th>
+            <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">{t("access")}</th>
           </tr>
         </thead>
         <tbody>
           {[
-            ["Sophie Nowak", "Commerciale", "Solaris"],
-            ["Jean Dupont", "Chef de projet", "Vistula"],
-            ["Anna Zielinska", "Marketing", "Tous"]
+            [t("sophie"), t("commercial"), t("solar")],
+            [t("jean"), t("chef"), t("vistula")],
+            [t("anna"), t("marketing"), t("all")]
           ].map(([nom, role, acces], idx) => (
             <tr key={idx} className={idx % 2 === 1 ? "bg-gray-50" : ""}>
               <td className="border border-gray-300 px-4 py-2 text-xs sm:text-sm md:text-base">{nom}</td>
@@ -178,11 +180,11 @@ const CardPlaceholder = () => (
   </>
 );
 
-const CardApartmentInfo = () => {
+const CardApartmentInfo = ({ t }) => {
   const apartments = [
-    { type: "A45T6", surface: "45 m²", etage: "1", chambres: "1", prix: "420 000 PLN", commentaire: "Idéal premier achat" },
-    { type: "B46T4", surface: "62 m²", etage: "3", chambres: "2", prix: "540 000 PLN", commentaire: "Parfait pour une famille" },
-    { type: "B32B9", surface: "78 m²", etage: "5", chambres: "3", prix: "680 000 PLN", commentaire: "Dernier étage avec vue" },
+    { type: "A45T6", surface: "45 m²", etage: "1", chambres: "1", prix: "420 000 PLN", commentaire: t("achat") },
+    { type: "B46T4", surface: "62 m²", etage: "3", chambres: "2", prix: "540 000 PLN", commentaire: t("famille") },
+    { type: "B32B9", surface: "78 m²", etage: "5", chambres: "3", prix: "680 000 PLN", commentaire: t("vue") },
   ];
 
   return (
@@ -192,18 +194,18 @@ const CardApartmentInfo = () => {
         <table className="w-full table-fixed border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Reference</th>
-              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Surface</th>
-              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Étage</th>
-              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Chambres</th>
-              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Prix</th>
-              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">Commentaire</th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">{t("reference")}</th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">{t("surface")}</th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">{t("etage")}</th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">{t("chambres")}</th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">{t("prix")}</th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-xs sm:text-sm md:text-base">{t("commentaire")}</th>
             </tr>
           </thead>
           <tbody>
             <tr className="bg-blue-50 hover:bg-blue-100 cursor-pointer transition">
               <td colSpan={6} className="text-center py-3 text-blue-600 font-medium text-xs sm:text-sm md:text-base">
-                + Ajouter un nouvel appartement
+                {t("addNewApartment")}
               </td>
             </tr>
             {apartments.map((apt, idx) => (

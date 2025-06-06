@@ -44,6 +44,18 @@ export default function Foot() {
             </a>
           </div>
         </div>
+
+        {/* Section Application Mobile */}
+        <div className="flex flex-col items-center sm:items-start mt-2">
+          <div className="flex gap-2">
+            <a href="#" target="_blank" rel="noopener noreferrer">
+              <img src="/applestore.png" alt="Disponible sur l'App Store" style={{ height: 40 }} />
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer">
+              <img src="/androidstore.png" alt="Disponible sur Google Play" style={{ height: 40 }} />
+            </a>
+          </div>
+        </div>
       </div>
     </footer>
   );

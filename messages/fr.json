@@ -10,7 +10,13 @@
         "TitleNew": "Ils viennent de rejoindre Hoomge",
         "TitleBeau": "Les plus belles résidences",
         "TitleVacance": "Le logement durable à votre portée",
-        "EnSavoirPlus": "En savoir plus"
+        "EnSavoirPlus": "En savoir plus",
+        "searchPlaceholder": "Piaseczno, Varsovie, ...",
+        "companies": "Promoteurs",
+        "projects": "Projets",
+        "apartments": "Appartements",
+        "focusTitle": "Concentrez-vous sur vos projets, on s'occupe du reste",
+        "focusText": "Hoomge a été conçue avec un objectif clair : mettre en valeur vos projets immobiliers sur Google grâce à une structure optimisée pour le SEO. Chaque projet est géré directement par le promoteur ou son agence, pour garantir des informations toujours à jour et pertinentes. Plus besoin de manipuler des CMS complexes : vous vous concentrez sur les projets, nous nous occupons de la visibilité."
     },
     "Filtre": {
         "Ajouter": "Ajouter à la liste vos projets",
@@ -170,9 +176,8 @@
        "PLACEHOLDER_SERVICES": "Supermarché, école...",
        "SECURITE": "Sécurité",
        "PLACEHOLDER_SECURITE": "Sécurité incendie, caméras de surveillance...",
-       "MODAL_TITLE_COMMUNITY": "Equipements communs"
-      
-      
+       "MODAL_TITLE_COMMUNITY": "Equipements communs",
+       "addNewApartment": "+ Ajouter un nouvel appartement"
     },
     "SEO": {
         "Title": "Referencement des projets immobiliers",
@@ -200,5 +205,65 @@
         "loading": "Redirection...",
         "needMore": "Besoin de plus de 10 projets ou d'utilisateurs supplémentaires ?",
         "contactUs": "Contactez-nous pour une offre sur mesure"
+    },
+    "Lp1": {
+        "join": "Rejoignez",
+        "addProject": "Ajouter gratuitement votre projet",
+        "learnMore": "En savoir plus"
+    },
+    "PromoBlock": {
+        "title": "Optimisez la commercialisation de vos projets immobiliers résidentiels",
+        "desc": "Une web app dédiée aux promoteurs immobiliers. Centralisez vos projets, invitez vos collaborateurs, et précisez les équipements proposés dans chaque programme.",
+        "item1": "Suivi par ville, projet, contact",
+        "item2": "Gestion des collaborateurs selon l'abonnement",
+        "item3": "Tableau de bord personnalisé",
+        "item4": "Formules simples et sans engagement"
+    },
+    "DualLayer": {
+        "projectInfo": "Les informations sur le projet",
+        "company": "Compagnie",
+        "companyValue": "Bouygues Immobilier",
+        "projectName": "Nom du projet",
+        "projectNameValue": "Résidence Solaris",
+        "city": "Ville",
+        "cityValue": "Cracovie",
+        "currency": "Monnaie",
+        "currencyValue": "PLN",
+        "latitude": "Latitude",
+        "latitudeValue": "50.061947",
+        "longitude": "Longitude",
+        "longitudeValue": "19.936856",
+        "sharedServices": "Services partagés",
+        "garden": "Jardin",
+        "reception": "Accueil",
+        "bikeParking": "Parking à vélo",
+        "childArea": "Espace enfants",
+        "disabledAccess": "Accès handicapés",
+        "fitnessRoom": "Salle de sport",
+        "cctv": "Vidéosurveillance",
+        "swimmingPool": "Piscine",
+        "collaborators": "Collaborateurs",
+        "name": "Nom",
+        "role": "Rôle",
+        "access": "Accès aux projets",
+        "sophie": "Sophie Nowak",
+        "commercial": "Commerciale",
+        "solar": "Solaris",
+        "jean": "Jean Dupont",
+        "chef": "Chef de projet",
+        "vistula": "Vistula",
+        "anna": "Anna Zielinska",
+        "marketing": "Marketing",
+        "all": "Tous",
+        "reference": "Référence",
+        "surface": "Surface",
+        "etage": "Étage",
+        "chambres": "Chambres",
+        "prix": "Prix",
+        "commentaire": "Commentaire",
+        "achat": "Idéal premier achat",
+        "famille": "Parfait pour une famille",
+        "vue": "Dernier étage avec vue",
+        "addNewApartment": "+ Ajouter un nouvel appartement"
     }
 }

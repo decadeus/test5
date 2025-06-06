@@ -169,9 +169,9 @@
         "PLACEHOLDER_SERVICES": "Supermarkt, Schule...",
         "SECURITE": "Sicherheit",
         "PLACEHOLDER_SECURITE": "Feuerwehr, Kameras...",
-        "MODAL_TITLE_COMMUNITY": "Gemeinschaftseinrichtungen"
-        
-            },
+        "MODAL_TITLE_COMMUNITY": "Gemeinschaftseinrichtungen",
+        "addNewApartment": "+ Neue Wohnung hinzufügen"
+    },
     "SEO": {
         "Title": "Wohnprojekte",
         "Description": "Entdecken Sie die besten Wohnprojekte in Ihrer Nähe"
@@ -198,5 +198,64 @@
         "loading": "Weiterleitung...",
         "needMore": "Benötigen Sie mehr als 10 Projekte oder zusätzliche Benutzer?",
         "contactUs": "Kontaktieren Sie uns für ein individuelles Angebot"
+    },
+    "PromoBlock": {
+        "title": "Optimieren Sie die Vermarktung Ihrer Wohnimmobilienprojekte",
+        "desc": "Eine Web-App speziell für Immobilienentwickler. Zentralisieren Sie Ihre Projekte, laden Sie Ihre Mitarbeiter ein und geben Sie die angebotenen Ausstattungen in jedem Programm an.",
+        "item1": "Verfolgung nach Stadt, Projekt, Kontakt",
+        "item2": "Verwaltung der Mitarbeiter je nach Abonnement",
+        "item3": "Individuelles Dashboard",
+        "item4": "Einfache und unverbindliche Tarife"
+    },
+    "DualLayer": {
+        "projectInfo": "Projektinformationen",
+        "company": "Unternehmen",
+        "companyValue": "Bouygues Immobilier",
+        "projectName": "Projektname",
+        "projectNameValue": "Résidence Solaris",
+        "city": "Stadt",
+        "cityValue": "Krakau",
+        "currency": "Währung",
+        "currencyValue": "PLN",
+        "latitude": "Breitengrad",
+        "latitudeValue": "50.061947",
+        "longitude": "Längengrad",
+        "longitudeValue": "19.936856",
+        "sharedServices": "Gemeinschaftsdienste",
+        "garden": "Garten",
+        "reception": "Rezeption",
+        "bikeParking": "Fahrradparkplatz",
+        "childArea": "Kinderbereich",
+        "disabledAccess": "Behindertenzugang",
+        "fitnessRoom": "Fitnessraum",
+        "cctv": "Videoüberwachung",
+        "swimmingPool": "Schwimmbad",
+        "collaborators": "Mitarbeiter",
+        "name": "Name",
+        "role": "Rolle",
+        "access": "Projektzugang",
+        "sophie": "Sophie Nowak",
+        "commercial": "Vertrieb",
+        "solar": "Solaris",
+        "jean": "Jean Dupont",
+        "chef": "Projektleiter",
+        "vistula": "Vistula",
+        "anna": "Anna Zielinska",
+        "marketing": "Marketing",
+        "all": "Alle",
+        "reference": "Referenz",
+        "surface": "Fläche",
+        "etage": "Etage",
+        "chambres": "Zimmer",
+        "prix": "Preis",
+        "commentaire": "Kommentar",
+        "achat": "Idealer Erstkauf",
+        "famille": "Perfekt für eine Familie",
+        "vue": "Oberste Etage mit Aussicht"
+    },
+    "Lp1": {
+        "join": "Mitmachen",
+        "addProject": "Fügen Sie Ihr Projekt kostenlos hinzu",
+        "learnMore": "Mehr erfahren"
     }
 }
