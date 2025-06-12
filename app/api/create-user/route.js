@@ -6,6 +6,11 @@ export async function POST(req) {
   const body = await req.json();
   const { email, password, username, full_name } = body;
 
+  // Validation des données
+  if (!email || !password || !username || !full_name) {
+    return NextResponse.json({ message: "Tous les champs sont requis." }, { status: 400 });
+  }
+
   try {
     // 1. Créer l'utilisateur dans auth
     const { data: userResult, error: userError } = await supabase.auth.admin.createUser({
@@ -29,6 +34,7 @@ export async function POST(req) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
+    console.error('Erreur création user:', err);
     return NextResponse.json({ message: err.message || "Erreur inconnue" }, { status: 400 });
   }
 }

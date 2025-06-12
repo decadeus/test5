@@ -17,6 +17,7 @@ export default function Layout() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [user, setUser] = useState(null);
   const [isCollaborator, setIsCollaborator] = useState(false);
+  const [isPromoteur, setIsPromoteur] = useState(false);
   const [collaborators, setCollaborators] = useState([]);
   const [projects, setProjects] = useState([]);
 
@@ -24,6 +25,9 @@ export default function Layout() {
   const [newFirstName, setNewFirstName] = useState("");
   const [newLastName, setNewLastName] = useState("");
   const maxCollaborators = 5;
+
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -38,6 +42,17 @@ export default function Layout() {
 
       setUser(user);
       console.log("🔍 Utilisateur connecté :", user);
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .maybeSingle();
+      if (profile?.role === "promoteur") {
+        setIsPromoteur(true);
+      } else {
+        setIsPromoteur(false);
+      }
 
       const { data: collabRecord } = await supabase
         .from("collaborators")
@@ -67,7 +82,7 @@ export default function Layout() {
           // Ajout récupération des accès et enrichissement avec editorCount
           const { data: accessList } = await supabase
             .from("collaborator_project_access")
-            .select("project_id,canEdit");
+            .select("project_id,can_edit");
           console.log("AccessList = ", accessList);
           if (!accessList) {
             console.error("AccessList is empty or failed to load");
@@ -75,7 +90,7 @@ export default function Layout() {
 
           const projectsWithEditors = (projs || []).map((p) => {
             const editors = accessList?.filter(
-              (a) => a.project_id === p.id && a.canEdit
+              (a) => a.project_id === p.id && a.can_edit
             );
             return { ...p, editorCount: editors?.length ?? 0 };
           });
@@ -107,6 +122,7 @@ export default function Layout() {
       newLastName &&
       user
     ) {
+      // 1. Ajout dans la table collaborators
       const { data, error } = await supabase
         .from("collaborators")
         .insert([
@@ -121,11 +137,60 @@ export default function Layout() {
 
       if (error) {
         console.error("Erreur insertion", error);
+        return;
       } else {
         setCollaborators([...collaborators, data[0]]);
         setNewEmail("");
         setNewFirstName("");
         setNewLastName("");
+      }
+
+      // 2. Créer le compte Auth côté serveur (si pas déjà existant)
+      let userCreated = false;
+      let userErrorMsg = "";
+      try {
+        const res = await fetch('/api/create-user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: newEmail,
+            password: crypto.randomUUID(), // mot de passe temporaire
+            username: newEmail.split('@')[0],
+            full_name: `${newFirstName} ${newLastName}`,
+          }),
+        });
+        const result = await res.json();
+        if (res.ok) {
+          userCreated = true;
+        } else {
+          userErrorMsg = result.message;
+        }
+      } catch (err) {
+        userErrorMsg = err.message;
+      }
+
+      // 3. Envoi du Magic Link
+      let magicLinkErrorMsg = "";
+      if (userCreated) {
+        const { error: magicLinkError } = await supabase.auth.signInWithOtp({
+          email: newEmail,
+        });
+        if (magicLinkError) {
+          magicLinkErrorMsg = magicLinkError.message;
+        }
+      }
+
+      // 4. Affichage du message
+      setShowSuccess(true);
+      if (userErrorMsg) {
+        setSuccessMessage("Erreur lors de la création du compte Auth : " + userErrorMsg);
+      } else if (magicLinkErrorMsg) {
+        setSuccessMessage("Collaborateur créé, mais erreur lors de l'envoi du Magic Link : " + magicLinkErrorMsg);
+      } else {
+        setSuccessMessage(
+          "Invitation envoyée ! Le collaborateur recevra un email avec un lien d'accès. " +
+          "Son compte sera créé lorsqu'il cliquera sur ce lien pour la première fois."
+        );
       }
     }
   };
@@ -176,6 +241,12 @@ export default function Layout() {
           Bienvenue, {user ? user.email : "Invité"}
         </h2>
 
+        {showSuccess && (
+          <div className="bg-green-100 text-green-800 p-2 rounded mb-2">
+            {successMessage}
+          </div>
+        )}
+
         <ul className="flex-grow">
           <li className="mb-4">
             <h3 className="text-xs font-semibold uppercase mb-2">Générale</h3>
@@ -189,13 +260,13 @@ export default function Layout() {
                   }}
                   className="text-left w-full"
                 >
-                  Vue d’ensemble ({projects.length} projets)
+                  Vue d'ensemble ({projects.length} projets)
                 </button>
               </li>
             </ul>
           </li>
 
-          {!isCollaborator && (
+          {(!isCollaborator || isPromoteur) && (
             <li className="mb-4">
               <h3 className="text-xs font-semibold uppercase mb-2">Administration</h3>
               <ul>

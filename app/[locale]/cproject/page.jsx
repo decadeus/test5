@@ -11,7 +11,7 @@ export default async function Page() {
   } = await supabase.auth.getUser();
 
   return (
-    <div className="flex w-full pt-24">
+    <div className="flex w-full">
       <Navbar user={user} />
       {/* Tu peux éventuellement afficher les projets ici */}
       {/* <Projectb /> */}

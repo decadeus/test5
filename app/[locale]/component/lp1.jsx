@@ -5,7 +5,7 @@ export default function HomePage() {
   return (
     <main className=" w-full flex h-fit">
       
-      <div className=" bg-white overflow-hidden w-full">
+      <div className="w-full">
         <BouncingBackground />
        
       </div>

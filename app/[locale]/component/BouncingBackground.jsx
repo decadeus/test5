@@ -41,7 +41,7 @@ const BouncingShapesSection = ({
       .bouncing-section {
         background: #fff;
         position: relative;
-        overflow: hidden;
+      
         display: flex;
         justify-content: center;
         align-items: center;
@@ -58,26 +58,26 @@ const BouncingShapesSection = ({
         /* Pink */
       }
       .shape1 {
-        width: 65vw;
-        height: 60vw;
-        background-color: #979899;
+        width: 35vw;
+        height: 30vw;
+        background-color: #003ace;
         top: 0;
         right: 0;
         clip-path: ellipse(46% 22% at 50% 50%);
         animation: bounce1 24s infinite;
       }
       .shape2 {
-        width: 45vw;
-        height: 45vw;
-        background-color: #e8e9eb;
+        width: 22vw;
+        height: 22vw;
+        background-color: #8fce0080;
         top: 0;
         right: 0;
         clip-path: ellipse(30% 60% at 50% 50%);
         animation: bounce2 36s infinite;
       }
       .shape3 {
-        width: 22vw;
-        height: 12vw;
+        width: 12vw;
+        height: 7vw;
         background-color: #000000;
         bottom: 0;
         left: 0;

@@ -23,7 +23,7 @@ export default function Generale() {
 
       const { data, error } = await supabase
         .from('project_edit_count')
-        .select('project_id, name, online, edit_count, apart_count')
+        .select('id, name, online, edit_count, apart_count')
         .eq('user_id', user.id);
 
       if (error) {
@@ -48,7 +48,7 @@ export default function Generale() {
   return (
     <div className="p-6 overflow-y-auto">
       <h1 className="text-xl font-bold text-gray-700 mb-4">
-        Vue d’ensemble des projets
+        Vue d'ensemble des projets
       </h1>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard label="Projets" value={projects.length} />
@@ -58,7 +58,7 @@ export default function Generale() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((project) => (
-          <div key={project.project_id} className="bg-white rounded shadow p-4">
+          <div key={project.id} className="bg-white rounded shadow p-4">
             <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center gap-2">
               <FaBuilding className="text-gray-500" /> {project.name}
             </h3>
@@ -77,7 +77,7 @@ export default function Generale() {
               {project.apart_count} appartements
             </p>
             <div className="bg-gray-100 h-32 rounded flex items-center justify-center text-gray-400 text-sm">
-              [Graphique projet #{project.project_id}]
+              [Graphique projet #{project.id}]
             </div>
           </div>
         ))}

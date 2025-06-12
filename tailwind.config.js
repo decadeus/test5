@@ -11,31 +11,54 @@ module.exports = {
       keyframes: {
         'spin-pause': {
           '0%': { transform: 'rotate(0deg)' },
-          '33.33%': { transform: 'rotate(360deg)' }, // Full rotation at 33.33%
-          '100%': { transform: 'rotate(360deg)' },   // Fixed at 360deg for the remaining 66.67%
+          '33.33%': { transform: 'rotate(360deg)' }, // Full rotation à 1/3
+          '100%': { transform: 'rotate(360deg)' },   // Reste fixe ensuite
         },
-       
-       
+        fillup: {
+          '0%': { height: '0%', backgroundColor: '#16a34a' },
+          '50%': { height: '50%', backgroundColor: '#16a34a' },
+          '100%': { height: '50%', backgroundColor: '#d1d5db' }, // 50% de h-[200px] = 100px
+        },
+        fillupFirst: {
+          '0%': { width: '200px', backgroundColor: '#16a34a' },
+          '30%': { width: '100px', backgroundColor: '#d1d5db' },
+          '60%': { width: '100px', backgroundColor: '#d1d5db' },
+          '100%': { width: '200px', backgroundColor: '#16a34a' },
+        },
+        fillupSecond: {
+          '0%': { width: '100px', backgroundColor: '#d1d5db' },
+          '30%': { width: '200px', backgroundColor: '#16a34a' },
+          '60%': { width: '100px', backgroundColor: '#d1d5db' },
+          '100%': { width: '100px', backgroundColor: '#d1d5db' },
+        },
+        fillupThird: {
+          '0%': { width: '100px', backgroundColor: '#d1d5db' },
+          '30%': { width: '100px', backgroundColor: '#d1d5db' },
+          '60%': { width: '200px', backgroundColor: '#16a34a' },
+          '100%': { width: '100px', backgroundColor: '#d1d5db' },
+        },
       },
       animation: {
         'spin-pause': 'spin-pause 3s linear infinite',
-       
-       
+        'fillup-height': 'fillup 14s ease-in-out infinite',
+        'fillup-width': 'fillupFirst 10s ease-in-out infinite',
+        'fillup-width-delayed': 'fillupSecond 10s ease-in-out infinite',
+        'fillup-third': 'fillupThird 10s ease-in-out infinite',
       },
       colors: {
         primary: {
-          DEFAULT: "#2222c1",
-          dark: "#004493",
+          DEFAULT: '#2222c1',
+          dark: '#004493',
         },
         custom: {
-          brownc: "#bfae9b",
-          brownd: "#9c8164"// Couleur personnalisée
+          brownc: '#bfae9b',
+          brownd: '#9c8164',
         },
       },
       fontFamily: {
-        kenia: ["var(--font-kenia)"],
-        satisfy: ["var(--font-satisfy)"],
-        macondo: ["var(--font-macondo)"] // Correctly place inside extend
+        kenia: ['var(--font-kenia)'],
+        satisfy: ['var(--font-satisfy)'],
+        macondo: ['var(--font-macondo)'],
       },
     },
   },

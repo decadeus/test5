@@ -61,10 +61,8 @@ export default function Text({ user }) {
 
   return (
     <>
-      <button onClick={onOpen}>
-        <div className="rounded-lg  border-2 p-2 border-black">
-          <p className="text-black text-sm">Logout</p>
-        </div>
+      <button onClick={onOpen} className="flex items-center gap-2 px-3 py-1 h-9 rounded-full border font-semibold text-green-700 border-green-700 bg-white/70 hover:bg-green-700 hover:text-white transition select-none text-base">
+        Logout
       </button>
       <Modal
         isOpen={isOpen}
