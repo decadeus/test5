@@ -22,6 +22,10 @@ import {
   FaApple,
   FaRegHandPointer,
   FaRegEnvelope,
+  FaLock,
+  FaUser,
+  FaRegFileAlt,
+  FaWaveSquare,
 } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { MdSmartphone } from "react-icons/md";
@@ -42,7 +46,7 @@ export default function Page() {
   const t = useTranslations("Homepage");
 
   const subtitle = "text-5xl font-bold w-[620px] text-left leading-tight pb-20";
-
+  const paragraphe = "text-2xl font-normal pb-8";
   const MIN_LOADING_TIME = 1000;
 
   const fetchProjects = async () => {
@@ -121,6 +125,19 @@ export default function Page() {
           label="iOS"
         />
       </div>
+
+      <IntroSection
+        t={t}
+        uniqueCompanies={uniqueCompanies}
+        uniqueIdeas={uniqueIdeas}
+        totalApartments={totalApartments}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        fetchProjectsA={fetchProjectsA}
+        loading={loading}
+        router={router}
+        locale={locale}
+      />
       <div className="max-w-7xl mx-auto">
         <style jsx>{`
           .letter {
@@ -129,30 +146,20 @@ export default function Page() {
             transition: opacity 0.3s ease;
           }
         `}</style>
-        <IntroSection
-          t={t}
-          uniqueCompanies={uniqueCompanies}
-          uniqueIdeas={uniqueIdeas}
-          totalApartments={totalApartments}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          fetchProjectsA={fetchProjectsA}
-          loading={loading}
-          router={router}
-          locale={locale}
-        />
-        <Appartement subtitle={subtitle} />
-        <SEO subtitle={subtitle} />
-        <Magic />
+        <SEO subtitle={subtitle} paragraphe={paragraphe} />
         <div className="relative h-[2000px]">
-          <ProjetSection />
+          <ProjetSection subtitle={subtitle} paragraphe={paragraphe} />
+          <div className="h-[2000px]"></div>
         </div>
+        <Appartement subtitle={subtitle} paragraphe={paragraphe} />
+        <ManageSection subtitle={subtitle} paragraphe={paragraphe} />
+        <Magic />
 
-        <FAQ />
-        <Lp1Component />
-        <div className="gflex justify-center items-center px-4 py-12 w-full bg-gray-700">
-          <SubscribeButton />
-        </div>
+        <FAQ subtitle={subtitle} paragraphe={paragraphe} />
+  
+      
+          <SubscribeButton subtitle={subtitle} paragraphe={paragraphe} />
+      
       </div>
     </>
   );
@@ -280,7 +287,7 @@ function IntroSection({
   );
 }
 
-function Appartement({ subtitle }) {
+function Appartement({ subtitle, paragraphe }) {
   const columns = [
     { key: "ref", label: "Ref", className: "min-w-[80px] w-[90px]" },
     { key: "chambres", label: "Chambres", className: "min-w-[90px] w-[100px]" },
@@ -343,11 +350,11 @@ function Appartement({ subtitle }) {
   ];
 
   return (
-    <div className="flex flex-col justify-center items-center px-4 py-12 max-w-7xl mx-auto text-black">
+    <div className="flex flex-col justify-center items-center px-4 py-32 max-w-7xl mx-auto text-black">
       <h2 className={subtitle}>Mettez a jour la liste de vos appartements</h2>
       <div className="flex flex-row gap-10 w-full">
         <div className="flex flex-col bg-blue-500 rounded-3xl p-10 text-white w-3/4">
-          <p className="text-lg pb-6">Gestionnaire d'appartements</p>
+          <p className={paragraphe}>Gestionnaire d'appartements</p>
           <h3 className="text-4xl font-bold pb-20 w-2/3">
             Utilisez un tableau clair pour ajouter vos appartements
           </h3>
@@ -408,7 +415,7 @@ function Appartement({ subtitle }) {
           </div>
         </div>
         <div className="flex flex-col gap-10 p-10 bg-blue-100 rounded-3xl text-black w-1/4 h-fit">
-          <p className="text-lg pb-6">En temps réel</p>
+          <p className={paragraphe}>En temps réel</p>
           <h3 className="text-4xl font-bold leading-tight">
             Maitrissez les informations de vos appartements en temps réel
           </h3>
@@ -418,7 +425,7 @@ function Appartement({ subtitle }) {
   );
 }
 
-function SEO({ subtitle }) {
+function SEO({ subtitle, paragraphe }) {
   const iconsRef = useRef(null);
   const [progress, setProgress] = useState(0);
 
@@ -476,14 +483,14 @@ function SEO({ subtitle }) {
   };
 
   return (
-    <div className="flex gap-10 px-4 py-12 max-w-7xl mx-auto text-black w-full">
+    <div className="flex gap-10 px-4 max-w-7xl mx-auto text-black w-full py-32">
       <div className="text-black w-1/2">
         <h2 className={subtitle}>Le SEO est une priorité</h2>
-        <p className="text-2xl font-normal pb-8">
+        <p className={paragraphe}>
           Nous mettons l'accent sur le SEO pour que votre site soit bien
           positionné sur les moteurs de recherche
         </p>
-        <p className="text-2xl font-normal">
+        <p className={paragraphe}>
           Un outils IA pour vous aider a ecrire la description de votre projet,
           gerer la metadescription et title
         </p>
@@ -862,7 +869,7 @@ function Magic() {
   );
 }
 
-function FAQ() {
+function FAQ({ subtitle, paragraphe }) {
   const items = [
     {
       title: "Comment fonctionne le Magic Link ?",
@@ -893,8 +900,8 @@ function FAQ() {
   const [open, setOpen] = useState(Array(items.length).fill(false));
   const toggle = (idx) => setOpen((o) => o.map((v, i) => (i === idx ? !v : v)));
   return (
-    <div className="max-w-7xl mx-auto my-12 mt-24">
-      <h2 className="text-3xl font-bold mb-8 text-center">FAQ</h2>
+    <div className="max-w-7xl mx-auto my-12 mt-24 flex flex-col justify-center items-center">
+      <h2 className={subtitle}>FAQ</h2>
       <div className="space-y-4">
         {items.map((item, idx) => (
           <div key={idx} className="bg-white border-b border-green-700 p-4">
@@ -912,7 +919,7 @@ function FAQ() {
               />
             </button>
             <div
-              className={`faq-content mt-3 text-gray-600 text-xl ${open[idx] ? "open" : ""}`}
+              className={`${paragraphe} faq-content mt-3 ${open[idx] ? "open" : ""}`}
               style={{
                 maxHeight: open[idx] ? 200 : 0,
                 opacity: open[idx] ? 1 : 0,
@@ -935,7 +942,7 @@ function FAQ() {
   );
 }
 
-function ProjetSection() {
+function ProjetSection({ subtitle, paragraphe }) {
   const [progress, setProgress] = useState(0);
   const sectionRef = useRef(null);
 
@@ -974,8 +981,8 @@ function ProjetSection() {
 
   // Calcul de la translation du bloc blanc
 
-  const translateY = 0 - smoothProgress * -250; // de 0% à -80%
-  const translateX = 0 + smoothProgress * -50; // de 0% à -80%
+  const translateY = 0 - smoothProgress * -200; // de 0% à -80%
+  const translateX = 0 + smoothProgress * -250; // de 0% à -80%
 
   return (
     <div
@@ -986,16 +993,13 @@ function ProjetSection() {
         height: "90vh",
       }}
     >
-      
-      <div className="text-black absolute top-[150px] left-[500px] -translate-x-1/2 transition-opacity duration-500 flex gap-32">
+      <div className="text-black absolute top-[150px] left-[700px] w-full -translate-x-1/2 transition-opacity duration-500 flex gap-32">
         <div>
           {" "}
-          <h3 className="text-5xl font-bold">
-            Informations du projet
-          </h3>
+          <h3 className={subtitle}>Informations du projet</h3>
         </div>
-        <div className="text-lg">
-          <p>
+        <div className={paragraphe}>
+          <p className="w-3/4">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit.
             Praesentium eligendi quasi voluptates ducimus consequatur hic
             numquam pariatur vero doloremque laudantium, deleniti quo possimus,
@@ -1005,15 +1009,252 @@ function ProjetSection() {
       </div>
       {/* Bloc blanc qui descend */}
       <div
-        className="w-full h-full rounded-2xl shadow-xl flex items-center justify-center text-3xl font-bold transition-all duration-500 bg-yellow-green"
+        className="w-full h-full rounded-2xl flex pt-10 justify-center transition-all duration-500 border-1 border-gray-400"
         style={{
-          background: "red",
+          background: "#e6eeff",
           transform: `translateY(${translateY}%) translateX(${translateX}%)`,
           boxShadow: "0 8px 32px rgba(0,0,0,0.10)",
         }}
       >
-        Bloc blanc qui remplace le fond rouge
+        <form className="w-full max-w-xl bg-white rounded-2xl p-10 border border-gray-200 flex flex-col gap-6 pointer-events-none select-none opacity-90">
+          <h4 className="text-3xl font-bold text-gray-800 mb-2 text-center">
+            Détails du projet
+          </h4>
+
+          <div className="flex flex-row gap-4">
+            <div className="flex flex-col gap-2 w-1/2">
+              <label className="text-lg font-medium text-gray-700">
+                Promoteur
+              </label>
+              <input
+                type="text"
+                value="Hoomge Développement"
+                disabled
+                readOnly
+                className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 text-lg text-gray-500"
+              />
+            </div>
+            <div className="flex flex-col gap-2 w-1/2">
+              <label className="text-lg font-medium text-gray-700">
+                Nombre de lots
+              </label>
+              <input
+                type="text"
+                value="42"
+                disabled
+                readOnly
+                className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 text-lg text-gray-500"
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-lg font-medium text-gray-700">
+              Description
+            </label>
+            <textarea
+              value="Programme neuf au cœur de Paris, prestations haut de gamme, espaces verts, parking en sous-sol."
+              disabled
+              readOnly
+              rows={3}
+              className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 text-lg text-gray-500 resize-none"
+            />
+          </div>
+          <div className="flex flex-row gap-4">
+            <div className="flex flex-col gap-2 w-1/2">
+              <label className="text-lg font-medium text-gray-700">
+                Livraison
+              </label>
+              <input
+                type="text"
+                value="T4 2025"
+                disabled
+                readOnly
+                className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 text-lg text-gray-500"
+              />
+            </div>
+            <div className="flex flex-col gap-2 w-1/2">
+              <label className="text-lg font-medium text-gray-700">
+                Statut
+              </label>
+              <input
+                type="text"
+                value="En commercialisation"
+                disabled
+                readOnly
+                className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 text-lg text-gray-500"
+              />
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   );
 }
+
+function ManageSection({ subtitle, paragraphe }) {
+  // Définir les icônes à placer autour du cercle avec leur angle (en degrés)
+  const icons = [
+    // Cercle extérieur (purple)
+    {
+      icon: <FaUser size={32} color="purple" />,
+      label: "User",
+      angle: 0,
+      radius: 36,
+      color: "purple",
+    }, // droite
+    {
+      icon: <FaRegFileAlt size={32} color="purple" />,
+      label: "Projet A",
+      angle: 180,
+      radius: 36,
+      color: "purple",
+    }, // gauche
+    // Cercle intermédiaire (blue)
+    {
+      icon: <FaUser size={32} color="blue" />,
+      label: "User",
+      angle: 100,
+      radius: 29,
+      color: "blue",
+    }, // bas
+    {
+      icon: <FaRegFileAlt size={32} color="blue" />,
+      label: "Projet B",
+      angle: 270,
+      radius: 29,
+      color: "blue",
+    }, // haut
+    // Cercle intérieur (red)
+    {
+      icon: <FaUser size={32} color="red" />,
+      label: "User",
+      angle: 45,
+      radius: 19,
+      color: "red",
+    }, // bas droite
+    {
+      icon: <FaRegFileAlt size={32} color="red" />,
+      label: "Projet C",
+      angle: 225,
+      radius: 19,
+      color: "red",
+    }, // haut gauche
+  ];
+
+  const [orbitAngle, setOrbitAngle] = useState(0);
+
+  useEffect(() => {
+    let frame;
+    const animate = () => {
+      setOrbitAngle((a) => (a + 0.1) % 360); // 0.01° par frame, rotation très lente
+      frame = requestAnimationFrame(animate);
+    };
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  return (
+    <div className="flex flex-row max-w-7xl mx-auto h-fit mt-12 mb-32 gap-4 ">
+      <div className="text-black text-xl w-1/2 bg-transparent z-30 backdrop-blur-sm">
+        <h3 className={subtitle}>
+          Ajouter des projets/Collaborateurs
+        </h3>
+        <p className={paragraphe}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+          quos. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing
+          elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Quisquam, quos
+        </p>
+      </div>
+      <div className="relative w-1/2 aspect-square -mt-32">
+        {/* Cercles concentriques */}
+        {[75, 58, 40].map((percent, idx) => (
+          <div
+            key={idx}
+            className="absolute border border-blue-200/30 rounded-full"
+            style={{
+              width: `${percent}%`,
+              height: `${percent}%`,
+              top: `${(100 - percent) / 2}%`,
+              left: `${(100 - percent) / 2}%`,
+            }}
+          />
+        ))}
+
+        {/* Icône centrale */}
+        <div
+          className="absolute left-1/2 top-1/2 z-10 bg-green-700 text-white rounded-full p-6"
+          style={{ transform: "translate(-50%, -50%)" }}
+        >
+          <FaLock size={48} />
+        </div>
+
+        {/* Animation orbitale des icônes autour du centre */}
+        <div className="absolute inset-0">
+          {icons.map(({ icon, label, angle, radius, color }, idx) => {
+            // Définir les rayons adaptés aux nouveaux cercles (120, 90, 60)
+            let adjustedRadius = radius;
+            if (radius === 36) adjustedRadius = 36; // cercle extérieur (purple)
+            if (radius === 29) adjustedRadius = 29; // cercle intermédiaire (blue)
+            if (radius === 19) adjustedRadius = 19; // cercle intérieur (red)
+            // Ajoute l'angle d'animation à l'angle de base
+            const animatedAngle = angle + orbitAngle;
+            const rad = (animatedAngle * Math.PI) / 180;
+            const x = 50 + adjustedRadius * Math.cos(rad);
+            const y = 50 + adjustedRadius * Math.sin(rad);
+            let labelColor = undefined;
+            if (color === "purple") labelColor = "#663399";
+            else if (color === "blue") labelColor = "#3b82f6";
+            else if (color === "red") labelColor = "#dc2626";
+            return (
+              <div
+                key={idx}
+                className="absolute flex flex-col items-center"
+                style={{
+                  left: `${x}%`,
+                  top: `${y}%`,
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 48,
+                    height: 48,
+                    borderRadius: "50%",
+                    background: "#fff",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
+                    marginBottom: 4,
+                  }}
+                >
+                  {icon}
+                </span>
+                <p
+                  className="text-xs"
+                  style={labelColor ? { color: labelColor } : {}}
+                >
+                  {label}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* Ajoute l'animation de rotation globale */
+<style jsx>{`
+  @keyframes rotate-circles {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`}</style>;
