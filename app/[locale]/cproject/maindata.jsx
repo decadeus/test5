@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { createClient } from "@/utils/supabase/client";
 import AvatarComponent from "../cproject/image";
 import { IoMdEyeOff } from "react-icons/io";
@@ -21,6 +21,8 @@ import {
   ModalFooter,
   Button,
 } from "@heroui/react";
+import { FiDownload, FiUpload } from "react-icons/fi";
+
 
 export default function Maindata({ project, onProjectUpdate }) {
   const supabase = createClient();
@@ -125,7 +127,7 @@ export default function Maindata({ project, onProjectUpdate }) {
       online: isOnline,
       ...features,
     };
-    // N'inclure pricetype que s’il est défini et non vide
+    // N'inclure pricetype que s'il est défini et non vide
     if (project.pricetype) {
       updates.pricetype = project.pricetype;
     }
@@ -199,7 +201,10 @@ export default function Maindata({ project, onProjectUpdate }) {
     };
 
     return (
+      <div>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4 text-black w-[900px]">
+       
         <div className="flex flex-col">
           <label className="text-black mb-1">{f("Pays")}</label>
           <select
@@ -233,6 +238,7 @@ export default function Maindata({ project, onProjectUpdate }) {
           </select>
         </div>
       </div>
+      </div>
     );
   };
 
@@ -241,9 +247,7 @@ export default function Maindata({ project, onProjectUpdate }) {
 
   return (
     <div className=" mt-10 p-6 bg-white rounded-lg flex flex-col justify-center items-center mb-8 text-black">
-      <div className="mb-8 w-full">
-        {user && <AvatarComponent user={user} />}
-      </div>
+    <ProjectImages projectId={project.id} />
       <h2 className="text-2xl font-semibold text-black mb-4">
         {f("Modifier")}
       </h2>
@@ -268,7 +272,7 @@ export default function Maindata({ project, onProjectUpdate }) {
               </select>
             </div>
           </div>
-          <div className="">
+          <div>
             <CountryCitySelector
               editableCountry={editableCountry}
               setEditableCountry={setEditableCountry}
@@ -556,5 +560,170 @@ export default function Maindata({ project, onProjectUpdate }) {
         {isSaving ? f("Saving") : f("Sauvegarder")}
       </button>
     </div>
+  );
+}
+
+export function ProjectImages({ projectId, className = "" }) {
+  const [images, setImages] = useState({}); // {slot: url}
+  const supabase = createClient();
+  const fileInputRefs = useRef([null, null, null, null, null]);
+
+  // Génère les slots image1- à image5-
+  const slots = [1, 2, 3, 4, 5];
+
+  async function fetchImages() {
+    const { data, error } = await supabase
+      .storage
+      .from("project")
+      .list(`${projectId}/`, { limit: 20, offset: 0 });
+    if (error || !data) {
+      setImages({});
+      return;
+    }
+    const slotImages = {};
+    slots.forEach(num => {
+      const prefix = `image${num}-`;
+      const file = data.find(f => f.name.startsWith(prefix));
+      slotImages[num] = file
+        ? supabase.storage.from("project").getPublicUrl(`${projectId}/${file.name}`).data.publicUrl
+        : null;
+    });
+    setImages(slotImages);
+  }
+
+  useEffect(() => {
+    if (projectId) fetchImages();
+    // eslint-disable-next-line
+  }, [projectId]);
+
+  async function handleUpload(e, slotNum) {
+    const files = e.target.files;
+    if (!files.length) return;
+    const file = files[0];
+
+    // 1. Vérifier le type de fichier
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+    if (!allowedTypes.includes(file.type)) {
+      alert("Seuls les fichiers PNG, JPG ou JPEG sont autorisés.");
+      return;
+    }
+
+    // 2. Vérifier la taille (3 Mo max)
+    const maxSize = 3 * 1024 * 1024; // 3 Mo
+    if (file.size > maxSize) {
+      alert("La taille maximale autorisée est de 3 Mo.");
+      return;
+    }
+
+    const ext = file.name.split('.').pop();
+    const prefix = `image${slotNum}-`;
+    const name = `${prefix}${Date.now()}.${ext}`;
+
+    // 1. Supprimer les anciennes images du slot
+    const { data: existingFiles, error: listError } = await supabase
+      .storage
+      .from("project")
+      .list(`${projectId}/`, { limit: 20, offset: 0 });
+    if (!listError && existingFiles) {
+      const toDelete = existingFiles
+        .filter(f => f.name.startsWith(prefix))
+        .map(f => `${projectId}/${f.name}`);
+      if (toDelete.length > 0) {
+        await supabase.storage.from("project").remove(toDelete);
+      }
+    }
+
+    // 2. Uploader la nouvelle image
+    const { error } = await supabase
+      .storage
+      .from("project")
+      .upload(`${projectId}/${name}`, file, { upsert: true });
+    if (error) alert("Erreur upload: " + error.message);
+
+    setTimeout(() => {
+      if (fileInputRefs.current[slotNum - 1]) fileInputRefs.current[slotNum - 1].value = "";
+      fetchImages();
+    }, 1000);
+  }
+
+  return (
+    <>
+     
+      <div className="flex w-full gap-4">
+        {/* Image 1 à gauche */}
+        <div
+          className={
+            "w-1/2 h-[300px] relative flex items-center justify-center rounded " +
+            (images[1]
+              ? " bg-white"
+              : "border-2 border-dashed border-gray-300 bg-gray-50")
+          }
+        >
+          {images[1] ? (
+            <img
+              src={images[1]}
+              alt={`Projet ${projectId} - image1`}
+              className="w-full h-full object-cover rounded"
+            />
+          ) : (
+            <span className="text-xs text-gray-400">No image</span>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            ref={el => (fileInputRefs.current[0] = el)}
+            onChange={e => handleUpload(e, 1)}
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRefs.current[0]?.click()}
+            className="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow hover:bg-gray-200"
+            title="Uploader/Remplacer l'image"
+          >
+            <FiUpload size={24} color="#222" />
+          </button>
+        </div>
+        {/* Images 2 à 5 à droite */}
+        <div className="w-1/2 grid grid-cols-2 grid-rows-2 gap-2 h-[300px]">
+          {[2, 3, 4, 5].map((num, idx) => (
+            <div
+              key={num}
+              className={
+                "relative w-full h-full flex items-center justify-center rounded " +
+                (images[num]
+                  ? " bg-white"
+                  : "border-2 border-dashed border-gray-300 bg-gray-50")
+              }
+            >
+              {images[num] ? (
+                <img
+                  src={images[num]}
+                  alt={`Projet ${projectId} - image${num}`}
+                  className="w-full h-full object-cover rounded"
+                />
+              ) : (
+                <span className="text-xs text-gray-400">No image</span>
+              )}
+              <input
+                type="file"
+                accept="image/png, image/jpeg, image/jpg"
+                ref={el => (fileInputRefs.current[num - 1] = el)}
+                onChange={e => handleUpload(e, num)}
+                className="hidden"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRefs.current[num - 1]?.click()}
+                className="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow hover:bg-gray-200"
+                title="Uploader/Remplacer l'image"
+              >
+                <FiUpload size={24} color="#222" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 }

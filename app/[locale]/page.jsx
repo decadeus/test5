@@ -213,7 +213,8 @@ function IntroSection({
                 <input
                   type="text"
                   placeholder="Piaseczno, Warsaw, ..."
-                  className="w-full p-2 rounded pr-10 text-black placeholder:text-black outline-none"
+                  className="w-full h-12 px-6 rounded-full border border-black text-lg font-semibold pr-10 text-black placeholder:text-black outline-none"
+                  style={{ background: 'yellow' }}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />

@@ -50,7 +50,7 @@ export default function MainNavBar({ user }) {
   // Liens principaux (adaptés à la navbar principale)
   const links = [
     { href: `/${currentLocale}/`, label: n("Accueil") },
-    { href: `/${currentLocale}/projects`, label: "Projects" },
+    { href: `/${currentLocale}/DesignTest/List`, label: "Projects" },
     { href: `/${currentLocale}/cproject`, label: n("VosProjets") },
     { href: `/${currentLocale}/addproject`, label: n("Ajouter") },
   ];

@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Navbar from "../Navbar";
+
 
 export default function Homepage() {
   const steps = [
@@ -21,7 +21,7 @@ export default function Homepage() {
 
   return (
     <>
-      <Navbar />
+ 
       <section className="bg-gray-50 w-full h-screen pt-24 flex flex-col items-center justify-center">
         <div className="text-center text-3xl md:text-4xl font-bold text-gray-900 leading-snug">
           <div>Découvrez les dernières</div>
