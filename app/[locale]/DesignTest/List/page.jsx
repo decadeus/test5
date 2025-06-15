@@ -428,6 +428,14 @@ export default function ApartmentList() {
 
         <div className="min-h-screen">
           <main className="max-w-6xl mx-auto px-4 py-8">
+            {/* Compteur de résultats */}
+            <div className="mb-6 text-center">
+              <p className="text-lg font-semibold text-gray-700">
+                {filteredApartments.length} {filteredApartments.length > 1 ? 'projets' : 'projet'} trouvé{filteredApartments.length > 1 ? 's' : ''} • 
+                {filteredApartments.reduce((total, apt) => total + (filterProjectListByRange(apt.projectlist || []).length), 0)} appartement{filteredApartments.reduce((total, apt) => total + (filterProjectListByRange(apt.projectlist || []).length), 0) > 1 ? 's' : ''} disponible{filteredApartments.reduce((total, apt) => total + (filterProjectListByRange(apt.projectlist || []).length), 0) > 1 ? 's' : ''}
+              </p>
+            </div>
+
             {apartments.length === 0 && (
               <p className="text-center text-gray-500">
                 Chargement en cours...
@@ -455,6 +463,50 @@ export default function ApartmentList() {
                             <span className="bg-blue-100 border border-blue-400 text-blue-700 rounded-full px-2 py-1 text-xs shadow">🏙️ Rooftop</span>
                           )}
                         </div>
+                        {/* Navigation buttons */}
+                        {projectImages[apt.id] && projectImages[apt.id].length > 1 && (
+                          <>
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handlePrevImage(apt.id, projectImages[apt.id].length);
+                              }}
+                              className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-green-600 hover:text-white text-green-700 shadow-lg p-2 rounded-full z-20 transition-colors border border-black"
+                              aria-label="Précédent"
+                            >
+                              <svg width="24" height="24" fill="none" stroke="black" strokeWidth="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleNextImage(apt.id, projectImages[apt.id].length);
+                              }}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-green-600 hover:text-white text-green-700 shadow-lg p-2 rounded-full z-20 transition-colors border border-black"
+                              aria-label="Suivant"
+                            >
+                              <svg width="24" height="24" fill="none" stroke="black" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                            {/* Points de navigation */}
+                            <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-2 z-20">
+                              {projectImages[apt.id].map((_, idx) => (
+                                <button
+                                  key={idx}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setCurrentImageIndexes(prev => ({
+                                      ...prev,
+                                      [apt.id]: idx
+                                    }));
+                                  }}
+                                  className={`w-2 h-2 rounded-full border-2 border-black transition-all duration-300 ${
+                                    idx === (currentImageIndexes[apt.id] || 0) ? "bg-green-600 scale-125 shadow" : "bg-white/80"
+                                  }`}
+                                  aria-label={`Aller à l'image ${idx + 1}`}
+                                />
+                              ))}
+                            </div>
+                          </>
+                        )}
                         <img
                           src={(projectImages[apt.id] || ["/images/placeholder.jpg"])[currentImageIndexes[apt.id] || 0]}
                           alt={apt.title}
@@ -507,7 +559,7 @@ export default function ApartmentList() {
                           </table>
                         </div>
                       )}
-                      <Link href={`/fr/DesignTest/Detail/${apt.id}`} className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20 flex items-center justify-center rounded-b-3xl">
+                      <Link href={`/fr/DesignTest/Detail/${apt.id}`} className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20 flex items-center justify-center">
                         <div className="w-10 h-10 bg-green-600 rounded-full hover:bg-green-700 transition-transform duration-300 transform hover:rotate-90 flex items-center justify-center">
                           <PlusIcon className="w-5 h-5 text-white" />
                         </div>

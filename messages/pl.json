@@ -5,7 +5,7 @@
         "defiler": "Przewiń, aby odkryć",
         "France": "Francja",
         "Pologne": "Polska",
-        "Description": "Dzięki liczbym ofertom projektów nieruchomości znajdź nieruchomość, która Ci odpowiada, korzystając z filtrów wyszukiwania zgodnie z mieszkaniem i usługami w budynku.",
+        "Description": "Dzięki licznym ofertom projektów nieruchomości znajdź nieruchomość, która Ci odpowiada, korzystając z filtrów wyszukiwania zgodnie z mieszkaniem i usługami w budynku.",
         "Tous": "Zobacz wszystkie projekty",
         "TitleNew": "Właśnie dołączyli do Hoomge",
         "TitleBeau": "Najpiękniejsze rezydencje",
@@ -87,6 +87,90 @@
     },
     "SEO": {
         "Title": "Projekty mieszkaniowe",
-        "Description": "Dzięki liczbym ofertom projektów nieruchomości znajdź nieruchomość, która Ci odpowiada, korzystając z filtrów wyszukiwania zgodnie z mieszkaniem i usługami w budynku."
+        "Description": "Dzięki licznym ofertom projektów nieruchomości znajdź nieruchomość, która Ci odpowiada, korzystając z filtrów wyszukiwania zgodnie z mieszkaniem i usługami w budynku.",
+        "Priority": "SEO jest priorytetem",
+        "Description1": "Kładziemy nacisk na SEO, aby Twoja strona była dobrze pozycjonowana w wyszukiwarkach",
+        "Description2": "Narzędzie AI pomoże Ci napisać opis projektu, zarządzać metaopisem i tytułem",
+        "SearchPlaceholder": "Szukaj nowego mieszkania w..."
+    },
+    "ProjectSection": {
+        "Description": "Deweloper podaje tutaj ogólne informacje o projekcie nieruchomości, takie jak lokalizacja, waluta, link do prezentacji oraz udogodnienia oferowane w rezydencji.\n\nTe dane pozwalają na jasne i kompletne przedstawienie projektu potencjalnym nabywcom. Im bardziej precyzyjne i szczegółowe są informacje, tym łatwiej kupującym wyobrazić sobie inwestycję i docenić jej jakość.\n\nNie wahaj się wskazać wszystkich cech, które podnoszą wartość Twojego projektu: wyposażenie, usługi, otoczenie, dostępność itp. Staranna i wyczerpująca prezentacja zwiększa widoczność i atrakcyjność Twojego projektu na platformie.",
+        "Title": "Informacje o projekcie",
+        "FormTitle": "Szczegóły projektu",
+        "Company": "Firma",
+        "ProjectName": "Nazwa projektu",
+        "Country": "Kraj",
+        "City": "Miasto",
+        "Latitude": "Szerokość geograficzna",
+        "Longitude": "Długość geograficzna",
+        "Currency": "Waluta",
+        "Link": "Link",
+        "Facilities": "Udogodnienia",
+        "SwimmingPool": "Basen",
+        "CCTV": "CCTV",
+        "Reception": "Recepcja",
+        "BikeParking": "Parking rowerowy",
+        "DisabledAccess": "Dostęp dla niepełnosprawnych",
+        "ChildArea": "Plac zabaw",
+        "FitnessRoom": "Sala fitness",
+        "Elevator": "Winda"
+    },
+    "ManageSection": {
+        "title": "Dodaj projekty/współpracowników",
+        "description": "Jako deweloper możesz dodawać projekty i współpracowników do swojej przestrzeni roboczej. Możesz precyzyjnie definiować uprawnienia dla każdego współpracownika, określając, które projekty mogą modyfikować. Ta szczegółowa kontrola dostępu pozwala zachować pełną kontrolę nad projektami, jednocześnie ułatwiając współpracę z zespołem.",
+        "collaboratorA": "Współpracownik A",
+        "projectA": "Projekt A",
+        "collaboratorB": "Współpracownik B",
+        "projectB": "Projekt B",
+        "collaboratorC": "Współpracownik C",
+        "projectC": "Projekt C"
+    },
+    "MagicLink": {
+        "MagicLink_Description": "Magic Link umożliwia łatwe i bezpieczne logowanie bez konieczności zapamiętywania hasła. Wystarczy kliknąć w link otrzymany e-mailem, aby uzyskać dostęp do swojego konta. Każdy link jest unikalny, można go użyć tylko raz i szybko wygasa, aby zapewnić bezpieczeństwo konta. W razie potrzeby możesz w każdej chwili poprosić o nowy Magic Link i wygenerować go na każdym urządzeniu, na którym chcesz się zalogować."
+    },
+    "ProjectCard_Description": "Każda karta projektu Hoomge zawiera bezpośredni link do Twojej strony internetowej oraz do strony projektu dewelopera.",
+    "FAQ": {
+        "FAQ_UpdateProject": "Jak mogę zaktualizować informacje o swoim projekcie na Hoomge?",
+        "FAQ_UpdateProject_Answer": "Możesz edytować informacje o swoim projekcie w każdej chwili ze swojego panelu użytkownika. Przejdź do odpowiedniej karty projektu i kliknij 'Edytuj', aby zaktualizować szczegóły, dodać zdjęcia lub poprawić informacje.",
+        "FAQ_ContactPromoteur": "Jak odwiedzający mogą skontaktować się z deweloperem projektu?",
+        "FAQ_ContactPromoteur_Answer": "Każda karta projektu Hoomge wyświetla dane kontaktowe dewelopera oraz bezpośredni link do jego strony internetowej. Odwiedzający mogą łatwo uzyskać więcej informacji lub skontaktować się bezpośrednio z deweloperem.",
+        "FAQ_MagicLink": "Jak działa Magic Link?",
+        "FAQ_MagicLink_Answer": "Magic Link umożliwia łatwe i bezpieczne logowanie bez konieczności zapamiętywania hasła. Wystarczy kliknąć w link otrzymany e-mailem, aby uzyskać dostęp do swojego konta. Każdy link jest unikalny, można go użyć tylko raz i szybko wygasa, aby zapewnić bezpieczeństwo konta. W razie potrzeby możesz w każdej chwili poprosić o nowy Magic Link i wygenerować go na każdym urządzeniu, na którym chcesz się zalogować.",
+        "FAQ_Collaborateurs": "Jak logują się współpracownicy?",
+        "FAQ_Collaborateurs_Answer": "Podobnie jak promotor, współpracownicy logują się za pomocą Magic Link i adresu e-mail, który dodałeś do listy. Nie musisz zarządzać hasłami swoich współpracowników.",
+        "FAQ_Abonnement": "Czy można przejść z jednego abonamentu na inny?",
+        "FAQ_Abonnement_Answer": "Tak, możesz przejść z jednego abonamentu na inny, po prostu zmieniając abonament w swoim koncie. Możesz przełączać się między abonamentami mini/medium/large w zależności od potrzeb. Możesz także zmienić projekt po jego zakończeniu i rozpocząć nowy bez zmiany abonamentu.",
+        "FAQ_Pourcentage": "Czy Hoomge pobiera procent od sprzedaży?",
+        "FAQ_Pourcentage_Answer": "Nie, Hoomge nie pobiera procentu od sprzedaży. Celem Hoomge jest promowanie Twoich projektów i pomoc w znalezieniu nabywców. Każda karta projektu Hoomge wyświetla dane kontaktowe dewelopera oraz bezpośredni link do jego strony internetowej. Odwiedzający mogą łatwo uzyskać więcej informacji lub skontaktować się bezpośrednio z deweloperem."
+    },
+    "SubscribeButton": {
+        "title": "Subskrypcja",
+        "description": "Aby opublikować swoje projekty nieruchomości na naszej platformie, zacznij od utworzenia konta dewelopera, wybierając plan dostosowany do Twoich potrzeb...",
+        "mini": {
+            "title": "Hoomge mini",
+            "projects": "1 projekt",
+            "users": "Ty + 1 współpracownik",
+            "price": "Subskrybuj - 147 PLN / miesiąc",
+            "button": "Wybierz ten plan"
+        },
+        "medium": {
+            "title": "Hoomge medium",
+            "projects": "5 projektów",
+            "users": "Ty + 5 współpracowników",
+            "price": "Subskrybuj - 500 PLN / miesiąc",
+            "button": "Wybierz ten plan"
+        },
+        "large": {
+            "title": "Hoomge large",
+            "projects": "10 projektów",
+            "users": "Ty + 10 współpracowników",
+            "price": "Subskrybuj - 750 PLN / miesiąc",
+            "button": "Wybierz ten plan"
+        },
+        "contact": {
+            "title": "Potrzebujesz więcej niż 10 projektów lub dodatkowych użytkowników?",
+            "link": "Skontaktuj się z nami, aby otrzymać ofertę indywidualną"
+        },
+        "loading": "Przekierowywanie..."
     }
 }

@@ -2,6 +2,7 @@
 
 import { loadStripe } from "@stripe/stripe-js";
 import { useState } from "react";
+import { useTranslations } from 'next-intl';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -9,6 +10,7 @@ const stripePromise = loadStripe(
 
 export default function SubscribeButton({ subtitle, paragraphe }) {
   const [loading, setLoading] = useState(false);
+  const t = useTranslations('SubscribeButton');
 
   const handleSubscribe = async (priceId) => {
     setLoading(true);
@@ -39,34 +41,32 @@ export default function SubscribeButton({ subtitle, paragraphe }) {
   return (
     <div className="flex justify-center flex-col items-center max-w-7xl mx-auto text-black py-24">
       <h2 className={subtitle}>
-        Souscription à un abonnement
+        {t('title')}
       </h2>
       <p className={paragraphe}>
-        Pour publier vos projets immobiliers sur notre plateforme, commencez par
-        creer un compte promoteur et choissisez la formule adaptée à vos besoins...
+        {t('description')}
       </p>
       <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-3 max-w-7xl w-full">
         {[
           {
-            main: "Hoomge mini",
-            title: "1 projet",
-            users: "Vous + 1 collaborateur",
-            price: "S'abonner - 147 PLN / mois",
-           
+            main: t('mini.title'),
+            title: t('mini.projects'),
+            users: t('mini.users'),
+            price: t('mini.price'),
             priceId: "price_1ROPn5RQdIKmYv9arYhFrW3S",
           },
           {
-            main: "Hoomge medium",
-            title: "5 projets",
-            users: "Vous + 5 collaborateurs",
-            price: "S'abonner - 500 PLN / mois",
+            main: t('medium.title'),
+            title: t('medium.projects'),
+            users: t('medium.users'),
+            price: t('medium.price'),
             priceId: "price_1ROOd1RQdIKmYv9a4xzLVZAi",
           },
           {
-            main: "Hoomge large",
-            title: "10 projets",
-            users: "Vous + 10 collaborateurs",
-            price: "S'abonner - 750 PLN / mois",
+            main: t('large.title'),
+            title: t('large.projects'),
+            users: t('large.users'),
+            price: t('large.price'),
             priceId: "price_1ROizERQdIKmYv9aTyeA27hh",
           },
         ].map((item, i) => (
@@ -80,28 +80,27 @@ export default function SubscribeButton({ subtitle, paragraphe }) {
             <p className="text-base font-semibold mb-2 text-gray-800">
               {item.title}
             </p>
-           
             <p className="text-lg font-bold text-gray-900 mb-6">
               {item.price}
             </p>
-          <p className="text-sm">{item.users}</p>
+            <p className="text-sm">{item.users}</p>
             <button
               onClick={() => handleSubscribe(item.priceId)}
               disabled={loading}
               className="w-full px-6 py-3 bg-green-700 text-white rounded-lg hover:bg-gray-800 transition text-xl"
             >
-              {loading ? "Redirection..." : "Choisir cette formule"}
+              {loading ? t('loading') : t('mini.button')}
             </button>
           </div>
         ))}
 
         <div className="sm:col-span-1 lg:col-span-3 text-center mt-6 text-xl">
-          Besoin de plus de 10 projets ou d'utilisateurs supplémentaires ?<br />
+          {t('contact.title')}<br />
           <a
             href="mailto:hoomge@decadeus.com"
             className="inline-block mt-2 underline hover:text-black font-medium"
           >
-            Contactez-nous pour une offre sur mesure
+            {t('contact.link')}
           </a>
         </div>
       </div>

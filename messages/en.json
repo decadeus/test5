@@ -23,7 +23,7 @@
         "AvecJardin": "With garden",
         "MesFavoris": "My favorites",
         "Residence": "All filters",
-        "AppartementTrouve": "Apartment(s) found",
+        "AppartementTrouve": "apartment(s) found",
         "TrierPar": "Sort by",
         "precedent": "Previous",
         "suivant": "Next",
@@ -88,6 +88,90 @@
     },
     "SEO": {
         "Title": "Real estate project references",
-        "Description": "Find the real estate project that suits you by using the search filters according to the apartment and the services in the building."
+        "Description": "Find the real estate project that suits you by using the search filters according to the apartment and the services in the building.",
+        "Priority": "SEO is a priority",
+        "Description1": "We focus on SEO to ensure your site is well positioned in search engines",
+        "Description2": "An AI tool to help you write your project description, manage meta description and title",
+        "SearchPlaceholder": "Search for a new apartment in..."
+    },
+    "ProjectSection": {
+        "Description": "The developer provides here the general information about the real estate project, such as location, currency, presentation link, and the facilities offered in the residence.\n\nThis data allows the project to be presented clearly and comprehensively to potential buyers. The more precise and detailed the information, the easier it is for potential buyers to imagine themselves and appreciate the quality of the project.\n\nFeel free to indicate all the features that add value to your development: equipment, services, environment, accessibility, etc. A thorough and well-presented description increases the visibility and attractiveness of your project on the platform.",
+        "Title": "Project information",
+        "FormTitle": "Project details",
+        "Company": "Company",
+        "ProjectName": "Project name",
+        "Country": "Country",
+        "City": "City",
+        "Latitude": "Latitude",
+        "Longitude": "Longitude",
+        "Currency": "Currency",
+        "Link": "Link",
+        "Facilities": "Facilities",
+        "SwimmingPool": "Swimming pool",
+        "CCTV": "CCTV",
+        "Reception": "Reception",
+        "BikeParking": "Bike parking",
+        "DisabledAccess": "Disabled access",
+        "ChildArea": "Children's area",
+        "FitnessRoom": "Fitness room",
+        "Elevator": "Elevator"
+    },
+    "ManageSection": {
+        "title": "Add Projects/Collaborators",
+        "description": "As a developer, you can add projects and collaborators to your workspace. You can precisely define permissions for each collaborator, determining which projects they are authorized to modify. This granular access management allows you to maintain total control over your projects while facilitating collaboration with your team.",
+        "collaboratorA": "Collaborator A",
+        "projectA": "Project A",
+        "collaboratorB": "Collaborator B",
+        "projectB": "Project B",
+        "collaboratorC": "Collaborator C",
+        "projectC": "Project C"
+    },
+    "MagicLink": {
+        "MagicLink_Description": "The Magic Link allows you to log in easily and securely, without having to remember a password. Simply click on the link received by email to access your account. Each link is unique, can only be used once, and expires quickly to ensure your account's security. If needed, you can request a new Magic Link at any time, and you can generate one for each device you want to log in from."
+    },
+    "ProjectCard_Description": "Each Hoomge project card includes a direct link to your website, as well as to the developer's project page.",
+    "FAQ": {
+        "FAQ_UpdateProject": "How can I update my project information on Hoomge?",
+        "FAQ_UpdateProject_Answer": "You can edit your project information at any time from your personal space. Go to the relevant project card and click 'Edit' to update details, add photos, or correct information.",
+        "FAQ_ContactPromoteur": "How can visitors contact the developer of a project?",
+        "FAQ_ContactPromoteur_Answer": "Each Hoomge project card displays the developer's contact details and a direct link to their website. Visitors can easily get more information or contact the developer directly.",
+        "FAQ_MagicLink": "How does the Magic Link work?",
+        "FAQ_MagicLink_Answer": "The Magic Link allows you to log in easily and securely, without having to remember a password. Simply click on the link received by email to access your account. Each link is unique, can only be used once, and expires quickly to ensure your account's security. If needed, you can request a new Magic Link at any time, and you can generate one for each device you want to log in from.",
+        "FAQ_Collaborateurs": "How do collaborators log in?",
+        "FAQ_Collaborateurs_Answer": "Just like the promoter, collaborators log in with a Magic Link and the email you have added to the list. You do not have to manage your collaborators' passwords.",
+        "FAQ_Abonnement": "Can I switch from one subscription to another?",
+        "FAQ_Abonnement_Answer": "Yes, you can switch from one subscription to another simply by changing your subscription in your account. You can switch between mini/medium/large subscriptions according to your needs. You can also change your project once it is finished and start a new one without changing your subscription.",
+        "FAQ_Pourcentage": "Does Hoomge take a percentage on sales?",
+        "FAQ_Pourcentage_Answer": "No, Hoomge does not take a percentage on sales. The purpose of Hoomge is to promote your projects and help you find buyers. Each Hoomge project card displays the developer's contact details and a direct link to their website. Visitors can easily get more information or contact the developer directly."
+    },
+    "SubscribeButton": {
+        "title": "Subscription",
+        "description": "To publish your real estate projects on our platform, start by creating a developer account by choosing the plan that suits your needs...",
+        "mini": {
+            "title": "Hoomge mini",
+            "projects": "1 project",
+            "users": "You + 1 collaborator",
+            "price": "Subscribe - 147 PLN / month",
+            "button": "Choose this plan"
+        },
+        "medium": {
+            "title": "Hoomge medium",
+            "projects": "5 projects",
+            "users": "You + 5 collaborators",
+            "price": "Subscribe - 500 PLN / month",
+            "button": "Choose this plan"
+        },
+        "large": {
+            "title": "Hoomge large",
+            "projects": "10 projects",
+            "users": "You + 10 collaborators",
+            "price": "Subscribe - 750 PLN / month",
+            "button": "Choose this plan"
+        },
+        "contact": {
+            "title": "Need more than 10 projects or additional users?",
+            "link": "Contact us for a custom offer"
+        },
+        "loading": "Redirecting..."
     }
 }

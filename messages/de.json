@@ -47,7 +47,7 @@
         "Longitude": "Längengrad",
         "Monnaie": "Währung",
         "LienProjet": "Projektlink",
-        "ProjecEnLigne": "Ihr Projekt ist",
+        "ProjetEnLigne": "Ihr Projekt ist",
         "Link": "Projektlink",
         "swim": "Schwimmbad",
         "cctv": "Videoüberwachung",
@@ -76,17 +76,102 @@
         "DesSEO": "SEO-Beschreibung",
         "DesSEOExplication": "Die SEO-Beschreibung wird als Meta-Beschreibung für SEO verwendet. Es hilft Google und anderen Suchmaschinen, den Inhalt Ihres Projekts zu verstehen und es besser zu bewerten",
         "IA": "Mit KI generieren",
-  "IASEO": "SEO-Beschreibung generieren",
-  "IADESCRIPTION": "Projektbeschreibung generieren",
-  "IADESCRIPTIONNOMPROJET": "Projektname",
-  "IADESCRIPTIONVILLE": "Stadt",
-  "IADESCRIPTIONTYPE": "Wohnungstyp",
-  "IADESCRIPTIONATOUT": "Vorteile",
-  "IADESCRIPTIONSTYLE": "Architekturstil",
-  "IADESCRIPTIONPUBLIC": "Zielgruppe"
+        "IASEO": "SEO-Beschreibung generieren",
+        "IADESCRIPTION": "Projektbeschreibung generieren",
+        "IADESCRIPTIONNOMPROJET": "Projektname",
+        "IADESCRIPTIONVILLE": "Stadt",
+        "IADESCRIPTIONTYPE": "Wohnungstyp",
+        "IADESCRIPTIONATOUT": "Vorteile",
+        "IADESCRIPTIONSTYLE": "Architekturstil",
+        "IADESCRIPTIONPUBLIC": "Zielgruppe",
+        "ProjectSectionDescription": "Der Bauträger gibt hier die allgemeinen Informationen zum Immobilienprojekt an, wie Standort, Währung, Präsentationslink sowie die in der Residenz angebotenen Einrichtungen.\n\nDiese Angaben ermöglichen es, das Projekt potenziellen Käufern klar und umfassend zu präsentieren. Je präziser und detaillierter die Informationen sind, desto besser können sich Interessenten das Projekt vorstellen und dessen Qualität einschätzen.\n\nZögern Sie nicht, alle Merkmale anzugeben, die Ihr Projekt aufwerten: Ausstattung, Dienstleistungen, Umgebung, Zugänglichkeit usw. Eine sorgfältige und vollständige Präsentation erhöht die Sichtbarkeit und Attraktivität Ihres Projekts auf der Plattform."
     },
     "SEO": {
         "Title": "Wohnprojekte",
-        "Description": "Entdecken Sie die besten Wohnprojekte in Ihrer Nähe"
+        "Description": "Entdecken Sie die besten Wohnprojekte in Ihrer Nähe",
+        "Priority": "SEO hat Priorität",
+        "Description1": "Wir legen Wert auf SEO, damit Ihre Website in Suchmaschinen gut positioniert ist",
+        "Description2": "Ein KI-Tool hilft Ihnen beim Verfassen Ihrer Projektbeschreibung, der Verwaltung der Meta-Beschreibung und des Titels",
+        "SearchPlaceholder": "Suchen Sie eine neue Wohnung in..."
+    },
+    "ProjectSection": {
+        "Description": "Der Bauträger gibt hier die allgemeinen Informationen zum Immobilienprojekt an, wie Standort, Währung, Präsentationslink sowie die in der Residenz angebotenen Einrichtungen.\n\nDiese Angaben ermöglichen es, das Projekt potenziellen Käufern klar und umfassend zu präsentieren. Je präziser und detaillierter die Informationen sind, desto besser können sich Interessenten das Projekt vorstellen und dessen Qualität einschätzen.\n\nZögern Sie nicht, alle Merkmale anzugeben, die Ihr Projekt aufwerten: Ausstattung, Dienstleistungen, Umgebung, Zugänglichkeit usw. Eine sorgfältige und vollständige Präsentation erhöht die Sichtbarkeit und Attraktivität Ihres Projekts auf der Plattform.",
+        "Title": "Projektinformationen",
+        "FormTitle": "Projektdetails",
+        "Company": "Unternehmen",
+        "ProjectName": "Projektname",
+        "Country": "Land",
+        "City": "Stadt",
+        "Latitude": "Breitengrad",
+        "Longitude": "Längengrad",
+        "Currency": "Währung",
+        "Link": "Link",
+        "Facilities": "Ausstattung",
+        "SwimmingPool": "Schwimmbad",
+        "CCTV": "CCTV",
+        "Reception": "Rezeption",
+        "BikeParking": "Fahrradparkplatz",
+        "DisabledAccess": "Behindertenzugang",
+        "ChildArea": "Kinderspielplatz",
+        "FitnessRoom": "Fitnessraum",
+        "Elevator": "Aufzug"
+    },
+    "ManageSection": {
+        "title": "Projekte/Mitarbeiter hinzufügen",
+        "description": "Als Entwickler können Sie Projekte und Mitarbeiter zu Ihrem Arbeitsbereich hinzufügen. Sie können die Berechtigungen für jeden Mitarbeiter präzise definieren und festlegen, welche Projekte sie bearbeiten dürfen. Diese differenzierte Zugriffsverwaltung ermöglicht es Ihnen, die volle Kontrolle über Ihre Projekte zu behalten und gleichzeitig die Zusammenarbeit mit Ihrem Team zu erleichtern.",
+        "collaboratorA": "Mitarbeiter A",
+        "projectA": "Projekt A",
+        "collaboratorB": "Mitarbeiter B",
+        "projectB": "Projekt B",
+        "collaboratorC": "Mitarbeiter C",
+        "projectC": "Projekt C"
+    },
+    "MagicLink": {
+        "MagicLink_Description": "Mit dem Magic Link können Sie sich einfach und sicher anmelden, ohne sich ein Passwort merken zu müssen. Klicken Sie einfach auf den per E-Mail erhaltenen Link, um auf Ihr Konto zuzugreifen. Jeder Link ist einzigartig, kann nur einmal verwendet werden und läuft schnell ab, um die Sicherheit Ihres Kontos zu gewährleisten. Bei Bedarf können Sie jederzeit einen neuen Magic Link anfordern und für jedes Gerät, auf dem Sie sich anmelden möchten, einen generieren."
+    },
+    "ProjectCard_Description": "Jede Hoomge-Projektkarte enthält einen direkten Link zu Ihrer Website sowie zur Projektseite des Bauträgers.",
+    "FAQ": {
+        "FAQ_UpdateProject": "Wie kann ich die Informationen meines Projekts auf Hoomge aktualisieren?",
+        "FAQ_UpdateProject_Answer": "Sie können die Informationen Ihres Projekts jederzeit in Ihrem persönlichen Bereich bearbeiten. Gehen Sie zur entsprechenden Projektkarte und klicken Sie auf 'Bearbeiten', um Details zu aktualisieren, Fotos hinzuzufügen oder Informationen zu korrigieren.",
+        "FAQ_ContactPromoteur": "Wie können Besucher den Bauträger eines Projekts kontaktieren?",
+        "FAQ_ContactPromoteur_Answer": "Jede Hoomge-Projektkarte zeigt die Kontaktdaten des Bauträgers sowie einen direkten Link zu seiner Website an. Besucher können so einfach weitere Informationen erhalten oder den Bauträger direkt kontaktieren.",
+        "FAQ_MagicLink": "Wie funktioniert der Magic Link?",
+        "FAQ_MagicLink_Answer": "Mit dem Magic Link können Sie sich einfach und sicher anmelden, ohne sich ein Passwort merken zu müssen. Klicken Sie einfach auf den per E-Mail erhaltenen Link, um auf Ihr Konto zuzugreifen. Jeder Link ist einzigartig, kann nur einmal verwendet werden und läuft schnell ab, um die Sicherheit Ihres Kontos zu gewährleisten. Bei Bedarf können Sie jederzeit einen neuen Magic Link anfordern und für jedes Gerät, auf dem Sie sich anmelden möchten, einen generieren.",
+        "FAQ_Collaborateurs": "Wie melden sich Mitarbeiter an?",
+        "FAQ_Collaborateurs_Answer": "Wie beim Promoter melden sich die Mitarbeiter mit Magic Link und der E-Mail an, die Sie in die Liste aufgenommen haben. Sie müssen keine Passwörter für Ihre Mitarbeiter verwalten.",
+        "FAQ_Abonnement": "Kann man von einem Abonnement zum anderen wechseln?",
+        "FAQ_Abonnement_Answer": "Ja, Sie können einfach in Ihrem Konto von einem Abonnement zum anderen wechseln. Sie können je nach Bedarf zwischen Mini/Medium/Large-Abonnements wechseln. Sie können auch das Projekt wechseln, wenn es abgeschlossen ist, und ein neues beginnen, ohne das Abonnement zu ändern.",
+        "FAQ_Pourcentage": "Nimmt Hoomge einen Prozentsatz vom Verkauf?",
+        "FAQ_Pourcentage_Answer": "Nein, Hoomge nimmt keinen Prozentsatz vom Verkauf. Ziel von Hoomge ist es, Ihre Projekte zu fördern und Ihnen zu helfen, Käufer zu finden. Jede Hoomge-Projektkarte zeigt die Kontaktdaten des Bauträgers sowie einen direkten Link zu seiner Website an. Besucher können so einfach weitere Informationen erhalten oder den Bauträger direkt kontaktieren."
+    },
+    "SubscribeButton": {
+        "title": "Abonnement",
+        "description": "Um Ihre Immobilienprojekte auf unserer Plattform zu veröffentlichen, erstellen Sie zunächst ein Entwicklerkonto, indem Sie den Plan wählen, der Ihren Bedürfnissen entspricht...",
+        "mini": {
+            "title": "Hoomge mini",
+            "projects": "1 Projekt",
+            "users": "Sie + 1 Mitarbeiter",
+            "price": "Abonnieren - 147 PLN / Monat",
+            "button": "Diesen Plan wählen"
+        },
+        "medium": {
+            "title": "Hoomge medium",
+            "projects": "5 Projekte",
+            "users": "Sie + 5 Mitarbeiter",
+            "price": "Abonnieren - 500 PLN / Monat",
+            "button": "Diesen Plan wählen"
+        },
+        "large": {
+            "title": "Hoomge large",
+            "projects": "10 Projekte",
+            "users": "Sie + 10 Mitarbeiter",
+            "price": "Abonnieren - 750 PLN / Monat",
+            "button": "Diesen Plan wählen"
+        },
+        "contact": {
+            "title": "Benötigen Sie mehr als 10 Projekte oder zusätzliche Benutzer?",
+            "link": "Kontaktieren Sie uns für ein individuelles Angebot"
+        },
+        "loading": "Weiterleitung..."
     }
 }

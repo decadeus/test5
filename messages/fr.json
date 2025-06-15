@@ -56,8 +56,8 @@
         "disabled": "Accès handicapé",
         "child": "Espace enfants",
         "fitness": "Salle de fitness",
-       "Saving": "Sauvegarde...",
-  "Sauvegarder": "Sauvegarder",
+        "Saving": "Sauvegarde...",
+        "Sauvegarder": "Sauvegarder",
         "Chambres": "Chambres",
         "Etages": "Etages",
         "Surface": "Surface",
@@ -77,18 +77,101 @@
         "DesSEO": "Description pour le SEO",
         "DesSEOExplication": "La description SEO est utilisée comme métadescription pour le référencement. Elle aide Google et d'autres moteurs de recherche à comprendre le contenu de votre projet et à mieux le classer",
         "IA": "Générer avec l'IA",
-        "IASEO":"Generer une description SEO",
-        "IADESCRIPTION":"Generer une description de projet",
-        "IADESCRIPTIONNOMPROJET":"Nom du projet",
-        "IADESCRIPTIONVILLE":"Ville",
-        "IADESCRIPTIONTYPE":"Type appartement",
-        "IADESCRIPTIONATOUT":"Atouts",
-        "IADESCRIPTIONSTYLE":"Style architectural",
-        "IADESCRIPTIONPUBLIC":"Public cible"
-        
+        "IASEO": "Generer une description SEO",
+        "IADESCRIPTION": "Generer une description de projet",
+        "IADESCRIPTIONNOMPROJET": "Nom du projet",
+        "IADESCRIPTIONVILLE": "Ville",
+        "IADESCRIPTIONTYPE": "Type appartement",
+        "IADESCRIPTIONATOUT": "Atouts",
+        "IADESCRIPTIONSTYLE": "Style architectural",
+        "IADESCRIPTIONPUBLIC": "Public cible"
     },
     "SEO": {
         "Title": "Referencement des projets immobiliers",
-        "Description": "Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement recherché et les services dans l'immeuble."
+        "Description": "Grâce aux nombreux référencements de projets immobiliers, trouvez le bien qui vous correspond en utilisant les filtres de recherche selon l'appartement recherché et les services dans l'immeuble.",
+        "Priority": "Le SEO est une priorité",
+        "Description1": "Nous mettons l'accent sur le SEO pour que votre site soit bien positionné sur les moteurs de recherche",
+        "Description2": "Un outil IA pour vous aider à écrire la description de votre projet, gérer la métadescription et le titre",
+        "SearchPlaceholder": "Rechercher un appartement neuf à..."
+    },
+    "ProjectSection": {
+        "Description": "Le promoteur renseigne ici les informations générales du projet immobilier, telles que la localisation, la devise, le lien de présentation, ainsi que les facilités proposées dans la résidence.\n\nCes données permettent de présenter le projet de manière claire et complète aux futurs acquéreurs. Plus les informations sont précises et détaillées, plus les acheteurs potentiels pourront se projeter et apprécier la qualité du projet.\n\nN'hésitez pas à indiquer toutes les caractéristiques qui valorisent votre programme : équipements, services, environnement, accessibilité, etc. Une présentation soignée et exhaustive augmente la visibilité et l'attractivité de votre projet sur la plateforme.",
+        "Title": "Informations du projet",
+        "FormTitle": "Détails du projet",
+        "Company": "Compagnie",
+        "ProjectName": "Nom du projet",
+        "Country": "Pays",
+        "City": "Ville",
+        "Latitude": "Latitude",
+        "Longitude": "Longitude",
+        "Currency": "Monnaie",
+        "Link": "Lien",
+        "Facilities": "Equipements",
+        "SwimmingPool": "Piscine",
+        "CCTV": "CCTV",
+        "Reception": "Réception",
+        "BikeParking": "Parking vélo",
+        "DisabledAccess": "Accès PMR",
+        "ChildArea": "Jardin d'enfants",
+        "FitnessRoom": "Salle de sport",
+        "Elevator": "Ascenseur"
+    },
+    "ManageSection": {
+        "title": "Ajouter des projets/Collaborateurs",
+        "description": "En tant que promoteur, vous avez la possibilité d'ajouter des projets et des collaborateurs à votre espace de travail. Vous pouvez définir précisément les permissions de chaque collaborateur, en déterminant quels projets ils sont autorisés à modifier. Cette gestion granulaire des accès vous permet de maintenir un contrôle total sur vos projets tout en facilitant la collaboration avec votre équipe.",
+        "collaboratorA": "Collaborateur A",
+        "projectA": "Projet A",
+        "collaboratorB": "Collaborateur B",
+        "projectB": "Projet B",
+        "collaboratorC": "Collaborateur C",
+        "projectC": "Projet C"
+    },
+    "MagicLink": {
+    "MagicLink_Description": "Le Magic Link vous permet de vous connecter facilement et en toute sécurité, sans avoir à retenir de mot de passe. Il vous suffit de cliquer sur le lien reçu par email pour accéder à votre compte. Chaque lien est unique, valable pour une seule utilisation et expire rapidement afin de garantir la sécurité de votre compte. Si besoin, vous pouvez demander un nouveau Magic Link à tout moment, et il est possible d'en générer un pour chaque appareil sur lequel vous souhaitez vous connecter.",
+    "ProjectCard_Description": "Chaque fiche de projet Hoomge inclut un lien direct vers votre site internet, ainsi que vers la page du projet chez le promoteur."
+    },
+   "FAQ":{
+    "FAQ_UpdateProject": "Comment puis-je mettre à jour les informations de mon projet sur Hoomge ?",
+    "FAQ_UpdateProject_Answer": "Vous pouvez modifier les informations de votre projet à tout moment depuis votre espace personnel. Accédez à la fiche du projet concerné, puis cliquez sur « Modifier » pour mettre à jour les détails, ajouter des photos ou corriger des informations.",
+    "FAQ_ContactPromoteur": "Comment les visiteurs peuvent-ils contacter le promoteur d'un projet ?",
+    "FAQ_ContactPromoteur_Answer": "Chaque fiche de projet Hoomge affiche les coordonnées du promoteur ainsi qu'un lien direct vers son site internet. Les visiteurs peuvent ainsi facilement obtenir plus d'informations ou prendre contact directement avec le promoteur.",
+    "FAQ_MagicLink": "Comment fonctionne le Magic Link ?",
+    "FAQ_MagicLink_Answer": "Le Magic Link vous permet de vous connecter facilement et en toute sécurité, sans avoir à retenir de mot de passe. Il vous suffit de cliquer sur le lien reçu par email pour accéder à votre compte. Chaque lien est unique, valable pour une seule utilisation et expire rapidement afin de garantir la sécurité de votre compte. Si besoin, vous pouvez demander un nouveau Magic Link à tout moment, et il est possible d'en générer un pour chaque appareil sur lequel vous souhaitez vous connecter.",
+    "FAQ_Collaborateurs": "Comment se connectent les collaborateurs ?",
+    "FAQ_Collaborateurs_Answer": "Comme pour le promoteur, les collaborateurs se connectent avec Magic link et l'email que vous avez mis dans la liste. Vous n'avez pas à gérer les mots de passe de vos collaborateurs.",
+    "FAQ_Abonnement": "Peut on passer d'un abonnement à l'autre ?",
+    "FAQ_Abonnement_Answer": "Oui, vous pouvez passer d'un abonnement à l'autre en changeant simplement d'abonnement dans votre compte. Vous pouvez basculer entre l'abonnement mini/medium/large en fonction de vos besoins. Vous avez possibilité de changer de projet une fois fini et que vous en commencez un nouveau sans changer d'abonnement.",
+    "FAQ_Pourcentage": "Hoomge prend-il un pourcentage sur les ventes?",
+    "FAQ_Pourcentage_Answer": "Non, Hoomge ne prend pas de pourcentage sur les ventes. Le but de Hoomge est de promouvoir vos projets et de vous aider à trouver des acquéreurs. Chaque fiche de projet Hoomge affiche les coordonnées du promoteur ainsi qu'un lien direct vers son site internet. Les visiteurs peuvent ainsi facilement obtenir plus d'informations ou prendre contact directement avec le promoteur."
+    },
+    "SubscribeButton": {
+        "title": "Souscription à un abonnement",
+        "description": "Pour publier vos projets immobiliers sur notre plateforme, commencez par créer un compte promoteur en choisissant la formule adaptée à vos besoins...",
+        "mini": {
+            "title": "Hoomge mini",
+            "projects": "1 projet",
+            "users": "Vous + 1 collaborateur",
+            "price": "S'abonner - 147 PLN / mois",
+            "button": "Choisir cette formule"
+        },
+        "medium": {
+            "title": "Hoomge medium",
+            "projects": "5 projets",
+            "users": "Vous + 5 collaborateurs",
+            "price": "S'abonner - 500 PLN / mois",
+            "button": "Choisir cette formule"
+        },
+        "large": {
+            "title": "Hoomge large",
+            "projects": "10 projets",
+            "users": "Vous + 10 collaborateurs",
+            "price": "S'abonner - 750 PLN / mois",
+            "button": "Choisir cette formule"
+        },
+        "contact": {
+            "title": "Besoin de plus de 10 projets ou d'utilisateurs supplémentaires ?",
+            "link": "Contactez-nous pour une offre sur mesure"
+        },
+        "loading": "Redirection..."
     }
 }
