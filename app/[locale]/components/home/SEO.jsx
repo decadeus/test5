@@ -58,8 +58,8 @@ export default function SEO({ subtitle, paragraphe }) {
   };
 
   return (
-    <div className="flex gap-10 px-4 max-w-7xl mx-auto text-black w-full py-32">
-      <div className="text-black w-1/2">
+    <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-black w-full py-16 sm:py-24 lg:py-32">
+      <div className="text-black w-full lg:w-1/2">
         <h2 className={subtitle}>{t("Priority")}</h2>
         <p className={paragraphe}>
           {t("Description1")}
@@ -69,46 +69,46 @@ export default function SEO({ subtitle, paragraphe }) {
         </p>
       </div>
       <div
-        className="text-black w-1/2 flex flex-col items-center justify-center relative"
+        className="text-black w-full lg:w-1/2 flex flex-col items-center justify-center relative"
         ref={iconsRef}
-        style={{ minHeight: 400 }}
+        style={{ minHeight: 300 }}
       >
         <div
-          className="relative w-full h-96 flex items-center justify-center text-black border-1 border-black rounded-2xl shadow-lg"
+          className="relative w-full h-64 sm:h-80 lg:h-96 flex items-center justify-center text-black border-1 border-black rounded-2xl shadow-lg"
           style={{
             background:
               "linear-gradient(135deg, #f3f4f6 0%, #fffbfb 50%, #fffbfb 100%)",
           }}
         >
-          <div className="border-2 border-black rounded-2xl p-4 flex justify-center items-center gap-2">
+          <div className="border-2 border-black rounded-2xl p-3 sm:p-4 flex justify-center items-center gap-2">
             <p>
-              <CiSearch size={28} color="gray" />
+              <CiSearch size={24} className="sm:w-7 sm:h-7" color="gray" />
             </p>
-            <p className="text-2xl font-thin text-gray-400 ">
+            <p className="text-sm sm:text-xl lg:text-2xl font-thin text-gray-400">
               {t("SearchPlaceholder")}
             </p>
           </div>
         </div>
         <div
-          className="absolute top-0 left-0 bg-[#0078D7] rounded-full shadow-lg flex items-center justify-center w-16 h-16"
+          className="absolute top-0 left-0 bg-[#0078D7] rounded-full shadow-lg flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16"
           style={getStyle(POSITIONS.edge.from, POSITIONS.edge.to)}
         >
-          <FaEdge title="Edge" className="text-3xl text-white" />
+          <FaEdge title="Edge" className="text-2xl sm:text-3xl text-white" />
         </div>
         <div
-          className="absolute top-1/2 left-0 bg-[#1B9AF7] rounded-full shadow-lg flex items-center justify-center w-20 h-20"
+          className="absolute top-1/2 left-0 bg-[#1B9AF7] rounded-full shadow-lg flex items-center justify-center w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20"
           style={getStyle(POSITIONS.safari.from, POSITIONS.safari.to)}
         >
-          <SiSafari title="Safari" className="text-5xl text-white" />
+          <SiSafari title="Safari" className="text-4xl sm:text-5xl text-white" />
         </div>
         <div
-          className="absolute top-1/2 right-0 bg-[#FF1B2D] rounded-full shadow-lg flex items-center justify-center w-20 h-20"
+          className="absolute top-1/2 right-0 bg-[#FF1B2D] rounded-full shadow-lg flex items-center justify-center w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20"
           style={getStyle(POSITIONS.opera.from, POSITIONS.opera.to)}
         >
-          <SiOpera title="Opera" className="text-4xl text-white" />
+          <SiOpera title="Opera" className="text-3xl sm:text-4xl text-white" />
         </div>
         <div
-          className="absolute left-1/4 top-0 rounded-full shadow-lg flex items-center justify-center w-24 h-24"
+          className="absolute left-1/4 top-0 rounded-full shadow-lg flex items-center justify-center w-20 h-20 sm:w-22 sm:h-22 lg:w-24 lg:h-24"
           style={{
             ...getStyle(POSITIONS.chrome.from, POSITIONS.chrome.to),
             background:
@@ -116,13 +116,13 @@ export default function SEO({ subtitle, paragraphe }) {
             borderColor: "#EA4335",
           }}
         >
-          <SiGooglechrome title="Chrome" className="text-6xl text-white" />
+          <SiGooglechrome title="Chrome" className="text-5xl sm:text-6xl text-white" />
         </div>
         <div
-          className="absolute right-1/4 top-0 bg-[#FF7139] rounded-full shadow-lg flex items-center justify-center w-16 h-16"
+          className="absolute right-1/4 top-0 bg-[#FF7139] rounded-full shadow-lg flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16"
           style={getStyle(POSITIONS.firefox.from, POSITIONS.firefox.to)}
         >
-          <SiFirefoxbrowser title="Firefox" className="text-4xl text-white" />
+          <SiFirefoxbrowser title="Firefox" className="text-3xl sm:text-4xl text-white" />
         </div>
       </div>
     </div>

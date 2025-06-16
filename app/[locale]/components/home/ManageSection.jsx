@@ -65,14 +65,14 @@ export default function ManageSection({ subtitle, paragraphe }) {
   }, []);
 
   return (
-    <div className="flex flex-col md:flex-row max-w-7xl mx-auto h-fit mt-8 sm:mt-12 mb-16 sm:mb-32 gap-8 px-4 sm:px-6 md:px-8">
-      <div className="text-black text-lg sm:text-xl w-full md:w-1/2 bg-transparent z-30 backdrop-blur-sm">
+    <div className="flex flex-col md:flex-row w-full h-fit mt-8 sm:mt-12 md:mt-16 lg:mt-24 mb-16 sm:mb-24 md:mb-32 lg:mb-40 gap-8 md:gap-12 lg:gap-16">
+      <div className="text-black text-base sm:text-lg md:text-xl lg:text-2xl w-full md:w-1/2 bg-transparent z-30 backdrop-blur-sm">
         <h3 className={subtitle}>{t("title")}</h3>
         <p className={paragraphe}>
           {t("description")}
         </p>
       </div>
-      <div className="relative w-full md:w-1/2 aspect-square -mt-16 sm:-mt-24 md:-mt-32">
+      <div className="relative w-full md:w-1/2 aspect-square -mt-16 sm:-mt-20 md:-mt-24 lg:-mt-32">
         {/* Cercles concentriques */}
         {[75, 58, 40].map((percent, idx) => (
           <div
@@ -92,7 +92,7 @@ export default function ManageSection({ subtitle, paragraphe }) {
           className="absolute left-1/2 top-1/2 z-10 bg-green-700 text-white rounded-full p-4 sm:p-6"
           style={{ transform: "translate(-50%, -50%)" }}
         >
-          <FaLock size={32} className="sm:w-12 sm:h-12" />
+          <FaLock size={24} className="sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12" />
         </div>
 
         {/* Animation orbitale des icônes autour du centre */}
@@ -128,7 +128,7 @@ export default function ManageSection({ subtitle, paragraphe }) {
                     boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
                     marginBottom: 4,
                   }}
-                  className="sm:w-12 sm:h-12"
+                  className="sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
                 >
                   {icon}
                 </span>

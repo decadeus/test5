@@ -28,8 +28,8 @@ export default function Page() {
   const locale = pathname ? pathname.split("/")[1] : "en";
   const t = useTranslations("Homepage");
 
-  const subtitle = "text-5xl font-bold w-[620px] text-left leading-tight pb-20";
-  const paragraphe = "text-2xl font-normal pb-8";
+  const subtitle = "text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold w-full lg:w-[620px] text-left leading-tight pb-8 sm:pb-12 md:pb-16 lg:pb-20";
+  const paragraphe = "text-base sm:text-lg md:text-xl lg:text-2xl font-normal pb-4 sm:pb-6 md:pb-8";
   const MIN_LOADING_TIME = 1000;
 
   const fetchProjects = async () => {
@@ -109,6 +109,22 @@ export default function Page() {
         />
       </div>
 
+      {/* Version mobile des liens de téléchargement */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center items-center gap-4 bg-white/90 backdrop-blur-sm py-4 md:hidden">
+        <DownloadCircle
+          icon={<FaAndroid size={24} color="white" />}
+          qrImg="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://play.google.com/store/apps/details?id=random.android.app"
+          color="#3DDC84"
+          label="Android"
+        />
+        <DownloadCircle
+          icon={<FaApple size={24} color="white" />}
+          qrImg="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://apps.apple.com/app/id1234567890"
+          color="#222"
+          label="iOS"
+        />
+      </div>
+
       <IntroSection
         t={t}
         uniqueCompanies={uniqueCompanies}
@@ -121,7 +137,7 @@ export default function Page() {
         router={router}
         locale={locale}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[95%] sm:max-w-[90%] md:max-w-[85%] lg:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <style jsx>{`
           .letter {
             display: inline-block;

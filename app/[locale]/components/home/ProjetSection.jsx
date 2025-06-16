@@ -49,16 +49,16 @@ export default function ProjetSection({ subtitle, paragraphe }) {
         height: "90vh",
       }}
     >
-      <div className="text-black absolute top-[50px] sm:top-[100px] md:top-[150px] left-1/2 w-full -translate-x-1/2 transition-opacity duration-500 flex flex-col md:flex-row gap-8 md:gap-32 px-4 sm:px-6 md:px-8">
+      <div className="text-black absolute top-[50px] sm:top-[80px] md:top-[100px] lg:top-[150px] left-1/2 w-full -translate-x-1/2 transition-opacity duration-500 flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-32 px-4 sm:px-6 md:px-8">
         <div>
           <h3 className={subtitle}>{t('ProjectSection.Title')}</h3>
         </div>
         <div className={paragraphe}>
-          <p className="w-full md:w-3/4 whitespace-pre-line text-lg sm:text-xl">{t('ProjectSection.Description')}</p>
+          <p className="w-full md:w-3/4 whitespace-pre-line text-base sm:text-lg md:text-xl lg:text-2xl">{t('ProjectSection.Description')}</p>
         </div>
       </div>
       <div
-        className="w-full h-full rounded-2xl flex pt-6 sm:pt-8 md:pt-10 justify-center transition-all duration-500 border-1 border-gray-400"
+        className="w-full h-full rounded-2xl flex pt-6 sm:pt-8 md:pt-10 lg:pt-12 justify-center transition-all duration-500 border-1 border-gray-400 hidden md:flex"
         style={{
           background: "#e6eeff",
           transform: `translateY(${translateY}%) translateX(${translateX}%)`,
@@ -66,10 +66,10 @@ export default function ProjetSection({ subtitle, paragraphe }) {
         }}
       >
         <form className="w-full max-w-5xl bg-white rounded-2xl p-4 sm:p-6 md:p-10 border border-gray-200 flex flex-col gap-4 sm:gap-6 pointer-events-none select-none opacity-90">
-          <h4 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 text-center">
+          <h4 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-3 md:mb-4 text-center">
             {t('ProjectSection.FormTitle')}
           </h4>
-          <div className="flex flex-col md:flex-row gap-4 md:gap-8">
+          <div className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8">
             <div className="w-full">
               <div className="flex flex-col sm:flex-row gap-4 mt-4">
                 <div className="flex flex-col gap-2 w-full sm:w-1/2">

@@ -24,7 +24,7 @@ export default function IntroSection({
   return (
     <>
       <link rel="preload" href="/buildwhite.jpg" as="image" />
-      <div className="relative overflow-hidden w-full pb-10">
+      <div className="relative overflow-hidden w-full pb-6 sm:pb-10">
         <div
           className="absolute inset-0 z-0"
           style={{
@@ -37,32 +37,31 @@ export default function IntroSection({
           }}
         ></div>
         <div className="absolute inset-0 bg-white/70 z-10" />
-        <div className="relative z-20 flex flex-col justify-between px-4 text-black">
-          <div className="flex flex-col items-center gap-6 mt-16 sm:mt-24 text-center">
-            <h1 className="text-3xl sm:text-5xl font-bold max-w-3xl leading-tight">
+        <div className="relative z-20 flex flex-col justify-between px-4 sm:px-6 lg:px-8 text-black">
+          <div className="flex flex-col items-center gap-4 sm:gap-6 mt-12 sm:mt-16 md:mt-24 text-center">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold max-w-3xl leading-tight">
               {t("title")}
             </h1>
-            <p className="text-xl sm:text-2xl">{t("subtitle")}</p>
+            <p className="text-lg sm:text-xl md:text-2xl">{t("subtitle")}</p>
           </div>
 
-          <div className="w-full flex justify-center pt-24">
-            <div className="w-fit border-black border-2 rounded-3xl relative z-40 p-2 bg-white ">
-              <div className="relative w-80">
+          <div className="w-full flex justify-center pt-16 sm:pt-20 md:pt-24">
+            <div className="w-full sm:w-fit border-black border-2 rounded-3xl relative z-40 p-2 bg-white">
+              <div className="relative w-full sm:w-80">
                 <input
                   type="text"
                   placeholder="Piaseczno, Warsaw, ..."
-                  className="w-full h-12 px-6 text-lg font-semibold pr-10 text-black placeholder:text-black outline-none"
-              
+                  className="w-full h-10 sm:h-12 px-4 sm:px-6 text-base sm:text-sm font-semibold pr-10 text-black placeholder:text-black outline-none"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <IoSearch
-                  size={20}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black"
+                  size={18}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black sm:w-5 sm:h-5"
                 />
                 {searchTerm.length > 0 && (
                   <button
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full w-6 h-6 flex items-center justify-center"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-sm sm:text-base"
                     onClick={() => setSearchTerm("")}
                   >
                     ✖
@@ -101,7 +100,7 @@ export default function IntroSection({
                     return (
                       <li
                         key={index}
-                        className="p-2 cursor-pointer hover:bg-gray-100 flex justify-between"
+                        className="p-2 cursor-pointer hover:bg-gray-100 flex justify-between text-sm sm:text-base"
                         onClick={() => {
                           setSearchTerm(city);
                           localStorage.setItem("selectedCity", city);

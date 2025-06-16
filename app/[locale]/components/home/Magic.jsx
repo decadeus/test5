@@ -51,85 +51,24 @@ export default function Magic() {
   return (
     <>
       <div
-        className="flex flex-col lg:flex-row items-stretch justify-center w-full gap-8 lg:gap-12 mb-16 lg:mb-24 px-4 sm:px-6 lg:px-8"
-        style={{ minHeight: "550px" }}
+        className="flex flex-col lg:flex-row items-stretch justify-center w-full gap-4 sm:gap-6 lg:gap-12 mb-8 sm:mb-12 lg:mb-24 px-2 sm:px-4 lg:px-8"
+        style={{ minHeight: "450px" }}
       >
-        <div className="flex items-center justify-center w-full lg:w-2/3 h-full">
-          <div
-            className="w-full h-[400px] sm:h-[500px] rounded-xl text-white text-base sm:text-lg font-bold transition-colors duration-500 flex flex-col items-center justify-center relative"
-            style={{
-              background: barStates[0]
-                ? "#2563eb"
-                : barStates[1]
-                  ? "#f59e42"
-                  : barStates[2]
-                    ? "#22c55e"
-                    : "#d1d5db",
-            }}
-          >
-            <span className="text-xl sm:text-2xl mb-4 text-center">
-              {barStates[0] && showButton && (
-                <div className="bg-gray-200 p-6 sm:p-12 rounded-lg flex flex-col gap-4 sm:gap-8">
-                  <p className="text-xl sm:text-2xl font-bold text-black">Se connecter</p>
-                  <p className="text-gray-300 bg-white rounded-lg px-3 sm:px-4 py-2 border-1 border-gray-300 text-sm sm:text-base">
-                    exemple@email.com
-                  </p>
-                  <button
-                    className="bg-blue-400 text-white font-bold px-4 sm:px-6 py-2 rounded-lg cursor-not-allowed transition-all duration-300 flex items-center justify-center relative text-base sm:text-xl"
-                    style={{ minWidth: 200, minHeight: 40 }}
-                  >
-                    Magic Link
-                  </button>
-                </div>
-              )}
-              {barStates[1] && phase1State !== "initial" && (
-                <div className="bg-gray-200 p-6 sm:p-12 rounded-lg flex flex-col gap-4 sm:gap-8">
-                  <p className="text-xl sm:text-2xl font-bold text-black">Email reçu</p>
-                  <div className="flex items-center gap-3 sm:gap-4 bg-white rounded-lg px-3 sm:px-4 py-2 border-1 border-gray-300">
-                    <MdEmail size={20} className="text-orange-500 sm:w-6 sm:h-6" />
-                    <p className="text-gray-700 text-sm sm:text-base">Lien de connexion sécurisé</p>
-                  </div>
-                  {phase1State === "show" && (
-                    <button
-                      className="bg-orange-400 text-white font-bold px-4 sm:px-6 py-2 rounded-lg cursor-not-allowed transition-all duration-300 flex items-center justify-center relative text-base sm:text-xl"
-                      style={{ minWidth: 200, minHeight: 40 }}
-                    >
-                      Cliquer sur le lien
-                    </button>
-                  )}
-                </div>
-              )}
-              {barStates[2] && phase2State !== "initial" && (
-                <div className="bg-gray-200 p-6 sm:p-12 rounded-lg flex flex-col gap-4 sm:gap-8">
-                  <p className="text-xl sm:text-2xl font-bold text-black">wwww.hoomge.com</p>
-                  <div className="flex items-center gap-3 sm:gap-4 bg-white rounded-lg px-3 sm:px-4 py-2 border-1 border-gray-300">
-                    <FaCheckCircle size={20} className="text-green-500 sm:w-6 sm:h-6" />
-                    <p className="text-gray-700 text-sm sm:text-base">Vous êtes connecté</p>
-                  </div>
-                  {phase2State === "success" && (
-                    <div className="flex items-center justify-center">
-                      <FaKey size={48} className="text-green-500 animate-key-fly sm:w-16 sm:h-16" />
-                    </div>
-                  )}
-                </div>
-              )}
-            </span>
-          </div>
-        </div>
-        <div className="flex flex-col items-start gap-4 w-full lg:w-1/3">
+        {/* Text */}
+        <div className="flex flex-col items-start gap-3 sm:gap-4 w-full lg:w-1/3 order-2 lg:order-1">
           {[0, 1, 2].map((idx) => (
-            <div key={idx} className="flex flex-row items-center gap-3 sm:gap-4">
+            <div key={idx} className="flex flex-row items-center gap-2 sm:gap-3 md:gap-4">
               <div
                 style={{
-                  width: "8px",
-                  height: barStates[idx] ? "200px" : "40px",
-                  borderRadius: "8px",
+                  width: "6px",
+                  height: barStates[idx] ? "150px" : "30px",
+                  borderRadius: "6px",
                   background: "#d1d5db",
                   overflow: "hidden",
                   position: "relative",
                   transition: "height 0.5s cubic-bezier(.4,2,.6,1)",
                 }}
-                className="sm:w-[10px] sm:h-[300px]"
+                className="sm:w-[8px] md:w-[10px] sm:h-[200px] md:h-[250px] lg:h-[300px]"
               >
                 {barStates[idx] && (
                   <div
@@ -144,15 +83,15 @@ export default function Magic() {
                   ></div>
                 )}
               </div>
-              <div className="flex flex-col items-start min-w-[100px] sm:min-w-[120px]">
-                <h2 className="text-lg sm:text-2xl font-bold whitespace-nowrap text-left">
+              <div className="flex flex-col items-start min-w-[80px] sm:min-w-[100px] md:min-w-[120px]">
+                <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-left">
                   {idx === 0 && "Se connecter avec Magic link"}
                   {idx === 1 &&
                     "Vous recevez un email avec un lien unique securisé"}
                   {idx === 2 && "Vous etes connectez sur votre compte"}
                 </h2>
                 {barStates[idx] && (
-                  <span className="text-base sm:text-xl text-gray-700 mt-1">
+                  <span className="text-xs sm:text-sm md:text-base lg:text-xl text-gray-700 mt-1">
                     {idx === 0 &&
                       "Entrez votre adresse email ci-dessous et cliquez sur 'Envoyer'. Nous générons un lien sécurisé pour vous permettre de vous connecter sans mot de passe."}
                     {idx === 1 &&
@@ -164,6 +103,70 @@ export default function Magic() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Slide */}
+        <div className="flex items-center justify-center w-full lg:w-2/3 h-full order-1 lg:order-2">
+          <div
+            className="w-full h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] rounded-xl text-white text-sm sm:text-base md:text-lg font-bold transition-colors duration-500 flex flex-col items-center justify-center relative"
+            style={{
+              background: barStates[0]
+                ? "#2563eb"
+                : barStates[1]
+                  ? "#f59e42"
+                  : barStates[2]
+                    ? "#22c55e"
+                    : "#d1d5db",
+            }}
+          >
+            <span className="text-lg sm:text-xl md:text-2xl mb-2 sm:mb-4 text-center">
+              {barStates[0] && showButton && (
+                <div className="bg-gray-200 p-4 sm:p-6 md:p-8 lg:p-12 rounded-lg flex flex-col gap-3 sm:gap-4 md:gap-6 lg:gap-8 w-[90%] sm:w-[80%] md:w-[70%]">
+                  <p className="text-lg sm:text-xl md:text-2xl font-bold text-black">Se connecter</p>
+                  <p className="text-gray-300 bg-white rounded-lg px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 border-1 border-gray-300 text-xs sm:text-sm md:text-base">
+                    exemple@email.com
+                  </p>
+                  <button
+                    className="bg-blue-400 text-white font-bold px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 rounded-lg cursor-not-allowed transition-all duration-300 flex items-center justify-center relative text-sm sm:text-base md:text-xl"
+                    style={{ minWidth: "160px", minHeight: "36px" }}
+                  >
+                    Magic Link
+                  </button>
+                </div>
+              )}
+              {barStates[1] && phase1State !== "initial" && (
+                <div className="bg-gray-200 p-4 sm:p-6 md:p-8 lg:p-12 rounded-lg flex flex-col gap-3 sm:gap-4 md:gap-6 lg:gap-8 w-[90%] sm:w-[80%] md:w-[70%]">
+                  <p className="text-lg sm:text-xl md:text-2xl font-bold text-black">Email reçu</p>
+                  <div className="flex items-center gap-2 sm:gap-3 md:gap-4 bg-white rounded-lg px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 border-1 border-gray-300">
+                    <MdEmail size={18} className="text-orange-500 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                    <p className="text-gray-700 text-xs sm:text-sm md:text-base">Lien de connexion sécurisé</p>
+                  </div>
+                  {phase1State === "show" && (
+                    <button
+                      className="bg-orange-400 text-white font-bold px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 rounded-lg cursor-not-allowed transition-all duration-300 flex items-center justify-center relative text-sm sm:text-base md:text-xl"
+                      style={{ minWidth: "160px", minHeight: "36px" }}
+                    >
+                      Cliquer sur le lien
+                    </button>
+                  )}
+                </div>
+              )}
+              {barStates[2] && phase2State !== "initial" && (
+                <div className="bg-gray-200 p-4 sm:p-6 md:p-8 lg:p-12 rounded-lg flex flex-col gap-3 sm:gap-4 md:gap-6 lg:gap-8 w-[90%] sm:w-[80%] md:w-[70%]">
+                  <p className="text-lg sm:text-xl md:text-2xl font-bold text-black">wwww.hoomge.com</p>
+                  <div className="flex items-center gap-2 sm:gap-3 md:gap-4 bg-white rounded-lg px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 border-1 border-gray-300">
+                    <FaCheckCircle size={18} className="text-green-500 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                    <p className="text-gray-700 text-xs sm:text-sm md:text-base">Vous êtes connecté</p>
+                  </div>
+                  {phase2State === "success" && (
+                    <div className="flex items-center justify-center">
+                      <FaKey size={36} className="text-green-500 animate-key-fly sm:w-12 sm:h-12 md:w-16 md:h-16" />
+                    </div>
+                  )}
+                </div>
+              )}
+            </span>
+          </div>
         </div>
       </div>
       <style jsx>{`
