@@ -74,7 +74,6 @@ ${labels.limite}
 
     return NextResponse.json({ text: generatedText });
   } catch (error) {
-    console.error("Erreur d'appel OpenAI:", error);
     return NextResponse.json({ text: "Erreur lors de la génération." }, { status: 500 });
   }
 }

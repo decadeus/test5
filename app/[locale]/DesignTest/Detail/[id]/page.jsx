@@ -84,7 +84,6 @@ export default function ApartmentDetail() {
         .single();
 
       if (!error && data) {
-        console.log("Project data:", data);
         setApartment({
           id: data.id,
           title: data.name,
@@ -119,9 +118,6 @@ export default function ApartmentDetail() {
           .from('project')
           .list(`${data.id}/`);
 
-        console.log("Storage list result:", imageList);
-        console.log("Storage list error:", imageError);
-
         if (!imageError && imageList) {
           const onlyFiles = imageList.filter(item => item.name && item.metadata);
           const imageUrls = onlyFiles.map((image) => {
@@ -129,10 +125,8 @@ export default function ApartmentDetail() {
               .storage
               .from('project')
               .getPublicUrl(`${data.id}/${image.name}`);
-            console.log("Generated URL for image:", image.name, publicUrl);
             return publicUrl;
           });
-          console.log("Final image URLs:", imageUrls);
           setImages(imageUrls);
         }
       }
@@ -143,17 +137,6 @@ export default function ApartmentDetail() {
   }, [id]);
 
   if (!apartment) return <p>Appartement introuvable</p>;
-
-  // DEBUG: Afficher la structure d'un lot et la détection des équipements
-  if (projectList.length > 0) {
-    console.log('Exemple de lot:', projectList[0]);
-    [
-      'swim', 'cctv', 'entrance', 'bike', 'disabled', 'fitness', 'sauna', 'lift'
-    ].forEach(key => {
-      const present = projectList.some(lot => lot[key] === true || lot[key] === 'true' || lot[key] === 1 || lot[key] === '1');
-      console.log(`Equipement ${key} présent ?`, present);
-    });
-  }
 
   return (
     <div className="bg-green-100/10 min-h-screen w-full">
@@ -315,16 +298,177 @@ export default function ApartmentDetail() {
           </div>
         )}
 
-        <div className="text-xl font-semibold text-green-600 mb-6 mt-8">
-          {apartment.price}
-        </div>
+       
         <Link
           href="../List"
           className="text-green-600 underline hover:text-green-800"
         >
           Retour à la liste
         </Link>
+
+        {/* Projets filtrés similaires */}
+        <div className="mt-10">
+          <h3 className="text-xl font-bold mb-4">Projets correspondant à vos filtres</h3>
+          <FilteredProjectsCards excludeId={apartment.id} />
+        </div>
       </div>
+    </div>
+  );
+}
+
+// Ajout du composant pour afficher les cards filtrées
+function FilteredProjectsCards({ excludeId }) {
+  const [filteredProjects, setFilteredProjects] = useState([]);
+  const [projectImages, setProjectImages] = useState({});
+  const [currentImageIndexes, setCurrentImageIndexes] = useState({});
+
+  // Récupère les filtres du localStorage
+  function getFilters() {
+    if (typeof window === 'undefined') return null;
+    return {
+      selectedCity: localStorage.getItem('selectedCity'),
+      searchTerm: localStorage.getItem('searchTerm') || '',
+      priceRange: JSON.parse(localStorage.getItem('priceRange') || '[100000,5000000]'),
+      bedRange: JSON.parse(localStorage.getItem('bedRange') || '[1,5]'),
+      surfaceRange: JSON.parse(localStorage.getItem('surfaceRange') || '[10,200]'),
+      onlyGarden: localStorage.getItem('onlyGarden') === 'true',
+      onlyRooftop: localStorage.getItem('onlyRooftop') === 'true',
+    };
+  }
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const supabase = createClient();
+      const filters = getFilters();
+      if (!filters) return;
+      // Récupère les projets
+      const { data: projects } = await supabase
+        .from('project')
+        .select('id, name, compagny, country, city');
+      // Récupère les projectlists
+      const { data: projectlists } = await supabase
+        .from('projectlist')
+        .select('ide, ref, bed, floor, price, surface, garden, rooftop, des');
+      // Associe les projectlists à leur projet parent
+      const apartmentsWithList = (projects || []).map((item) => ({
+        id: item.id,
+        title: item.name,
+        summary: item.compagny,
+        price: item.country,
+        city: item.city,
+        imageUrl: '/images/placeholder.jpg',
+        projectlist: (projectlists || []).filter((pl) => pl.ide === item.id),
+      }));
+      // Filtres comme dans List
+      const filtered = apartmentsWithList.filter((a) => {
+        if (a.id === excludeId) return false;
+        const matchesCity = !filters.selectedCity || filters.selectedCity === 'Tous' || a.city === filters.selectedCity;
+        const matchesSearch =
+          a.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+          a.summary.toLowerCase().includes(filters.searchTerm.toLowerCase());
+        const matchesRange = a.projectlist && a.projectlist.some(lot => {
+          const lotPrice = parseFloat(lot.price);
+          const lotBed = parseInt(lot.bed);
+          const lotSurface = parseFloat(lot.surface);
+          const hasGarden = !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false';
+          const hasRooftop = !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false';
+          return (
+            lotPrice >= filters.priceRange[0] && lotPrice <= filters.priceRange[1] &&
+            lotBed >= filters.bedRange[0] && lotBed <= filters.bedRange[1] &&
+            lotSurface >= filters.surfaceRange[0] && lotSurface <= filters.surfaceRange[1] &&
+            (!filters.onlyGarden || hasGarden) &&
+            (!filters.onlyRooftop || hasRooftop)
+          );
+        });
+        return matchesCity && matchesSearch && matchesRange;
+      });
+      setFilteredProjects(filtered);
+      // Images (optionnel, ici placeholder)
+    };
+    fetchProjects();
+  }, [excludeId]);
+
+  if (filteredProjects.length === 0) {
+    return <p className="text-gray-500">Aucun autre projet ne correspond à vos filtres.</p>;
+  }
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+      {filteredProjects.map((apt) => (
+        <div
+          key={apt.id}
+          className="bg-white/80 backdrop-blur-sm border-1 border-white text-gray-900 shadow-md rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full relative group"
+        >
+          <div className="w-full flex flex-col gap-2 relative">
+            <div className="relative overflow-hidden">
+              {/* Badges jardin/rooftop sur la photo */}
+              <div className="absolute top-2 right-2 flex gap-2 z-20">
+                {apt.projectlist.some(lot => !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false') && (
+                  <span className="bg-green-100 border border-green-400 text-green-700 rounded-full px-2 py-1 text-xs shadow">🌸 jardin</span>
+                )}
+                {apt.projectlist.some(lot => !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false') && (
+                  <span className="bg-blue-100 border border-blue-400 text-blue-700 rounded-full px-2 py-1 text-xs shadow">🏙️ rooftop</span>
+                )}
+              </div>
+              <img
+                src={apt.imageUrl}
+                alt={apt.title}
+                className="w-full h-48 sm:h-40 object-cover rounded-t-lg group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+            <div className="w-full h-px bg-gradient-to-r from-green-700 via-gray-200 to-green-200 my-1" />
+          </div>
+          <div className="p-3 sm:p-4 flex flex-col w-full relative group h-full">
+            <div className="flex flex-row justify-between">
+              <h2 className="text-base sm:text-lg font-semibold mb-2">
+                {apt.title}
+              </h2>
+              <p className="text-xs sm:text-sm font-semibold">{apt.city}</p>
+            </div>
+            {/* Affichage des lots du projet */}
+            {apt.projectlist && apt.projectlist.length > 0 && (
+              <div className="mb-2 overflow-x-auto">
+                <table className="w-full text-xs text-gray-700 text-center rounded-lg shadow border border-green-100 overflow-hidden">
+                  <thead>
+                    <tr className="bg-green-200/80 text-red-700 text-sm sm:text-base">
+                      <th className="w-8 font-normal">🛏</th>
+                      <th className="w-8 font-normal">🏢</th>
+                      <th className="w-8 font-normal">📐</th>
+                      <th className="w-8 font-normal">🌸</th>
+                      <th className="w-8 font-normal">🏙️</th>
+                      <th className="w-24 font-normal text-center">💶</th>
+                      <th className="font-normal">ℹ️</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {apt.projectlist.slice(0, 3).map((lot, idx) => (
+                      <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-100" + " hover:bg-green-100 transition"}>
+                        <td className="w-8 font-semibold">{lot.bed}</td>
+                        <td className="w-8">{lot.floor}</td>
+                        <td className="w-8">{lot.surface}</td>
+                        <td className="w-8">{!!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false' ? "🌸" : ""}</td>
+                        <td className="w-8">{!!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false' ? "🏙️" : ""}</td>
+                        <td className="w-24 text-right font-semibold">{formatPrice(lot.price)}</td>
+                        <td className="pl-2 sm:pl-4 text-left text-black max-w-[120px] font-semibold truncate">{lot.des || ""}</td>
+                      </tr>
+                    ))}
+                    {apt.projectlist.length > 3 && (
+                      <tr>
+                        <td colSpan={7} className="text-xl sm:text-2xl text-gray-700 font-extrabold text-center">...</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            <Link href={`/fr/DesignTest/Detail/${apt.id}`} className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20 flex items-center justify-center">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-600 rounded-full hover:bg-green-700 transition-transform duration-300 transform hover:rotate-90 flex items-center justify-center">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" /></svg>
+              </div>
+            </Link>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

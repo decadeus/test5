@@ -31,7 +31,6 @@ export default function SubscribeButton({ subtitle, paragraphe }) {
       const stripe = await stripePromise;
       await stripe.redirectToCheckout({ sessionId });
     } catch (err) {
-      console.error("❌ Erreur Stripe :", err);
       alert("Erreur pendant la redirection vers Stripe.");
     } finally {
       setLoading(false);

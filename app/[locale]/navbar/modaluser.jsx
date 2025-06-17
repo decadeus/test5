@@ -50,7 +50,6 @@ export default function AvatarModal({ user }) {
           downloadImage(data.pic_profil);
         }
       } catch (error) {
-        console.error("Error loading user data!", error);
         setError(true);
         setLoading(false);
       }

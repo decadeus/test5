@@ -36,12 +36,10 @@ export default function Layout() {
         error: userError,
       } = await supabase.auth.getUser();
       if (userError) {
-        console.error("Erreur utilisateur", userError);
         return;
       }
 
       setUser(user);
-      console.log("🔍 Utilisateur connecté :", user);
 
       const { data: profile, error: profileError } = await supabase
         .from("profiles")
@@ -77,15 +75,12 @@ export default function Layout() {
           .eq("user_id", user.id);
 
         if (projError) {
-          console.error("Erreur projets", projError);
         } else {
           // Ajout récupération des accès et enrichissement avec editorCount
           const { data: accessList } = await supabase
             .from("collaborator_project_access")
             .select("project_id,can_edit");
-          console.log("AccessList = ", accessList);
           if (!accessList) {
-            console.error("AccessList is empty or failed to load");
           }
 
           const projectsWithEditors = (projs || []).map((p) => {
@@ -104,7 +99,6 @@ export default function Layout() {
           .eq("user_id", user.id);
 
         if (collabError) {
-          console.error("Erreur collaborateurs", collabError);
         } else {
           setCollaborators(collabs || []);
         }
@@ -122,75 +116,43 @@ export default function Layout() {
       newLastName &&
       user
     ) {
-      // 1. Ajout dans la table collaborators
-      const { data, error } = await supabase
-        .from("collaborators")
-        .insert([
-          {
-            user_id: user.id,
-            email: newEmail,
-            first_name: newFirstName,
-            last_name: newLastName,
-          },
-        ])
-        .select();
-
-      if (error) {
-        console.error("Erreur insertion", error);
-        return;
-      } else {
-        setCollaborators([...collaborators, data[0]]);
-        setNewEmail("");
-        setNewFirstName("");
-        setNewLastName("");
-      }
-
-      // 2. Créer le compte Auth côté serveur (si pas déjà existant)
-      let userCreated = false;
-      let userErrorMsg = "";
+      let errorMsg = "";
+      let successMsg = "";
       try {
-        const res = await fetch('/api/create-user', {
+        const res = await fetch('/api/create-collaborator', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email: newEmail,
-            password: crypto.randomUUID(), // mot de passe temporaire
-            username: newEmail.split('@')[0],
             full_name: `${newFirstName} ${newLastName}`,
+            role: "collaborator",
+            user_id: user.id,
           }),
         });
         const result = await res.json();
         if (res.ok) {
-          userCreated = true;
+          setNewEmail("");
+          setNewFirstName("");
+          setNewLastName("");
+          // Rafraîchir la liste des collaborateurs
+          const { data: collabs, error: collabError } = await supabase
+            .from("collaborators")
+            .select("*")
+            .eq("user_id", user.id);
+          if (!collabError) setCollaborators(collabs || []);
+          successMsg =
+            "Invitation envoyée ! Le collaborateur recevra un email avec un lien d'accès. Son compte sera créé lorsqu'il cliquera sur ce lien pour la première fois.";
         } else {
-          userErrorMsg = result.message;
+          errorMsg = result.message || "Erreur lors de la création du collaborateur.";
         }
       } catch (err) {
-        userErrorMsg = err.message;
+        errorMsg = err.message;
       }
-
-      // 3. Envoi du Magic Link
-      let magicLinkErrorMsg = "";
-      if (userCreated) {
-        const { error: magicLinkError } = await supabase.auth.signInWithOtp({
-          email: newEmail,
-        });
-        if (magicLinkError) {
-          magicLinkErrorMsg = magicLinkError.message;
-        }
-      }
-
-      // 4. Affichage du message
       setShowSuccess(true);
-      if (userErrorMsg) {
-        setSuccessMessage("Erreur lors de la création du compte Auth : " + userErrorMsg);
-      } else if (magicLinkErrorMsg) {
-        setSuccessMessage("Collaborateur créé, mais erreur lors de l'envoi du Magic Link : " + magicLinkErrorMsg);
+      if (errorMsg) {
+        setSuccessMessage("Erreur lors de la création du collaborateur : " + errorMsg);
       } else {
-        setSuccessMessage(
-          "Invitation envoyée ! Le collaborateur recevra un email avec un lien d'accès. " +
-          "Son compte sera créé lorsqu'il cliquera sur ce lien pour la première fois."
-        );
+        setSuccessMessage(successMsg);
       }
     }
   };
@@ -198,7 +160,6 @@ export default function Layout() {
   const deleteCollaborator = async (id) => {
     const { error } = await supabase.from("collaborators").delete().eq("id", id);
     if (error) {
-      console.error("Erreur suppression", error);
     } else {
       setCollaborators(collaborators.filter((c) => c.id !== id));
     }
@@ -228,15 +189,13 @@ export default function Layout() {
         .eq("user_id", user.id);
       if (!error) {
         setProjects(updatedProjects || []);
-      } else {
-        console.error("Erreur refresh projets", error);
       }
     }
   };
 
   return (
     <div className="flex h-screen w-full">
-      <div className="w-64 bg-gray-800 text-white p-4 flex flex-col h-full">
+      <div className="w-fit bg-gray-800 text-white p-4 flex flex-col h-full">
         <h2 className="text-sm font-bold mb-4">
           Bienvenue, {user ? user.email : "Invité"}
         </h2>
@@ -260,7 +219,8 @@ export default function Layout() {
                   }}
                   className="text-left w-full"
                 >
-                  Vue d'ensemble ({projects.length} projets)
+                  Vue d'ensemble
+                  <div className="text-xs text-gray-200 mt-1">{projects.length} projets</div>
                 </button>
               </li>
             </ul>

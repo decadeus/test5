@@ -23,7 +23,6 @@ export default function PermissionMatrix({ user, collaborators, projects }) {
         .in("collaborator_id", collabIds);
 
       if (error) {
-        console.error("Erreur chargement accès :", error);
         return;
       }
 
@@ -52,7 +51,6 @@ export default function PermissionMatrix({ user, collaborators, projects }) {
       .maybeSingle();
 
     if (selectError && selectError.code !== "PGRST116") {
-      console.error("Erreur de vérification :", selectError);
       return;
     }
 
@@ -61,7 +59,6 @@ export default function PermissionMatrix({ user, collaborators, projects }) {
         .from("collaborator_project_access")
         .update({ can_edit: newValue })
         .eq("id", existing.id);
-      if (error) console.error("Erreur mise à jour :", error);
     } else {
       const { error } = await supabase.from("collaborator_project_access").insert([
         {
@@ -70,7 +67,6 @@ export default function PermissionMatrix({ user, collaborators, projects }) {
           can_edit: true,
         },
       ]);
-      if (error) console.error("Erreur insertion :", error);
     }
   };
 

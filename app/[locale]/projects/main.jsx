@@ -607,7 +607,6 @@ function FilterB({
         .select("country, city");
 
       if (error) {
-        console.error("Error fetching countries:", error);
         return;
       }
 

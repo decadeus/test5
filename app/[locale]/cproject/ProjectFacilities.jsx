@@ -37,7 +37,7 @@ export default function ProjectFacilities({ project }) {
       .eq("id", project.id);
 
     if (error) {
-      console.error("Erreur mise à jour Supabase :", error);
+      // console.error("Erreur mise à jour Supabase :", error);
     } else {
       setCurrent((prev) => ({ ...prev, [field]: newValue }));
     }

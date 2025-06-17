@@ -185,5 +185,21 @@
             "link": "Kontaktieren Sie uns für ein individuelles Angebot"
         },
         "loading": "Weiterleitung..."
-    }
+    },
+    "Magic": {
+        "step1": {
+            "title": "Mit Magic Link anmelden",
+            "description": "Geben Sie Ihre E-Mail-Adresse ein und klicken Sie auf 'Magic Link'. Sie erhalten sofort eine E-Mail mit einem einzigartigen, sicheren Link."
+        },
+        "step2": {
+            "title": "Sie erhalten eine E-Mail mit einem einzigartigen, sicheren Link",
+            "description": "Überprüfen Sie Ihren Posteingang. Klicken Sie auf den einzigartigen Link, um sicher auf Ihren persönlichen Bereich zuzugreifen – ganz ohne Passwort."
+        },
+        "step3": {
+            "title": "Sie sind in Ihrem Konto angemeldet",
+            "description": "Sie sind jetzt in Ihrem Konto angemeldet. Genießen Sie alle Funktionen der Plattform einfach und sicher!"
+        }
+    },
+    "Appartement": "Wohnung",
+    "Appartements": "Wohnungen"
 }

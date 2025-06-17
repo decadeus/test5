@@ -34,7 +34,6 @@ export async function POST(req) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error('Erreur création user:', err);
     return NextResponse.json({ message: err.message || "Erreur inconnue" }, { status: 400 });
   }
 }

@@ -35,7 +35,9 @@ export default function IntroSection({
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
           }}
-        ></div>
+        >
+          <div className="absolute inset-0 bg-green-500/60 backdrop-blur-sm"></div>
+        </div>
         <div className="absolute inset-0 bg-white/70 z-10" />
         <div className="relative z-20 flex flex-col justify-between px-4 sm:px-6 lg:px-8 text-black">
           <div className="flex flex-col items-center gap-4 sm:gap-6 mt-12 sm:mt-16 md:mt-24 text-center">
@@ -123,4 +125,4 @@ export default function IntroSection({
       </div>
     </>
   );
-} 
+}

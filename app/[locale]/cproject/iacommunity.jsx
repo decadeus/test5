@@ -29,7 +29,7 @@ export default function IACOMMUNITY() {
         await navigator.clipboard.writeText(resultat);
         alert("Texte copié dans le presse-papiers !");
       } catch (err) {
-        console.error("Erreur de copie :", err);
+        // Ligne 31 supprimée : console.error("Erreur de copie :", err);
       }
     }
   };

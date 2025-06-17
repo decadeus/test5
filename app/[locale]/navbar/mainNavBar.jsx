@@ -174,7 +174,7 @@ export default function MainNavBar({ user }) {
       </div>
 
       {/* Version Desktop */}
-      <nav className="fixed top-6 left-1/2 -translate-x-1/2 px-2 py-2 flex gap-6 items-center rounded-full bg-white/40 backdrop-blur shadow-lg w-auto z-50 whitespace-nowrap flex-nowrap border-1 border-[#ffffff60] hidden md:flex" style={{width: 'fit-content'}}>
+      <nav className="fixed top-6 left-1/2 -translate-x-1/2 px-3 py-2 flex gap-6 items-center rounded-full bg-white/40 backdrop-blur shadow-lg w-auto z-50 whitespace-nowrap flex-nowrap border-1 border-[#ffffff60] hidden md:flex" style={{width: 'fit-content'}}>
         {/* Sélecteur de langue dropdown à gauche */}
         <div className="relative" ref={dropdownRef}>
           <button

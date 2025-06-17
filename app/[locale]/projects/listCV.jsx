@@ -15,7 +15,7 @@ const ListCV = () => {
                 .select('country, city');
 
             if (error) {
-                console.error('Error fetching data:', error);
+                // console.error('Error fetching data:', error);
             } else {
                 setData(data);
             }

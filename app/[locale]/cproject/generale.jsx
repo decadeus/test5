@@ -13,13 +13,7 @@ export default function Generale() {
     async function fetchProjects() {
       const {
         data: { user },
-        error: userError,
       } = await supabase.auth.getUser();
-
-      if (userError) {
-        console.error("Erreur utilisateur", userError);
-        return;
-      }
 
       const { data, error } = await supabase
         .from('project_edit_count')
@@ -27,7 +21,7 @@ export default function Generale() {
         .eq('user_id', user.id);
 
       if (error) {
-        console.error('Erreur de chargement des projets :', error);
+        // console.error('Erreur de chargement des projets :', error);
       } else {
         setProjects(data);
       }

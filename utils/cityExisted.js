@@ -5,10 +5,8 @@ const supabase = createClient();
 
 export const countryData = (async () => {
     const { data, error } = await supabase.from('project').select('country, city');
-    console.log("lis", data);
     
     if (error) {
-        console.error('Error fetching cities:', error);
         return {};
     }
 

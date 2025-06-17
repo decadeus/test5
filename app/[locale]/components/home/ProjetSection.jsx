@@ -49,12 +49,12 @@ export default function ProjetSection({ subtitle, paragraphe }) {
         height: "90vh",
       }}
     >
-      <div className="text-black absolute top-[50px] sm:top-[80px] md:top-[100px] lg:top-[150px] left-1/2 w-full -translate-x-1/2 transition-opacity duration-500 flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-32 px-4 sm:px-6 md:px-8">
+      <div className="text-black absolute top-[50px] sm:top-[80px] md:top-[100px] lg:top-[150px] left-1/2 w-full -translate-x-1/2 transition-opacity duration-500 flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-16 px-4 sm:px-6 md:px-8">
         <div>
           <h3 className={subtitle}>{t('ProjectSection.Title')}</h3>
         </div>
         <div className={paragraphe}>
-          <p className="w-full md:w-3/4 whitespace-pre-line text-base sm:text-lg md:text-xl lg:text-2xl">{t('ProjectSection.Description')}</p>
+          <p className="w-full md:w-3/4 whitespace-pre-line text-base sm:text-lg md:text-xl lg:text-xl">{t('ProjectSection.Description')}</p>
         </div>
       </div>
       <div

@@ -25,7 +25,6 @@ export default function ProjectManager() {
     const fetchUserAndProjects = async () => {
       const { data: { user }, error } = await supabase.auth.getUser();
       if (error) {
-        console.error("Erreur récupération user", error);
         return;
       }
       setUser(user);

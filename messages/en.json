@@ -184,5 +184,21 @@
             "link": "Contact us for a custom offer"
         },
         "loading": "Redirecting..."
-    }
+    },
+    "Magic": {
+        "step1": {
+            "title": "Sign in with Magic Link",
+            "description": "Enter your email address and click 'Magic Link'. You will immediately receive an email with a unique secure link."
+        },
+        "step2": {
+            "title": "You receive an email with a unique secure link",
+            "description": "Check your inbox. Click the unique link you received to securely access your personal space, without any password to remember."
+        },
+        "step3": {
+            "title": "You are logged into your account",
+            "description": "You are now logged into your account. Enjoy all the features of the platform with ease and security!"
+        }
+    },
+    "Appartement": "Apartment",
+    "Appartements": "Apartments"
 }

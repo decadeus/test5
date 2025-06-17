@@ -20,7 +20,6 @@ const ResetPassword = () => {
   
     if (!token || type !== 'recovery') {
       setError('Invalid or expired password reset link.'); 
-      console.error("Missing or invalid 'type' parameter:", type);
       return;
     }
   
@@ -30,14 +29,12 @@ const ResetPassword = () => {
       .then(({ error }) => {
         if (error) {
           setError('Failed to authenticate with the reset token. It may be expired or invalid.');
-          console.error('Session error:', error); // Log session errors for debugging
         } else {
           setIsReady(true);
         }
       })
       .catch((err) => {
         setError('An unexpected error occurred while setting the session.');
-        console.error('Error setting session:', err);
       });
   }, [searchParams]);
   

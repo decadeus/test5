@@ -39,8 +39,6 @@ export default function DynamicMetadata() {
 
         if (!error) {
           setProjectCount(count);
-        } else {
-          console.error("Erreur lors de la récupération des projets:", error);
         }
       }
     };

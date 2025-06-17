@@ -37,7 +37,7 @@ export default function Projectb({ project, onProjectUpdate }) {
       .eq("id", project.id)
       .single();
     if (error) {
-      console.error("Erreur chargement projet:", error);
+      // console.error("Erreur chargement projet:", error);
     } else {
       setProjectData(data);
     }
@@ -55,8 +55,6 @@ export default function Projectb({ project, onProjectUpdate }) {
     if (!error) {
       setEditingIndex(null);
       fetchProjectData();
-    } else {
-      console.error("Erreur mise à jour:", error);
     }
   };
 
@@ -99,8 +97,6 @@ export default function Projectb({ project, onProjectUpdate }) {
         des: "",
       });
       fetchProjectData();
-    } else {
-      console.error("Erreur insertion:", error);
     }
   };
 

@@ -36,7 +36,7 @@ export default function IASEO() {
         await navigator.clipboard.writeText(resultat);
         alert("Texte copié dans le presse-papiers !");
       } catch (err) {
-        console.error("Erreur de copie :", err);
+        // Ligne 38 supprimée : console.error("Erreur de copie :", err);
       }
     }
   };

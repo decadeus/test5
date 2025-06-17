@@ -53,7 +53,6 @@ export default function ListNav({ userId }) {
           .single();
 
         if (error) {
-          console.error("Error fetching profile:", error);
           setError(error);
         } else {
           setProfile(data);

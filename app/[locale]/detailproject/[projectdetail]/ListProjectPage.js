@@ -65,7 +65,7 @@ export default function ListProjectPage() {
           setRelatedProjects(relatedData || []);
         }
       } catch (error) {
-        console.error("Error fetching project:", error.message);
+        // Ligne 67 supprimée : console.error("Error fetching project:", error.message);
       }
     };
 

@@ -65,7 +65,6 @@ export default function SubscribeForm() {
       const stripe = await stripePromise;
       await stripe.redirectToCheckout({ sessionId });
     } catch (err) {
-      console.error('Erreur:', err);
       alert('Une erreur est survenue.');
       setLoading(false);
     }

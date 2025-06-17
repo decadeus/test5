@@ -184,5 +184,21 @@
             "link": "Skontaktuj się z nami, aby otrzymać indywidualną ofertę"
         },
         "loading": "Przekierowywanie..."
-    }
+    },
+    "Magic": {
+        "step1": {
+            "title": "Zaloguj się za pomocą Magic Link",
+            "description": "Wpisz swój adres e-mail i kliknij 'Magic Link'. Natychmiast otrzymasz e-mail z unikalnym, bezpiecznym linkiem."
+        },
+        "step2": {
+            "title": "Otrzymujesz e-mail z unikalnym, bezpiecznym linkiem",
+            "description": "Sprawdź swoją skrzynkę odbiorczą. Kliknij unikalny link, aby bezpiecznie uzyskać dostęp do swojego konta, bez konieczności zapamiętywania hasła."
+        },
+        "step3": {
+            "title": "Jesteś zalogowany na swoje konto",
+            "description": "Jesteś teraz zalogowany na swoje konto. Korzystaj ze wszystkich funkcji platformy z łatwością i bezpieczeństwem!"
+        }
+    },
+    "Appartement": "Mieszkanie",
+    "Appartements": "Mieszkania"
 }

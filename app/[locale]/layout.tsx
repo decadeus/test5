@@ -11,6 +11,7 @@ import { Kenia, Satisfy, Macondo } from "next/font/google";
 import { Analytics } from '@vercel/analytics/react';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import {getTranslations} from 'next-intl/server';
+import ConditionalDownloadButtons from "./components/ConditionalDownloadButtons";
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -84,6 +85,7 @@ export default async function RootLayout({
               <SpeedInsights />
             </main>
             <Foot />
+            <ConditionalDownloadButtons />
           
         </Providers>
         </NextIntlClientProvider>

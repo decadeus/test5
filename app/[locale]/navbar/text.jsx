@@ -31,7 +31,7 @@ export default function Text({ user }) {
         .eq("id", user.id)
         .single();
       if (error) {
-        console.error("Error fetching profile:", error);
+        // console.error("Error fetching profile:", error);
       } else {
         setAvatarUrl(data.avatar_url);
         setUsername(data.username);
@@ -52,7 +52,7 @@ export default function Text({ user }) {
       if (error) throw error;
       alert("Profile updated!");
     } catch (error) {
-      console.error("Error updating the profile:", error);
+      // console.error("Error updating the profile:", error);
       alert("Error updating the profile!");
     } finally {
       setLoading(false);

@@ -138,11 +138,6 @@ export default function Maindata({ project, onProjectUpdate }) {
       .eq("id", project.id); // C'EST BIEN project.id ICI
 
     if (error) {
-      console.error("❌ Supabase update error:", {
-        message: error.message,
-        details: error.details,
-        hint: error.hint,
-      });
       alert("Failed to save data.");
     } else {
       // Recharger le projet et appeler onProjectUpdate

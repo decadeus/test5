@@ -16,7 +16,7 @@ export default function Select({ user, Outprojects }) { // Renamed prop to `user
           .order("created_at", { ascending: false });
 
         if (error) {
-          console.error("Error fetching projects:", error);
+          // console.error("Error fetching projects:", error);
         } else {
           setProjects(data);
         }

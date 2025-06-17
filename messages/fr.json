@@ -184,5 +184,21 @@
             "link": "Contactez-nous pour une offre personnalisée"
         },
         "loading": "Redirection..."
-    }
+    },
+    "Magic": {
+        "step1": {
+            "title": "Se connecter avec Magic Link",
+            "description": "Entrez votre adresse email et cliquez sur 'Magic Link'. Vous recevez immédiatement un email avec un lien unique sécurisé."
+        },
+        "step2": {
+            "title": "Vous recevez un email avec un lien unique sécurisé",
+            "description": "Consultez votre boîte de réception. Cliquez sur le lien unique reçu pour accéder à votre espace personnel en toute sécurité, sans mot de passe à retenir."
+        },
+        "step3": {
+            "title": "Vous êtes connecté sur votre compte",
+            "description": "Vous êtes maintenant connecté à votre compte. Profitez de toutes les fonctionnalités de la plateforme en toute simplicité et sécurité !"
+        }
+    },
+    "Appartement": "Appartement",
+    "Appartements": "Appartements"
 }

@@ -78,7 +78,6 @@ const [current, setCurrent] = useState({
       .eq("id", project.id);
 
     if (updateError) {
-      console.error(updateError);
       setError("Erreur lors de la sauvegarde : " + updateError.message);
     } else {
       setCurrent((prev) => ({ ...prev, ...updates }));
