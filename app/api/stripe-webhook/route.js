@@ -27,26 +27,45 @@ export async function POST(req) {
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
-  if (event.type === 'customer.subscription.created') {
-    const subscription = event.data.object;
-
+  if (event.type === 'customer.subscription.created' || event.type === 'checkout.session.completed') {
     let email = null;
-    try {
-      const customer = await stripe.customers.retrieve(subscription.customer);
-      email = customer.email;
-    } catch (err) {
-      // console.warn('⚠️ Impossible de récupérer l’email client :', err.message);
+    let subscription = null;
+    let stripeCustomerId = null;
+    let stripeSubscriptionId = null;
+
+    if (event.type === 'customer.subscription.created') {
+      subscription = event.data.object;
+      try {
+        const customer = await stripe.customers.retrieve(subscription.customer);
+        email = customer.email;
+        stripeCustomerId = subscription.customer;
+        stripeSubscriptionId = subscription.id;
+      } catch (err) {
+        // console.warn('⚠️ Impossible de récupérer l'email client :', err.message);
+      }
+    } else if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+      email = session.customer_email || session.customer_details?.email;
+      stripeCustomerId = session.customer;
+      // Pour récupérer l'id de souscription Stripe, il faut parfois faire un appel supplémentaire :
+      if (session.subscription) {
+        stripeSubscriptionId = session.subscription;
+        try {
+          subscription = await stripe.subscriptions.retrieve(session.subscription);
+        } catch (err) {
+          // console.warn('⚠️ Impossible de récupérer la souscription Stripe :', err.message);
+        }
+      }
     }
 
     if (email) {
       let userId = null;
-
+      const password = "101080";
       const { data: userData, error: userError } = await supabase.auth.admin.createUser({
         email,
         password,
         email_confirm: true,
       });
-
       if (userData?.user?.id) {
         userId = userData.user.id;
       } else if (userError) {
@@ -55,7 +74,6 @@ export async function POST(req) {
           userId = existingUser.users[0].id;
         }
       }
-
       if (userId) {
         const { error: upsertError } = await supabase
           .from('profiles')
@@ -65,8 +83,8 @@ export async function POST(req) {
               email,
               role: 'promoteur',
               subscribed_at: new Date().toISOString(),
-              stripe_customer_id: subscription.customer,
-              stripe_subscription_id: subscription.id,
+              stripe_customer_id: stripeCustomerId,
+              stripe_subscription_id: stripeSubscriptionId,
               is_active: true,
             },
           ])
@@ -74,18 +92,20 @@ export async function POST(req) {
       }
     }
 
-    const { error: insertError } = await supabase.from('subscriptions').insert([
-      {
-        id: subscription.id,
-        customer_id: subscription.customer,
-        email,
-        status: subscription.status,
-        created_at: new Date(subscription.created * 1000).toISOString(),
-      },
-    ]);
-
-    if (insertError) {
-      return new Response('Erreur insertion subscription', { status: 500 });
+    // Insérer la souscription dans la table subscriptions si on a les infos nécessaires
+    if (subscription) {
+      const { error: insertError } = await supabase.from('subscriptions').insert([
+        {
+          id: subscription.id,
+          customer_id: subscription.customer,
+          email,
+          status: subscription.status,
+          created_at: new Date(subscription.created * 1000).toISOString(),
+        },
+      ]);
+      if (insertError) {
+        return new Response('Erreur insertion subscription', { status: 500 });
+      }
     }
   }
 
