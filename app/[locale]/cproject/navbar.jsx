@@ -9,9 +9,11 @@ import FullDetail from "./fulldetail";
 import Projectb from "./projectb";
 import Generale from "./generale";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useTranslations } from "next-intl";
 
 export default function Layout() {
   const supabase = createClientComponentClient();
+  const t = useTranslations("Navbar");
 
   const [activeView, setActiveView] = useState("collaborators");
   const [selectedProject, setSelectedProject] = useState(null);
@@ -203,96 +205,103 @@ export default function Layout() {
 
   return (
     <div className="flex h-screen w-full">
-      <div className="w-fit bg-gray-800 text-white p-4 flex flex-col h-full">
-        <h2 className="text-sm font-bold mb-4">
-          Bienvenue, {user ? user.email : "Invité"}
-        </h2>
-
-        {showSuccess && (
-          <div className="bg-green-100 text-green-800 p-2 rounded mb-2">
-            {successMessage}
+      <aside className="w-64 bg-gray-900 shadow-lg flex flex-col border-r border-gray-800 h-full">
+        {/* User info */}
+        <div className="flex items-center gap-3 p-4 border-b border-gray-800">
+          <div className="w-10 h-10 rounded-full bg-blue-900 flex items-center justify-center text-blue-200 font-bold text-lg">
+            {user?.email ? user.email[0].toUpperCase() : "?"}
+          </div>
+          <div>
+            <div className="font-bold text-sm text-white truncate max-w-[120px]">{user ? user.email : t('guest')}</div>
+            <div className="text-xs text-gray-400">{isPromoteur ? 'Promoteur' : isCollaborator ? 'Collaborateur' : 'Utilisateur'}</div>
+          </div>
+        </div>
+        {/* Navigation */}
+        <nav className="flex-1 flex flex-col gap-2 p-2 overflow-y-auto">
+          {/* Section Générale */}
+          <div className="mb-2">
+            <div className="text-xs font-semibold uppercase text-gray-400 px-2 mb-1 tracking-widest">{t('general')}</div>
+            <button
+              onClick={() => {
+                setSelectedProject(null);
+                setActiveView("overview");
+              }}
+              className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg transition-all
+                ${activeView === "overview" ? "bg-gray-800 border-l-4 border-blue-200 text-blue-200" : "hover:bg-gray-800 text-gray-200 hover:text-blue-200"}
+              `}
+            >
+              <FaBuilding className="text-xl" />
+              <span className="text-sm font-medium flex-1 text-left">{t('overview')}</span>
+              <span className="text-xs text-gray-400">{projects.length}</span>
+            </button>
+          </div>
+          {/* Section Administration */}
+          {(!isCollaborator || isPromoteur) && (
+            <div className="mb-2">
+              <div className="text-xs font-semibold uppercase text-gray-400 px-2 mb-1 tracking-widest">{t('admin')}</div>
+              <button
+                onClick={() => {}}
+                className="flex items-center gap-3 w-full px-3 py-2 rounded-lg hover:bg-gray-800 text-gray-200 hover:text-blue-200"
+              >
+                <FaCreditCard className="text-xl" />
+                <span className="text-sm font-medium flex-1 text-left">{t('subscription')}</span>
+              </button>
+              <button
+                onClick={() => setActiveView("collaborators")}
+                className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg transition-all
+                  ${activeView === "collaborators" ? "bg-gray-800 border-l-4 border-blue-200 text-blue-200" : "hover:bg-gray-800 text-gray-200 hover:text-blue-200"}
+                `}
+              >
+                <FaUsers className="text-xl" />
+                <span className="text-sm font-medium flex-1 text-left">{t('projects_collaborators')}</span>
+              </button>
+              <button
+                onClick={() => setActiveView("privileges")}
+                className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg transition-all
+                  ${activeView === "privileges" ? "bg-gray-800 border-l-4 border-blue-500 text-blue-200" : "hover:bg-gray-800 text-gray-200 hover:text-blue-200"}
+                `}
+              >
+                <FaShieldAlt className="text-xl" />
+                <span className="text-sm font-medium flex-1 text-left">{t('privileges')}</span>
+              </button>
+            </div>
+          )}
+          {/* Section Projets */}
+          <div className="mb-2">
+            <div className="text-xs font-semibold uppercase text-gray-400 px-2 mb-1 tracking-widest">{t('projects')}</div>
+            <div className="flex flex-col gap-1">
+              {projects.map((project) => (
+                <button
+                  key={project.id}
+                  onClick={() => {
+                    setSelectedProject(project);
+                    setActiveView("appartements");
+                  }}
+                  className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg transition-all
+                    ${selectedProject?.id === project.id && activeView === "appartements" ? "bg-gray-800 border-l-4 border-blue-200 text-blue-200" : "hover:bg-gray-800 text-gray-200 hover:text-blue-200"}
+                  `}
+                >
+                  <FaBuilding
+                    className={`text-xl ${project.online === true || project.online === "TRUE" ? "text-green-400" : "text-gray-500"}`}
+                  />
+                  <span className="text-sm font-medium flex-1 text-left truncate">{project.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </nav>
+        {/* Add Project Button */}
+        {(!isCollaborator || isPromoteur) && (
+          <div className="p-4 border-t border-gray-800">
+            <button
+              onClick={() => setActiveView("collaborators")}
+              className="w-full bg-blue-200 hover:bg-blue-200 text-white font-semibold py-2 rounded-lg shadow transition-all"
+            >
+              + {t('add')} {t('project_name')}
+            </button>
           </div>
         )}
-
-        <ul className="flex-grow">
-          <li className="mb-4">
-            <h3 className="text-xs font-semibold uppercase mb-2">Générale</h3>
-            <ul>
-              <li className="mb-2 flex items-center">
-                <FaBuilding className="mr-2" />
-                <button
-                  onClick={() => {
-                    setSelectedProject(null);
-                    setActiveView("overview");
-                  }}
-                  className="text-left w-full"
-                >
-                  Vue d'ensemble
-                  <div className="text-xs text-gray-200 mt-1">
-                    {projects.length} projets
-                  </div>
-                </button>
-              </li>
-            </ul>
-          </li>
-
-          {(!isCollaborator || isPromoteur) && (
-            <li className="mb-4">
-              <h3 className="text-xs font-semibold uppercase mb-2">
-                Administration
-              </h3>
-              <ul>
-                <li className="mb-2 flex items-center">
-                  <FaCreditCard className="mr-2" />
-                  <a href="#" className="text-gray-200 hover:text-white">
-                    Abonnement
-                  </a>
-                </li>
-                <li className="mb-2 flex items-center">
-                  <FaUsers className="mr-2" />
-                  <button
-                    onClick={() => setActiveView("collaborators")}
-                    className="text-left w-full"
-                  >
-                    Projets / Collaborateurs
-                  </button>
-                </li>
-                <li className="mb-2 flex items-center">
-                  <FaShieldAlt className="mr-2" />
-                  <button
-                    onClick={() => setActiveView("privileges")}
-                    className="text-left w-full"
-                  >
-                    Privilèges
-                  </button>
-                </li>
-              </ul>
-            </li>
-          )}
-
-          {projects.map((project) => (
-            <li key={project.id} className="mb-2">
-              <button
-                onClick={() => {
-                  setSelectedProject(project);
-                  setActiveView("appartements");
-                }}
-                className="flex items-center hover:text-white text-left w-full"
-              >
-                <FaBuilding
-                  className={`mr-2 text-xl ${
-                    project.online === true || project.online === "TRUE"
-                      ? "text-green-500"
-                      : "text-gray-500"
-                  }`}
-                />
-                <span className="text-gray-200">{project.name}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-
+      </aside>
       <div className="w-full flex flex-col overflow-hidden">
         {selectedProject && !activeView && (
           <FullDetail project={selectedProject} />
@@ -314,6 +323,7 @@ export default function Layout() {
                   setNewLastName={setNewLastName}
                   addCollaborator={addCollaborator}
                   deleteCollaborator={deleteCollaborator}
+                  t={t}
                 />
               </div>
               <div className="w-1/2">
@@ -322,6 +332,7 @@ export default function Layout() {
                   onProjectAdded={(newProject) =>
                     setProjects([newProject, ...projects])
                   }
+                  t={t}
                 />
               </div>
             </div>
@@ -334,6 +345,7 @@ export default function Layout() {
               user={user}
               collaborators={collaborators}
               projects={projects}
+              t={t}
             />
           </div>
         )}

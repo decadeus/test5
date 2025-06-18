@@ -80,7 +80,7 @@ export default function Projectb({ project, onProjectUpdate }) {
 
   const handleNewSave = async () => {
     if (!newItem.ref || !newItem.bed || !newItem.floor || !newItem.surface) {
-      alert("Champs obligatoires manquants.");
+      alert(p('required_fields_missing'));
       return;
     }
     const newItemToSave = { ...newItem, ide: project.id };
@@ -137,13 +137,13 @@ export default function Projectb({ project, onProjectUpdate }) {
           <div className="mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
             <input
               type="text"
-              placeholder={`${p("Rechercher:")} Ref`}
+              placeholder={`${p('search')}: Ref`}
               value={searchRef}
               onChange={(e) => setSearchRef(e.target.value)}
               className="p-3 border border-black rounded-md bg-gray-100 placeholder-gray-500 text-gray-800 w-full max-w-xs"
             />
             <p className="text-gray-800 font-semibold text-base">
-              {p("NombreAppartement")}: {filteredList.length}
+              {p('number_apartments')}: {filteredList.length}
             </p>
           </div>
 
@@ -151,15 +151,15 @@ export default function Projectb({ project, onProjectUpdate }) {
             <table className="min-w-full table-auto text-sm border-collapse">
               <thead className="bg-gray-100 text-xs uppercase">
                 <tr>
-                  <th className={colClasses + " w-20"}>Ref</th>
-                  <th className={colClasses + " w-12"}>{p("Chambres")}</th>
-                  <th className={colClasses + " w-12"}>{p("Etages")}</th>
-                  <th className={colClasses + " w-16"}>{p("Surface")}</th>
-                  <th className={colClasses + " w-24"}>{p("Prix")}</th>
-                  <th className={colClasses + " w-16"}>{p("CacherLePrix")}</th>
-                  <th className={colClasses + " w-16"}>{p("jardin")}</th>
-                  <th className={colClasses + " w-32"}>{p("InfoSpecial")}</th>
-                  <th className={colClasses}>{p("Action")}</th>
+                  <th className={colClasses + " w-20"}>{p('ref')}</th>
+                  <th className={colClasses + " w-12"}>{p('rooms')}</th>
+                  <th className={colClasses + " w-12"}>{p('floors')}</th>
+                  <th className={colClasses + " w-16"}>{p('surface')}</th>
+                  <th className={colClasses + " w-24"}>{p('price')}</th>
+                  <th className={colClasses + " w-16"}>{p('hide_price')}</th>
+                  <th className={colClasses + " w-16"}>{p('garden')}</th>
+                  <th className={colClasses + " w-32"}>{p('special_info')}</th>
+                  <th className={colClasses}>{p('action')}</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">

@@ -4,10 +4,12 @@ import { createClient } from '@/utils/supabase/client';
 import { FaBuilding, FaUsers } from 'react-icons/fa';
 import { MdApartment } from 'react-icons/md';
 import { MdOnlinePrediction } from 'react-icons/md';
+import { useTranslations } from "next-intl";
 
 export default function Generale() {
   const supabase = createClient();
   const [projects, setProjects] = useState([]);
+  const t = useTranslations("Navbar");
 
   useEffect(() => {
     async function fetchProjects() {
@@ -42,13 +44,13 @@ export default function Generale() {
   return (
     <div className="p-6 overflow-y-auto">
       <h1 className="text-xl font-bold text-gray-700 mb-4">
-        Vue d'ensemble des projets
+        {t('overview_projects')}
       </h1>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <StatCard label="Projets" value={projects.length} />
-        <StatCard label="En ligne" value={projects.filter(p => p.online).length} />
-        <StatCard label="Collaborateurs" value={projects.reduce((sum, p) => sum + p.edit_count, 0)} />
-        <StatCard label="Appartements" value={projects.reduce((sum, p) => sum + p.apart_count, 0)} />
+        <StatCard label={t('projects')} value={projects.length} />
+        <StatCard label={t('online')} value={projects.filter(p => p.online).length} />
+        <StatCard label={t('collaborators')} value={projects.reduce((sum, p) => sum + p.edit_count, 0)} />
+        <StatCard label={t('apartments')} value={projects.reduce((sum, p) => sum + p.apart_count, 0)} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((project) => (
@@ -59,16 +61,16 @@ export default function Generale() {
             <p className="mb-1">
               <MdOnlinePrediction className="inline-block mr-2 text-gray-500" />
               <span className={project.online ? "text-green-600 font-semibold" : "text-gray-500"}>
-                {project.online ? "En ligne" : "Hors ligne"}
+                {project.online ? t('online') : t('offline')}
               </span>
             </p>
             <p className="mb-1">
               <FaUsers className="inline-block mr-2 text-gray-500" />
-              {project.edit_count} collaborateurs
+              {project.edit_count} {t('collaborators')}
             </p>
             <p className="mb-3">
               <MdApartment className="inline-block mr-2 text-gray-500" />
-              {project.apart_count} appartements
+              {project.apart_count} {t('apartments')}
             </p>
             <div className="bg-gray-100 h-32 rounded flex items-center justify-center text-gray-400 text-sm">
               [Graphique projet #{project.id}]

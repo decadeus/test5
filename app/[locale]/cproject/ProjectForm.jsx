@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-export default function ProjectManager() {
+export default function ProjectManager({ t }) {
   const supabase = createClientComponentClient();
 
   const [user, setUser] = useState(null);
@@ -148,7 +148,7 @@ export default function ProjectManager() {
   return (
     <Card className="flex-1 shadow-md border border-gray-200 max-w-2xl mx-auto">
       <CardContent className="space-y-6 p-6">
-        <h2 className="text-2xl font-semibold">Projets ({projects.length})</h2>
+        <h2 className="text-2xl font-semibold">{t('projects')} ({projects.length})</h2>
 
         {/* Liste des projets */}
         <div className="space-y-3">
@@ -163,7 +163,7 @@ export default function ProjectManager() {
                 size="sm"
                 onClick={() => deleteProject(project.id)}
               >
-                Supprimer
+                {t('delete')}
               </Button>
             </div>
           ))}
@@ -172,16 +172,16 @@ export default function ProjectManager() {
         {/* Ajout d'un projet */}
         <div className="flex flex-col gap-3 mt-4">
           <Input
-            placeholder="Nom du projet"
+            placeholder={t('project_name')}
             value={newProjectName}
             onChange={(e) => setNewProjectName(e.target.value)}
           />
           <Button onClick={addProject} disabled={loading}>
-            {loading ? "Ajout en cours..." : "Ajouter"}
+            {loading ? t('adding') : t('add')}
           </Button>
         </div>
 
-        {error && <p className="text-sm text-red-900">{error}</p>}
+        {error && <p className="text-sm text-red-900">{t('error')}</p>}
       </CardContent>
     </Card>
   );

@@ -5,7 +5,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export default function PermissionMatrix({ user, collaborators, projects }) {
+export default function PermissionMatrix({ user, collaborators, projects, t }) {
   const supabase = createClientComponentClient();
   const [accessMap, setAccessMap] = useState({});
 
@@ -73,7 +73,7 @@ export default function PermissionMatrix({ user, collaborators, projects }) {
   return (
 <Card className="shadow-md border border-gray-200">
   <CardContent className="p-6">
-    <h2 className="text-xl font-semibold mb-4">Droits d'accès des collaborateurs</h2>
+    <h2 className="text-xl font-semibold mb-4">{t('access_rights')}</h2>
 
     <div className="overflow-x-auto w-full">
   <table className="table-auto min-w-[1000px] border-collapse text-sm">
@@ -81,7 +81,7 @@ export default function PermissionMatrix({ user, collaborators, projects }) {
         <thead className="bg-gray-100">
           <tr>
             <th className="sticky left-0 bg-gray-100 z-10 text-left p-2 border-r w-48">
-              Collaborateur
+              {t('collaborator')}
             </th>
             {projects.map((project) => (
               <th

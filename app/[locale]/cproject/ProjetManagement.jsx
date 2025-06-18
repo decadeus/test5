@@ -13,13 +13,14 @@ export default function CollaboratorManager({
   newLastName,
   setNewLastName,
   addCollaborator,
-  deleteCollaborator
+  deleteCollaborator,
+  t
 }) {
   return (
     <Card className="flex-1 shadow-md border border-gray-200">
       <CardContent className="space-y-6 p-6">
         <h2 className="text-2xl font-semibold">
-          Collaborateurs ({collaborators.length}/{maxCollaborators})
+          {t('collaborators')} ({collaborators.length}/{maxCollaborators})
         </h2>
 
         <div className="space-y-3">
@@ -33,7 +34,7 @@ export default function CollaboratorManager({
                 size="sm"
                 onClick={() => deleteCollaborator(collab.id)}
               >
-                Supprimer
+                {t('delete')}
               </Button>
             </div>
           ))}
@@ -41,30 +42,30 @@ export default function CollaboratorManager({
 
         <div className="flex flex-col gap-3 mt-4">
           <Input
-            placeholder="Prénom"
+            placeholder={t('first_name')}
             value={newFirstName}
             onChange={(e) => setNewFirstName(e.target.value)}
             disabled={collaborators.length >= maxCollaborators}
           />
           <Input
-            placeholder="Nom"
+            placeholder={t('last_name')}
             value={newLastName}
             onChange={(e) => setNewLastName(e.target.value)}
             disabled={collaborators.length >= maxCollaborators}
           />
           <Input
-            placeholder="Email du collaborateur"
+            placeholder={t('collaborator_email')}
             value={newEmail}
             onChange={(e) => setNewEmail(e.target.value)}
             disabled={collaborators.length >= maxCollaborators}
           />
           <Button onClick={addCollaborator} disabled={collaborators.length >= maxCollaborators}>
-            Ajouter
+            {t('add')}
           </Button>
         </div>
 
         {collaborators.length >= maxCollaborators && (
-          <p className="text-sm text-red-500">Limite de collaborateurs atteinte.</p>
+          <p className="text-sm text-red-500">{t('limit_reached')}</p>
         )}
       </CardContent>
     </Card>
