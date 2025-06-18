@@ -49,12 +49,30 @@ export default function MainNavBar({ user }) {
     forceRerender(n => n + 1);
   }, [pathname]);
 
+  // Après la déclaration de const [profile, setProfile] = useState(null);
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (user) {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .single();
+        if (!error && data) setProfile(data);
+      }
+    };
+    fetchProfile();
+  }, [user]);
+
   // Liens principaux (adaptés à la navbar principale)
   const links = [
     { href: `/${currentLocale}/`, label: n("Accueil") },
     { href: `/${currentLocale}/DesignTest/List`, label: "Projects" },
-    { href: `/${currentLocale}/cproject`, label: n("VosProjets") },
-    { href: `/${currentLocale}/addproject`, label: n("Ajouter") },
+    ...(
+      profile && (profile.role === "promoteur" || profile.role === "collaborateur")
+        ? [{ href: `/${currentLocale}/cproject`, label: n("VosProjets") }]
+        : []
+    ),
   ];
 
   // Je remets la fonction handleLocaleChange pour le dropdown langue

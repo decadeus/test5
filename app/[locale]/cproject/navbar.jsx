@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, useRef, useEffect } from "react";
 import { FaCreditCard, FaUsers, FaShieldAlt, FaBuilding } from "react-icons/fa";
@@ -65,7 +65,8 @@ export default function Layout() {
         const { data: access } = await supabase
           .from("collaborator_project_access")
           .select("project(*)")
-          .eq("collaborator_id", collabRecord.id);
+          .eq("collaborator_id", collabRecord.id)
+          .eq("can_edit", true);
 
         setProjects(access?.map((a) => a.project) || []);
       } else {
@@ -119,9 +120,9 @@ export default function Layout() {
       let errorMsg = "";
       let successMsg = "";
       try {
-        const res = await fetch('/api/create-collaborator', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const res = await fetch("/api/create-collaborator", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             email: newEmail,
             full_name: `${newFirstName} ${newLastName}`,
@@ -143,14 +144,17 @@ export default function Layout() {
           successMsg =
             "Invitation envoyée ! Le collaborateur recevra un email avec un lien d'accès. Son compte sera créé lorsqu'il cliquera sur ce lien pour la première fois.";
         } else {
-          errorMsg = result.message || "Erreur lors de la création du collaborateur.";
+          errorMsg =
+            result.message || "Erreur lors de la création du collaborateur.";
         }
       } catch (err) {
         errorMsg = err.message;
       }
       setShowSuccess(true);
       if (errorMsg) {
-        setSuccessMessage("Erreur lors de la création du collaborateur : " + errorMsg);
+        setSuccessMessage(
+          "Erreur lors de la création du collaborateur : " + errorMsg
+        );
       } else {
         setSuccessMessage(successMsg);
       }
@@ -158,7 +162,10 @@ export default function Layout() {
   };
 
   const deleteCollaborator = async (id) => {
-    const { error } = await supabase.from("collaborators").delete().eq("id", id);
+    const { error } = await supabase
+      .from("collaborators")
+      .delete()
+      .eq("id", id);
     if (error) {
     } else {
       setCollaborators(collaborators.filter((c) => c.id !== id));
@@ -178,7 +185,8 @@ export default function Layout() {
         const { data: access } = await supabase
           .from("collaborator_project_access")
           .select("project(*)")
-          .eq("collaborator_id", collabRecord.id);
+          .eq("collaborator_id", collabRecord.id)
+          .eq("can_edit", true);
 
         setProjects(access?.map((a) => a.project) || []);
       }
@@ -220,7 +228,9 @@ export default function Layout() {
                   className="text-left w-full"
                 >
                   Vue d'ensemble
-                  <div className="text-xs text-gray-200 mt-1">{projects.length} projets</div>
+                  <div className="text-xs text-gray-200 mt-1">
+                    {projects.length} projets
+                  </div>
                 </button>
               </li>
             </ul>
@@ -228,7 +238,9 @@ export default function Layout() {
 
           {(!isCollaborator || isPromoteur) && (
             <li className="mb-4">
-              <h3 className="text-xs font-semibold uppercase mb-2">Administration</h3>
+              <h3 className="text-xs font-semibold uppercase mb-2">
+                Administration
+              </h3>
               <ul>
                 <li className="mb-2 flex items-center">
                   <FaCreditCard className="mr-2" />
@@ -238,13 +250,19 @@ export default function Layout() {
                 </li>
                 <li className="mb-2 flex items-center">
                   <FaUsers className="mr-2" />
-                  <button onClick={() => setActiveView("collaborators")} className="text-left w-full">
+                  <button
+                    onClick={() => setActiveView("collaborators")}
+                    className="text-left w-full"
+                  >
                     Projets / Collaborateurs
                   </button>
                 </li>
                 <li className="mb-2 flex items-center">
                   <FaShieldAlt className="mr-2" />
-                  <button onClick={() => setActiveView("privileges")} className="text-left w-full">
+                  <button
+                    onClick={() => setActiveView("privileges")}
+                    className="text-left w-full"
+                  >
                     Privilèges
                   </button>
                 </li>
@@ -252,32 +270,33 @@ export default function Layout() {
             </li>
           )}
 
-        {projects.map((project) => (
-  <li key={project.id} className="mb-2">
-    <button
-      onClick={() => {
-        setSelectedProject(project);
-        setActiveView("appartements");
-      }}
-      className="flex items-center hover:text-white text-left w-full"
-    >
-      <FaBuilding
-        className={`mr-2 text-xl ${
-          project.online === true || project.online === "TRUE"
-            ? "text-green-500"
-            : "text-gray-500"
-        }`}
-      />
-      <span className="text-gray-200">{project.name}</span>
-    </button>
-  </li>
-))}
-
+          {projects.map((project) => (
+            <li key={project.id} className="mb-2">
+              <button
+                onClick={() => {
+                  setSelectedProject(project);
+                  setActiveView("appartements");
+                }}
+                className="flex items-center hover:text-white text-left w-full"
+              >
+                <FaBuilding
+                  className={`mr-2 text-xl ${
+                    project.online === true || project.online === "TRUE"
+                      ? "text-green-500"
+                      : "text-gray-500"
+                  }`}
+                />
+                <span className="text-gray-200">{project.name}</span>
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
 
       <div className="w-full flex flex-col overflow-hidden">
-        {selectedProject && !activeView && <FullDetail project={selectedProject} />}
+        {selectedProject && !activeView && (
+          <FullDetail project={selectedProject} />
+        )}
 
         {activeView === "collaborators" && !isCollaborator && (
           <div className="p-6 overflow-y-auto">
