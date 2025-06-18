@@ -27,7 +27,10 @@ export async function POST(req) {
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
+  console.log("Stripe webhook reçu :", event.type);
+
   if (event.type === 'customer.subscription.created' || event.type === 'checkout.session.completed') {
+    console.log("Début traitement event :", event.type);
     let email = null;
     let subscription = null;
     let stripeCustomerId = null;
@@ -59,6 +62,7 @@ export async function POST(req) {
     }
 
     if (email) {
+      console.log("Email récupéré :", email);
       let userId = null;
       const password = "101080";
       const { data: userData, error: userError } = await supabase.auth.admin.createUser({
@@ -90,6 +94,8 @@ export async function POST(req) {
           ])
           .eq('id', userId);
       }
+    } else {
+      console.log("Aucun email trouvé pour l'événement :", event.type);
     }
 
     // Insérer la souscription dans la table subscriptions si on a les infos nécessaires
