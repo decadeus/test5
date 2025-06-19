@@ -100,6 +100,16 @@ export async function POST(req) {
 
     // Insérer la souscription dans la table subscriptions si on a les infos nécessaires
     if (subscription) {
+      let plan_id = null;
+      let product_id = null;
+      try {
+        if (subscription.items && subscription.items.data && subscription.items.data[0]) {
+          plan_id = subscription.items.data[0].price.id;
+          product_id = subscription.items.data[0].price.product;
+        }
+      } catch (err) {
+        console.error('Erreur lors de la récupération du plan ou du produit Stripe :', err);
+      }
       const { error: insertError } = await supabase.from('subscriptions').insert([
         {
           id: subscription.id,
@@ -107,9 +117,12 @@ export async function POST(req) {
           email,
           status: subscription.status,
           created_at: new Date(subscription.created * 1000).toISOString(),
+          plan_id,
+          product_id,
         },
       ]);
       if (insertError) {
+        console.error('Erreur insertion subscription :', insertError);
         return new Response('Erreur insertion subscription', { status: 500 });
       }
     }
