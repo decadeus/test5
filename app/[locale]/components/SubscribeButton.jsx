@@ -52,7 +52,7 @@ export default function SubscribeButton({ subtitle, paragraphe }) {
             title: t('mini.projects'),
             users: t('mini.users'),
             price: t('mini.price'),
-            priceId: "price_1ROPn5RQdIKmYv9arYhFrW3S",
+            priceId: "price_1RODn5RQdIKmYv9arYhFrW3S",
           },
           {
             main: t('medium.title'),
