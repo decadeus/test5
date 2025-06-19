@@ -35,6 +35,9 @@ export async function POST(req) {
     let subscription = null;
     let stripeCustomerId = null;
     let stripeSubscriptionId = null;
+    let isChangeSubscription = false;
+    let oldSubscriptionId = null;
+    let userId = null;
 
     if (event.type === 'customer.subscription.created') {
       subscription = event.data.object;
@@ -50,6 +53,14 @@ export async function POST(req) {
       const session = event.data.object;
       email = session.customer_email || session.customer_details?.email;
       stripeCustomerId = session.customer;
+      
+      // Vérifier si c'est un changement d'abonnement
+      if (session.subscription_data?.metadata?.change_subscription === 'true') {
+        isChangeSubscription = true;
+        oldSubscriptionId = session.subscription_data.metadata.old_subscription_id;
+        userId = session.subscription_data.metadata.user_id;
+      }
+      
       // Pour récupérer l'id de souscription Stripe, il faut parfois faire un appel supplémentaire :
       if (session.subscription) {
         stripeSubscriptionId = session.subscription;
@@ -63,21 +74,25 @@ export async function POST(req) {
 
     if (email) {
       console.log("Email récupéré :", email);
-      let userId = null;
-      const password = "101080";
-      const { data: userData, error: userError } = await supabase.auth.admin.createUser({
-        email,
-        password,
-        email_confirm: true,
-      });
-      if (userData?.user?.id) {
-        userId = userData.user.id;
-      } else if (userError) {
-        const { data: existingUser, error: fetchError } = await supabase.auth.admin.listUsers({ email });
-        if (existingUser?.users?.[0]?.id) {
-          userId = existingUser.users[0].id;
+      
+      if (!userId) {
+        let userData = null;
+        const password = "101080";
+        const { data: userDataResult, error: userError } = await supabase.auth.admin.createUser({
+          email,
+          password,
+          email_confirm: true,
+        });
+        if (userDataResult?.user?.id) {
+          userId = userDataResult.user.id;
+        } else if (userError) {
+          const { data: existingUser, error: fetchError } = await supabase.auth.admin.listUsers({ email });
+          if (existingUser?.users?.[0]?.id) {
+            userId = existingUser.users[0].id;
+          }
         }
       }
+      
       if (userId) {
         const { error: upsertError } = await supabase
           .from('profiles')
@@ -112,6 +127,28 @@ export async function POST(req) {
       }
       const status = subscription.status;
       const is_active = status === 'active' || status === 'trialing';
+      
+      // Si c'est un changement d'abonnement, désactiver l'ancien
+      if (isChangeSubscription && oldSubscriptionId) {
+        console.log("Désactivation de l'ancien abonnement :", oldSubscriptionId);
+        const { error: deactivateError } = await supabase
+          .from('subscriptions')
+          .update({ is_active: false })
+          .eq('id', oldSubscriptionId);
+        
+        if (deactivateError) {
+          console.error('Erreur désactivation ancien abonnement :', deactivateError);
+        }
+        
+        // Annuler l'abonnement Stripe
+        try {
+          await stripe.subscriptions.cancel(oldSubscriptionId);
+          console.log("Ancien abonnement Stripe annulé :", oldSubscriptionId);
+        } catch (err) {
+          console.error('Erreur annulation abonnement Stripe :', err);
+        }
+      }
+      
       const { error: insertError } = await supabase.from('subscriptions').insert([
         {
           id: subscription.id,
