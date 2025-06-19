@@ -110,12 +110,15 @@ export async function POST(req) {
       } catch (err) {
         console.error('Erreur lors de la récupération du plan ou du produit Stripe :', err);
       }
+      const status = subscription.status;
+      const is_active = status === 'active' || status === 'trialing';
       const { error: insertError } = await supabase.from('subscriptions').insert([
         {
           id: subscription.id,
           customer_id: subscription.customer,
           email,
-          status: subscription.status,
+          status,
+          is_active,
           created_at: new Date(subscription.created * 1000).toISOString(),
           plan_id,
           product_id,
