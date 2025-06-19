@@ -244,6 +244,7 @@ export default function Layout() {
                 className="flex items-center gap-3 w-full px-3 py-2 rounded-lg hover:bg-gray-800 text-gray-200 hover:text-blue-200"
               >
                 <FaCreditCard className="text-xl" />
+            
                 <span className="text-sm font-medium flex-1 text-left">{t('subscription')}</span>
               </button>
               <button
