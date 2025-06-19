@@ -86,7 +86,7 @@ export default function SubscribeButton({ subtitle, paragraphe }) {
             <button
               onClick={() => handleSubscribe(item.priceId)}
               disabled={loading}
-              className="w-full px-6 py-3 bg-green-700 text-white rounded-lg hover:bg-gray-800 transition text-xl"
+              className="w-full px-6 py-3 bg-green-800 text-white rounded-lg hover:bg-gray-800 transition text-xl"
             >
               {loading ? t('loading') : t('mini.button')}
             </button>
