@@ -131,5 +131,28 @@ export async function POST(req) {
     }
   }
 
+  if (
+    event.type === 'customer.subscription.updated' ||
+    event.type === 'customer.subscription.deleted'
+  ) {
+    const subscription = event.data.object;
+    const status = subscription.status;
+    const is_active = status === 'active' || status === 'trialing';
+
+    const { error: updateError } = await supabase
+      .from('subscriptions')
+      .update({
+        status,
+        is_active,
+        // tu peux aussi mettre à jour d'autres champs si besoin
+      })
+      .eq('id', subscription.id);
+
+    if (updateError) {
+      console.error('Erreur update subscription :', updateError);
+      return new Response('Erreur update subscription', { status: 500 });
+    }
+  }
+
   return new Response(JSON.stringify({ received: true }), { status: 200 });
 }
