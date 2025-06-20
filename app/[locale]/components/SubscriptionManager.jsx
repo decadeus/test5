@@ -346,7 +346,7 @@ export default function SubscriptionManager({ user }) {
               disabled={canceling}
               className="w-full bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 disabled:bg-red-300 transition"
             >
-              {canceling ? 'Annulation en cours...' : 'Annuler l'abonnement'}
+              {canceling ? "Annulation en cours..." : "Annuler l'abonnement"}
             </button>
           </div>
         )}
