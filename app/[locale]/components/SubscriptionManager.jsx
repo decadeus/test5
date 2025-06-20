@@ -30,6 +30,7 @@ export default function SubscriptionManager({ user }) {
   const [allSubscriptions, setAllSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [canceling, setCanceling] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -107,6 +108,35 @@ export default function SubscriptionManager({ user }) {
       alert('Erreur lors du changement d\'abonnement');
     } finally {
       setUpdating(false);
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    if (!activeSubscription) return;
+
+    if (window.confirm("Êtes-vous sûr de vouloir annuler votre abonnement ? Cette action est irréversible et prendra effet à la fin de votre période de facturation en cours.")) {
+      setCanceling(true);
+      try {
+        const response = await fetch('/api/cancel-subscription', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subscriptionId: activeSubscription.stripe_subscription_id }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Une erreur est survenue.');
+        }
+
+        alert('Votre demande d\'annulation a été prise en compte.');
+        fetchSubscription(); // Refresh the view
+      } catch (error) {
+        console.error('Erreur lors de l\'annulation:', error);
+        alert(`Erreur: ${error.message}`);
+      } finally {
+        setCanceling(false);
+      }
     }
   };
 
@@ -236,86 +266,96 @@ export default function SubscriptionManager({ user }) {
   }
 
   return (
-    <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
-      <h3 className="font-semibold text-gray-800 mb-3">Votre abonnement</h3>
+    <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm space-y-4">
+      <h3 className="font-semibold text-lg text-gray-800">Gérer votre abonnement</h3>
       
-      <div className="mb-4">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-gray-600">Plan actuel:</span>
-          <span className="font-medium text-gray-800">{getCurrentPlanName()}</span>
+      <div className="space-y-6">
+        <div>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-gray-600">Plan actuel:</span>
+            <span className="font-medium text-gray-800">{PLAN_NAMES[activeSubscription.plan_id] || 'Plan inconnu'}</span>
+          </div>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-gray-600">Statut:</span>
+            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+              activeSubscription.status === 'active' 
+                ? 'bg-green-100 text-green-800' 
+                : 'bg-yellow-100 text-yellow-800'
+            }`}>
+              {activeSubscription.status === 'active' ? 'Actif' : 'Annulation en attente'}
+            </span>
+          </div>
+          <div className="flex justify-between items-center text-gray-600">
+            <span>
+              {activeSubscription.cancel_at_period_end 
+                ? `Expire le:` 
+                : `Prochain renouvellement:`
+              }
+            </span>
+            <span className="font-medium text-gray-800">
+              {new Date(activeSubscription.current_period_end).toLocaleDateString('fr-FR')}
+            </span>
+          </div>
         </div>
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-gray-600">Prix:</span>
-          <span className="font-medium text-gray-800">{getCurrentPlanPrice()}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-gray-600">Statut:</span>
-          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-            activeSubscription.is_active 
-              ? 'bg-green-100 text-green-800' 
-              : 'bg-red-100 text-red-800'
-          }`}>
-            {activeSubscription.is_active ? 'Actif' : 'Inactif'}
-          </span>
-        </div>
-      </div>
 
-      <div className="border-t pt-4">
-        <h4 className="font-medium text-gray-800 mb-3">Changer d'abonnement</h4>
+        {activeSubscription.status === 'active' && !activeSubscription.cancel_at_period_end && (
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2">Changer de plan</h4>
+            <div className="flex gap-2">
+              {/* Upgrade/Downgrade buttons */}
+              {activeSubscription.plan_id !== PRICE_IDS.large && (
+                  <button 
+                      onClick={() => handleChangeSubscription(PRICE_IDS.large)} 
+                      disabled={updating}
+                      className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 disabled:bg-blue-300 transition"
+                  >
+                      {updating ? 'Mise à jour...' : 'Passer à Large (10 Projets)'}
+                  </button>
+              )}
+              {activeSubscription.plan_id !== PRICE_IDS.medium && activeSubscription.plan_id === PRICE_IDS.mini && (
+                  <button 
+                      onClick={() => handleChangeSubscription(PRICE_IDS.medium)} 
+                      disabled={updating}
+                      className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 disabled:bg-blue-300 transition"
+                  >
+                      {updating ? 'Mise à jour...' : 'Passer à Medium (5 Projets)'}
+                  </button>
+              )}
+              {activeSubscription.plan_id !== PRICE_IDS.mini && (
+                  <button 
+                      onClick={() => handleChangeSubscription(PRICE_IDS.mini)} 
+                      disabled={updating}
+                      className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 disabled:bg-gray-300 transition"
+                  >
+                      {updating ? 'Mise à jour...' : 'Passer à Mini (1 Projet)'}
+                  </button>
+              )}
+            </div>
+          </div>
+        )}
         
-        <div className="space-y-2">
-          {Object.entries(PLAN_NAMES).map(([priceId, planName]) => {
-            const isCurrentPlan = activeSubscription.plan_id === priceId;
-            const isUpgrade = (
-              (priceId === PRICE_IDS.medium && activeSubscription.plan_id === PRICE_IDS.mini) ||
-              (priceId === PRICE_IDS.large && activeSubscription.plan_id === PRICE_IDS.mini) ||
-              (priceId === PRICE_IDS.large && activeSubscription.plan_id === PRICE_IDS.medium)
-            );
-            const isDowngrade = (
-              (priceId === PRICE_IDS.mini && activeSubscription.plan_id === PRICE_IDS.medium) ||
-              (priceId === PRICE_IDS.mini && activeSubscription.plan_id === PRICE_IDS.large) ||
-              (priceId === PRICE_IDS.medium && activeSubscription.plan_id === PRICE_IDS.large)
-            );
-            
-            return (
-              <button
-                key={priceId}
-                onClick={() => !isCurrentPlan && handleChangeSubscription(priceId)}
-                disabled={isCurrentPlan || updating}
-                className={`w-full p-3 rounded-lg border text-left transition ${
-                  isCurrentPlan
-                    ? 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed'
-                    : isUpgrade
-                    ? 'bg-green-50 border-green-200 text-green-800 hover:bg-green-100'
-                    : isDowngrade
-                    ? 'bg-orange-50 border-orange-200 text-orange-800 hover:bg-orange-100'
-                    : 'bg-blue-50 border-blue-200 text-blue-800 hover:bg-blue-100'
-                }`}
-              >
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">{planName}</span>
-                  {isCurrentPlan && (
-                    <span className="text-xs bg-gray-200 px-2 py-1 rounded">Actuel</span>
-                  )}
-                  {isUpgrade && (
-                    <span className="text-xs bg-green-200 px-2 py-1 rounded">Upgrade</span>
-                  )}
-                  {isDowngrade && (
-                    <span className="text-xs bg-orange-200 px-2 py-1 rounded">Downgrade</span>
-                  )}
-                </div>
-                <div className="text-sm mt-1">
-                  {priceId === PRICE_IDS.mini ? '147 PLN/mois' : priceId === PRICE_IDS.medium ? '500 PLN/mois' : '750 PLN/mois'}
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        {updating && (
-          <div className="mt-3 text-center">
-            <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-green-600"></div>
-            <span className="ml-2 text-sm text-gray-600">Redirection vers le paiement...</span>
+        {/* Danger Zone */}
+        {activeSubscription.status === 'active' && !activeSubscription.cancel_at_period_end && (
+          <div className="mt-6 pt-4 border-t border-red-200">
+            <h4 className="font-semibold text-red-700 mb-2">Zone de danger</h4>
+            <p className="text-sm text-red-600 mb-3">
+              L'annulation prendra effet à la fin de votre période de facturation. Vous ne serez plus facturé.
+            </p>
+            <button
+              onClick={handleCancelSubscription}
+              disabled={canceling}
+              className="w-full bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 disabled:bg-red-300 transition"
+            >
+              {canceling ? 'Annulation en cours...' : 'Annuler l'abonnement'}
+            </button>
+          </div>
+        )}
+        
+        {activeSubscription.cancel_at_period_end && (
+          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-center">
+            <p className="text-sm text-yellow-800">
+              Votre abonnement est configuré pour être annulé le {new Date(activeSubscription.current_period_end).toLocaleDateString('fr-FR')}. Vous pouvez continuer à utiliser le service jusqu'à cette date.
+            </p>
           </div>
         )}
       </div>
