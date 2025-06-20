@@ -97,6 +97,8 @@ export default function MainNavBar({ user }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  console.log('USER PASSED TO NAVBAR:', user);
+
   return (
     <>
       {/* Version Mobile */}

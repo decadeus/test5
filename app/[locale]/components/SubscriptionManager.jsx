@@ -81,7 +81,7 @@ export default function SubscriptionManager({ user }) {
   };
 
   const handleChangeSubscription = async (newPriceId) => {
-    if (!user || !subscription) return;
+    if (!user || !activeSubscription) return;
 
     setUpdating(true);
     try {
@@ -143,8 +143,14 @@ export default function SubscriptionManager({ user }) {
     return subscription.plan_id === PRICE_IDS.mini ? '147 PLN/mois' : subscription.plan_id === PRICE_IDS.medium ? '500 PLN/mois' : '750 PLN/mois';
   };
 
-  // Utiliser l'abonnement direct s'il existe et est actif
-  const activeSubscription = subscription || (directSubscription && directSubscription.is_active ? directSubscription : null);
+  // Fallback : chercher un abonnement actif dans l'historique si aucun trouvé via le profil
+  const fallbackActive = allSubscriptions.find(
+    sub => sub.is_active && sub.status === 'active'
+  );
+
+  const activeSubscription = subscription
+    || (directSubscription && directSubscription.is_active ? directSubscription : null)
+    || fallbackActive;
 
   if (loading) {
     return (
