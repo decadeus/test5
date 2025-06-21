@@ -37,6 +37,8 @@ const LangSwitcher: React.FC = () => {
   const handleLanguageChange = (code: string) => {
     localStorage.setItem("selectedLanguage", code);
     setSelectedLanguage(code);
+    // Forcer le rechargement de la page pour mettre à jour les métadonnées
+    window.location.href = `/${code}/${urlSegments.join("/")}`;
   };
 
   // Trouver la langue actuelle en fonction de l'URL ou de `localStorage`

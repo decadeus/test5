@@ -20,6 +20,7 @@ export default function Projectb({ project, onProjectUpdate }) {
     price: "",
     garden: false,
     noprice: false,
+    rooftop: false,
     des: "",
   });
   const [searchRef, setSearchRef] = useState("");
@@ -95,6 +96,7 @@ export default function Projectb({ project, onProjectUpdate }) {
         price: "",
         garden: false,
         noprice: false,
+        rooftop: false,
         des: "",
       });
       fetchProjectData();
@@ -159,6 +161,7 @@ export default function Projectb({ project, onProjectUpdate }) {
                   <th className={colClasses + " w-24"}>{t('price')}</th>
                   <th className={colClasses + " w-16"}>{t('hide_price')}</th>
                   <th className={colClasses + " w-16"}>{t('garden')}</th>
+                  <th className={colClasses + " w-16"}>Rooftop</th>
                   <th className={colClasses + " w-32"}>{t('special_info')}</th>
                   <th className={colClasses}>{t('action')}</th>
                 </tr>
@@ -223,6 +226,13 @@ export default function Projectb({ project, onProjectUpdate }) {
                       type="checkbox"
                       checked={newItem.garden}
                       onChange={(e) => handleNewChange(e, "garden")}
+                    />
+                  </td>
+                  <td className={colClasses + " text-center"}>
+                    <input
+                      type="checkbox"
+                      checked={newItem.rooftop}
+                      onChange={(e) => handleNewChange(e, "rooftop")}
                     />
                   </td>
                   <td className={colClasses}>
@@ -346,6 +356,21 @@ export default function Projectb({ project, onProjectUpdate }) {
                           }
                         />
                       ) : item.garden ? (
+                        <PiFlowerTulipBold className="text-green-500 mx-auto" />
+                      ) : (
+                        <span className="text-gray-400">—</span>
+                      )}
+                    </td>
+                    <td className={colClasses + " text-center"}>
+                      {editingIndex === index ? (
+                        <input
+                          type="checkbox"
+                          checked={item.rooftop}
+                          onChange={(e) =>
+                            handleChange(e, index, "rooftop")
+                          }
+                        />
+                      ) : item.rooftop ? (
                         <PiFlowerTulipBold className="text-green-500 mx-auto" />
                       ) : (
                         <span className="text-gray-400">—</span>

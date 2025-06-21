@@ -22,6 +22,9 @@ export default function ApartmentDetail() {
   const [projectList, setProjectList] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: 'bed', direction: 'ascending' });
   const [equipments, setEquipments] = useState({});
+  const [projectDescription, setProjectDescription] = useState('');
+  const [communityAmenities, setCommunityAmenities] = useState('');
+  const [metaDescription, setMetaDescription] = useState('');
   const supabase = createClient();
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % images.length);
@@ -79,14 +82,14 @@ export default function ApartmentDetail() {
       setLoading(true);
       const { data, error } = await supabase
         .from("project")
-        .select("id, name, compagny, country, city, swim, cctv, entrance, bike, disabled, fitness, sauna, lift")
+        .select("id, name, compagny, country, city, swim, cctv, entrance, bike, disabled, fitness, sauna, lift, fulldescr, coam, des")
         .eq("id", parseInt(id))
         .single();
 
       if (!error && data) {
         setApartment({
           id: data.id,
-          title: data.name,
+          title: data.des || data.name,
           summary: data.compagny,
           price: data.country,
           city: data.city,
@@ -101,6 +104,13 @@ export default function ApartmentDetail() {
           sauna: data.sauna,
           lift: data.lift,
         });
+
+        // Stocker la description et les équipements communautaires
+        setProjectDescription(data.fulldescr || '');
+        setCommunityAmenities(data.coam || '');
+        
+        // Stocker la métadescription (utiliser name comme fallback si des est vide)
+        setMetaDescription(data.des || data.name || '');
 
         // Récupérer les projectlists
         const { data: projectlists, error: projectlistError } = await supabase
@@ -135,6 +145,84 @@ export default function ApartmentDetail() {
 
     if (id) fetchApartment();
   }, [id]);
+
+  // Mise à jour des métadonnées quand les données changent
+  useEffect(() => {
+    if (apartment && metaDescription) {
+      // Mise à jour du titre
+      document.title = `${apartment.title} - ${apartment.city}`;
+      
+      // Mise à jour de la métadescription
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', metaDescription);
+      } else {
+        // Créer la balise meta si elle n'existe pas
+        const newMetaDesc = document.createElement('meta');
+        newMetaDesc.name = 'description';
+        newMetaDesc.content = metaDescription;
+        document.head.appendChild(newMetaDesc);
+      }
+
+      // Mise à jour des balises Open Graph
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) {
+        ogTitle.setAttribute('content', apartment.title);
+      } else {
+        const newOgTitle = document.createElement('meta');
+        newOgTitle.setAttribute('property', 'og:title');
+        newOgTitle.setAttribute('content', apartment.title);
+        document.head.appendChild(newOgTitle);
+      }
+
+      const ogDesc = document.querySelector('meta[property="og:description"]');
+      if (ogDesc) {
+        ogDesc.setAttribute('content', metaDescription);
+      } else {
+        const newOgDesc = document.createElement('meta');
+        newOgDesc.setAttribute('property', 'og:description');
+        newOgDesc.setAttribute('content', metaDescription);
+        document.head.appendChild(newOgDesc);
+      }
+
+      const ogType = document.querySelector('meta[property="og:type"]');
+      if (!ogType) {
+        const newOgType = document.createElement('meta');
+        newOgType.setAttribute('property', 'og:type');
+        newOgType.setAttribute('content', 'website');
+        document.head.appendChild(newOgType);
+      }
+
+      // Mise à jour des balises Twitter
+      const twitterCard = document.querySelector('meta[name="twitter:card"]');
+      if (!twitterCard) {
+        const newTwitterCard = document.createElement('meta');
+        newTwitterCard.name = 'twitter:card';
+        newTwitterCard.content = 'summary';
+        document.head.appendChild(newTwitterCard);
+      }
+
+      const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+      if (twitterTitle) {
+        twitterTitle.setAttribute('content', apartment.title);
+      } else {
+        const newTwitterTitle = document.createElement('meta');
+        newTwitterTitle.name = 'twitter:title';
+        newTwitterTitle.content = apartment.title;
+        document.head.appendChild(newTwitterTitle);
+      }
+
+      const twitterDesc = document.querySelector('meta[name="twitter:description"]');
+      if (twitterDesc) {
+        twitterDesc.setAttribute('content', metaDescription);
+      } else {
+        const newTwitterDesc = document.createElement('meta');
+        newTwitterDesc.name = 'twitter:description';
+        newTwitterDesc.content = metaDescription;
+        document.head.appendChild(newTwitterDesc);
+      }
+    }
+  }, [apartment, metaDescription]);
 
   if (!apartment) return <p>Appartement introuvable</p>;
 
@@ -214,8 +302,24 @@ export default function ApartmentDetail() {
           </div>
         )}
 
-        <p className="mb-4 text-gray-700 mt-8">{apartment.summary}</p>
         
+        
+        {/* Description générale du projet */}
+        {projectDescription && (
+          <div className="mt-8 bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-md border border-green-100">
+            <h3 className="text-xl font-semibold mb-4 text-green-800">Description générale</h3>
+            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{projectDescription}</p>
+          </div>
+        )}
+
+        {/* Équipements communautaires */}
+        {communityAmenities && (
+          <div className="mt-6 bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-md border border-green-100">
+            <h3 className="text-xl font-semibold mb-4 text-green-800">Équipements communautaires</h3>
+            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{communityAmenities}</p>
+          </div>
+        )}
+
         {/* Tableau des appartements */}
         {projectList.length > 0 && (
           <div className="mt-8">
