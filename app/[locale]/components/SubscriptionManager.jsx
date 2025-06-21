@@ -114,19 +114,22 @@ export default function SubscriptionManager({ user }) {
   const handleCancelSubscription = async () => {
     if (!activeSubscription) return;
 
+    console.log('Tentative d\'annulation. Objet activeSubscription:', activeSubscription);
+
     if (window.confirm("Êtes-vous sûr de vouloir annuler votre abonnement ? Cette action est irréversible et prendra effet à la fin de votre période de facturation en cours.")) {
       setCanceling(true);
       try {
         const response = await fetch('/api/cancel-subscription', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ subscriptionId: activeSubscription.stripe_subscription_id }),
+          body: JSON.stringify({ subscriptionId: activeSubscription.id }),
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.error || 'Une erreur est survenue.');
+          const errorMessage = data.details ? JSON.stringify(data.details, null, 2) : (data.error || 'Une erreur est survenue.');
+          throw new Error(errorMessage);
         }
 
         alert('Votre demande d\'annulation a été prise en compte.');

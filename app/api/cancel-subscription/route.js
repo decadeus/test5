@@ -29,15 +29,15 @@ export async function POST(req) {
     const { error: updateError } = await supabase
       .from('subscriptions')
       .update({ 
-        status: 'canceled', // or 'pending_cancellation'
-        canceled_at: new Date(canceledSubscription.canceled_at * 1000).toISOString(),
-        cancel_at_period_end: true,
+        status: 'canceled',
+        // canceled_at: new Date(canceledSubscription.canceled_at * 1000).toISOString(),
+        // cancel_at_period_end: true,
       })
-      .eq('stripe_subscription_id', subscriptionId);
+      .eq('id', subscriptionId);
 
     if (updateError) {
       console.error('Error updating subscription in DB:', updateError);
-      return NextResponse.json({ error: 'Failed to update subscription in database', details: updateError.message }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to update subscription in database', details: updateError }, { status: 500 });
     }
 
     return NextResponse.json({ message: 'Subscription cancellation scheduled successfully', canceledSubscription });

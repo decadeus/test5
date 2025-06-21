@@ -1,36 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { createClient } from '@/utils/supabase/client';
 import { FaBuilding, FaUsers } from 'react-icons/fa';
-import { MdApartment } from 'react-icons/md';
-import { MdOnlinePrediction } from 'react-icons/md';
+import { MdApartment, MdOnlinePrediction } from 'react-icons/md';
 import { useTranslations } from "next-intl";
 
-export default function Generale() {
-  const supabase = createClient();
-  const [projects, setProjects] = useState([]);
+export default function Generale({ projects }) {
   const t = useTranslations("Navbar");
-
-  useEffect(() => {
-    async function fetchProjects() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      const { data, error } = await supabase
-        .from('project_edit_count')
-        .select('id, name, online, edit_count, apart_count')
-        .eq('user_id', user.id);
-
-      if (error) {
-        // console.error('Erreur de chargement des projets :', error);
-      } else {
-        setProjects(data);
-      }
-    }
-
-    fetchProjects();
-  }, [supabase]);
 
   function StatCard({ label, value }) {
     return (
@@ -49,8 +23,8 @@ export default function Generale() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard label={t('projects')} value={projects.length} />
         <StatCard label={t('online')} value={projects.filter(p => p.online).length} />
-        <StatCard label={t('collaborators')} value={projects.reduce((sum, p) => sum + p.edit_count, 0)} />
-        <StatCard label={t('apartments')} value={projects.reduce((sum, p) => sum + p.apart_count, 0)} />
+        <StatCard label={t('collaborators')} value={projects.reduce((sum, p) => sum + (p.editorCount || 0), 0)} />
+        <StatCard label={t('apartments')} value={projects.reduce((sum, p) => sum + (p.apart_count || 0), 0)} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((project) => (
@@ -66,11 +40,11 @@ export default function Generale() {
             </p>
             <p className="mb-1">
               <FaUsers className="inline-block mr-2 text-gray-500" />
-              {project.edit_count} {t('collaborators')}
+              {project.editorCount || 0} {t('collaborators')}
             </p>
             <p className="mb-3">
               <MdApartment className="inline-block mr-2 text-gray-500" />
-              {project.apart_count} {t('apartments')}
+              {project.apart_count || 0} {t('apartments')}
             </p>
             <div className="bg-gray-100 h-32 rounded flex items-center justify-center text-gray-400 text-sm">
               [Graphique projet #{project.id}]

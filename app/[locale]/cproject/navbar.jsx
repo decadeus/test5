@@ -79,18 +79,31 @@ export default function Layout() {
 
         if (projError) {
         } else {
+          const projectIds = (projs || []).map(p => p.id);
+
           // Ajout récupération des accès et enrichissement avec editorCount
           const { data: accessList } = await supabase
             .from("collaborator_project_access")
-            .select("project_id,can_edit");
-          if (!accessList) {
-          }
+            .select("project_id,can_edit")
+            .in("project_id", projectIds);
+            
+          const { data: apartmentsData } = await supabase
+            .from('projectlist')
+            .select('project_id')
+            .in('project_id', projectIds);
 
           const projectsWithEditors = (projs || []).map((p) => {
             const editors = accessList?.filter(
               (a) => a.project_id === p.id && a.can_edit
             );
-            return { ...p, editorCount: editors?.length ?? 0 };
+            const apartments = apartmentsData?.filter(
+              (a) => a.project_id === p.id
+            );
+            return { 
+                ...p, 
+                editorCount: editors?.length ?? 0,
+                apart_count: apartments?.length ?? 0
+            };
           });
 
           setProjects(projectsWithEditors);
@@ -240,14 +253,6 @@ export default function Layout() {
             <div className="mb-2">
               <div className="text-xs font-semibold uppercase text-gray-400 px-2 mb-1 tracking-widest">{t('admin')}</div>
               <button
-                onClick={() => {}}
-                className="flex items-center gap-3 w-full px-3 py-2 rounded-lg hover:bg-gray-800 text-gray-200 hover:text-blue-200"
-              >
-                <FaCreditCard className="text-xl" />
-            
-                <span className="text-sm font-medium flex-1 text-left">{t('subscription')}</span>
-              </button>
-              <button
                 onClick={() => setActiveView("collaborators")}
                 className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg transition-all
                   ${activeView === "collaborators" ? "bg-gray-800 border-l-4 border-blue-200 text-blue-200" : "hover:bg-gray-800 text-gray-200 hover:text-blue-200"}
@@ -291,17 +296,6 @@ export default function Layout() {
             </div>
           </div>
         </nav>
-        {/* Add Project Button */}
-        {(!isCollaborator || isPromoteur) && (
-          <div className="p-4 border-t border-gray-800">
-            <button
-              onClick={() => setActiveView("collaborators")}
-              className="w-full bg-blue-200 hover:bg-blue-200 text-white font-semibold py-2 rounded-lg shadow transition-all"
-            >
-              + {t('add')} {t('project_name')}
-            </button>
-          </div>
-        )}
       </aside>
       <div className="w-full flex flex-col overflow-hidden">
         {selectedProject && !activeView && (
