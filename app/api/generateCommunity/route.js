@@ -21,7 +21,7 @@ export async function POST(req) {
       listEquipement: "Liste des équipements",
       detail: "Informations supplémentaires",
       instruction: "Le texte doit être fluide, engageant et donner envie de découvrir le projet.",
-      limite: "Limite à environ 1000 caractères maximum.",
+      limite: "Limite à 800-900 caractères maximum.",
     };
 
     if (langue === "en") {
@@ -30,7 +30,7 @@ export async function POST(req) {
         listEquipement: "List of amenities",
         detail: "Additional important information",
         instruction: "The text must be fluent, engaging, and encourage discovery of the project.",
-        limite: "Limit to around 1000 characters maximum.",
+        limite: "Limit to 800-900 characters maximum.",
       };
     } else if (langue === "pl") {
       labels = {
@@ -38,7 +38,7 @@ export async function POST(req) {
         listEquipement: "Lista udogodnień",
         detail: "Dodatkowe ważne informacje",
         instruction: "Tekst powinien być płynny, angażujący i zachęcający do zapoznania się z projektem.",
-        limite: "Ogranicz do około 1000 znaków.",
+        limite: "Ogranicz do 800-900 znaków.",
       };
     }
 
@@ -55,6 +55,7 @@ ${labels.limite}
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
+      max_tokens: 600,
     });
 
     const generatedText = completion.choices[0]?.message?.content.trim() || "";

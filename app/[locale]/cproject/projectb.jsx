@@ -23,6 +23,7 @@ export default function Projectb({ project, onProjectUpdate }) {
     des: "",
   });
   const [searchRef, setSearchRef] = useState("");
+  const t = useTranslations("Navbar");
   const p = useTranslations("Projet");
 
   useEffect(() => {
@@ -137,13 +138,13 @@ export default function Projectb({ project, onProjectUpdate }) {
           <div className="mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
             <input
               type="text"
-              placeholder={`${p('search')}: Ref`}
+              placeholder={`${t('search')}: Ref`}
               value={searchRef}
               onChange={(e) => setSearchRef(e.target.value)}
               className="p-3 border border-black rounded-md bg-gray-100 placeholder-gray-500 text-gray-800 w-full max-w-xs"
             />
             <p className="text-gray-800 font-semibold text-base">
-              {p('number_apartments')}: {filteredList.length}
+              {t('number_apartments')}: {filteredList.length}
             </p>
           </div>
 
@@ -151,15 +152,15 @@ export default function Projectb({ project, onProjectUpdate }) {
             <table className="min-w-full table-auto text-sm border-collapse">
               <thead className="bg-gray-100 text-xs uppercase">
                 <tr>
-                  <th className={colClasses + " w-20"}>{p('ref')}</th>
-                  <th className={colClasses + " w-12"}>{p('rooms')}</th>
-                  <th className={colClasses + " w-12"}>{p('floors')}</th>
-                  <th className={colClasses + " w-16"}>{p('surface')}</th>
-                  <th className={colClasses + " w-24"}>{p('price')}</th>
-                  <th className={colClasses + " w-16"}>{p('hide_price')}</th>
-                  <th className={colClasses + " w-16"}>{p('garden')}</th>
-                  <th className={colClasses + " w-32"}>{p('special_info')}</th>
-                  <th className={colClasses}>{p('action')}</th>
+                  <th className={colClasses + " w-20"}>{t('ref')}</th>
+                  <th className={colClasses + " w-12"}>{t('rooms')}</th>
+                  <th className={colClasses + " w-12"}>{t('floors')}</th>
+                  <th className={colClasses + " w-16"}>{t('surface')}</th>
+                  <th className={colClasses + " w-24"}>{t('price')}</th>
+                  <th className={colClasses + " w-16"}>{t('hide_price')}</th>
+                  <th className={colClasses + " w-16"}>{t('garden')}</th>
+                  <th className={colClasses + " w-32"}>{t('special_info')}</th>
+                  <th className={colClasses}>{t('action')}</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">

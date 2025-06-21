@@ -7,73 +7,116 @@ const openai = new OpenAI({
 
 export async function POST(req) {
   try {
-    const { nomProjet, ville, types, atouts, style, publicCible, langue } = await req.json();
+    const body = await req.json();
+    const { type = "full", langue = "fr" } = body;
 
-    if (!nomProjet || !ville || !types || !atouts || !style || !publicCible) {
-      return NextResponse.json({ text: "Informations manquantes." }, { status: 400 });
-    }
+    let prompt;
+    let max_tokens;
 
-    // Génération dynamique des textes selon la langue
-    let labels = {
-      intro: "Rédige un texte professionnel pour présenter un projet immobilier :",
-      nom: "Nom",
-      localisation: "Localisation",
-      types: "Types d'appartements",
-      atouts: "Points forts",
-      style: "Style architectural",
-      cible: "Public cible",
-      instruction: "Le texte doit être fluide, engageant et donner envie de découvrir le projet.",
-      limite: "Limite à environ 800 caractères maximum.",
-    };
+    if (type === "short") {
+      const {
+        projectDescription,
+        communityAmenities,
+        nomProjet,
+        ville,
+      } = body;
 
-    if (langue === "en") {
-      labels = {
-        intro: "Write a professional text to present a real estate project:",
-        nom: "Name",
-        localisation: "Location",
-        types: "Types of apartments",
-        atouts: "Key features",
-        style: "Architectural style",
-        cible: "Target audience",
-        instruction: "The text must be fluent, engaging, and encourage discovery of the project.",
-        limite: "Limit to around 800 characters maximum.",
+      if (!projectDescription && !communityAmenities) {
+        return NextResponse.json(
+          { text: "La description du projet ou les équipements sont requis." },
+          { status: 400 }
+        );
+      }
+
+      const labels = {
+        fr: {
+          intro: `À partir du nom du projet, de sa ville, de sa description et de ses équipements, rédige une meta description SEO parfaite (entre 120 et 140 caractères). Elle doit être très accrocheuse, professionnelle et optimisée pour le référencement.`,
+          projet: "Description complète du projet",
+          amenities: "Équipements et avantages",
+          nom: "Nom du projet",
+          ville: "Ville",
+        },
+        // ... (autres langues si nécessaire)
       };
-    } else if (langue === "pl") {
-      labels = {
-        intro: "Napisz profesjonalny tekst przedstawiający projekt nieruchomości:",
-        nom: "Nazwa",
-        localisation: "Lokalizacja",
-        types: "Typy apartamentów",
-        atouts: "Główne atuty",
-        style: "Styl architektoniczny",
-        cible: "Docelowa grupa odbiorców",
-        instruction: "Tekst powinien być płynny, angażujący i zachęcający do odkrycia projektu.",
-        limite: "Ogranicz do około 800 znaków.",
-      };
-    }
 
-    const prompt = `
-${labels.intro}
-- ${labels.nom}: ${nomProjet}
-- ${labels.localisation}: ${ville}
-- ${labels.types}: ${types}
-- ${labels.atouts}: ${atouts}
-- ${labels.style}: ${style}
-- ${labels.cible}: ${publicCible}
-${labels.instruction}
-${labels.limite}
+      const currentLabels = labels[langue] || labels.fr;
+
+      prompt = `
+${currentLabels.intro}
+
+Contexte:
+- ${currentLabels.nom}: ${nomProjet}
+- ${currentLabels.ville}: ${ville}
+- ${currentLabels.projet}: ${projectDescription}
+- ${currentLabels.amenities}: ${communityAmenities}
 `;
+      max_tokens = 80;
+    } else {
+      // Logique existante pour la description complète
+      const { nomProjet, ville, types, atouts, style, publicCible } = body;
+      if (!nomProjet || !ville || !types || !atouts || !style || !publicCible) {
+        return NextResponse.json(
+          { text: "Informations manquantes pour la description complète." },
+          { status: 400 }
+        );
+      }
+
+      const config = {
+        full: {
+          instruction:
+            "Le texte doit être fluide, engageant et donner envie de découvrir le projet. Incluez les avantages de la résidence et son positionnement géographique.",
+          limite:
+            "Limite à 1200-1400 caractères maximum pour une description complète.",
+        },
+      };
+
+      const labels = {
+        fr: {
+          intro:
+            "Rédige un texte professionnel pour présenter un projet immobilier :",
+          nom: "Nom",
+          localisation: "Localisation",
+          types: "Types d'appartements",
+          atouts: "Points forts",
+          style: "Style architectural",
+          cible: "Public cible",
+          instruction: config.full.instruction,
+          limite: config.full.limite,
+        },
+        // ... (autres langues)
+      };
+
+      const currentLabels = labels[langue] || labels.fr;
+
+      prompt = `
+${currentLabels.intro}
+- ${currentLabels.nom}: ${nomProjet}
+- ${currentLabels.localisation}: ${ville}
+- ${currentLabels.types}: ${types}
+- ${currentLabels.atouts}: ${atouts}
+- ${currentLabels.style}: ${style}
+- ${currentLabels.cible}: ${publicCible}
+${currentLabels.instruction}
+${currentLabels.limite}
+`;
+      max_tokens = 1000;
+    }
 
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
+      max_tokens: max_tokens,
     });
 
     const generatedText = completion.choices[0]?.message?.content.trim() || "";
 
     return NextResponse.json({ text: generatedText });
   } catch (error) {
-    return NextResponse.json({ text: "Erreur lors de la génération." }, { status: 500 });
+    console.error("Erreur génération IA:", error);
+    return NextResponse.json(
+      { text: "Erreur lors de la génération." },
+      { status: 500 }
+    );
   }
 }
