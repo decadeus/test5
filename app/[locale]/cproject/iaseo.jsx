@@ -3,15 +3,17 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useLanguage } from "@/app/LanguageContext";
 
 export default function IASEO() {
+  const { language } = useLanguage();
   const [nomProjet, setNomProjet] = useState("");
   const [ville, setVille] = useState("");
   const [types, setTypes] = useState("");
   const [atouts, setAtouts] = useState("");
   const [style, setStyle] = useState("");
   const [publicCible, setPublicCible] = useState("");
-  const [langue, setLangue] = useState("fr");
+  const [langue, setLangue] = useState(language || "fr");
   const [resultat, setResultat] = useState("");
   const [chargement, setChargement] = useState(false);
   const f = useTranslations("Projet");
@@ -57,6 +59,8 @@ export default function IASEO() {
           <option value="fr">Français</option>
           <option value="en">Anglais</option>
           <option value="pl">Polonais</option>
+          <option value="de">Allemand</option>
+          <option value="ru">Russe</option>
         </select>
 
         <button

@@ -16,7 +16,8 @@ import {
   ModalFooter,
   Button,
 } from "@heroui/react";
-import { FiUpload } from "react-icons/fi";
+import { FiUpload, FiGlobe } from "react-icons/fi";
+import { useLanguage } from "@/app/LanguageContext";
 
 // Types et constantes
 const FEATURES = {
@@ -38,12 +39,51 @@ const STYLES = {
   textarea: "border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm",
 };
 
+// --- NOUVEAU : Composant pour les onglets de langue ---
+const LanguageTabs = ({ supportedLangs, activeLang, setActiveLang }) => (
+  <div className="flex items-center border-b border-gray-200 mb-4">
+    {supportedLangs.map((lang) => (
+      <button
+        key={lang.code}
+        onClick={() => setActiveLang(lang.code)}
+        className={`px-4 py-2 text-sm font-medium transition-colors ${
+          activeLang === lang.code
+            ? "border-b-2 border-blue-500 text-blue-600"
+            : "text-gray-500 hover:text-gray-700"
+        }`}
+      >
+        {lang.name}
+      </button>
+    ))}
+  </div>
+);
+
 // Hook personnalisé pour la gestion du projet
 function useProjectData(project, onProjectUpdate) {
   const supabase = createClient();
+  const { language } = useLanguage();
+  const [isTranslating, setIsTranslating] = useState(false);
+  const supportedLangs = [
+    { code: "fr", name: "Français" },
+    { code: "en", name: "English" },
+    { code: "pl", name: "Polski" },
+    { code: "de", name: "Deutsch" },
+    { code: "ru", name: "Русский" },
+  ];
+  const [activeLang, setActiveLang] = useState("fr"); // Langue par défaut
+
+  // Initialiser les champs traduisibles
+  const initialTranslatableFields = {
+    name: "", des: "", fulldescr: "", coam: "",
+  };
+  supportedLangs.forEach(lang => {
+    Object.keys(initialTranslatableFields).forEach(field => {
+        initialTranslatableFields[`${field}_${lang.code}`] = project?.[`${field}_${lang.code}`] || "";
+    });
+  });
+
   const [formData, setFormData] = useState({
     compagny: project?.compagny || "",
-    name: project?.name || "",
     country: project?.country || "",
     city: project?.city || "",
     lat: project?.lat || "",
@@ -51,10 +91,12 @@ function useProjectData(project, onProjectUpdate) {
     link: project?.link || "",
     cur: project?.cur || "",
     online: project?.online || false,
-    des: project?.des || "",
-    coam: project?.coam || "",
     aponsel: project?.aponsel || "",
+    ...initialTranslatableFields,
+    name: project?.name || "", // Fallback pour l'ancien champ
+    des: project?.des || "",
     fulldescr: project?.fulldescr || "",
+    coam: project?.coam || "",
   });
   
   const [features, setFeatures] = useState({
@@ -73,7 +115,6 @@ function useProjectData(project, onProjectUpdate) {
   useEffect(() => {
     setFormData({
       compagny: project?.compagny || "",
-      name: project?.name || "",
       country: project?.country || "",
       city: project?.city || "",
       lat: project?.lat || "",
@@ -81,10 +122,12 @@ function useProjectData(project, onProjectUpdate) {
       link: project?.link || "",
       cur: project?.cur || "",
       online: project?.online || false,
-      des: project?.des || "",
-      coam: project?.coam || "",
       aponsel: project?.aponsel || "",
+      ...initialTranslatableFields,
+      name: project?.name || "",
+      des: project?.des || "",
       fulldescr: project?.fulldescr || "",
+      coam: project?.coam || "",
     });
     
     setFeatures({
@@ -109,25 +152,83 @@ function useProjectData(project, onProjectUpdate) {
   const saveProject = async () => {
     setIsSaving(true);
 
-    // Validation des champs requis
-    const requiredFields = ['compagny', 'name', 'country', 'city', 'lat', 'lng'];
-    const missingFields = requiredFields.filter(field => !formData[field]);
-    
-    if (missingFields.length > 0) {
-      alert("Tous les champs sont requis.");
+    // Utilise la langue de la navbar comme source
+    const sourceLang = language || "fr";
+    const supportedLangs = ["fr", "en", "pl", "de", "ru"];
+    const sourceField = `des_${sourceLang}`;
+    const sourceText = formData[sourceField];
+    if (!sourceText || sourceText.trim() === "") {
+      alert(`Le champ description (${sourceLang}) est vide.`);
       setIsSaving(false);
       return;
     }
+    // Détecte les langues cibles manquantes
+    const targetLangs = supportedLangs.filter(l => l !== sourceLang && (!formData[`des_${l}`] || formData[`des_${l}`].trim() === ""));
+    let translations = {};
+    if (targetLangs.length > 0) {
+      try {
+        const langMap = { en: "EN", fr: "FR", pl: "PL", de: "DE", ru: "RU" };
+        const sourceLangDeepl = langMap[sourceLang] || sourceLang.toUpperCase();
+        const targetLangsDeepl = targetLangs.map(l => langMap[l] || l.toUpperCase());
+        const res = await fetch('/api/translate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: sourceText, sourceLang: sourceLangDeepl, targetLangs: targetLangsDeepl })
+        });
+        const data = await res.json();
+        console.log("Réponse DeepL (saveProject) :", data);
+        translations = data.translations || {};
+        // Mets à jour tous les champs traduits dans formData
+        setFormData(prev => {
+          const updated = { ...prev };
+          targetLangs.forEach(l => {
+            if (translations[l]) updated[`des_${l}`] = translations[l];
+          });
+          return updated;
+        });
+      } catch (e) {
+        console.error('Erreur lors de la traduction automatique :', e);
+        alert('Erreur lors de la traduction automatique');
+        setIsSaving(false);
+        return;
+      }
+    }
+    // Ici, poursuis la logique de sauvegarde Supabase avec tous les champs à jour
 
+    console.log("formData avant sauvegarde :", formData);
+    // Construire explicitement le payload pour éviter les erreurs
     const updates = {
-      ...formData,
+      compagny: formData.compagny,
+      country: formData.country,
+      city: formData.city,
+      lat: formData.lat,
+      lng: formData.lng,
+      link: formData.link,
+      cur: formData.cur,
+      online: formData.online,
+      aponsel: formData.aponsel,
       ...features,
     };
 
-    // Inclure pricetype seulement s'il est défini
-    if (project.pricetype) {
-      updates.pricetype = project.pricetype;
-    }
+    supportedLangs.forEach(lang => {
+      updates[`name_${lang}`] = formData[`name_${lang}`] || null;
+      updates[`des_${lang}`] = formData[`des_${lang}`] || null;
+      updates[`fulldescr_${lang}`] = formData[`fulldescr_${lang}`] || null;
+      updates[`coam_${lang}`] = formData[`coam_${lang}`] || null;
+    });
+
+    updates.name = formData.name_fr || formData.name;
+    updates.des = formData.des_fr || null;
+    updates.fulldescr = formData.fulldescr_fr || null;
+    updates.coam = formData.coam_fr || null;
+
+    // Filtre les clés invalides
+    Object.keys(updates).forEach(key => {
+      if (key.includes("undefined")) delete updates[key];
+    });
+
+    console.log("Payload envoyé à Supabase :", updates);
+    console.log("ID projet :", project.id);
 
     const { error } = await supabase
       .from("project")
@@ -135,9 +236,9 @@ function useProjectData(project, onProjectUpdate) {
       .eq("id", project.id);
 
     if (error) {
-      alert("Erreur lors de la sauvegarde.");
+      alert(`Erreur lors de la sauvegarde: ${error.message}`);
+      console.error(error);
     } else {
-      // Recharger le projet
       const { data: updatedProject, error: fetchError } = await supabase
         .from("project")
         .select("*")
@@ -153,6 +254,65 @@ function useProjectData(project, onProjectUpdate) {
     setIsSaving(false);
   };
 
+  const handleTranslate = async () => {
+    const sourceLang = activeLang;
+    const sourceTextName = formData[`name_${sourceLang}`];
+    const sourceTextDes = formData[`des_${sourceLang}`];
+    const sourceTextFullDescr = formData[`fulldescr_${sourceLang}`];
+    const sourceTextCoam = formData[`coam_${sourceLang}`];
+
+    if (!sourceTextName && !sourceTextDes && !sourceTextFullDescr && !sourceTextCoam) {
+        alert(`Veuillez remplir les champs de la langue source (${sourceLang}) avant de traduire.`);
+        return;
+    }
+
+    setIsTranslating(true);
+    const targetLangs = supportedLangs.filter(l => l && l !== sourceLang && typeof l === "string" && l.trim().length > 0);
+
+    if (targetLangs.length === 0) {
+      setIsTranslating(false);
+      return;
+    }
+
+    const textsToTranslate = {
+        name: sourceTextName,
+        des: sourceTextDes,
+        fulldescr: sourceTextFullDescr,
+        coam: sourceTextCoam,
+    };
+
+    const langMap = { 'EN-GB': 'en', 'EN-US': 'en', 'FR': 'fr', 'PL': 'pl', 'DE': 'de', 'RU': 'ru' };
+
+    for (const key in textsToTranslate) {
+        const text = textsToTranslate[key];
+        if (text) {
+            try {
+                const response = await fetch('/api/translate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text, sourceLang, targetLangs }),
+                });
+                const data = await response.json();
+                if (data.translations) {
+                    const newFormData = { ...formData };
+                    // Mapping explicite : chaque langue va dans la bonne colonne, sauf la langue source
+                    Object.entries(data.translations).forEach(([langCode, translatedText]) => {
+                        const mappedLang = langMap[langCode.toUpperCase()] || langCode.toLowerCase();
+                        if (mappedLang !== sourceLang.toLowerCase()) {
+                            newFormData[`${key}_${mappedLang}`] = translatedText;
+                        }
+                    });
+                    setFormData(newFormData);
+                }
+            } catch (error) {
+                console.error(`Erreur de traduction pour le champ ${key}:`, error);
+                alert(`La traduction du champ ${key} a échoué.`);
+            }
+        }
+    }
+    setIsTranslating(false);
+  };
+
   return {
     formData,
     features,
@@ -160,6 +320,11 @@ function useProjectData(project, onProjectUpdate) {
     updateFormData,
     toggleFeature,
     saveProject,
+    supportedLangs,
+    activeLang,
+    setActiveLang,
+    handleTranslate,
+    isTranslating,
   };
 }
 
@@ -428,388 +593,282 @@ function TextFieldWithAI({
   );
 }
 
-// Composant IA spécialisé pour les descriptions SEO courtes
-function IASEOShort({ projectData, onResult, onClose }) {
-  const [resultat, setResultat] = useState("");
-  const [chargement, setChargement] = useState(false);
-  const [langue, setLangue] = useState("fr");
-  const t = useTranslations("IAComponents");
+// --- MODALES IA RESTAURÉES AVEC SÉLECTEUR DE LANGUE ---
+
+function IASEOShort({ projectData, formData, onResult, onClose }) {
+  const { language } = useLanguage();
+  const t = useTranslations("Projet");
+  const [generatedText, setGeneratedText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleGenerate = async () => {
-    setChargement(true);
-
+    setIsLoading(true);
+    setError(null);
+    
     try {
-      const response = await fetch("/api/generateSEO", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('/api/generateSEO', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          projectDescription: projectData?.fulldescr || "",
-          communityAmenities: projectData?.coam || "",
-          nomProjet: projectData?.name || "",
-          ville: projectData?.city || "",
-          langue: langue,
-          type: "short",
+          nomProjet: projectData.name,
+          projectDescription: projectData.fulldescr,
+          communityAmenities: projectData.coam,
+          ville: projectData.city || "",
+          langue: language,
+          type: "short"
         }),
       });
-
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
-      setResultat(data.text);
-    } catch (error) {
-      console.error("Erreur génération IA:", error);
-      setResultat(t("generationError"));
+      setGeneratedText(data.text);
+      // Traduction automatique dans les autres langues
+      const supportedLangs = ["fr", "en", "pl", "de", "ru"];
+      const targetLangs = supportedLangs.filter(l => l && l !== language && typeof l === "string" && l.trim().length > 0);
+      if (data.text && targetLangs.length > 0) {
+        try {
+          const translateRes = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              text: data.text,
+              sourceLang: language,
+              targetLangs,
+            }),
+          });
+          const translateData = await translateRes.json();
+          if (translateData.translations && onResult) {
+            // Batch update: construit un objet avec toutes les traductions sauf la langue active
+            const fields = {
+              [`des_${language}`]: data.text,
+              ...Object.fromEntries(
+                Object.entries(translateData.translations)
+                  .filter(([lang]) => lang !== language)
+                  .map(([lang, translatedText]) => [
+                    `des_${lang}`, translatedText
+                  ])
+              )
+            };
+            onResult(fields);
+          }
+        } catch (err) {
+          setError("Erreur lors de la traduction automatique: " + err.message);
+        }
+      } else if (onResult) {
+        // Si pas de traduction, on met à jour juste la langue active
+        onResult({ [`des_${language}`]: data.text });
+      }
+    } catch (e) {
+      setError("Failed to generate text. " + e.message);
     } finally {
-      setChargement(false);
+      setIsLoading(false);
     }
   };
 
   const handleCopy = async () => {
-    if (resultat) {
-      try {
-        await navigator.clipboard.writeText(resultat);
-        alert(t("copySuccess"));
-      } catch (err) {
-        console.error("Erreur de copie :", err);
-      }
-    }
-  };
-
-  const handleApply = () => {
-    if (resultat && onResult) {
-      onResult(resultat);
-      onClose();
-    }
-  };
-
-  return (
-    <div className="flex flex-col gap-6 p-6 w-full max-w-2xl mx-auto">
-      <h2 className="text-2xl font-semibold text-center">{t("seoShortTitle")}</h2>
-
-      <div className="text-center text-gray-600">
-        <p>
-          {t.rich("seoShortDescription", {
-            bold: (chunks) => <span className="font-semibold">{chunks}</span>,
-          })}
-        </p>
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <select
-          className="border p-2 rounded"
-          value={langue}
-          onChange={(e) => setLangue(e.target.value)}
-        >
-          <option value="fr">{t("french")}</option>
-          <option value="en">{t("english")}</option>
-          <option value="de">{t("german")}</option>
-          <option value="pl">{t("polish")}</option>
-          <option value="ru">{t("russian")}</option>
-        </select>
-
-        <button
-          onClick={handleGenerate}
-          className="bg-blue-600 text-white rounded p-3 hover:bg-blue-700 transition mx-auto"
-          disabled={chargement}
-        >
-          {chargement ? t("generationInProgress") : t("launchGeneration")}
-        </button>
-      </div>
-
-      {resultat && (
-        <div className="bg-gray-100 p-4 rounded border flex flex-col gap-4">
-          <h3 className="text-lg font-semibold">
-            {t("generatedSEODescription")}
-          </h3>
-          <p className="text-gray-700 whitespace-pre-line">{resultat}</p>
-          <p className="text-sm text-gray-500">
-            {t("length", { count: resultat.length })}
-          </p>
-          <div className="flex gap-2">
-            <button
-              onClick={handleCopy}
-              className="bg-green-600 text-white rounded p-2 hover:bg-green-700 transition"
-            >
-              {t("copyText")}
-            </button>
-            <button
-              onClick={handleApply}
-              className="bg-blue-600 text-white rounded p-2 hover:bg-blue-700 transition"
-            >
-              {t("applyToField")}
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// Composant IA spécialisé pour les descriptions complètes
-function IASEOFull({ projectData, onResult, onClose }) {
-  const [motsCles, setMotsCles] = useState("");
-  const [langue, setLangue] = useState("fr");
-  const [resultat, setResultat] = useState("");
-  const [chargement, setChargement] = useState(false);
-  const t = useTranslations("IAComponents");
-
-  const handleGenerate = async () => {
-    setChargement(true);
-
+    if (!generatedText) return;
     try {
-      const response = await fetch("/api/generateSEO", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nomProjet: projectData?.name || "",
-          ville: projectData?.city || "",
-          types: "T1 à T5", // Valeur par défaut
-          atouts:
-            motsCles ||
-            Object.keys(projectData?.features || {})
-              .filter((k) => projectData.features[k])
-              .join(", "),
-          style: "moderne",
-          publicCible: "investisseurs et familles",
-          langue: langue,
-          type: "full", // Indique que c'est pour une description complète
-        }),
-      });
-
-      const data = await response.json();
-      setResultat(data.text);
-    } catch (error) {
-      console.error("Erreur génération IA:", error);
-      setResultat(t("generationError"));
-    } finally {
-      setChargement(false);
-    }
-  };
-
-  const handleCopy = async () => {
-    if (resultat) {
-      try {
-        await navigator.clipboard.writeText(resultat);
-        alert(t("copySuccess"));
-      } catch (err) {
-        console.error("Erreur de copie :", err);
-      }
+      await navigator.clipboard.writeText(generatedText);
+      alert("Copié !");
+    } catch (err) {
+      alert("Erreur de copie");
     }
   };
 
   const handleApply = () => {
-    if (resultat && onResult) {
-      onResult(resultat);
-      onClose();
+    console.log("handleApply SEO, language:", language);
+    if (onResult) {
+      onResult({ [`des_${language}`]: generatedText });
     }
+    onClose();
   };
 
   return (
-    <div className="flex flex-col gap-6 p-6 w-full max-w-2xl mx-auto">
-      <h2 className="text-2xl font-semibold text-center">
-        {t("seoFullTitle")}
-      </h2>
+    <div className="p-4 bg-white rounded-lg shadow-xl w-[600px]">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-xl font-bold text-gray-800">{t("IASEO")} ({language.toUpperCase()})</h3>
+      </div>
+      <p className="text-sm text-gray-600 mb-4">{t("IASEODescription")}</p>
+      
+      <Button onClick={handleGenerate} disabled={isLoading} className="w-full mb-4">
+        {isLoading ? "Génération..." : t("LaunchGeneration")}
+      </Button>
 
-      <div className="flex flex-col gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            {t("keywordsAndAdvantages")}
-          </label>
+      {generatedText && (
+        <div className="mt-4">
+          <h4 className="text-lg font-semibold mb-2">{t("GeneratedDescription")}</h4>
           <textarea
-            className="w-full border p-2 rounded"
-            rows="3"
-            placeholder={t("keywordsAdvantagesPlaceholder")}
-            value={motsCles}
-            onChange={(e) => setMotsCles(e.target.value)}
+            className="w-full border rounded p-2 text-gray-700 mb-2"
+            rows={4}
+            value={generatedText}
+            onChange={e => setGeneratedText(e.target.value)}
           />
-          <p className="text-xs text-gray-500 mt-1">
-            {t("keywordsAdvantagesHelp")}
-          </p>
-        </div>
-
-        <select
-          className="border p-2 rounded"
-          value={langue}
-          onChange={(e) => setLangue(e.target.value)}
-        >
-          <option value="fr">{t("french")}</option>
-          <option value="en">{t("english")}</option>
-          <option value="de">{t("german")}</option>
-          <option value="pl">{t("polish")}</option>
-          <option value="ru">{t("russian")}</option>
-        </select>
-
-        <button
-          onClick={handleGenerate}
-          className="bg-blue-600 text-white rounded p-3 hover:bg-blue-700 transition"
-          disabled={chargement}
-        >
-          {chargement
-            ? t("generationInProgress")
-            : t("generateFullDescription")}
-        </button>
-      </div>
-
-      {resultat && (
-        <div className="bg-gray-100 p-4 rounded border flex flex-col gap-4">
-          <h3 className="text-lg font-semibold">
-            {t("generatedFullDescription")}
-          </h3>
-          <p className="text-gray-700 whitespace-pre-line">{resultat}</p>
-          <p className="text-sm text-gray-500">
-            {t("length", { count: resultat.length })}
-          </p>
-          <div className="flex gap-2">
-            <button
-              onClick={handleCopy}
-              className="bg-green-600 text-white rounded p-2 hover:bg-green-700 transition"
-            >
-              {t("copyText")}
-            </button>
-            <button
-              onClick={handleApply}
-              className="bg-blue-600 text-white rounded p-2 hover:bg-blue-700 transition"
-            >
-              {t("applyToField")}
-            </button>
-          </div>
+          <Button onClick={handleCopy} className="w-full mt-4">
+            {t("CopyText")}
+          </Button>
+          <Button onClick={handleApply} className="w-full mt-4 bg-blue-600 text-white">
+            {t("ApplyToField")}
+          </Button>
         </div>
       )}
+      {error && <p className="text-red-500 mt-4">{error}</p>}
     </div>
   );
 }
 
-// Composant IA amélioré pour les équipements communautaires
-function IACOMMUNITYEnhanced({ projectData, onResult, onClose }) {
-  const [listEquipement, setListEquipement] = useState("");
-  const [detail, setDetail] = useState("");
-  const [langue, setLangue] = useState("fr");
-  const [resultat, setResultat] = useState("");
-  const [chargement, setChargement] = useState(false);
-  const t = useTranslations("IAComponents");
-  const p = useTranslations("Projet");
-
-  // Pré-remplir avec les équipements du projet
-  useEffect(() => {
-    if (projectData?.features) {
-      const equipements = Object.keys(projectData.features)
-        .filter((key) => projectData.features[key])
-        .map((key) => p(key));
-      setListEquipement(equipements.join(", "));
-    }
-  }, [projectData, p]);
+function IASEOFull({ projectData, formData, onResult, onClose }) {
+  const { language } = useLanguage();
+  const t = useTranslations("Projet");
+  const [generatedText, setGeneratedText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleGenerate = async () => {
-    setChargement(true);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/generateFull", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectName: projectData.name,
+          language: language,
+        }),
+      });
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const data = await response.json();
+      setGeneratedText(data.choices[0].message.content);
+    } catch (e) {
+      setError("Failed to generate text. " + e.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCopy = async () => {
+    if (!generatedText) return;
+    await navigator.clipboard.writeText(generatedText);
+    alert("Copié !");
+  };
+
+  const handleApply = () => {
+    onResult(generatedText, language);
+    onClose();
+  };
+
+  return (
+    <div className="p-4 bg-white rounded-lg shadow-xl w-[600px]">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-xl font-bold text-gray-800">{t("IADESCRIPTION")} ({language.toUpperCase()})</h3>
+      </div>
+      <p className="text-sm text-gray-600 mb-4">{t("IADESCRIPTIONDetail")}</p>
+      
+      <Button onClick={handleGenerate} disabled={isLoading} className="w-full mb-4">
+        {isLoading ? "Génération..." : t("LaunchGeneration")}
+      </Button>
+
+      {generatedText && (
+        <div className="mt-4">
+          <h4 className="text-lg font-semibold mb-2">{t("GeneratedDescription")}</h4>
+          <p className="text-gray-700 whitespace-pre-line">{generatedText}</p>
+          <Button onClick={handleCopy} className="w-full mt-4">
+            {t("CopyText")}
+          </Button>
+          <Button onClick={handleApply} className="w-full mt-4 bg-blue-600 text-white">
+            {t("ApplyToField")}
+          </Button>
+        </div>
+      )}
+      {error && <p className="text-red-500 mt-4">{error}</p>}
+    </div>
+  );
+}
+
+function IACOMMUNITYEnhanced({ projectData, formData, onResult, onClose }) {
+  const { language } = useLanguage();
+  const t = useTranslations("Projet");
+  const [generatedText, setGeneratedText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [communityType, setCommunityType] = useState("calm");
+
+  const handleGenerate = async () => {
+    setIsLoading(true);
+    setError(null);
 
     try {
       const response = await fetch("/api/generateCommunity", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ listEquipement, detail, langue }),
+        body: JSON.stringify({
+          projectName: projectData.name,
+          projectDescription: projectData.fulldescr,
+          communityType,
+          language: language,
+        }),
       });
-
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
-      setResultat(data.text);
-    } catch (error) {
-      console.error("Erreur génération IA:", error);
-      setResultat(t("generationError"));
+      setGeneratedText(data.choices[0].message.content);
+    } catch (e) {
+      setError("Failed to generate text. " + e.message);
     } finally {
-      setChargement(false);
+      setIsLoading(false);
     }
   };
 
   const handleCopy = async () => {
-    if (resultat) {
-      try {
-        await navigator.clipboard.writeText(resultat);
-        alert(t("copySuccess"));
-      } catch (err) {
-        console.error("Erreur de copie :", err);
-      }
-    }
+    await navigator.clipboard.writeText(generatedText);
+    alert("Copié !");
   };
 
   const handleApply = () => {
-    if (resultat && onResult) {
-      onResult(resultat);
-      onClose();
+    if (onResult && language) {
+      console.log("handleApply community, language:", language);
+      onResult(generatedText, language);
+    } else {
+      alert("Erreur : langue non définie pour la sauvegarde des équipements communautaires.");
     }
+    onClose();
   };
 
   return (
-    <div className="flex flex-col gap-6 p-6 w-full max-w-2xl mx-auto">
-      <h2 className="text-2xl font-semibold text-center">
-        {t("communityTitle")}
-      </h2>
-
-      <div className="flex flex-col gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            {t("internalAmenities")}
-          </label>
-          <input
-            className="w-full border p-2 rounded"
-            placeholder={t("internalAmenitiesPlaceholder")}
-            value={listEquipement}
-            onChange={(e) => setListEquipement(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            {t("additionalDetails")}
-          </label>
-          <textarea
-            className="w-full border p-2 rounded"
-            rows="2"
-            placeholder={t("additionalDetailsPlaceholder")}
-            value={detail}
-            onChange={(e) => setDetail(e.target.value)}
-          />
-        </div>
-
+    <div className="p-4 bg-white rounded-lg shadow-xl w-[600px]">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-xl font-bold text-gray-800">{t("GenerateAmenities")} ({language.toUpperCase()})</h3>
+      </div>
+      <p className="text-sm text-gray-600 mb-4">{t("CommunityDescription")}</p>
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-2">
+          {t("CommunityType")}
+        </label>
         <select
           className="border p-2 rounded"
-          value={langue}
-          onChange={(e) => setLangue(e.target.value)}
+          value={communityType}
+          onChange={(e) => setCommunityType(e.target.value)}
         >
-          <option value="fr">{t("french")}</option>
-          <option value="en">{t("english")}</option>
-          <option value="de">{t("german")}</option>
-          <option value="pl">{t("polish")}</option>
-          <option value="ru">{t("russian")}</option>
+          <option value="calm">{t("CommunityTypeCalm")}</option>
+          <option value="active">{t("CommunityTypeActive")}</option>
         </select>
-
-        <button
-          onClick={handleGenerate}
-          className="bg-blue-600 text-white rounded p-3 hover:bg-blue-700 transition"
-          disabled={chargement}
-        >
-          {chargement ? t("generationInProgress") : t("generateDescription")}
-        </button>
-
-        {resultat && (
-          <div className="bg-gray-100 p-4 rounded border flex flex-col gap-4">
-            <h3 className="text-lg font-semibold">{t("generatedDescription")}</h3>
-            <p className="text-gray-700 whitespace-pre-line">{resultat}</p>
-            <p className="text-sm text-gray-500">
-              {t("length", { count: resultat.length })}
-            </p>
-            <div className="flex gap-2">
-              <button
-                onClick={handleCopy}
-                className="bg-green-600 text-white rounded p-2 hover:bg-green-700 transition"
-              >
-                {t("copyText")}
-              </button>
-              <button
-                onClick={handleApply}
-                className="bg-blue-600 text-white rounded p-2 hover:bg-blue-700 transition"
-              >
-                {t("applyToField")}
-              </button>
-            </div>
-          </div>
-        )}
       </div>
+      <Button onClick={handleGenerate} disabled={isLoading} className="w-full mb-4">
+        {isLoading ? "Génération..." : t("LaunchGeneration")}
+      </Button>
+
+      {generatedText && (
+        <div className="mt-4">
+          <h4 className="text-lg font-semibold mb-2">{t("GeneratedDescription")}</h4>
+          <p className="text-gray-700 whitespace-pre-line">{generatedText}</p>
+          <Button onClick={handleCopy} className="w-full mt-4">
+            {t("CopyText")}
+          </Button>
+          <Button onClick={handleApply} className="w-full mt-4 bg-blue-600 text-white">
+            {t("ApplyToField")}
+          </Button>
+        </div>
+      )}
+      {error && <p className="text-red-500 mt-4">{error}</p>}
     </div>
   );
 }
@@ -841,11 +900,6 @@ function AIModal({ isOpen, onClose, children }) {
 
 // Composant principal
 export default function Maindata({ project, onProjectUpdate }) {
-  const f = useTranslations("Projet");
-  const [openModalCommunity, setOpenModalCommunity] = useState(false);
-  const [openModalSEO, setOpenModalSEO] = useState(false);
-  const [openModalFullDescription, setOpenModalFullDescription] = useState(false);
-
   const {
     formData,
     features,
@@ -853,21 +907,34 @@ export default function Maindata({ project, onProjectUpdate }) {
     updateFormData,
     toggleFeature,
     saveProject,
+    supportedLangs,
+    activeLang,
+    setActiveLang,
+    handleTranslate,
+    isTranslating,
   } = useProjectData(project, onProjectUpdate);
 
-  // Préparer les données du projet pour les générateurs IA
-  const projectDataForAI = {
-    ...formData,
-    features
-  };
+  const t = useTranslations("Projet");
+
+  const [activeAIModal, setActiveAIModal] = useState(null);
+  const handleOpenAI = (modal) => setActiveAIModal(modal);
+  const handleCloseAI = () => setActiveAIModal(null);
+
+  const { language } = useLanguage();
 
   return (
-    <div className="mt-10 p-6 bg-white rounded-lg flex flex-col justify-center items-center mb-8 text-black">
-      <ProjectImages projectId={project.id} />
-      
-      <h2 className="text-2xl font-semibold text-black mb-4">
-        {f("Modifier")}
-      </h2>
+    <div className="bg-white p-8 rounded-lg shadow-lg w-full mb-8 border border-gray-200">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-bold text-gray-800">{t("FormTitle")}</h2>
+        <Button onClick={saveProject} disabled={isSaving}>
+          {isSaving ? t("Saving") : t("Sauvegarder")}
+        </Button>
+      </div>
+
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Images du projet</h2>
+        <ProjectImages projectId={project.id} />
+      </div>
       
       <div className="flex gap-8">
         <div>
@@ -887,41 +954,41 @@ export default function Maindata({ project, onProjectUpdate }) {
 
           {/* Nom du projet */}
           <TextFieldWithAI
-            label={f("NomProjet")}
-            value={formData.name}
-            onChange={(value) => updateFormData('name', value)}
+            label={t("NomProjet")}
+            value={formData[`name_${activeLang}`] || ""}
+            onChange={(value) => updateFormData(`name_${activeLang}`, value)}
             maxLength={50}
             rows={1}
           />
 
           {/* Description complète */}
           <TextFieldWithAI
-            label={f("DesPro")}
-            value={formData.fulldescr}
-            onChange={(value) => updateFormData('fulldescr', value)}
-            maxLength={1500}
-            rows={13}
-            onAIGenerate={() => setOpenModalFullDescription(true)}
-            aiButtonText={f("GenerateFullDescription")}
-            projectData={projectDataForAI}
+            label={t("DesPro")}
+            value={formData[`fulldescr_${activeLang}`] || ""}
+            onChange={(value) => updateFormData(`fulldescr_${activeLang}`, value)}
+            rows={6}
+            onAIGenerate={() => handleOpenAI("seo_full")}
+            aiButtonText={t("IADESCRIPTION")}
+            projectData={project}
+            placeholder={t("FieldPlaceholder")}
           />
 
           {/* Équipements communautaires */}
           <div className="flex flex-col mt-8">
             <div className="w-full flex items-center justify-between">
               <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
-                {f("CommunityAmenities")}
+                {t("CommunityAmenities")}
               </h2>
               <Button
                 className="bg-transparent isIconOnly min-w-fit"
-                onClick={() => setOpenModalCommunity(true)}
+                onClick={() => handleOpenAI("community")}
               >
-                {f("GenerateAmenities")}
+                Générer
               </Button>
             </div>
             <TextFieldWithAI
-              value={formData.coam}
-              onChange={(value) => updateFormData('coam', value)}
+              value={formData[`coam_${activeLang}`] || ""}
+              onChange={(value) => updateFormData(`coam_${activeLang}`, value)}
               maxLength={1000}
               rows={9}
             />
@@ -929,60 +996,88 @@ export default function Maindata({ project, onProjectUpdate }) {
 
           {/* Description SEO */}
           <TextFieldWithAI
-            label={f("DesSEO")}
-            value={formData.des}
-            onChange={(value) => updateFormData('des', value)}
-            maxLength={150}
-            rows={2}
-            onAIGenerate={() => setOpenModalSEO(true)}
-            aiButtonText={f("GenerateSEO")}
-            projectData={projectDataForAI}
+            label={t("DesSEO")}
+            value={formData[`des_${activeLang}`] || ""}
+            onChange={(value) => updateFormData(`des_${activeLang}`, value)}
+            maxLength={160}
+            onAIGenerate={() => handleOpenAI("seo_short")}
+            aiButtonText={t("IASEO")}
+            projectData={project}
+            placeholder={t("DesSEOExplication")}
           />
         </div>
       </div>
 
-      {/* Bouton de sauvegarde */}
-      <button
-        onClick={saveProject}
-        className={`mt-8 brownbg text-black px-6 py-2 rounded-md ${
-          isSaving ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-        disabled={isSaving}
-      >
-        {isSaving ? f("Saving") : f("Sauvegarder")}
-      </button>
+      <Button onClick={saveProject} className="w-full mt-6" disabled={isSaving}>
+        {isSaving ? t("Saving") : t("Sauvegarder")}
+      </Button>
 
       {/* Modales IA améliorées */}
       <AIModal
-        isOpen={openModalCommunity}
-        onClose={() => setOpenModalCommunity(false)}
+        isOpen={activeAIModal === "community"}
+        onClose={handleCloseAI}
       >
-        <IACOMMUNITYEnhanced 
-          projectData={projectDataForAI}
-          onResult={(text) => updateFormData('coam', text)}
-          onClose={() => setOpenModalCommunity(false)}
+        <IACOMMUNITYEnhanced
+          projectData={project}
+          formData={formData}
+          onResult={(text, lang) => updateFormData(`coam_${lang}`, text)}
+          onClose={handleCloseAI}
         />
       </AIModal>
 
       <AIModal
-        isOpen={openModalSEO}
-        onClose={() => setOpenModalSEO(false)}
+        isOpen={activeAIModal === "seo_short"}
+        onClose={handleCloseAI}
       >
         <IASEOShort 
-          projectData={projectDataForAI}
-          onResult={(text) => updateFormData('des', text)}
-          onClose={() => setOpenModalSEO(false)}
+          projectData={project}
+          formData={formData}
+          onResult={async (fields) => {
+            // 1. Injection dans la bonne colonne (ex: des_pl)
+            Object.entries(fields).forEach(([field, value]) => {
+              if (!field.includes("undefined")) updateFormData(field, value);
+            });
+            // 2. Traduction automatique dans les autres langues vides
+            const mainLang = Object.keys(fields)[0].split('_')[1];
+            const mainText = Object.values(fields)[0];
+            const supportedLangs = ["fr", "en", "pl", "de", "ru"];
+            const targetLangs = supportedLangs.filter(l => l !== mainLang && (!formData[`des_${l}`] || formData[`des_${l}`].trim() === ""));
+            if (mainText && targetLangs.length > 0) {
+              const langMap = { en: "EN", fr: "FR", pl: "PL", de: "DE", ru: "RU" };
+              const sourceLangDeepl = langMap[mainLang] || mainLang.toUpperCase();
+              const targetLangsDeepl = targetLangs.map(l => langMap[l] || l.toUpperCase());
+              try {
+                const res = await fetch('/api/translate', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ text: mainText, sourceLang: sourceLangDeepl, targetLangs: targetLangsDeepl })
+                });
+                const data = await res.json();
+                if (data.translations) {
+                  Object.entries(data.translations).forEach(([lang, translatedText]) => {
+                    if (lang !== mainLang) {
+                      updateFormData(`des_${lang}`, translatedText);
+                    }
+                  });
+                }
+              } catch (e) {
+                alert('Erreur lors de la traduction automatique après génération IA');
+              }
+            }
+          }}
+          onClose={handleCloseAI}
         />
       </AIModal>
 
       <AIModal
-        isOpen={openModalFullDescription}
-        onClose={() => setOpenModalFullDescription(false)}
+        isOpen={activeAIModal === "seo_full"}
+        onClose={handleCloseAI}
       >
         <IASEOFull 
-          projectData={projectDataForAI}
-          onResult={(text) => updateFormData('fulldescr', text)}
-          onClose={() => setOpenModalFullDescription(false)}
+          projectData={project}
+          formData={formData}
+          onResult={(text, lang) => updateFormData(`fulldescr_${lang}`, text)}
+          onClose={handleCloseAI}
         />
       </AIModal>
     </div>
@@ -1045,6 +1140,7 @@ export function ProjectImages({ projectId, className = "" }) {
     const ext = file.name.split('.').pop();
     const prefix = `image${slotNum}-`;
     const name = `${prefix}${Date.now()}.${ext}`;
+    
 
     // 1. Supprimer les anciennes images du slot
     const { data: existingFiles, error: listError } = await supabase

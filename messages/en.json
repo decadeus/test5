@@ -102,7 +102,16 @@
         "GenerateSEO": "🤖 Generate SEO",
         "GenerateWithAI": "🤖 Generate with AI",
         "FieldPlaceholder": "Fill this field...",
-        "Characters": "characters"
+        "Characters": "characters",
+        "Save": "Save",
+        "Saving": "Saving...",
+        "FormTitle": "Project Details",
+        "Rooms": "Rooms",
+        "IASEODescription": "Click the button to generate an SEO-optimized description for this project.",
+        "LaunchGeneration": "Launch generation",
+        "GeneratedDescription": "Generated description",
+        "CopyText": "Copy text",
+        "ApplyToField": "Apply to field"
     },
     "SEO": {
         "Title": "Real estate project directory",

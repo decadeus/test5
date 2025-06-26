@@ -70,6 +70,8 @@
         "child": "Espace enfants",
         "fitness": "Salle de sport",
         "Sauvegarder": "Enregistrer",
+        "Saving": "Sauvegarde...",
+        "FormTitle": "Détails du Projet",
         "Chambres": "Chambres",
         "Etages": "Étages",
         "Surface": "Surface",
@@ -102,7 +104,12 @@
         "GenerateSEO": "🤖 Générer SEO",
         "GenerateWithAI": "🤖 Générer avec l'IA",
         "FieldPlaceholder": "Remplissez ce champ...",
-        "Characters": "caractères"
+        "Characters": "caractères",
+        "IASEODescription": "Clique sur le bouton pour générer une description SEO optimisée pour ce projet.",
+        "LaunchGeneration": "Lancer la génération",
+        "GeneratedDescription": "Description générée",
+        "CopyText": "Copier le texte",
+        "ApplyToField": "Appliquer au champ"
     },
     "SEO": {
         "Title": "Annuaire de projets immobiliers",

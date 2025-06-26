@@ -102,7 +102,16 @@
         "GenerateSEO": "🤖 Generuj SEO",
         "GenerateWithAI": "🤖 Generuj z AI",
         "FieldPlaceholder": "Wypełnij to pole...",
-        "Characters": "znaków"
+        "Characters": "znaków",
+        "Zapisz": "Zapisz",
+        "Saving": "Zapisywanie...",
+        "FormTitle": "Szczegóły projektu",
+        "Pokoje": "Pokoje",
+        "IASEODescription": "Kliknij przycisk, aby wygenerować zoptymalizowany pod SEO opis tego projektu.",
+        "LaunchGeneration": "Rozpocznij generowanie",
+        "GeneratedDescription": "Wygenerowany opis",
+        "CopyText": "Kopiuj tekst",
+        "ApplyToField": "Zastosuj do pola"
     },
     "SEO": {
         "Title": "Katalog projektów nieruchomości",

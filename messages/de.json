@@ -70,6 +70,7 @@
         "child": "Kinderbereich",
         "fitness": "Fitnessraum",
         "Sauvegarder": "Speichern",
+        "Saving": "Speichern...",
         "Chambres": "Schlafzimmer",
         "Etages": "Stockwerke",
         "Surface": "Oberfläche",
@@ -103,7 +104,14 @@
         "GenerateSEO": "🤖 SEO generieren",
         "GenerateWithAI": "🤖 Mit KI generieren",
         "FieldPlaceholder": "Füllen Sie dieses Feld aus...",
-        "Characters": "Zeichen"
+        "Characters": "Zeichen",
+        "FormTitle": "Projektdetails",
+        "Zimmer": "Zimmer",
+        "IASEODescription": "Klicken Sie auf die Schaltfläche, um eine SEO-optimierte Beschreibung für dieses Projekt zu generieren.",
+        "LaunchGeneration": "Generierung starten",
+        "GeneratedDescription": "Generierte Beschreibung",
+        "CopyText": "Text kopieren",
+        "ApplyToField": "Im Feld anwenden"
     },
     "SEO": {
         "Title": "Verzeichnis von Immobilienprojekten",

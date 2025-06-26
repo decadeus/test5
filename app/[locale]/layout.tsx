@@ -12,6 +12,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import {getTranslations} from 'next-intl/server';
 import ConditionalDownloadButtons from "./components/ConditionalDownloadButtons";
+import { LanguageProvider } from "@/app/LanguageContext";
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -76,8 +77,8 @@ export default async function RootLayout({
       </Head>
       <body>
         <NextIntlClientProvider messages={messages}>
-        <Providers>
-          {/* Wrap your application in the LanguageProvider */}
+        <LanguageProvider>
+          <Providers>
             <MainNavBar user={user} />
             <main className="min-h-screen w-full flex flex-col items-center text-black ">
               {children}
@@ -86,8 +87,8 @@ export default async function RootLayout({
             </main>
             <Foot />
             <ConditionalDownloadButtons />
-          
-        </Providers>
+          </Providers>
+        </LanguageProvider>
         </NextIntlClientProvider>
       </body>
       <GoogleAnalytics gaId="G-ML122J0N9C" />

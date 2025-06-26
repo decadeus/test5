@@ -14,7 +14,7 @@ function formatPrice(price) {
 }
 
 export default function ApartmentDetail() {
-  const { id } = useParams();
+  const { id, locale } = useParams();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [apartment, setApartment] = useState(null);
   const [images, setImages] = useState([]);
@@ -24,7 +24,6 @@ export default function ApartmentDetail() {
   const [equipments, setEquipments] = useState({});
   const [projectDescription, setProjectDescription] = useState('');
   const [communityAmenities, setCommunityAmenities] = useState('');
-  const [metaDescription, setMetaDescription] = useState('');
   const supabase = createClient();
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % images.length);
@@ -80,16 +79,34 @@ export default function ApartmentDetail() {
   useEffect(() => {
     const fetchApartment = async () => {
       setLoading(true);
+
+      // Définir les colonnes à récupérer en fonction de la locale
+      const lang = locale || 'fr';
+      const nameCol = `name_${lang}`;
+      const desCol = `des_${lang}`;
+      const fulldescrCol = `fulldescr_${lang}`;
+      const coamCol = `coam_${lang}`;
+
       const { data, error } = await supabase
         .from("project")
-        .select("id, name, compagny, country, city, swim, cctv, entrance, bike, disabled, fitness, sauna, lift, fulldescr, coam, des")
+        .select(`
+          id, name, compagny, country, city, des, fulldescr, coam,
+          swim, cctv, entrance, bike, disabled, fitness, sauna, lift,
+          ${nameCol}, ${desCol}, ${fulldescrCol}, ${coamCol}
+        `)
         .eq("id", parseInt(id))
         .single();
 
       if (!error && data) {
+        // Logique de fallback pour l'affichage
+        const title = data[nameCol] || data.name;
+        const description = data[desCol] || data.des;
+        const fullDescription = data[fulldescrCol] || data.fulldescr;
+        const communityDesc = data[coamCol] || data.coam;
+
         setApartment({
           id: data.id,
-          title: data.des || data.name,
+          title: title, // Utiliser le titre traduit
           summary: data.compagny,
           price: data.country,
           city: data.city,
@@ -105,13 +122,10 @@ export default function ApartmentDetail() {
           lift: data.lift,
         });
 
-        // Stocker la description et les équipements communautaires
-        setProjectDescription(data.fulldescr || '');
-        setCommunityAmenities(data.coam || '');
+        // Utiliser les descriptions traduites
+        setProjectDescription(fullDescription || '');
+        setCommunityAmenities(communityDesc || '');
         
-        // Stocker la métadescription (utiliser name comme fallback si des est vide)
-        setMetaDescription(data.des || data.name || '');
-
         // Récupérer les projectlists
         const { data: projectlists, error: projectlistError } = await supabase
           .from("projectlist")
@@ -144,85 +158,7 @@ export default function ApartmentDetail() {
     };
 
     if (id) fetchApartment();
-  }, [id]);
-
-  // Mise à jour des métadonnées quand les données changent
-  useEffect(() => {
-    if (apartment && metaDescription) {
-      // Mise à jour du titre
-      document.title = `${apartment.title} - ${apartment.city}`;
-      
-      // Mise à jour de la métadescription
-      const metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) {
-        metaDesc.setAttribute('content', metaDescription);
-      } else {
-        // Créer la balise meta si elle n'existe pas
-        const newMetaDesc = document.createElement('meta');
-        newMetaDesc.name = 'description';
-        newMetaDesc.content = metaDescription;
-        document.head.appendChild(newMetaDesc);
-      }
-
-      // Mise à jour des balises Open Graph
-      const ogTitle = document.querySelector('meta[property="og:title"]');
-      if (ogTitle) {
-        ogTitle.setAttribute('content', apartment.title);
-      } else {
-        const newOgTitle = document.createElement('meta');
-        newOgTitle.setAttribute('property', 'og:title');
-        newOgTitle.setAttribute('content', apartment.title);
-        document.head.appendChild(newOgTitle);
-      }
-
-      const ogDesc = document.querySelector('meta[property="og:description"]');
-      if (ogDesc) {
-        ogDesc.setAttribute('content', metaDescription);
-      } else {
-        const newOgDesc = document.createElement('meta');
-        newOgDesc.setAttribute('property', 'og:description');
-        newOgDesc.setAttribute('content', metaDescription);
-        document.head.appendChild(newOgDesc);
-      }
-
-      const ogType = document.querySelector('meta[property="og:type"]');
-      if (!ogType) {
-        const newOgType = document.createElement('meta');
-        newOgType.setAttribute('property', 'og:type');
-        newOgType.setAttribute('content', 'website');
-        document.head.appendChild(newOgType);
-      }
-
-      // Mise à jour des balises Twitter
-      const twitterCard = document.querySelector('meta[name="twitter:card"]');
-      if (!twitterCard) {
-        const newTwitterCard = document.createElement('meta');
-        newTwitterCard.name = 'twitter:card';
-        newTwitterCard.content = 'summary';
-        document.head.appendChild(newTwitterCard);
-      }
-
-      const twitterTitle = document.querySelector('meta[name="twitter:title"]');
-      if (twitterTitle) {
-        twitterTitle.setAttribute('content', apartment.title);
-      } else {
-        const newTwitterTitle = document.createElement('meta');
-        newTwitterTitle.name = 'twitter:title';
-        newTwitterTitle.content = apartment.title;
-        document.head.appendChild(newTwitterTitle);
-      }
-
-      const twitterDesc = document.querySelector('meta[name="twitter:description"]');
-      if (twitterDesc) {
-        twitterDesc.setAttribute('content', metaDescription);
-      } else {
-        const newTwitterDesc = document.createElement('meta');
-        newTwitterDesc.name = 'twitter:description';
-        newTwitterDesc.content = metaDescription;
-        document.head.appendChild(newTwitterDesc);
-      }
-    }
-  }, [apartment, metaDescription]);
+  }, [id, locale]);
 
   if (!apartment) return <p>Appartement introuvable</p>;
 
