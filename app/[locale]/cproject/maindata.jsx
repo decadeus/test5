@@ -570,10 +570,11 @@ function TextFieldWithAI({
         </h2>
         {onAIGenerate && (
           <Button
-            className="bg-transparent isIconOnly min-w-fit"
+            className="flex items-center gap-2 bg-transparent min-w-fit"
             onClick={onAIGenerate}
           >
-            {aiButtonText}
+            <span role="img" aria-label="ia">🤖</span>
+            {f("GenerateWithAI")}
           </Button>
         )}
       </div>
@@ -683,15 +684,21 @@ function IASEOShort({ projectData, formData, onResult, onClose }) {
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-xl w-[600px]">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold text-gray-800">{t("IASEO")} ({language.toUpperCase()})</h3>
-      </div>
-      <p className="text-sm text-gray-600 mb-4">{t("IASEODescription")}</p>
+    <div className="p-4 py-10 bg-white rounded-lg shadow-xl w-[600px]">
+      {/* <h3 className="text-xl font-bold text-gray-800">{t("IASEO")} ({language.toUpperCase()})</h3> */}
+      {/* <p className="text-sm text-gray-600 mb-4">{t("IASEODescription")}</p> */}
       
-      <Button onClick={handleGenerate} disabled={isLoading} className="w-full mb-4">
-        {isLoading ? "Génération..." : t("LaunchGeneration")}
-      </Button>
+      {/* Bouton de génération : affiché uniquement si pas encore généré */}
+      {!generatedText && (
+        <Button
+          onClick={handleGenerate}
+          disabled={isLoading}
+          className="w-full mb-4 mt-10 flex items-center justify-center gap-2"
+        >
+          <span role="img" aria-label="ia">🤖</span>
+          {isLoading ? t("Generating") : t("GenerateWithAI")}
+        </Button>
+      )}
 
       {generatedText && (
         <div className="mt-4">
@@ -702,9 +709,6 @@ function IASEOShort({ projectData, formData, onResult, onClose }) {
             value={generatedText}
             onChange={e => setGeneratedText(e.target.value)}
           />
-          <Button onClick={handleCopy} className="w-full mt-4">
-            {t("CopyText")}
-          </Button>
           <Button onClick={handleApply} className="w-full mt-4 bg-blue-600 text-white">
             {t("ApplyToField")}
           </Button>
@@ -757,14 +761,13 @@ function IASEOFull({ projectData, formData, onResult, onClose }) {
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-xl w-[600px]">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold text-gray-800">{t("IADESCRIPTION")} ({language.toUpperCase()})</h3>
-      </div>
-      <p className="text-sm text-gray-600 mb-4">{t("IADESCRIPTIONDetail")}</p>
+    <div className="p-4 py-10 bg-white rounded-lg shadow-xl w-[600px]">
+      {/* <h3 className="text-xl font-bold text-gray-800">{t("IADESCRIPTION")} ({language.toUpperCase()})</h3> */}
+      {/* <p className="text-sm text-gray-600 mb-4">{t("IADESCRIPTIONDetail")}</p> */}
       
-      <Button onClick={handleGenerate} disabled={isLoading} className="w-full mb-4">
-        {isLoading ? "Génération..." : t("LaunchGeneration")}
+      <Button onClick={handleGenerate} disabled={isLoading} className="w-full mb-4 flex items-center justify-center gap-2">
+        <span role="img" aria-label="ia">🤖</span>
+        {isLoading ? "Génération..." : "Générer avec l'IA"}
       </Button>
 
       {generatedText && (
@@ -833,11 +836,9 @@ function IACOMMUNITYEnhanced({ projectData, formData, onResult, onClose }) {
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-xl w-[600px]">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold text-gray-800">{t("GenerateAmenities")} ({language.toUpperCase()})</h3>
-      </div>
-      <p className="text-sm text-gray-600 mb-4">{t("CommunityDescription")}</p>
+    <div className="p-4 py-10 bg-white rounded-lg shadow-xl w-[600px]">
+      {/* <h3 className="text-xl font-bold text-gray-800">{t("GenerateAmenities")} ({language.toUpperCase()})</h3> */}
+      {/* <p className="text-sm text-gray-600 mb-4">{t("CommunityDescription")}</p> */}
       <div className="mb-4">
         <label className="block text-sm font-medium mb-2">
           {t("CommunityType")}
@@ -851,8 +852,12 @@ function IACOMMUNITYEnhanced({ projectData, formData, onResult, onClose }) {
           <option value="active">{t("CommunityTypeActive")}</option>
         </select>
       </div>
-      <Button onClick={handleGenerate} disabled={isLoading} className="w-full mb-4">
-        {isLoading ? "Génération..." : t("LaunchGeneration")}
+      <Button
+        className="flex items-center gap-2 bg-transparent min-w-fit"
+        onClick={() => handleOpenAI("community")}
+      >
+        <span role="img" aria-label="ia">🤖</span>
+        {t("GenerateWithAI")}
       </Button>
 
       {generatedText && (
@@ -934,12 +939,16 @@ export default function Maindata({ project, onProjectUpdate }) {
   const { language } = useLanguage();
 
   return (
-    <div className="bg-white p-8 rounded-lg shadow-lg w-full mb-8 border border-gray-200">
+    <div className="bg-white p-8 rounded-lg shadow-lg w-full mb-8 border border-blue-100">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-gray-800">{t("FormTitle")}</h2>
-        <Button onClick={saveProject} disabled={isSaving}>
-          {isSaving ? t("Saving") : t("Sauvegarder")}
-        </Button>
+      </div>
+
+      {/* Affichage du nom du projet en haut */}
+      <div className="mb-4">
+        <span className="text-lg font-semibold text-blue-700">
+          {formData.name || t("NomProjet")}
+        </span>
       </div>
 
       <div className="mb-6">
@@ -963,15 +972,6 @@ export default function Maindata({ project, onProjectUpdate }) {
           
           <Divider className="my-4" />
 
-          {/* Nom du projet */}
-          <TextFieldWithAI
-            label={t("NomProjet")}
-            value={formData[`name_${activeLang}`] || ""}
-            onChange={(value) => updateFormData(`name_${activeLang}`, value)}
-            maxLength={50}
-            rows={1}
-          />
-
           {/* Description complète */}
           <TextFieldWithAI
             label={t("DesPro")}
@@ -991,10 +991,11 @@ export default function Maindata({ project, onProjectUpdate }) {
                 {t("CommunityAmenities")}
               </h2>
               <Button
-                className="bg-transparent isIconOnly min-w-fit"
+                className="flex items-center gap-2 bg-transparent min-w-fit"
                 onClick={() => handleOpenAI("community")}
               >
-                Générer
+                <span role="img" aria-label="ia">🤖</span>
+                {t("GenerateWithAI")}
               </Button>
             </div>
             <TextFieldWithAI
@@ -1019,9 +1020,12 @@ export default function Maindata({ project, onProjectUpdate }) {
         </div>
       </div>
 
-      <Button onClick={saveProject} className="w-full mt-6" disabled={isSaving}>
-        {isSaving ? t("Saving") : t("Sauvegarder")}
-      </Button>
+      {/* Bouton Enregistrer à la fin du formulaire, centré */}
+      <div className="w-full flex justify-center mt-8">
+        <Button onClick={saveProject} className="bg-blue-600 text-white px-8 py-3 rounded-xl shadow-lg" disabled={isSaving}>
+          {isSaving ? t("Saving") : t("Sauvegarder")}
+        </Button>
+      </div>
 
       {/* Modales IA améliorées */}
       <AIModal
