@@ -48,6 +48,18 @@ export default function LanguageSelector() {
           height="20"
         />
       </button>
+      <button
+        onClick={() => handleLanguageChange("uk")}
+        className={` flex justify-between items-center  gap-2 px-4   border-2 rounded brownborder
+          /> `}
+      >
+        <img
+          src="/ukraine-flag-round-circle-icon.svg"
+          alt="Icon"
+          width="20"
+          height="20"
+        />
+      </button>
     </div>
   );
 }

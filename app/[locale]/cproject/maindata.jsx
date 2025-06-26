@@ -72,15 +72,23 @@ function useProjectData(project, onProjectUpdate) {
   ];
   const [activeLang, setActiveLang] = useState("fr"); // Langue par défaut
 
-  // Initialiser les champs traduisibles
-  const initialTranslatableFields = {
-    name: "", des: "", fulldescr: "", coam: "",
-  };
-  supportedLangs.forEach(lang => {
-    Object.keys(initialTranslatableFields).forEach(field => {
-        initialTranslatableFields[`${field}_${lang.code}`] = project?.[`${field}_${lang.code}`] || "";
+  // Synchronise activeLang avec la langue de la navbar
+  useEffect(() => {
+    if (language && activeLang !== language) {
+      setActiveLang(language);
+    }
+  }, [language]);
+
+  // Fonction pour générer dynamiquement les champs traduisibles à partir du projet courant
+  function getTranslatableFields(project) {
+    const fields = {};
+    ["name", "fulldescr", "coam", "des"].forEach(field => {
+      supportedLangs.forEach(lang => {
+        fields[`${field}_${lang.code}`] = project?.[`${field}_${lang.code}`] || "";
+      });
     });
-  });
+    return fields;
+  }
 
   const [formData, setFormData] = useState({
     compagny: project?.compagny || "",
@@ -92,9 +100,8 @@ function useProjectData(project, onProjectUpdate) {
     cur: project?.cur || "",
     online: project?.online || false,
     aponsel: project?.aponsel || "",
-    ...initialTranslatableFields,
-    name: project?.name || "", // Fallback pour l'ancien champ
-    des: project?.des || "",
+    ...getTranslatableFields(project),
+    name: project?.name || "",
     fulldescr: project?.fulldescr || "",
     coam: project?.coam || "",
   });
@@ -113,6 +120,7 @@ function useProjectData(project, onProjectUpdate) {
 
   // Mise à jour des données quand le projet change
   useEffect(() => {
+    console.log("project reçu dans useProjectData :", project);
     setFormData({
       compagny: project?.compagny || "",
       country: project?.country || "",
@@ -123,9 +131,8 @@ function useProjectData(project, onProjectUpdate) {
       cur: project?.cur || "",
       online: project?.online || false,
       aponsel: project?.aponsel || "",
-      ...initialTranslatableFields,
+      ...getTranslatableFields(project),
       name: project?.name || "",
-      des: project?.des || "",
       fulldescr: project?.fulldescr || "",
       coam: project?.coam || "",
     });
@@ -153,51 +160,10 @@ function useProjectData(project, onProjectUpdate) {
     setIsSaving(true);
 
     // Utilise la langue de la navbar comme source
-    const sourceLang = language || "fr";
-    const supportedLangs = ["fr", "en", "pl", "de", "ru"];
-    const sourceField = `des_${sourceLang}`;
-    const sourceText = formData[sourceField];
-    if (!sourceText || sourceText.trim() === "") {
-      alert(`Le champ description (${sourceLang}) est vide.`);
-      setIsSaving(false);
-      return;
-    }
-    // Détecte les langues cibles manquantes
-    const targetLangs = supportedLangs.filter(l => l !== sourceLang && (!formData[`des_${l}`] || formData[`des_${l}`].trim() === ""));
-    let translations = {};
-    if (targetLangs.length > 0) {
-      try {
-        const langMap = { en: "EN", fr: "FR", pl: "PL", de: "DE", ru: "RU" };
-        const sourceLangDeepl = langMap[sourceLang] || sourceLang.toUpperCase();
-        const targetLangsDeepl = targetLangs.map(l => langMap[l] || l.toUpperCase());
-        const res = await fetch('/api/translate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: sourceText, sourceLang: sourceLangDeepl, targetLangs: targetLangsDeepl })
-        });
-        const data = await res.json();
-        console.log("Réponse DeepL (saveProject) :", data);
-        translations = data.translations || {};
-        // Mets à jour tous les champs traduits dans formData
-        setFormData(prev => {
-          const updated = { ...prev };
-          targetLangs.forEach(l => {
-            if (translations[l]) updated[`des_${l}`] = translations[l];
-          });
-          return updated;
-        });
-      } catch (e) {
-        console.error('Erreur lors de la traduction automatique :', e);
-        alert('Erreur lors de la traduction automatique');
-        setIsSaving(false);
-        return;
-      }
-    }
-    // Ici, poursuis la logique de sauvegarde Supabase avec tous les champs à jour
-
-    console.log("formData avant sauvegarde :", formData);
-    // Construire explicitement le payload pour éviter les erreurs
-    const updates = {
+    const sourceLang = language || activeLang || "fr";
+    const supportedLangs = ["fr", "en", "pl", "de", "ru", "uk"];
+    const fieldsToTranslate = ["name", "fulldescr", "coam", "des"];
+    let updates = {
       compagny: formData.compagny,
       country: formData.country,
       city: formData.city,
@@ -210,18 +176,50 @@ function useProjectData(project, onProjectUpdate) {
       ...features,
     };
 
-    supportedLangs.forEach(lang => {
-      updates[`name_${lang}`] = formData[`name_${lang}`] || null;
-      updates[`des_${lang}`] = formData[`des_${lang}`] || null;
-      updates[`fulldescr_${lang}`] = formData[`fulldescr_${lang}`] || null;
-      updates[`coam_${lang}`] = formData[`coam_${lang}`] || null;
-    });
+    // Traduction automatique de tous les champs multilingues
+    for (const field of fieldsToTranslate) {
+      const sourceField = `${field}_${sourceLang}`;
+      const sourceText = formData[sourceField];
+      if (!sourceText || sourceText.trim() === "") continue;
+      updates[`${field}_${sourceLang}`] = sourceText;
+      const targetLangs = supportedLangs.filter(l => l !== sourceLang);
+      if (targetLangs.length > 0) {
+        try {
+          const res = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: sourceText, sourceLang: sourceLang.toLowerCase(), targetLangs: targetLangs.map(l => l.toLowerCase()) })
+          });
+          const data = await res.json();
+          const translations = data.translations || {};
+          console.log('Traductions reçues pour', field, ':', translations);
+          targetLangs.forEach(l => {
+            // Correction robuste pour l'anglais
+            if (l === 'en') {
+              if (translations['en']) {
+                updates[`${field}_en`] = translations['en'];
+              } else if (translations['en-gb']) {
+                updates[`${field}_en`] = translations['en-gb'];
+              } else if (translations['en-us']) {
+                updates[`${field}_en`] = translations['en-us'];
+              }
+            } else if (translations[l]) {
+              updates[`${field}_${l}`] = translations[l];
+            }
+          });
+        } catch (e) {
+          console.error(`Erreur lors de la traduction automatique du champ ${field} :`, e);
+          alert(`Erreur lors de la traduction automatique du champ ${field}`);
+          setIsSaving(false);
+          return;
+        }
+      }
+    }
 
+    // Champs principaux pour compatibilité
     updates.name = formData.name_fr || formData.name;
-    updates.des = formData.des_fr || null;
     updates.fulldescr = formData.fulldescr_fr || null;
     updates.coam = formData.coam_fr || null;
-
     // Filtre les clés invalides
     Object.keys(updates).forEach(key => {
       if (key.includes("undefined")) delete updates[key];
@@ -246,6 +244,7 @@ function useProjectData(project, onProjectUpdate) {
         .single();
 
       if (!fetchError && updatedProject && onProjectUpdate) {
+        console.log("Projet rechargé après sauvegarde :", updatedProject);
         onProjectUpdate(updatedProject);
       }
       alert("Données sauvegardées avec succès");
@@ -257,11 +256,10 @@ function useProjectData(project, onProjectUpdate) {
   const handleTranslate = async () => {
     const sourceLang = activeLang;
     const sourceTextName = formData[`name_${sourceLang}`];
-    const sourceTextDes = formData[`des_${sourceLang}`];
     const sourceTextFullDescr = formData[`fulldescr_${sourceLang}`];
     const sourceTextCoam = formData[`coam_${sourceLang}`];
 
-    if (!sourceTextName && !sourceTextDes && !sourceTextFullDescr && !sourceTextCoam) {
+    if (!sourceTextName && !sourceTextFullDescr && !sourceTextCoam) {
         alert(`Veuillez remplir les champs de la langue source (${sourceLang}) avant de traduire.`);
         return;
     }
@@ -276,7 +274,6 @@ function useProjectData(project, onProjectUpdate) {
 
     const textsToTranslate = {
         name: sourceTextName,
-        des: sourceTextDes,
         fulldescr: sourceTextFullDescr,
         coam: sourceTextCoam,
     };
@@ -561,6 +558,7 @@ function TextFieldWithAI({
   aiButtonText,
   projectData = null, // Ajout des données du projet
   placeholder,
+  readOnly,
 }) {
   const f = useTranslations("Projet");
 
@@ -585,6 +583,7 @@ function TextFieldWithAI({
         rows={rows}
         className={`${STYLES.textarea} ${STYLES.bginput} mt-2`}
         placeholder={placeholder || f("FieldPlaceholder")}
+        readOnly={readOnly}
       />
       <span className="text-gray-400 text-sm mt-1">
         {value ? value.length : 0}/{maxLength} {f("Characters")}
@@ -623,7 +622,7 @@ function IASEOShort({ projectData, formData, onResult, onClose }) {
       const data = await response.json();
       setGeneratedText(data.text);
       // Traduction automatique dans les autres langues
-      const supportedLangs = ["fr", "en", "pl", "de", "ru"];
+      const supportedLangs = ["fr", "en", "pl", "de", "ru", "uk"];
       const targetLangs = supportedLangs.filter(l => l && l !== language && typeof l === "string" && l.trim().length > 0);
       if (data.text && targetLangs.length > 0) {
         try {
@@ -883,13 +882,25 @@ function AIModal({ isOpen, onClose, children }) {
       backdrop="blur"
       size="lg"
       scrollBehavior="inside"
+      hideCloseButton
+      className="flex items-center justify-center !bg-transparent !shadow-none !border-none"
+      backdropClassName="bg-black/30 backdrop-blur-sm"
     >
-      <ModalContent>
-        <ModalBody>
+      <ModalContent className="relative rounded-2xl shadow-2xl bg-white p-0 max-w-lg w-full">
+        {/* Croix de fermeture en haut à droite */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl z-20"
+          aria-label="Fermer"
+          type="button"
+        >
+          &times;
+        </button>
+        <ModalBody className="p-8 pt-4 pb-4 flex flex-col items-center justify-center">
           {children}
         </ModalBody>
-        <ModalFooter>
-          <Button color="danger" onClick={onClose}>
+        <ModalFooter className="flex justify-center pb-6 pt-0 border-none bg-transparent">
+          <Button color="danger" onClick={onClose} className="rounded-xl px-8 py-2 text-base font-semibold">
             {t("close")}
           </Button>
         </ModalFooter>

@@ -21,7 +21,7 @@ export default function MainNavBar({ user }) {
   const mobileMenuRef = useRef(null);
 
   // Gestion langue (dropdown drapeau)
-  const match = pathname.match(/^\/(fr|en|pl|de|ru)(\/.*)?$/);
+  const match = pathname.match(/^\/(fr|en|pl|de|ru|uk)(\/.*)?$/);
   const currentLocale = match ? match[1] : "fr";
   const currentPath = match && match[2] ? match[2] : "/";
   const locales = [
@@ -30,6 +30,7 @@ export default function MainNavBar({ user }) {
     { code: "pl", label: "Polska", flag: "🇵🇱" },
     { code: "de", label: "Deutsch", flag: "🇩🇪" },
     { code: "ru", label: "Русский", flag: "🇷🇺" },
+    { code: "uk", label: "Українська", flag: "🇺🇦" },
   ];
   const currentLang = locales.find(l => l.code === currentLocale);
   const otherLangs = locales.filter(l => l.code !== currentLocale);

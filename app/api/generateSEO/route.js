@@ -5,6 +5,16 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// Déclaration de config accessible partout
+const config = {
+  full: {
+    instruction:
+      "Le texte doit être fluide, engageant et donner envie de découvrir le projet. Commence la description de façon originale, évite les débuts classiques comme 'Découvrez...'. Incluez les avantages de la résidence et son positionnement géographique.",
+    limite:
+      "Limite stricte à 1400 caractères maximum pour une description complète. Ne dépasse jamais cette limite (tronque si besoin).",
+  },
+};
+
 export async function POST(req) {
   try {
     const body = await req.json();
@@ -64,6 +74,18 @@ export async function POST(req) {
           nom: "Название проекта",
           ville: "Город",
         },
+        uk: {
+          intro:
+            "Напишіть професійний текст для презентації житлового проекту:",
+          nom: "Назва",
+          localisation: "Місцезнаходження",
+          types: "Типи квартир",
+          atouts: "Ключові особливості",
+          style: "Архітектурний стиль",
+          cible: "Цільова аудиторія",
+          instruction: config.full.instruction,
+          limite: config.full.limite,
+        },
       };
 
       const currentLabels = labels[langue] || labels.fr;
@@ -75,6 +97,7 @@ export async function POST(req) {
         pl: "Odpowiedz wyłącznie po polsku!",
         de: "Antworte ausschließlich auf Deutsch!",
         ru: "Отвечай только по-русски!",
+        uk: "Відповідай тільки українською!",
       };
       const langInstruction = languageInstructions[langue] || languageInstructions.fr;
 
@@ -99,15 +122,6 @@ ${langInstruction}
           { status: 400 }
         );
       }
-
-      const config = {
-        full: {
-          instruction:
-            "Le texte doit être fluide, engageant et donner envie de découvrir le projet. Commence la description de façon originale, évite les débuts classiques comme 'Découvrez...'. Incluez les avantages de la résidence et son positionnement géographique.",
-          limite:
-            "Limite stricte à 1400 caractères maximum pour une description complète. Ne dépasse jamais cette limite (tronque si besoin).",
-        },
-      };
 
       const labels = {
         fr: {
@@ -167,6 +181,18 @@ ${langInstruction}
           atouts: "Ключевые особенности",
           style: "Архитектурный стиль",
           cible: "Целевая аудитория",
+          instruction: config.full.instruction,
+          limite: config.full.limite,
+        },
+        uk: {
+          intro:
+            "Напишіть професійний текст для презентації житлового проекту:",
+          nom: "Назва",
+          localisation: "Місцезнаходження",
+          types: "Типи квартир",
+          atouts: "Ключові особливості",
+          style: "Архітектурний стиль",
+          cible: "Цільова аудиторія",
           instruction: config.full.instruction,
           limite: config.full.limite,
         },

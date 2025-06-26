@@ -5,13 +5,13 @@ export async function generateMetadata({ params }) {
   const supabase = createClient();
   const { data } = await supabase
     .from("project")
-    .select("name, des")
+    .select("name, des_fr, des_en, des_pl")
     .eq("codepro", params.projectdetail)
     .single();
 
   return {
     title: data?.name || "Project Title",
-    description: data?.des || "Project Details",
+    description: data?.des_fr || data?.des_en || data?.des_pl || "Project Details",
   };
 }
 

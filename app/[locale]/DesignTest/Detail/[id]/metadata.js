@@ -23,9 +23,9 @@ export async function generateMetadata({ params }) {
       // Priorité 1: Contenu traduit (ex: name_en, des_pl)
       // Priorité 2: Contenu par défaut non-traduit (name, des)
       // Priorité 3: Traduction statique du fichier .json (t("Title"))
-      const title = data[nameColumn] || data.name_fr || data.name || t("Title");
-      const description = data[desColumn] || data.des_fr || data.des || t("Description");
-      console.log('SEO DEBUG', { locale, desColumn, des_pl: data.des_pl, des_fr: data.des_fr, des: data.des, description });
+      const title = data[nameColumn] || data.name_fr || t("Title");
+      const description = data[desColumn] || data.des_fr || t("Description");
+      console.log('SEO DEBUG', { locale, desColumn, des_pl: data.des_pl, des_fr: data.des_fr, description });
       
       return {
         title: `${title} - ${data.city || ""}`,

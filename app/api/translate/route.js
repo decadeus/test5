@@ -1,6 +1,20 @@
 import { NextResponse } from 'next/server';
 import * as deepl from 'deepl-node';
 
+// Fonction de mapping robuste pour DeepL
+function mapLangCode(lang) {
+  if (!lang) return '';
+  const l = lang.toLowerCase();
+  if (l === 'en' || l === 'en-gb') return 'EN-GB';
+  if (l === 'en-us') return 'EN-US';
+  if (l.startsWith('fr')) return 'FR';
+  if (l.startsWith('pl')) return 'PL';
+  if (l.startsWith('de')) return 'DE';
+  if (l.startsWith('ru')) return 'RU';
+  if (l.startsWith('uk')) return 'UK';
+  return lang.toUpperCase();
+}
+
 export async function POST(request) {
   const { text, sourceLang, targetLangs } = await request.json();
 
@@ -9,21 +23,16 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Paramètres manquants ou invalides' }, { status: 400 });
   }
 
-  // Sécurise les codes langue
-  const allowedLangs = ["EN-GB", "EN-US", "FR", "PL", "DE", "RU"];
-  const langMap = { EN: "EN-GB", FR: "FR", PL: "PL", DE: "DE", RU: "RU", "EN-GB": "EN-GB", "EN-US": "EN-US" };
-  const safeSourceLang = langMap[(typeof sourceLang === 'string' ? sourceLang.trim().toUpperCase() : "")] || "";
+  // Mapping des codes langue pour DeepL
+  const safeSourceLang = mapLangCode(sourceLang);
+  const validTargetLangs = (targetLangs || []).map(mapLangCode);
+  const allowedLangs = ["EN-GB", "EN-US", "FR", "PL", "DE", "RU", "UK"];
   if (!allowedLangs.includes(safeSourceLang)) {
     return NextResponse.json({ error: 'Langue source non supportée' }, { status: 400 });
   }
-  const validTargetLangs = (targetLangs || [])
-    .map(l => {
-      const up = typeof l === 'string' ? l.trim().toUpperCase() : "";
-      return langMap[up] || up;
-    })
-    .filter(l => allowedLangs.includes(l));
-  console.log("DeepL: sourceLang=", safeSourceLang, "targetLangs=", validTargetLangs);
-  if (!validTargetLangs.length) {
+  const filteredTargetLangs = validTargetLangs.filter(l => allowedLangs.includes(l));
+  console.log("DeepL: sourceLang=", safeSourceLang, "targetLangs=", filteredTargetLangs);
+  if (!filteredTargetLangs.length) {
     return NextResponse.json({ error: 'Aucune langue cible valide' }, { status: 400 });
   }
 
@@ -36,7 +45,7 @@ export async function POST(request) {
 
   try {
     const results = await Promise.all(
-      validTargetLangs.map(lang =>
+      filteredTargetLangs.map(lang =>
         translator.translateText(text, safeSourceLang, lang)
       )
     );
@@ -45,7 +54,7 @@ export async function POST(request) {
     const translations = {};
     results.forEach((result, idx) => {
       // Utilise la langue cible demandée comme clé (ex: 'pl', 'fr', ...)
-      const targetLang = validTargetLangs[idx].toLowerCase().split('-')[0];
+      const targetLang = filteredTargetLangs[idx].toLowerCase();
       translations[targetLang] = result.text;
     });
 

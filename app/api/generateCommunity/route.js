@@ -40,6 +40,14 @@ export async function POST(req) {
         instruction: "Tekst powinien być płynny, angażujący i zachęcający do zapoznania się z projektem.",
         limite: "Ogranicz do 800-900 znaków.",
       };
+    } else if (langue === "uk") {
+      labels = {
+        intro: "Напишіть професійний текст для представлення переваг спільних зручностей у проекті нерухомості:",
+        listEquipement: "Список зручностей",
+        detail: "Додаткові важливі відомості",
+        instruction: "Текст повинен бути плавним, захоплюючим та заохочувати до знайомства з проектом.",
+        limite: "Обмежте до 800-900 символів максимум.",
+      };
     }
 
     const prompt = `
