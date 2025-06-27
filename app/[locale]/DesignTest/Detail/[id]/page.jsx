@@ -20,9 +20,21 @@ export async function generateMetadata({ params }) {
 
   const lang = locale || 'fr';
   const description = project[`des_${lang}`] || project.des_fr || '';
+  
+  // Titre dynamique selon la langue
+  const titleTemplates = {
+    fr: `${project.name}, projet d'immeuble résidentiel à ${project.city} Pologne`,
+    en: `${project.name}, residential building project in ${project.city} Poland`,
+    pl: `${project.name}, projekt budynku mieszkalnego w ${project.city} Polska`,
+    de: `${project.name}, Wohngebäudeprojekt in ${project.city} Polen`,
+    ru: `${project.name}, проект жилого здания в ${project.city} Польша`,
+    uk: `${project.name}, проект житлового будинку в ${project.city} Польща`
+  };
+  
+  const title = titleTemplates[lang] || titleTemplates.fr;
 
   return {
-    title: project.name,
+    title,
     description,
   };
 }
