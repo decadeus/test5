@@ -293,7 +293,7 @@ export default function DetailClient({ project, locale }) {
                 equipments[eq.key] && (
                   <span
                     key={eq.key}
-                    className={`flex items-center gap-2 px-1 pr-2 py-1 ${eq.bg} ${eq.text} rounded-full text-sm`}
+                    className={`flex items-center gap-2 px-1 pr-3 py-1 ${eq.bg} ${eq.text} rounded-full text-sm`}
                   >
                     <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow">
                       {eq.icon}
