@@ -2,6 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import Swim from '@/components/svg/swim';
+import Cctv from '@/components/svg/cctv';
+import Bike from '@/components/svg/bike';
+import Disabled from '@/components/svg/disabled';
+import Fitness from '@/components/svg/fitness';
 
 function formatPrice(price) {
   if (typeof price === "number") return price.toLocaleString("fr-FR") + " €";
@@ -67,6 +73,75 @@ export default function DetailClient({ project, locale }) {
       </div>
     </th>
   );
+
+  // Carte Google Maps
+  const containerStyle = {
+    width: '100%',
+    height: '350px',
+    marginBottom: '2rem',
+    borderRadius: '1rem',
+    overflow: 'hidden',
+  };
+  const center = {
+    lat: Number(project.lat) || 52.2297,
+    lng: Number(project.lng) || 21.0122,
+  };
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    libraries: ['places'],
+  });
+
+  const equipmentList = [
+    {
+      key: 'swim',
+      label: 'Piscine',
+      bg: 'bg-blue-100',
+      text: 'text-blue-800',
+      icon: <Swim />
+    },
+    {
+      key: 'cctv',
+      label: 'Vidéosurveillance',
+      bg: 'bg-gray-200',
+      text: 'text-gray-800',
+      icon: <Cctv />
+    },
+    {
+      key: 'entrance',
+      label: 'Réception',
+      bg: 'bg-green-100',
+      text: 'text-green-800',
+      icon: <span role="img" aria-label="reception">🏢</span>
+    },
+    {
+      key: 'bike',
+      label: 'Parking vélo',
+      bg: 'bg-yellow-100',
+      text: 'text-yellow-800',
+      icon: <Bike />
+    },
+    {
+      key: 'disabled',
+      label: 'Accès handicapé',
+      bg: 'bg-purple-100',
+      text: 'text-purple-800',
+      icon: <Disabled />
+    },
+    {
+      key: 'child',
+      label: 'Espace enfants',
+      bg: 'bg-pink-100',
+      text: 'text-pink-800',
+      icon: <span role="img" aria-label="enfant">🧸</span>
+    },
+    {
+      key: 'fitness',
+      label: 'Salle de sport',
+      bg: 'bg-orange-100',
+      text: 'text-orange-800',
+      icon: <Fitness />
+    }
+  ];
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -172,15 +247,64 @@ export default function DetailClient({ project, locale }) {
           </div>
         ) : null}
       </div>
-      {/* Description complète */}
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow p-8 mb-8">
-        <h3 className="text-2xl font-bold mb-4">Description</h3>
-        <p className="text-gray-700 whitespace-pre-line">{projectDescription}</p>
-      </div>
-      {/* Équipements communautaires */}
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow p-8 mb-8">
-        <h3 className="text-2xl font-bold mb-4">Équipements</h3>
-        <p className="text-gray-700 whitespace-pre-line">{communityAmenities}</p>
+      {/* Nouveau layout deux colonnes : texte à gauche, carte+promoteur à droite */}
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 mb-12">
+        {/* Colonne gauche : texte */}
+        <div className="w-full md:w-1/2 flex flex-col gap-8">
+          <div className="bg-white rounded-xl shadow p-6">
+            <h3 className="text-2xl font-bold mb-4">Description</h3>
+            <p className="text-gray-700 whitespace-pre-line">{projectDescription}</p>
+          </div>
+          <div className="bg-white rounded-xl shadow p-6">
+            <h3 className="text-2xl font-bold mb-4">Équipements communautaires</h3>
+            <p className="text-gray-700 whitespace-pre-line">{communityAmenities}</p>
+          </div>
+        </div>
+        {/* Colonne droite : carte + promoteur + équipements */}
+        <div className="w-full md:w-1/2 flex flex-col gap-8">
+          <div className="bg-white rounded-xl shadow p-6">
+            <h3 className="text-2xl font-bold mb-4">Localisation du projet</h3>
+            {isLoaded ? (
+              <GoogleMap
+                mapContainerStyle={{ width: '100%', height: '300px', borderRadius: '1rem' }}
+                center={center}
+                zoom={15}
+              >
+                <Marker position={center} />
+              </GoogleMap>
+            ) : (
+              <div>Chargement de la carte...</div>
+            )}
+          </div>
+          <div className="bg-white rounded-xl shadow p-6">
+            <h3 className="text-2xl font-bold mb-4">Coordonnées du promoteur</h3>
+            <div className="text-gray-700 space-y-2">
+              <div><span className="font-semibold">Nom :</span> {project.compagny || "Non renseigné"}</div>
+              <div><span className="font-semibold">Contact :</span> {project.aponsel || "Non renseigné"}</div>
+              <div><span className="font-semibold">Email :</span> {project.email || "Non renseigné"}</div>
+              <div><span className="font-semibold">Site web :</span> {project.link ? <a href={project.link} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">{project.link}</a> : "Non renseigné"}</div>
+            </div>
+          </div>
+          {/* Card équipements (badges/icônes) */}
+          <div className="bg-white rounded-xl shadow p-6">
+            <h3 className="text-2xl font-bold mb-4">Équipements</h3>
+            <div className="flex flex-wrap gap-3">
+              {equipmentList.map(eq =>
+                equipments[eq.key] && (
+                  <span
+                    key={eq.key}
+                    className={`flex items-center gap-2 px-1 pr-2 py-1 ${eq.bg} ${eq.text} rounded-full text-sm`}
+                  >
+                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow">
+                      {eq.icon}
+                    </span>
+                    {eq.label}
+                  </span>
+                )
+              )}
+            </div>
+          </div>
+        </div>
       </div>
       {/* Tableau des lots */}
       <div className="max-w-6xl mx-auto bg-white rounded-xl shadow p-8 mb-8">

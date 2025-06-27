@@ -18,15 +18,7 @@ const Fitness = () => {
             <path d="M 0 0 L 10 5 L 0 10 z" />
           </marker>
         </defs>
-        <rect
-          x="0"
-          y="0"
-          width="100"
-          height="100"
-          fill="none"
-          stroke="black"
-          strokeWidth="1"
-        />
+        {/* <rect x="0" y="0" width="100" height="100" fill="none" stroke="black" strokeWidth="1" /> */}
      
         <circle
           cx="50"
@@ -95,9 +87,7 @@ const Fitness = () => {
           strokeWidth="3"
         />
        
-        <text x="20" y="90" fontSize={10}>
-          Fitness room
-        </text>
+        {/* <text x="20" y="90" fontSize={10}>Fitness room</text> */}
       </svg>
     );
   };

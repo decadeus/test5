@@ -18,15 +18,6 @@ const Swim = () => {
             <path d="M 0 0 L 10 5 L 0 10 z" />
           </marker>
         </defs>
-        <rect
-          x="0"
-          y="0"
-          width="100"
-          height="100"
-          fill="none"
-          stroke="black"
-          strokeWidth="1"
-        />
         <path
           d="M 20 60
  C 20 60, 30 50, 50 60
@@ -60,9 +51,6 @@ const Swim = () => {
           stroke="black"
           strokeWidth="3"
         />
-        <text x="35" y="90" fontSize={10}>
-          pool
-        </text>
       </svg>
     );
   };
