@@ -43,7 +43,11 @@ const macondo= Macondo({
 
 
 
- 
+export const metadata = {
+  title: "Détail du projet - MonApp",
+  description: "Découvrez le détail de ce projet immobilier, ses lots, ses équipements et toutes les informations utiles."
+};
+
 export default async function RootLayout({
   children
 }: {
