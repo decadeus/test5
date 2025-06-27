@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import DetailClient from "./DetailClient";
+import { headers } from 'next/headers';
 
 export async function generateMetadata({ params }) {
   const { id, locale } = params;
@@ -33,9 +34,26 @@ export async function generateMetadata({ params }) {
   
   const title = titleTemplates[lang] || titleTemplates.fr;
 
+  // Générer les URLs alternatives pour hreflang
+  const headersList = headers();
+  const host = headersList.get('host') || 'localhost:3000';
+  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+  const baseUrl = `${protocol}://${host}`;
+  
+  const supportedLocales = ['fr', 'en', 'pl', 'de', 'ru', 'uk'];
+  const alternates = {};
+  
+  supportedLocales.forEach(loc => {
+    alternates[`${loc}`] = `${baseUrl}/${loc}/DesignTest/Detail/${id}`;
+  });
+
   return {
     title,
     description,
+    alternates: {
+      canonical: `${baseUrl}/${lang}/DesignTest/Detail/${id}`,
+      languages: alternates,
+    },
   };
 }
 

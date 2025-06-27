@@ -5,7 +5,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Providers } from "@/app/providers";
 import MainNavBar from "./navbar/mainNavBar";
 import { createClient } from "@/utils/supabase/server";
-import Head from "next/head";
 import Foot from "../footer/footer";
 import { Kenia, Satisfy, Macondo } from "next/font/google";
 import { Analytics } from '@vercel/analytics/react';
@@ -13,7 +12,8 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import {getTranslations} from 'next-intl/server';
 import ConditionalDownloadButtons from "./components/ConditionalDownloadButtons";
 import { LanguageProvider } from "@/app/LanguageContext";
-
+import HreflangTags from "./components/HreflangTags";
+import { headers } from 'next/headers';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -32,33 +32,34 @@ const satisfy = Satisfy({
   weight: "400"
 });
 
-
-
-
 const macondo= Macondo({
   subsets: ["latin"],
   variable: "--font-macondo",
   weight: "400"
 });
 
-
-
-export const metadata = {
-  title: "Détail du projet - MonApp",
-  description: "Découvrez le détail de ce projet immobilier, ses lots, ses équipements et toutes les informations utiles."
-};
+export async function generateMetadata({ params }: { params: { locale: string } }) {
+  const locale = params.locale;
+  const f = await getTranslations("SEO");
+  
+  return {
+    title: f("Title"),
+    description: f("Description"),
+    alternates: {
+      canonical: `${defaultUrl}/${locale}`,
+    },
+  };
+}
 
 export default async function RootLayout({
-  children
+  children,
+  params
 }: {
   children: React.ReactNode;
+  params: { locale: string };
 }) {
   const locale = await getLocale();
- 
-  // Providing all messages to the client
-  // side is the easiest way to get started
   const messages = await getMessages();
-
   const supabase = createClient();
   const f = await getTranslations("SEO");
 
@@ -66,19 +67,24 @@ export default async function RootLayout({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  // Obtenir le pathname pour les balises hreflang
+  const headersList = headers();
+  const pathname = headersList.get('x-pathname') || '/';
  
   return (
     <html lang={locale}>
-      <Head>
+      <head>
         {/* Favicon links */}
         <link rel="icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#ffffff" />
-        <title>{f("Title")}</title>
-    
-      </Head>
+        
+        {/* Balises hreflang pour le SEO multilingue */}
+        <HreflangTags pathname={pathname} />
+      </head>
       <body>
         <NextIntlClientProvider messages={messages}>
         <LanguageProvider>

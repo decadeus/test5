@@ -1,0 +1,34 @@
+User-agent: *
+Allow: /
+
+# Sitemap pour toutes les langues
+Sitemap: https://tudomaine.com/sitemap.xml
+
+# Bloquer les pages d'administration et de test
+Disallow: /admin/
+Disallow: /test/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+
+# Bloquer les pages de confidentialité et légales
+Disallow: /*/GDPR
+Disallow: /*/privacy
+Disallow: /*/mentionlegal
+Disallow: /*/pdc
+Disallow: /*/login
+Disallow: /*/newpassword
+Disallow: /*/resetpassword
+Disallow: /*/templog
+Disallow: /*/templogin
+
+# Permettre l'indexation des pages de projets
+Allow: /fr/DesignTest/Detail/
+Allow: /en/DesignTest/Detail/
+Allow: /pl/DesignTest/Detail/
+Allow: /de/DesignTest/Detail/
+Allow: /ru/DesignTest/Detail/
+Allow: /uk/DesignTest/Detail/
+
+# Crawl-delay pour éviter de surcharger le serveur
+Crawl-delay: 1 
