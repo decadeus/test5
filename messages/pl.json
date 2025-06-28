@@ -41,7 +41,9 @@
         "projet": "projekt",
         "trouvé": "znaleziono",
         "appartement": "mieszkanie",
-        "disponible": "dostępne"
+        "disponible": "dostępne",
+        "Vue Liste": "Widok listy",
+        "Vue Carte": "Widok mapy"
     },
     "Nav": {
         "Ajouter": "Dodaj projekt",

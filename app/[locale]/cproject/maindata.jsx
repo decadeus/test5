@@ -100,6 +100,12 @@ function useProjectData(project, onProjectUpdate) {
     cur: project?.cur || "",
     online: project?.online || false,
     aponsel: project?.aponsel || "",
+    // Nouvelles colonnes promoteur
+    promoter_last_name: project?.promoter_last_name || "",
+    promoter_first_name: project?.promoter_first_name || "",
+    promoter_phone: project?.promoter_phone || "",
+    promoter_email: project?.promoter_email || "",
+    promoter_languages: project?.promoter_languages || [],
     ...getTranslatableFields(project),
     name: project?.name || "",
     fulldescr: project?.fulldescr || "",
@@ -131,6 +137,12 @@ function useProjectData(project, onProjectUpdate) {
       cur: project?.cur || "",
       online: project?.online || false,
       aponsel: project?.aponsel || "",
+      // Nouvelles colonnes promoteur
+      promoter_last_name: project?.promoter_last_name || "",
+      promoter_first_name: project?.promoter_first_name || "",
+      promoter_phone: project?.promoter_phone || "",
+      promoter_email: project?.promoter_email || "",
+      promoter_languages: project?.promoter_languages || [],
       ...getTranslatableFields(project),
       name: project?.name || "",
       fulldescr: project?.fulldescr || "",
@@ -173,6 +185,12 @@ function useProjectData(project, onProjectUpdate) {
       cur: formData.cur,
       online: formData.online,
       aponsel: formData.aponsel,
+      // Nouvelles colonnes promoteur
+      promoter_last_name: formData.promoter_last_name,
+      promoter_first_name: formData.promoter_first_name,
+      promoter_phone: formData.promoter_phone,
+      promoter_email: formData.promoter_email,
+      promoter_languages: formData.promoter_languages,
       ...features,
     };
 
@@ -453,6 +471,160 @@ function BasicFields({ formData, updateFormData }) {
           onChange={(e) => updateFormData('link', e.target.value)}
           className={`${STYLES.input} ${STYLES.bginput}`}
         />
+      </div>
+    </div>
+  );
+}
+
+// Composant pour les informations du promoteur
+function PromoterInfoCard({ formData, updateFormData }) {
+  const f = useTranslations("Projet");
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
+  
+  const availableLanguages = [
+    { code: "fr", name: "Français" },
+    { code: "en", name: "English" },
+    { code: "pl", name: "Polski" },
+    { code: "de", name: "Deutsch" },
+    { code: "ru", name: "Русский" },
+    { code: "uk", name: "Українська" },
+    { code: "es", name: "Español" },
+    { code: "it", name: "Italiano" },
+    { code: "pt", name: "Português" },
+    { code: "nl", name: "Nederlands" },
+  ];
+
+  // Initialiser les langues sélectionnées depuis formData
+  useEffect(() => {
+    if (formData.promoter_languages && Array.isArray(formData.promoter_languages)) {
+      setSelectedLanguages(formData.promoter_languages);
+    }
+  }, [formData.promoter_languages]);
+
+  const toggleLanguage = (langCode) => {
+    const newSelectedLanguages = selectedLanguages.includes(langCode) 
+      ? selectedLanguages.filter(lang => lang !== langCode)
+      : [...selectedLanguages, langCode];
+    
+    setSelectedLanguages(newSelectedLanguages);
+    // Mettre à jour formData avec le nouveau tableau de langues
+    updateFormData('promoter_languages', newSelectedLanguages);
+  };
+
+  return (
+    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-xl border border-blue-200 shadow-sm mb-8">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </div>
+        <h3 className="text-xl font-semibold text-gray-800">Informations du Promoteur</h3>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Nom */}
+        <div className="flex flex-col">
+          <label className="text-gray-700 font-medium mb-2">Nom *</label>
+          <input
+            type="text"
+            value={formData.promoter_last_name || ""}
+            onChange={(e) => updateFormData('promoter_last_name', e.target.value)}
+            className={`${STYLES.input} ${STYLES.bginput} focus:ring-blue-500 focus:border-blue-500`}
+            placeholder="Nom du promoteur"
+          />
+        </div>
+
+        {/* Prénom */}
+        <div className="flex flex-col">
+          <label className="text-gray-700 font-medium mb-2">Prénom *</label>
+          <input
+            type="text"
+            value={formData.promoter_first_name || ""}
+            onChange={(e) => updateFormData('promoter_first_name', e.target.value)}
+            className={`${STYLES.input} ${STYLES.bginput} focus:ring-blue-500 focus:border-blue-500`}
+            placeholder="Prénom du promoteur"
+          />
+        </div>
+
+        {/* Téléphone */}
+        <div className="flex flex-col">
+          <label className="text-gray-700 font-medium mb-2">Téléphone *</label>
+          <div className="relative">
+            <input
+              type="tel"
+              value={formData.promoter_phone || ""}
+              onChange={(e) => updateFormData('promoter_phone', e.target.value)}
+              className={`${STYLES.input} ${STYLES.bginput} focus:ring-blue-500 focus:border-blue-500 pl-10`}
+              placeholder="+33 1 23 45 67 89"
+            />
+            <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Email */}
+        <div className="flex flex-col">
+          <label className="text-gray-700 font-medium mb-2">Email *</label>
+          <div className="relative">
+            <input
+              type="email"
+              value={formData.promoter_email || ""}
+              onChange={(e) => updateFormData('promoter_email', e.target.value)}
+              className={`${STYLES.input} ${STYLES.bginput} focus:ring-blue-500 focus:border-blue-500 pl-10`}
+              placeholder="promoteur@exemple.com"
+            />
+            <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Langues parlées */}
+      <div className="mt-6">
+        <label className="text-gray-700 font-medium mb-3 block">Langues parlées *</label>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+          {availableLanguages.map((lang) => (
+            <button
+              key={lang.code}
+              type="button"
+              onClick={() => toggleLanguage(lang.code)}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-200 ${
+                selectedLanguages.includes(lang.code)
+                  ? 'bg-blue-100 border-blue-300 text-blue-700 shadow-sm'
+                  : 'bg-white border-gray-200 text-gray-600 hover:border-blue-300 hover:bg-blue-50'
+              }`}
+            >
+              <div className={`w-3 h-3 rounded-full border-2 ${
+                selectedLanguages.includes(lang.code)
+                  ? 'bg-blue-500 border-blue-500'
+                  : 'border-gray-300'
+              }`}>
+                {selectedLanguages.includes(lang.code) && (
+                  <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                )}
+              </div>
+              <span className="text-sm font-medium">{lang.name}</span>
+            </button>
+          ))}
+        </div>
+        {selectedLanguages.length > 0 && (
+          <div className="mt-3 text-sm text-gray-600">
+            Langues sélectionnées : {selectedLanguages.map(code => 
+              availableLanguages.find(lang => lang.code === code)?.name
+            ).join(', ')}
+          </div>
+        )}
+      </div>
+
+      {/* Indicateur de statut */}
+      <div className="mt-6 flex items-center gap-2 text-sm text-gray-600">
+        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+        <span>Informations du promoteur</span>
       </div>
     </div>
   );
@@ -960,6 +1132,9 @@ export default function Maindata({ project, onProjectUpdate }) {
         <div>
           {/* Champs de base */}
           <BasicFields formData={formData} updateFormData={updateFormData} />
+          
+          {/* Informations du promoteur */}
+          <PromoterInfoCard formData={formData} updateFormData={updateFormData} />
           
           {/* Sélecteur pays/ville */}
           <CountryCitySelector formData={formData} updateFormData={updateFormData} />

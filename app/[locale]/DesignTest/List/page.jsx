@@ -11,6 +11,7 @@ import { useRouter, useParams } from 'next/navigation';
 
 import React from "react";
 import { createClient } from "@/utils/supabase/client";
+import GoogleMapComponent from "@/components/GoogleMap";
 
 // Fonction utilitaire pour formater le prix
 function formatPrice(price) {
@@ -246,6 +247,7 @@ export default function ApartmentList() {
   const itemsPerPage = 8;
   const [showAllLots, setShowAllLots] = useState(null);
   const [isChangingImage, setIsChangingImage] = useState({});
+  const [viewMode, setViewMode] = useState('list'); // 'list' ou 'map'
   const router = useRouter();
   const params = useParams();
   const locale = params?.locale || 'fr';
@@ -439,7 +441,7 @@ export default function ApartmentList() {
         // Récupère les projets
         const { data: projects, error: errorProjects } = await supabase
           .from("project")
-          .select("id, name, compagny, country, city");
+          .select("id, name, compagny, country, city, lat, lng");
 
         // Récupère les projectlists
         const { data: projectlists, error: errorProjectlists } = await supabase
@@ -460,6 +462,8 @@ export default function ApartmentList() {
           city: item.city,
           imageUrl: "/images/placeholder.jpg",
           projectlist: (projectlists || []).filter((pl) => pl.ide === item.id),
+          lat: item.lat,
+          lng: item.lng,
         }));
 
         setApartments(apartmentsWithList);
@@ -933,6 +937,36 @@ export default function ApartmentList() {
               </p>
             </div>
 
+            {/* Boutons de basculement vue liste/carte */}
+            <div className="flex justify-center mb-6">
+              <div className="bg-white rounded-full p-1 shadow-lg border-2 border-gray-200">
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`px-6 py-2 rounded-full font-semibold transition-all duration-200 ${
+                    viewMode === 'list'
+                      ? 'bg-green-600 text-white shadow-md'
+                      : 'bg-white text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  📋 {t("Vue Liste")}
+                </button>
+                <button
+                  onClick={() => setViewMode('map')}
+                  className={`px-6 py-2 rounded-full font-semibold transition-all duration-200 ${
+                    viewMode === 'map'
+                      ? 'bg-green-600 text-white shadow-md'
+                      : 'bg-white text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  🗺️ {t("Vue Carte")} ({filteredApartments.filter(apt => 
+                    apt.lat && apt.lng && 
+                    !isNaN(parseFloat(apt.lat)) && !isNaN(parseFloat(apt.lng)) &&
+                    parseFloat(apt.lat) !== 0 && parseFloat(apt.lng) !== 0
+                  ).length})
+                </button>
+              </div>
+            </div>
+
             {/* Sticky filters desktop */}
             <div className="sticky top-0 z-20 bg-white/90 shadow-md py-2 fade-in">
               {/* Filtres actifs (chips) */}
@@ -984,38 +1018,49 @@ export default function ApartmentList() {
             )}
 
             {/* Grille des appartements avec animation d'apparition */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 fade-in">
-              {paginatedApartments.length === 0 ? (
-                <p className="text-center text-gray-500 col-span-full">
-                  {t("Aucun résultat")}
-                </p>
-              ) : (
-                paginatedApartments.map((apt) => (
-                  <ApartmentCard
-                    key={apt.id}
-                    apt={apt}
-                    projectImages={projectImages}
-                    currentImageIndexes={currentImageIndexes}
-                    handleNextImage={handleNextImage}
-                    handlePrevImage={handlePrevImage}
-                    isChangingImage={isChangingImage}
-                    setIsChangingImage={setIsChangingImage}
-                    highlight={highlight}
-                    debouncedSearchTerm={debouncedSearchTerm}
-                    filterProjectListByRange={filterProjectListByRange}
-                    formatPrice={formatPrice}
-                    t={t}
-                    showAllLots={showAllLots}
-                    setShowAllLots={setShowAllLots}
-                    locale={locale}
-                    tGlobal={tGlobal}
-                  />
-                ))
-              )}
-            </div>
+            {viewMode === 'list' ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 fade-in">
+                {paginatedApartments.length === 0 ? (
+                  <p className="text-center text-gray-500 col-span-full">
+                    {t("Aucun résultat")}
+                  </p>
+                ) : (
+                  paginatedApartments.map((apt) => (
+                    <ApartmentCard
+                      key={apt.id}
+                      apt={apt}
+                      projectImages={projectImages}
+                      currentImageIndexes={currentImageIndexes}
+                      handleNextImage={handleNextImage}
+                      handlePrevImage={handlePrevImage}
+                      isChangingImage={isChangingImage}
+                      setIsChangingImage={setIsChangingImage}
+                      highlight={highlight}
+                      debouncedSearchTerm={debouncedSearchTerm}
+                      filterProjectListByRange={filterProjectListByRange}
+                      formatPrice={formatPrice}
+                      t={t}
+                      showAllLots={showAllLots}
+                      setShowAllLots={setShowAllLots}
+                      locale={locale}
+                      tGlobal={tGlobal}
+                    />
+                  ))
+                )}
+              </div>
+            ) : (
+              <div className="fade-in">
+                <GoogleMapComponent
+                  apartments={filteredApartments}
+                  projectImages={projectImages}
+                  currentImageIndexes={currentImageIndexes}
+                  locale={locale}
+                />
+              </div>
+            )}
 
             {/* Pagination en bas */}
-            {pageCount > 1 && (
+            {viewMode === 'list' && pageCount > 1 && (
               <div className="flex justify-center my-4 gap-2">
                 {Array.from({length: pageCount}).map((_, i) => (
                   <button key={i} onClick={() => setCurrentPage(i+1)} className={`px-3 py-1 rounded-full border-2 ${currentPage === i+1 ? 'bg-green-600 text-white border-green-600' : 'bg-white text-green-600 border-green-600'}`}>{i+1}</button>

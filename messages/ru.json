@@ -41,7 +41,9 @@
         "projet": "проект",
         "trouvé": "найдено",
         "appartement": "квартира",
-        "disponible": "доступно"
+        "disponible": "доступно",
+        "Vue Liste": "Список",
+        "Vue Carte": "Карта"
     },
     "Nav": {
         "Ajouter": "Добавить проект",

@@ -41,7 +41,11 @@
         "projet": "projet",
         "trouvé": "trouvé",
         "appartement": "appartement",
-        "disponible": "disponible"
+        "disponible": "disponible",
+        "Vue Liste": "Vue Liste",
+        "Vue Carte": "Vue Carte",
+        "Chargement de la carte...": "Chargement de la carte...",
+        "Voir le détail": "Voir le détail"
     },
     "Nav": {
         "Ajouter": "Ajouter un projet",

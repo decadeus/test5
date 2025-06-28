@@ -41,7 +41,9 @@
         "projet": "project",
         "trouvé": "found",
         "appartement": "apartment",
-        "disponible": "available"
+        "disponible": "available",
+        "Vue Liste": "List View",
+        "Vue Carte": "Map View"
     },
     "Nav": {
         "Ajouter": "Add project",

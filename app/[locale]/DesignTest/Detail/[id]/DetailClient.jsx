@@ -8,12 +8,51 @@ import Cctv from '@/components/svg/cctv';
 import Bike from '@/components/svg/bike';
 import Disabled from '@/components/svg/disabled';
 import Fitness from '@/components/svg/fitness';
+import { FiMail, FiPhone, FiGlobe } from 'react-icons/fi';
+import { FaLanguage } from 'react-icons/fa';
 
 function formatPrice(price) {
   if (typeof price === "number") return price.toLocaleString("fr-FR") + " €";
   const num = Number(price);
   if (isNaN(num)) return price;
   return num.toLocaleString("fr-FR") + " €";
+}
+
+// Mapping code langue -> nom complet
+const languageLabels = {
+  fr: 'Français',
+  en: 'Anglais',
+  de: 'Allemand',
+  pl: 'Polonais',
+  ru: 'Russe',
+  uk: 'Ukrainien',
+  es: 'Espagnol',
+  it: 'Italien',
+  // Ajoute d'autres si besoin
+};
+
+// Fonction pour parser et afficher les langues
+function renderLanguages(langs) {
+  let arr = [];
+  if (!langs) return <span>Non renseigné</span>;
+  if (Array.isArray(langs)) arr = langs;
+  else {
+    try {
+      arr = JSON.parse(langs);
+      if (!Array.isArray(arr)) arr = [langs];
+    } catch {
+      arr = [langs];
+    }
+  }
+  return (
+    <div className="flex flex-wrap gap-2 mt-1">
+      {arr.map((code, idx) => (
+        <span key={idx} className="bg-green-50 text-green-900 px-4 py-1 rounded-2xl text-base font-semibold shadow-sm border border-green-100">
+          {languageLabels[code] || code}
+        </span>
+      ))}
+    </div>
+  );
 }
 
 export default function DetailClient({ project, locale }) {
@@ -258,6 +297,22 @@ export default function DetailClient({ project, locale }) {
           <div className="bg-white rounded-xl shadow p-6">
             <h3 className="text-2xl font-bold mb-4">Équipements communautaires</h3>
             <p className="text-gray-700 whitespace-pre-line">{communityAmenities}</p>
+            {/* Badges équipements */}
+            <div className="flex flex-wrap gap-3 mt-4">
+              {equipmentList.map(eq =>
+                equipments[eq.key] && (
+                  <span
+                    key={eq.key}
+                    className={`flex items-center gap-2 px-1 pr-3 py-1 ${eq.bg} ${eq.text} rounded-full text-sm`}
+                  >
+                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow">
+                      {eq.icon}
+                    </span>
+                    {eq.label}
+                  </span>
+                )
+              )}
+            </div>
           </div>
         </div>
         {/* Colonne droite : carte + promoteur + équipements */}
@@ -276,32 +331,61 @@ export default function DetailClient({ project, locale }) {
               <div>Chargement de la carte...</div>
             )}
           </div>
-          <div className="bg-white rounded-xl shadow p-6">
-            <h3 className="text-2xl font-bold mb-4">Coordonnées du promoteur</h3>
-            <div className="text-gray-700 space-y-2">
-              <div><span className="font-semibold">Nom :</span> {project.compagny || "Non renseigné"}</div>
-              <div><span className="font-semibold">Contact :</span> {project.aponsel || "Non renseigné"}</div>
-              <div><span className="font-semibold">Email :</span> {project.email || "Non renseigné"}</div>
-              <div><span className="font-semibold">Site web :</span> {project.link ? <a href={project.link} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">{project.link}</a> : "Non renseigné"}</div>
-            </div>
-          </div>
-          {/* Card équipements (badges/icônes) */}
-          <div className="bg-white rounded-xl shadow p-6">
-            <h3 className="text-2xl font-bold mb-4">Équipements</h3>
-            <div className="flex flex-wrap gap-3">
-              {equipmentList.map(eq =>
-                equipments[eq.key] && (
-                  <span
-                    key={eq.key}
-                    className={`flex items-center gap-2 px-1 pr-3 py-1 ${eq.bg} ${eq.text} rounded-full text-sm`}
-                  >
-                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow">
-                      {eq.icon}
-                    </span>
-                    {eq.label}
-                  </span>
-                )
-              )}
+          {/* Nouveau design promoteur compact */}
+          <div className="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center border border-gray-100">
+            <img
+              src="/appart.png"
+              alt="Avatar promoteur"
+              className="w-16 h-16 rounded-full object-cover border-2 border-green-100 shadow mb-3"
+            />
+            <div className="text-lg font-bold text-gray-900 mb-4 text-center">{project.promoter_first_name || ""} {project.promoter_last_name || "Non renseigné"}</div>
+            <div className="w-full flex flex-col gap-3">
+              {/* Email */}
+              <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
+                <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
+                  <FiMail className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <div className="font-semibold text-base text-gray-900">Email</div>
+                  <div className="text-gray-700 text-sm">{project.promoter_email || "Non renseigné"}</div>
+                </div>
+              </div>
+              {/* Téléphone */}
+              <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
+                <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
+                  <FiPhone className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <div className="font-semibold text-base text-gray-900">Téléphone</div>
+                  <div className="text-gray-700 text-sm">{project.promoter_phone || "Non renseigné"}</div>
+                </div>
+              </div>
+              {/* Langues */}
+              <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
+                <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
+                  <FaLanguage className="h-5 w-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="font-semibold text-base text-gray-900">Langues parlées</div>
+                  {renderLanguages(project.promoter_languages)}
+                </div>
+              </div>
+              {/* Site web */}
+              <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
+                <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
+                  <FiGlobe className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <div className="font-semibold text-base text-gray-900">Site web</div>
+                  {project.link ? (
+                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800 transition-colors text-sm">
+                      {project.link}
+                    </a>
+                  ) : (
+                    <div className="text-gray-700 text-sm">Non renseigné</div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
