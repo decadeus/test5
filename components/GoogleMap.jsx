@@ -43,7 +43,7 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
 
   // Calculer le centre de la carte basé sur les appartements
   const mapCenter = useMemo(() => {
-    if (apartments.length === 0) return defaultCenter;
+    if (!Array.isArray(apartments) || apartments.length === 0) return defaultCenter;
     
     const validApartments = apartments.filter(apt => 
       apt.lat && apt.lng && 
@@ -132,7 +132,7 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
           ]
         }}
       >
-        {apartments
+        {(apartments || [])
           .filter(apt => 
             apt.lat && apt.lng && 
             !isNaN(parseFloat(apt.lat)) && !isNaN(parseFloat(apt.lng)) &&

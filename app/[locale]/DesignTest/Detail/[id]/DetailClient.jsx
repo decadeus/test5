@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import Swim from '@/components/svg/swim';
@@ -65,9 +65,38 @@ export default function DetailClient({ project, locale }) {
   const [projectDescription, setProjectDescription] = useState('');
   const [communityAmenities, setCommunityAmenities] = useState('');
   const supabase = createClient();
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [transitionEnabled, setTransitionEnabled] = useState(true);
+  const containerRef = useRef(null);
+  const sliderRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(600);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % images.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + images.length) % images.length);
+  // Mesure dynamique du conteneur
+  useEffect(() => {
+    const handleResize = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth || 600);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Dimensions
+  const slideWidth = containerWidth * 0.7;
+  const gap = 24;
+  const padding = (containerWidth - slideWidth) / 2;
+  const trackWidth = images.length * (slideWidth + gap);
+  const translateX = -currentSlide * (slideWidth + gap);
+
+  // Navigation
+  const prevSlide = () => {
+    if (currentSlide > 0) setCurrentSlide((prev) => prev - 1);
+  };
+  const nextSlide = () => {
+    if (currentSlide < images.length - 1) setCurrentSlide((prev) => prev + 1);
+  };
 
   const sortData = (data, key) => {
     let direction = 'ascending';
@@ -235,7 +264,7 @@ export default function DetailClient({ project, locale }) {
   return (
     <div className="bg-green-100/10 min-h-screen w-full">
       <div
-        className="w-full h-[400px] mb-8 shadow-md flex justify-center items-center relative"
+        className="w-full h-[340px] mb-8 shadow-md flex justify-center items-center relative"
         style={{
           backgroundImage: "url(/appart.png)",
           backgroundSize: "cover",
@@ -249,45 +278,56 @@ export default function DetailClient({ project, locale }) {
           <h2 className="text-xl text-black mb-2">{project.city}</h2>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-4 mb-4">
+      <div className="max-w-7xl mx-auto px-4 mb-8">
         {loading ? (
-          <div className="flex justify-center items-center h-[320px]">
+          <div className="flex justify-center items-center h-[220px]">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
           </div>
         ) : images.length > 0 ? (
-          <div className="relative w-full h-[720px] md:h-[400px] overflow-hidden rounded-2xl shadow-lg bg-white">
-            {/* Slider track */}
-            <div
-              className="flex transition-transform duration-700 ease-in-out h-full"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {images.map((image, index) => (
-                <div key={index} className="min-w-full h-full flex items-center justify-center">
-                  <img
-                    src={image}
-                    alt={`${project[`name_${locale}`] || project.name} - Image ${index + 1}`}
-                    className="object-cover w-full h-full rounded-2xl select-none"
-                    draggable="false"
-                  />
-                </div>
-              ))}
+          <div className="max-w-3xl w-full mx-auto">
+            <div className="relative w-full h-[340px] flex items-center justify-center">
+              {/* Image courante */}
+              <div className="w-full h-full flex items-center justify-center">
+                <img
+                  src={images[currentSlide]}
+                  alt={`${project[`name_${locale}`] || project.name} - Image ${currentSlide + 1}`}
+                  className="object-cover w-full h-full rounded-2xl select-none border-2 border-white shadow-lg"
+                  draggable="false"
+                />
+              </div>
+              {/* Flèches de navigation slider */}
+              {images.length > 1 && (
+                <>
+                  <button
+                    onClick={() => setCurrentSlide((prev) => Math.max(prev - 1, 0))}
+                    disabled={currentSlide === 0}
+                    className={`absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-20 ${currentSlide === 0 ? 'opacity-40 cursor-not-allowed' : ''}`}
+                  >
+                    ◀
+                  </button>
+                  <button
+                    onClick={() => setCurrentSlide((prev) => Math.min(prev + 1, images.length - 1))}
+                    disabled={currentSlide === images.length - 1}
+                    className={`absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-20 ${currentSlide === images.length - 1 ? 'opacity-40 cursor-not-allowed' : ''}`}
+                  >
+                    ▶
+                  </button>
+                </>
+              )}
             </div>
-            {/* Flèches de navigation slider */}
+            {/* Pagination X/Y */}
             {images.length > 1 && (
-              <>
-                <button onClick={prevSlide} className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-10">
-                  ◀
-                </button>
-                <button onClick={nextSlide} className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-10">
-                  ▶
-                </button>
-              </>
+              <div className="flex items-center justify-center gap-2 mt-4">
+                <span className="text-lg font-semibold text-blue-800">{currentSlide + 1}</span>
+                <span className="text-gray-400">/</span>
+                <span className="text-gray-400">{images.length}</span>
+              </div>
             )}
           </div>
         ) : null}
       </div>
       {/* Nouveau layout deux colonnes : texte à gauche, carte+promoteur à droite */}
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 mb-12">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 mb-8">
         {/* Colonne gauche : texte */}
         <div className="w-full md:w-1/2 flex flex-col gap-8">
           <div className="bg-white rounded-xl shadow p-6">
@@ -296,9 +336,9 @@ export default function DetailClient({ project, locale }) {
           </div>
           <div className="bg-white rounded-xl shadow p-6">
             <h3 className="text-2xl font-bold mb-4">Équipements communautaires</h3>
-            <p className="text-gray-700 whitespace-pre-line">{communityAmenities}</p>
+            <p className="text-gray-700 whitespace-pre-line mb-3">{communityAmenities}</p>
             {/* Badges équipements */}
-            <div className="flex flex-wrap gap-3 mt-4">
+            <div className="flex flex-wrap gap-2 mt-2">
               {equipmentList.map(eq =>
                 equipments[eq.key] && (
                   <span
@@ -332,7 +372,7 @@ export default function DetailClient({ project, locale }) {
             )}
           </div>
           {/* Nouveau design promoteur compact */}
-          <div className="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center border border-gray-100">
+          <div className="bg-white rounded-xl shadow p-4 flex flex-col items-center border border-gray-100">
             <img
               src="/appart.png"
               alt="Avatar promoteur"
@@ -391,7 +431,7 @@ export default function DetailClient({ project, locale }) {
         </div>
       </div>
       {/* Tableau des lots */}
-      <div className="max-w-6xl mx-auto bg-white rounded-xl shadow p-8 mb-8">
+      <div className="max-w-6xl mx-auto bg-white rounded-xl shadow p-6 mb-8">
         <h3 className="text-2xl font-bold mb-4">Lots disponibles</h3>
         <div className="overflow-x-auto">
           <table className="min-w-full border border-gray-200">
@@ -414,8 +454,12 @@ export default function DetailClient({ project, locale }) {
                   <td className="text-center py-2">{lot.bed}</td>
                   <td className="text-center py-2">{lot.floor}</td>
                   <td className="text-center py-2">{lot.surface} m²</td>
-                  <td className="text-center py-2">{lot.garden ? "Oui" : "Non"}</td>
-                  <td className="text-center py-2">{lot.rooftop ? "Oui" : "Non"}</td>
+                  <td className="text-center py-2">
+                    {lot.garden ? "🌸" : ""}
+                  </td>
+                  <td className="text-center py-2">
+                    {lot.rooftop ? "🏙️" : ""}
+                  </td>
                   <td className="text-center py-2">{formatPrice(lot.price)}</td>
                   <td className="text-center py-2">{lot.des}</td>
                 </tr>

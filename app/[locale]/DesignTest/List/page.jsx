@@ -145,22 +145,20 @@ function ApartmentCard({
           <img
             src={(projectImages[apt.id] && projectImages[apt.id].length > 0 ? projectImages[apt.id] : ["/components/image/placeholder.jpg"])[currentImageIndexes[apt.id] || 0]}
             alt={apt.title}
-            className={`w-full h-48 sm:h-40 object-cover rounded-t-lg group-hover:scale-105 transition-transform duration-300 img-fade ${isChangingImage[apt.id] ? 'opacity-0' : 'opacity-100'}`}
+            className={`w-full h-72 sm:h-64 object-cover rounded-t-lg group-hover:scale-105 transition-transform duration-300 img-fade ${isChangingImage[apt.id] ? 'opacity-0' : 'opacity-100'}`}
           />
         </div>
         {/* Séparateur */}
         <div className="w-full h-px bg-gradient-to-r from-green-700 via-gray-200 to-green-200 my-1" />
       </div>
       <div className="p-3 sm:p-4 flex flex-col w-full relative group h-full">
-        <div className="flex flex-row justify-between">
-          <h2 className="text-base sm:text-lg font-semibold mb-2">
-            {highlight(apt.title, debouncedSearchTerm)}
-          </h2>
-          <p className="text-xs sm:text-sm font-semibold">{apt.city}</p>
+        <div className="flex flex-row items-center justify-between mb-2 gap-2">
+          <span className="text-xs sm:text-sm font-semibold text-gray-700 w-1/4 text-left truncate">{apt.city}</span>
+          <h2 className="flex-1 text-center text-base sm:text-lg font-semibold">{highlight(apt.title, debouncedSearchTerm)}</h2>
+          <span className="text-xs sm:text-sm font-semibold text-gray-700 w-1/4 text-right truncate">{apt.compagny}</span>
         </div>
-        {/* Affichage des lots du projet */}
         {/* Version mobile : cartes empilées */}
-        <div className="sm:hidden flex flex-col gap-2">
+        <div className="sm:hidden flex flex-col gap-2 mb-4">
           {(showAllLots === apt.id ? filterProjectListByRange(apt.projectlist) : filterProjectListByRange(apt.projectlist).slice(0, 3)).map((lot, idx) => (
             <div key={lot.ref || idx} className="bg-white rounded-lg shadow p-2 flex items-center justify-between">
               <span>🛏 {lot.bed}</span>
@@ -178,43 +176,48 @@ function ApartmentCard({
           )}
         </div>
         {/* Version desktop : tableau */}
-        <div className="hidden sm:block mb-2 overflow-x-auto">
-          <table className="w-full text-xs text-gray-700 text-center rounded-lg shadow border border-green-100 overflow-hidden">
-            <thead>
-              <tr className="bg-green-200/80 text-red-700 text-sm sm:text-base">
-                <th className="w-8 font-normal">🛏</th>
-                <th className="w-8 font-normal">🏢</th>
-                <th className="w-8 font-normal">📐</th>
-                <th className="w-8 font-normal">🌸</th>
-                <th className="w-8 font-normal">🏙️</th>
-                <th className="w-24 font-normal text-center">💶</th>
-                <th className="font-normal">ℹ️</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(showAllLots === apt.id ? filterProjectListByRange(apt.projectlist) : filterProjectListByRange(apt.projectlist).slice(0, 3)).map((lot, idx) => (
-                <tr key={lot.ref || idx} className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-100"} hover:bg-green-100 transition`}>
-                  <td className="w-8 font-semibold">{lot.bed}</td>
-                  <td className="w-8">{lot.floor}</td>
-                  <td className="w-8">{lot.surface}</td>
-                  <td className="w-8">{!!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false' ? "🌸" : ""}</td>
-                  <td className="w-8">{!!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false' ? "🏙️" : ""}</td>
-                  <td className="w-24 text-right font-semibold">{formatPrice(lot.price)}</td>
-                  <td className="pl-2 sm:pl-4 text-left text-black max-w-[120px] font-semibold truncate">{lot.des || ""}</td>
-                </tr>
-              ))}
-              {filterProjectListByRange(apt.projectlist).length > 3 && showAllLots !== apt.id && (
-                <tr>
-                  <td colSpan={7} className="text-xl sm:text-2xl text-gray-700 font-extrabold text-center cursor-pointer" onClick={() => setShowAllLots(apt.id)}>...</td>
-                </tr>
-              )}
-              {showAllLots === apt.id && (
-                <tr>
-                  <td colSpan={7} className="text-xs text-green-600 text-center cursor-pointer" onClick={() => setShowAllLots(null)}>{t('Réduire')}</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+        <div className="hidden sm:block mb-2">
+          <div className="bg-white rounded-xl shadow p-6">
+            <h3 className="text-2xl font-bold mb-4">Lots disponibles</h3>
+            <div className="overflow-x-auto">
+              <table className="min-w-full border border-gray-200">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="w-20 text-center font-normal">Chambres</th>
+                    <th className="w-20 text-center font-normal">Étage</th>
+                    <th className="w-28 text-center font-normal">Surface</th>
+                    <th className="w-20 text-center font-normal">Jardin</th>
+                    <th className="w-24 text-center font-normal">Rooftop</th>
+                    <th className="w-32 text-center font-normal">Prix</th>
+                    <th className="min-w-[180px] text-center font-normal">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(showAllLots === apt.id ? filterProjectListByRange(apt.projectlist) : filterProjectListByRange(apt.projectlist).slice(0, 3)).map((lot, idx) => (
+                    <tr key={lot.ref || idx} className="border-t">
+                      <td className="text-center py-2 w-20">{lot.bed}</td>
+                      <td className="text-center py-2 w-20">{lot.floor}</td>
+                      <td className="text-center py-2 w-28">{lot.surface} m²</td>
+                      <td className="text-center py-2 w-20">{!!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false' ? "🌸" : ""}</td>
+                      <td className="text-center py-2 w-24">{!!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false' ? "🏙️" : ""}</td>
+                      <td className="text-center py-2 w-32">{formatPrice(lot.price)}</td>
+                      <td className="text-left pl-4 py-2 min-w-[180px]">{lot.des || ""}</td>
+                    </tr>
+                  ))}
+                  {filterProjectListByRange(apt.projectlist).length > 3 && showAllLots !== apt.id && (
+                    <tr>
+                      <td colSpan={7} className="text-xl sm:text-2xl text-gray-700 font-extrabold text-center cursor-pointer" onClick={() => setShowAllLots(apt.id)}>...</td>
+                    </tr>
+                  )}
+                  {showAllLots === apt.id && (
+                    <tr>
+                      <td colSpan={7} className="text-xs text-green-600 text-center cursor-pointer" onClick={() => setShowAllLots(null)}>{t('Réduire')}</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
         <Link href={`/${locale}/DesignTest/Detail/${apt.id}`} className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20 flex items-center justify-center" tabIndex={0} aria-label={t('Voir le détail du projet')}>
           <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-600 rounded-full hover:bg-green-700 transition-transform duration-300 transform hover:rotate-90 flex items-center justify-center">
@@ -758,9 +761,9 @@ export default function ApartmentList() {
                 />
               </div>
             </div>
-            <div className="hidden sm:flex flex-col gap-4 justify-center items-center w-full max-w-5xl mx-auto px-4">
+            {/* Sliders en colonne sur mobile, en ligne sur desktop */}
+            <div className="hidden sm:flex flex-col gap-4 justify-center items-center w-full max-w-5xl mx-auto px-4 mb-6">
               <div className="w-full flex flex-col sm:flex-row gap-4 sm:gap-16 justify-center items-stretch max-w-5xl mx-auto">
-                {/* Sliders en colonne sur mobile, en ligne sur desktop */}
                 <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 flex-1">
                   {/* Price Slider */}
                   <div className="flex flex-col items-center w-full sm:w-80">
@@ -905,24 +908,6 @@ export default function ApartmentList() {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 mt-2 w-full justify-start">
-                <button
-                  onClick={() => setOnlyGarden((v) => !v)}
-                  aria-pressed={onlyGarden}
-                  className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border-2 border-black font-semibold transition-colors duration-200 w-full sm:w-auto text-sm sm:text-base ${onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
-                >
-                  <span>{t("AvecJardin")}</span>
-                  <span>🌸</span>
-                </button>
-                <button
-                  onClick={() => setOnlyRooftop((v) => !v)}
-                  aria-pressed={onlyRooftop}
-                  className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border-2 border-black font-semibold transition-colors duration-200 w-full sm:w-auto text-sm sm:text-base ${onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
-                >
-                  <span>{t("Rooftop")}</span>
-                  <span>🏙️</span>
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -1019,7 +1004,7 @@ export default function ApartmentList() {
 
             {/* Grille des appartements avec animation d'apparition */}
             {viewMode === 'list' ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 fade-in">
+              <div className="grid grid-cols-1 gap-4 sm:gap-6 fade-in">
                 {paginatedApartments.length === 0 ? (
                   <p className="text-center text-gray-500 col-span-full">
                     {t("Aucun résultat")}
