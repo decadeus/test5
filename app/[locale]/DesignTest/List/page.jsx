@@ -66,7 +66,8 @@ function ApartmentCard({
   showAllLots,
   setShowAllLots,
   locale,
-  tGlobal
+  tGlobal,
+  showLotsTable
 }) {
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => handleNextImage(apt.id, (projectImages[apt.id]||[]).length),
@@ -75,158 +76,53 @@ function ApartmentCard({
   return (
     <div
       key={apt.id}
-      className="bg-white/80 backdrop-blur-sm border-1 border-white text-gray-900 shadow-md rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full relative group card fade-in"
+      className="bg-white/90 border border-gray-200 text-gray-900 shadow-sm rounded-3xl overflow-hidden hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-full relative group card fade-in min-w-[300px] max-w-xs w-full p-0"
+      style={{ minHeight: 340 }}
     >
-      {/* Badge nombre de lots */}
-      <span className="absolute top-2 left-2 bg-green-600 text-white text-xs px-2 py-1 rounded-full shadow z-30">
-        {filterProjectListByRange(apt.projectlist).length} {tGlobal(filterProjectListByRange(apt.projectlist).length > 1 ? 'Appartements' : 'Appartement')}
-      </span>
-      <div className="w-full flex flex-col gap-2 relative">
-        <div className="relative overflow-hidden" {...swipeHandlers}>
-          {/* Badges jardin/rooftop sur la photo */}
-          <div className="absolute top-2 right-2 flex gap-2 z-20">
-            {apt.projectlist.some(lot => !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false') && (
-              <span className="bg-green-100 border border-green-400 text-green-700 rounded-full px-2 py-1 text-xs shadow">🌸 {t("jardin")}</span>
-            )}
-            {apt.projectlist.some(lot => !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false') && (
-              <span className="bg-blue-100 border border-blue-400 text-blue-700 rounded-full px-2 py-1 text-xs shadow">🏙️ {t("rooftop")}</span>
-            )}
-          </div>
-          {/* Navigation images avec fondu */}
-          {projectImages[apt.id] && projectImages[apt.id].length > 1 && (
-            <>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsChangingImage(prev => ({...prev, [apt.id]: true}));
-                  setTimeout(() => {
-                    handlePrevImage(apt.id, projectImages[apt.id].length);
-                    setIsChangingImage(prev => ({...prev, [apt.id]: false}));
-                  }, 200);
-                }}
-                className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-green-600 hover:text-white text-green-700 shadow-lg p-1.5 sm:p-2 rounded-full z-20 transition-colors border border-black"
-                aria-label={t("precedent")}
-                tabIndex={0}
-              >
-                <svg width="20" height="20" fill="none" stroke="black" strokeWidth="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-              </button>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsChangingImage(prev => ({...prev, [apt.id]: true}));
-                  setTimeout(() => {
-                    handleNextImage(apt.id, projectImages[apt.id].length);
-                    setIsChangingImage(prev => ({...prev, [apt.id]: false}));
-                  }, 200);
-                }}
-                className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-green-600 hover:text-white text-green-700 shadow-lg p-1.5 sm:p-2 rounded-full z-20 transition-colors border border-black"
-                aria-label={t("suivant")}
-                tabIndex={0}
-              >
-                <svg width="20" height="20" fill="none" stroke="black" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-              </button>
-              {/* Points de navigation */}
-              <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-2 z-20">
-                {projectImages[apt.id].map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      // setCurrentImageIndexes doit être passé en prop si on veut le modifier ici
-                    }}
-                    className={`w-3 h-3 rounded-full border-2 border-black transition-all duration-300 ${idx === (currentImageIndexes[apt.id] || 0) ? "bg-green-600 scale-125 shadow" : "bg-white/80"}`}
-                    aria-label={`${t("Aller à l'image")} ${idx + 1}`}
-                    tabIndex={0}
-                  />
-                ))}
-              </div>
-            </>
+      {/* Badges en haut */}
+      <div className="flex items-center justify-between px-4 pt-3 pb-1">
+        <span className="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">
+          {filterProjectListByRange(apt.projectlist).length} {tGlobal(filterProjectListByRange(apt.projectlist).length > 1 ? 'Appartements' : 'Appartement')}
+        </span>
+        <div className="flex gap-1">
+          {apt.projectlist.some(lot => !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false') && (
+            <span className="bg-green-100 border border-green-400 text-green-700 rounded-full px-2 py-0.5 text-xs font-bold">🌸 {t("jardin")}</span>
           )}
-          <img
-            src={(projectImages[apt.id] && projectImages[apt.id].length > 0 ? projectImages[apt.id] : ["/components/image/placeholder.jpg"])[currentImageIndexes[apt.id] || 0]}
-            alt={apt.title}
-            className={`w-full h-72 sm:h-64 object-cover rounded-t-lg group-hover:scale-105 transition-transform duration-300 img-fade ${isChangingImage[apt.id] ? 'opacity-0' : 'opacity-100'}`}
-          />
+          {apt.projectlist.some(lot => !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false') && (
+            <span className="bg-blue-100 border border-blue-400 text-blue-700 rounded-full px-2 py-0.5 text-xs font-bold">🏙️ {t("rooftop")}</span>
+          )}
         </div>
-        {/* Séparateur */}
-        <div className="w-full h-px bg-gradient-to-r from-green-700 via-gray-200 to-green-200 my-1" />
       </div>
-      <div className="p-3 sm:p-4 flex flex-col w-full relative group h-full">
-        <div className="flex flex-row items-center justify-between mb-2 gap-2">
-          <span className="text-xs sm:text-sm font-semibold text-gray-700 w-1/4 text-left truncate">{apt.city}</span>
-          <h2 className="flex-1 text-center text-base sm:text-lg font-semibold">{highlight(apt.title, debouncedSearchTerm)}</h2>
-          <span className="text-xs sm:text-sm font-semibold text-gray-700 w-1/4 text-right truncate">{apt.compagny}</span>
-        </div>
-        {/* Version mobile : cartes empilées */}
-        <div className="sm:hidden flex flex-col gap-2 mb-4">
-          {(showAllLots === apt.id ? filterProjectListByRange(apt.projectlist) : filterProjectListByRange(apt.projectlist).slice(0, 3)).map((lot, idx) => (
-            <div key={lot.ref || idx} className="bg-white rounded-lg shadow p-2 flex items-center justify-between">
-              <span>🛏 {lot.bed}</span>
-              <span>📐 {lot.surface}m²</span>
-              <span>💶 {formatPrice(lot.price)}</span>
-              {!!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false' && <span>🌸</span>}
-              {!!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false' && <span>🏙️</span>}
-            </div>
-          ))}
-          {filterProjectListByRange(apt.projectlist).length > 3 && showAllLots !== apt.id && (
-            <button onClick={() => setShowAllLots(apt.id)} className="text-green-600 underline text-xs mt-1">{t('Voir tous les lots')}</button>
-          )}
-          {showAllLots === apt.id && (
-            <button onClick={() => setShowAllLots(null)} className="text-green-600 underline text-xs mt-1">{t('Réduire')}</button>
-          )}
-        </div>
-        {/* Version desktop : tableau */}
-        <div className="hidden sm:block mb-2">
-          <div className="bg-white rounded-xl shadow p-6">
-            <h3 className="text-2xl font-bold mb-4">Lots disponibles</h3>
-            <div className="overflow-x-auto">
-              <table className="min-w-full border border-gray-200">
-                <thead>
-                  <tr className="bg-gray-100">
-                    <th className="w-20 text-center font-normal">Chambres</th>
-                    <th className="w-20 text-center font-normal">Étage</th>
-                    <th className="w-28 text-center font-normal">Surface</th>
-                    <th className="w-20 text-center font-normal">Jardin</th>
-                    <th className="w-24 text-center font-normal">Rooftop</th>
-                    <th className="w-32 text-center font-normal">Prix</th>
-                    <th className="min-w-[180px] text-center font-normal">Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(showAllLots === apt.id ? filterProjectListByRange(apt.projectlist) : filterProjectListByRange(apt.projectlist).slice(0, 3)).map((lot, idx) => (
-                    <tr key={lot.ref || idx} className="border-t">
-                      <td className="text-center py-2 w-20">{lot.bed}</td>
-                      <td className="text-center py-2 w-20">{lot.floor}</td>
-                      <td className="text-center py-2 w-28">{lot.surface} m²</td>
-                      <td className="text-center py-2 w-20">{!!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false' ? "🌸" : ""}</td>
-                      <td className="text-center py-2 w-24">{!!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false' ? "🏙️" : ""}</td>
-                      <td className="text-center py-2 w-32">{formatPrice(lot.price)}</td>
-                      <td className="text-left pl-4 py-2 min-w-[180px]">{lot.des || ""}</td>
-                    </tr>
-                  ))}
-                  {filterProjectListByRange(apt.projectlist).length > 3 && showAllLots !== apt.id && (
-                    <tr>
-                      <td colSpan={7} className="text-xl sm:text-2xl text-gray-700 font-extrabold text-center cursor-pointer" onClick={() => setShowAllLots(apt.id)}>...</td>
-                    </tr>
-                  )}
-                  {showAllLots === apt.id && (
-                    <tr>
-                      <td colSpan={7} className="text-xs text-green-600 text-center cursor-pointer" onClick={() => setShowAllLots(null)}>{t('Réduire')}</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <Link href={`/${locale}/DesignTest/Detail/${apt.id}`} className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20 flex items-center justify-center" tabIndex={0} aria-label={t('Voir le détail du projet')}>
-          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-600 rounded-full hover:bg-green-700 transition-transform duration-300 transform hover:rotate-90 flex items-center justify-center">
-            <PlusIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-          </div>
+      <div className="relative overflow-hidden rounded-t-3xl">
+        <img
+          src={(projectImages[apt.id] && projectImages[apt.id].length > 0 ? projectImages[apt.id] : ["/components/image/placeholder.jpg"])[currentImageIndexes[apt.id] || 0]}
+          alt={apt.title}
+          className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300 img-fade rounded-t-3xl"
+        />
+      </div>
+      {/* Ligne nom projet à gauche, promoteur à droite */}
+      <div className="flex flex-row items-center justify-between px-4 pt-3 pb-1">
+        <span className="text-base font-bold text-gray-900 truncate text-left max-w-[60%]">{highlight(apt.title, debouncedSearchTerm)}</span>
+        <span className="text-xs text-gray-500 font-medium text-right truncate max-w-[38%]">{apt.compagny && apt.compagny !== 'null' ? `by ${apt.compagny}` : ''}</span>
+      </div>
+      {/* Bouton détail discret en bas à droite */}
+      <div className="flex justify-end px-4 pb-3 mt-auto">
+        <Link href={`/${locale}/DesignTest/Detail/${apt.id}`} className="inline-flex items-center gap-1 bg-green-50 hover:bg-green-100 text-green-700 rounded-full px-3 py-1 transition-all duration-200 text-xs font-semibold border border-green-200">
+          {t('Voir le détail')}
+          <PlusIcon className="w-3 h-3" />
         </Link>
       </div>
     </div>
   );
+}
+
+// Fonction utilitaire pour regrouper les projets par ville
+function groupByCity(apartments) {
+  return apartments.reduce((acc, apt) => {
+    if (!acc[apt.city]) acc[apt.city] = [];
+    acc[apt.city].push(apt);
+    return acc;
+  }, {});
 }
 
 export default function ApartmentList() {
@@ -250,7 +146,7 @@ export default function ApartmentList() {
   const itemsPerPage = 8;
   const [showAllLots, setShowAllLots] = useState(null);
   const [isChangingImage, setIsChangingImage] = useState({});
-  const [viewMode, setViewMode] = useState('list'); // 'list' ou 'map'
+  const [viewMode, setViewMode] = useState('list');
   const router = useRouter();
   const params = useParams();
   const locale = params?.locale || 'fr';
@@ -912,158 +808,151 @@ export default function ApartmentList() {
           </div>
         </div>
 
-        <div className="min-h-screen">
-          <main className="max-w-6xl mx-auto px-4 py-8">
-            {/* Compteur de résultats */}
-            <div className="mb-6 text-center">
-              <p className="text-lg font-semibold text-gray-700">
-                {filteredApartments.length} {filteredApartments.length > 1 ? t("projets") : t("projet")} {t("trouvé")}{filteredApartments.length > 1 ? 's' : ''} • 
-                {filteredApartments.reduce((total, apt) => total + (filterProjectListByRange(apt.projectlist || []).length), 0)} {t("appartement")}{filteredApartments.reduce((total, apt) => total + (filterProjectListByRange(apt.projectlist || []).length), 0) > 1 ? 's' : ''} {t("disponible")}{filteredApartments.reduce((total, apt) => total + (filterProjectListByRange(apt.projectlist || []).length), 0) > 1 ? 's' : ''}
-              </p>
-            </div>
+        <div className="flex justify-center mb-8 mt-4">
+          <div className="bg-white rounded-full p-1 shadow-lg border-2 border-gray-200 flex gap-2">
+            <button
+              onClick={() => setViewMode('list')}
+              className={`px-6 py-2 rounded-full font-semibold transition-all duration-200 ${
+                viewMode === 'list'
+                  ? 'bg-green-600 text-white shadow-md'
+                  : 'bg-white text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              📋 Vue Liste
+            </button>
+            <button
+              onClick={() => setViewMode('map')}
+              className={`px-6 py-2 rounded-full font-semibold transition-all duration-200 ${
+                viewMode === 'map'
+                  ? 'bg-green-600 text-white shadow-md'
+                  : 'bg-white text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              🗺️ Vue Carte
+            </button>
+          </div>
+        </div>
 
-            {/* Boutons de basculement vue liste/carte */}
-            <div className="flex justify-center mb-6">
-              <div className="bg-white rounded-full p-1 shadow-lg border-2 border-gray-200">
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`px-6 py-2 rounded-full font-semibold transition-all duration-200 ${
-                    viewMode === 'list'
-                      ? 'bg-green-600 text-white shadow-md'
-                      : 'bg-white text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  📋 {t("Vue Liste")}
-                </button>
-                <button
-                  onClick={() => setViewMode('map')}
-                  className={`px-6 py-2 rounded-full font-semibold transition-all duration-200 ${
-                    viewMode === 'map'
-                      ? 'bg-green-600 text-white shadow-md'
-                      : 'bg-white text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  🗺️ {t("Vue Carte")} ({filteredApartments.filter(apt => 
-                    apt.lat && apt.lng && 
-                    !isNaN(parseFloat(apt.lat)) && !isNaN(parseFloat(apt.lng)) &&
-                    parseFloat(apt.lat) !== 0 && parseFloat(apt.lng) !== 0
-                  ).length})
-                </button>
-              </div>
-            </div>
-
-            {/* Sticky filters desktop */}
-            <div className="sticky top-0 z-20 bg-white/90 shadow-md py-2 fade-in">
-              {/* Filtres actifs (chips) */}
-              <div className="flex gap-2 my-2 px-4">
-                {selectedCity !== t('Tous') && (
-                  <span className="bg-green-100 border border-green-400 text-green-700 rounded-full px-3 py-1 text-xs flex items-center">
-                    {selectedCity}
-                    <button onClick={() => setSelectedCity(t('Tous'))} className="ml-2 text-red-500 font-bold" aria-label={t('Retirer filtre ville')}>×</button>
-                  </span>
-                )}
-                {searchTerm && (
-                  <span className="bg-blue-100 border border-blue-400 text-blue-700 rounded-full px-3 py-1 text-xs flex items-center">
-                    {searchTerm}
-                    <button onClick={() => setSearchTerm('')} className="ml-2 text-red-500 font-bold" aria-label={t('Retirer filtre recherche')}>×</button>
-                  </span>
-                )}
-                {/* Ajoute chips pour les autres filtres si actifs */}
-                {onlyGarden && (
-                  <span className="bg-green-200 border border-green-400 text-green-700 rounded-full px-3 py-1 text-xs flex items-center">
-                    {t('AvecJardin')}
-                    <button onClick={() => setOnlyGarden(false)} className="ml-2 text-red-500 font-bold" aria-label={t('Retirer filtre jardin')}>×</button>
-                  </span>
-                )}
-                {onlyRooftop && (
-                  <span className="bg-blue-200 border border-blue-400 text-blue-700 rounded-full px-3 py-1 text-xs flex items-center">
-                    {t('Rooftop')}
-                    <button onClick={() => setOnlyRooftop(false)} className="ml-2 text-red-500 font-bold" aria-label={t('Retirer filtre rooftop')}>×</button>
-                  </span>
-                )}
-                {(selectedCity !== t('Tous') || searchTerm || onlyGarden || onlyRooftop) && (
-                  <button onClick={resetFilters} className="bg-white border border-red-400 text-red-500 rounded-full px-3 py-1 text-xs ml-2" aria-label={t('Réinitialiser tous les filtres')}>{t('Réinitialiser')}</button>
-                )}
-              </div>
-              {/* Filtres inline desktop (déjà existant) */}
-              {/* ... */}
-            </div>
-
-            {/* Loader animé */}
-            {apartments.length === 0 && !error && (
-              <div className="flex justify-center items-center h-32">
-                <svg className="animate-spin h-8 w-8 text-green-600" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="4" fill="none"/></svg>
-              </div>
+        {/* Sticky filters desktop */}
+        <div className="sticky top-0 z-20 bg-white/90 shadow-md py-2 fade-in">
+          {/* Filtres actifs (chips) */}
+          <div className="flex gap-2 my-2 px-4">
+            {selectedCity !== t('Tous') && (
+              <span className="bg-green-100 border border-green-400 text-green-700 rounded-full px-3 py-1 text-xs flex items-center">
+                {selectedCity}
+                <button onClick={() => setSelectedCity(t('Tous'))} className="ml-2 text-red-500 font-bold" aria-label={t('Retirer filtre ville')}>×</button>
+              </span>
             )}
-            {/* Message d'erreur */}
-            {error && (
-              <div className="text-center text-red-600 font-semibold my-4">
-                {t('Erreur de chargement.')} <button onClick={() => window.location.reload()} className="underline">{t('Réessayer')}</button>
-              </div>
+            {searchTerm && (
+              <span className="bg-blue-100 border border-blue-400 text-blue-700 rounded-full px-3 py-1 text-xs flex items-center">
+                {searchTerm}
+                <button onClick={() => setSearchTerm('')} className="ml-2 text-red-500 font-bold" aria-label={t('Retirer filtre recherche')}>×</button>
+              </span>
             )}
+            {/* Ajoute chips pour les autres filtres si actifs */}
+            {onlyGarden && (
+              <span className="bg-green-200 border border-green-400 text-green-700 rounded-full px-3 py-1 text-xs flex items-center">
+                {t('AvecJardin')}
+                <button onClick={() => setOnlyGarden(false)} className="ml-2 text-red-500 font-bold" aria-label={t('Retirer filtre jardin')}>×</button>
+              </span>
+            )}
+            {onlyRooftop && (
+              <span className="bg-blue-200 border border-blue-400 text-blue-700 rounded-full px-3 py-1 text-xs flex items-center">
+                {t('Rooftop')}
+                <button onClick={() => setOnlyRooftop(false)} className="ml-2 text-red-500 font-bold" aria-label={t('Retirer filtre rooftop')}>×</button>
+              </span>
+            )}
+            {(selectedCity !== t('Tous') || searchTerm || onlyGarden || onlyRooftop) && (
+              <button onClick={resetFilters} className="bg-white border border-red-400 text-red-500 rounded-full px-3 py-1 text-xs ml-2" aria-label={t('Réinitialiser tous les filtres')}>{t('Réinitialiser')}</button>
+            )}
+          </div>
+          {/* Filtres inline desktop (déjà existant) */}
+          {/* ... */}
+        </div>
 
-            {/* Grille des appartements avec animation d'apparition */}
-            {viewMode === 'list' ? (
-              <div className="grid grid-cols-1 gap-4 sm:gap-6 fade-in">
-                {paginatedApartments.length === 0 ? (
+        {/* Loader animé */}
+        {apartments.length === 0 && !error && (
+          <div className="flex justify-center items-center h-32">
+            <svg className="animate-spin h-8 w-8 text-green-600" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="4" fill="none"/></svg>
+          </div>
+        )}
+        {/* Message d'erreur */}
+        {error && (
+          <div className="text-center text-red-600 font-semibold my-4">
+            {t('Erreur de chargement.')} <button onClick={() => window.location.reload()} className="underline">{t('Réessayer')}</button>
+          </div>
+        )}
+
+        {/* Grille des appartements avec animation d'apparition - remplacée par slider par ville */}
+        {viewMode === 'list' ? (
+          <div className="flex flex-col gap-8 fade-in max-w-7xl mx-auto">
+            {(() => {
+              // On groupe les appartements filtrés par ville
+              const grouped = groupByCity(filteredApartments);
+              const cityNames = Object.keys(grouped).sort();
+              if (cityNames.length === 0) {
+                return (
                   <p className="text-center text-gray-500 col-span-full">
                     {t("Aucun résultat")}
                   </p>
-                ) : (
-                  paginatedApartments.map((apt) => (
-                    <ApartmentCard
-                      key={apt.id}
-                      apt={apt}
-                      projectImages={projectImages}
-                      currentImageIndexes={currentImageIndexes}
-                      handleNextImage={handleNextImage}
-                      handlePrevImage={handlePrevImage}
-                      isChangingImage={isChangingImage}
-                      setIsChangingImage={setIsChangingImage}
-                      highlight={highlight}
-                      debouncedSearchTerm={debouncedSearchTerm}
-                      filterProjectListByRange={filterProjectListByRange}
-                      formatPrice={formatPrice}
-                      t={t}
-                      showAllLots={showAllLots}
-                      setShowAllLots={setShowAllLots}
-                      locale={locale}
-                      tGlobal={tGlobal}
-                    />
-                  ))
-                )}
-              </div>
-            ) : (
-              <div className="fade-in">
-                <GoogleMapComponent
-                  apartments={filteredApartments}
-                  projectImages={projectImages}
-                  currentImageIndexes={currentImageIndexes}
-                  locale={locale}
-                />
-              </div>
-            )}
+                );
+              }
+              return cityNames.map(city => (
+                <div key={city} className="bg-white rounded-3xl shadow-lg p-4 sm:p-6">
+                  <div className="flex items-center justify-center mb-4">
+                    <span className="text-2xl font-bold text-black">{city}</span>
+                  </div>
+                  <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-green-200 scrollbar-track-white">
+                    <div className="flex flex-row gap-4 min-w-[320px]">
+                      {grouped[city].map(apt => (
+                        <div key={apt.id} className="min-w-[320px] max-w-xs w-full">
+                          <ApartmentCard
+                            apt={apt}
+                            projectImages={projectImages}
+                            currentImageIndexes={currentImageIndexes}
+                            handleNextImage={handleNextImage}
+                            handlePrevImage={handlePrevImage}
+                            isChangingImage={isChangingImage}
+                            setIsChangingImage={setIsChangingImage}
+                            highlight={highlight}
+                            debouncedSearchTerm={debouncedSearchTerm}
+                            filterProjectListByRange={filterProjectListByRange}
+                            formatPrice={formatPrice}
+                            t={t}
+                            showAllLots={showAllLots}
+                            setShowAllLots={setShowAllLots}
+                            locale={locale}
+                            tGlobal={tGlobal}
+                            showLotsTable={false}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ));
+            })()}
+          </div>
+        ) : (
+          <div className="max-w-6xl mx-auto my-12">
+            <GoogleMapComponent
+              apartments={filteredApartments}
+              projectImages={projectImages}
+              currentImageIndexes={currentImageIndexes}
+              locale={locale}
+            />
+          </div>
+        )}
 
-            {/* Pagination en bas */}
-            {viewMode === 'list' && pageCount > 1 && (
-              <div className="flex justify-center my-4 gap-2">
-                {Array.from({length: pageCount}).map((_, i) => (
-                  <button key={i} onClick={() => setCurrentPage(i+1)} className={`px-3 py-1 rounded-full border-2 ${currentPage === i+1 ? 'bg-green-600 text-white border-green-600' : 'bg-white text-green-600 border-green-600'}`}>{i+1}</button>
-                ))}
-              </div>
-            )}
-
-            {/* Bouton flottant filtres mobile */}
-            <button
-              className="fixed bottom-6 right-6 bg-green-600 text-white rounded-full shadow-lg p-4 z-50 block sm:hidden focus:outline-green-600"
-              onClick={() => setShowFilters(true)}
-              aria-label={t('Ouvrir les filtres')}
-              tabIndex={0}
-            >
-              <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-            </button>
-          </main>
-        </div>
+        {/* Bouton flottant filtres mobile */}
+        <button
+          className="fixed bottom-6  right-6 bg-green-600 text-white rounded-full shadow-lg p-4 z-50 block sm:hidden focus:outline-green-600"
+          onClick={() => setShowFilters(true)}
+          aria-label={t('Ouvrir les filtres')}
+          tabIndex={0}
+        >
+          <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+        </button>
       </div>
 
       {/* Styles pour focus visible, fade-in, img-fade */}
