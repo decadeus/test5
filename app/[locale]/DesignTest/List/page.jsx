@@ -76,37 +76,37 @@ function ApartmentCard({
   return (
     <div
       key={apt.id}
-      className="bg-white/90 border border-gray-200 text-gray-900 shadow-sm rounded-3xl overflow-hidden hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-full relative group card fade-in min-w-[300px] max-w-xs w-full p-0"
-      style={{ minHeight: 340 }}
+      className="bg-white/90 border border-gray-200 text-gray-900 shadow-sm rounded-3xl overflow-hidden hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 flex flex-col relative group card fade-in min-w-[340px] max-w-sm w-full p-0"
+      style={{ minHeight: 220 }}
     >
       {/* Badges en haut */}
       <div className="flex items-center justify-between px-4 pt-3 pb-1">
-        <span className="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">
+        <span className="bg-green-600 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">
           {filterProjectListByRange(apt.projectlist).length} {tGlobal(filterProjectListByRange(apt.projectlist).length > 1 ? 'Appartements' : 'Appartement')}
         </span>
         <div className="flex gap-1">
           {apt.projectlist.some(lot => !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false') && (
-            <span className="bg-green-100 border border-green-400 text-green-700 rounded-full px-2 py-0.5 text-xs font-bold">🌸 {t("jardin")}</span>
+            <span className="bg-green-100 border border-green-400 text-green-700 rounded-full px-2 py-0.5 text-[10px] font-bold">🌸 {t("jardin")}</span>
           )}
           {apt.projectlist.some(lot => !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false') && (
-            <span className="bg-blue-100 border border-blue-400 text-blue-700 rounded-full px-2 py-0.5 text-xs font-bold">🏙️ {t("rooftop")}</span>
+            <span className="bg-blue-100 border border-blue-400 text-blue-700 rounded-full px-2 py-0.5 text-[10px] font-bold">🏙️ {t("rooftop")}</span>
           )}
         </div>
       </div>
-      <div className="relative overflow-hidden rounded-t-3xl">
+      <div className="relative overflow-hidden">
         <img
           src={(projectImages[apt.id] && projectImages[apt.id].length > 0 ? projectImages[apt.id] : ["/components/image/placeholder.jpg"])[currentImageIndexes[apt.id] || 0]}
           alt={apt.title}
-          className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300 img-fade rounded-t-3xl"
+          className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300 img-fade"
         />
       </div>
       {/* Ligne nom projet à gauche, promoteur à droite */}
-      <div className="flex flex-row items-center justify-between px-4 pt-3 pb-1">
+      <div className="flex flex-row items-center justify-between px-4 pt-2 pb-1">
         <span className="text-base font-bold text-gray-900 truncate text-left max-w-[60%]">{highlight(apt.title, debouncedSearchTerm)}</span>
-        <span className="text-xs text-gray-500 font-medium text-right truncate max-w-[38%]">{apt.compagny && apt.compagny !== 'null' ? `by ${apt.compagny}` : ''}</span>
+        <span className="text-xs text-gray-500 font-medium text-right truncate max-w-[38%]">by {apt.compagny && apt.compagny !== 'null' ? apt.compagny : '-'}</span>
       </div>
       {/* Bouton détail discret en bas à droite */}
-      <div className="flex justify-end px-4 pb-3 mt-auto">
+      <div className="flex justify-end px-4 pb-2">
         <Link href={`/${locale}/DesignTest/Detail/${apt.id}`} className="inline-flex items-center gap-1 bg-green-50 hover:bg-green-100 text-green-700 rounded-full px-3 py-1 transition-all duration-200 text-xs font-semibold border border-green-200">
           {t('Voir le détail')}
           <PlusIcon className="w-3 h-3" />
@@ -332,6 +332,9 @@ export default function ApartmentList() {
     const matchesRange = hasProjectListInRange(a);
     return matchesCity && matchesSearch && matchesRange;
   });
+
+  // Pour la carte : on veut tous les projets de la ville sélectionnée, sans filtrer sur les lots
+  const apartmentsForMap = apartments.filter(a => selectedCity === t('Tous') || a.city === selectedCity);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -836,37 +839,6 @@ export default function ApartmentList() {
         {/* Sticky filters desktop */}
         <div className="sticky top-0 z-20 bg-white/90 shadow-md py-2 fade-in">
           {/* Filtres actifs (chips) */}
-          <div className="flex gap-2 my-2 px-4">
-            {selectedCity !== t('Tous') && (
-              <span className="bg-green-100 border border-green-400 text-green-700 rounded-full px-3 py-1 text-xs flex items-center">
-                {selectedCity}
-                <button onClick={() => setSelectedCity(t('Tous'))} className="ml-2 text-red-500 font-bold" aria-label={t('Retirer filtre ville')}>×</button>
-              </span>
-            )}
-            {searchTerm && (
-              <span className="bg-blue-100 border border-blue-400 text-blue-700 rounded-full px-3 py-1 text-xs flex items-center">
-                {searchTerm}
-                <button onClick={() => setSearchTerm('')} className="ml-2 text-red-500 font-bold" aria-label={t('Retirer filtre recherche')}>×</button>
-              </span>
-            )}
-            {/* Ajoute chips pour les autres filtres si actifs */}
-            {onlyGarden && (
-              <span className="bg-green-200 border border-green-400 text-green-700 rounded-full px-3 py-1 text-xs flex items-center">
-                {t('AvecJardin')}
-                <button onClick={() => setOnlyGarden(false)} className="ml-2 text-red-500 font-bold" aria-label={t('Retirer filtre jardin')}>×</button>
-              </span>
-            )}
-            {onlyRooftop && (
-              <span className="bg-blue-200 border border-blue-400 text-blue-700 rounded-full px-3 py-1 text-xs flex items-center">
-                {t('Rooftop')}
-                <button onClick={() => setOnlyRooftop(false)} className="ml-2 text-red-500 font-bold" aria-label={t('Retirer filtre rooftop')}>×</button>
-              </span>
-            )}
-            {(selectedCity !== t('Tous') || searchTerm || onlyGarden || onlyRooftop) && (
-              <button onClick={resetFilters} className="bg-white border border-red-400 text-red-500 rounded-full px-3 py-1 text-xs ml-2" aria-label={t('Réinitialiser tous les filtres')}>{t('Réinitialiser')}</button>
-            )}
-          </div>
-          {/* Filtres inline desktop (déjà existant) */}
           {/* ... */}
         </div>
 
@@ -898,12 +870,12 @@ export default function ApartmentList() {
                 );
               }
               return cityNames.map(city => (
-                <div key={city} className="bg-white rounded-3xl shadow-lg p-4 sm:p-6">
+                <div key={city} className="bg-white rounded-3xl shadow-sm p-4 sm:p-6">
                   <div className="flex items-center justify-center mb-4">
                     <span className="text-2xl font-bold text-black">{city}</span>
                   </div>
                   <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-green-200 scrollbar-track-white">
-                    <div className="flex flex-row gap-4 min-w-[320px]">
+                    <div className="flex flex-row gap-12 min-w-[340px]">
                       {grouped[city].map(apt => (
                         <div key={apt.id} className="min-w-[320px] max-w-xs w-full">
                           <ApartmentCard
@@ -936,7 +908,7 @@ export default function ApartmentList() {
         ) : (
           <div className="max-w-6xl mx-auto my-12">
             <GoogleMapComponent
-              apartments={filteredApartments}
+              apartments={apartmentsForMap}
               projectImages={projectImages}
               currentImageIndexes={currentImageIndexes}
               locale={locale}

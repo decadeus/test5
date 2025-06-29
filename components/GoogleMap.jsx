@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
 import Link from 'next/link';
 import { useTranslations } from "next-intl";
@@ -76,6 +76,25 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
     const prices = projectlist.map(lot => parseFloat(lot.price)).filter(price => !isNaN(price));
     return prices.length > 0 ? Math.min(...prices) : null;
   };
+
+  // Fit bounds automatique pour englober tous les repères
+  useEffect(() => {
+    if (!map || !Array.isArray(apartments)) return;
+    const valid = apartments.filter(apt =>
+      apt.lat && apt.lng &&
+      !isNaN(parseFloat(apt.lat)) && !isNaN(parseFloat(apt.lng)) &&
+      parseFloat(apt.lat) !== 0 && parseFloat(apt.lng) !== 0
+    );
+    if (valid.length === 0) return;
+    if (valid.length === 1) {
+      map.setCenter({ lat: parseFloat(valid[0].lat), lng: parseFloat(valid[0].lng) });
+      map.setZoom(13);
+      return;
+    }
+    const bounds = new window.google.maps.LatLngBounds();
+    valid.forEach(apt => bounds.extend({ lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) }));
+    map.fitBounds(bounds);
+  }, [map, apartments]);
 
   if (!isApiKeyConfigured) {
     return (

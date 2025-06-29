@@ -47,14 +47,7 @@
         "Vue Carte": "Map View",
         "Réinitialiser": "Reset",
         "Ouvrir les filtres": "Open filters",
-        "Voir le détail du projet": "View project details",
-        "Réduire": "Reduce",
-        "Voir tous les lots": "View all lots",
-        "Appartements": "Apartments",
-        "Appartement": "Apartment",
-        "contact.title": "Contact us",
-        "contact.link": "Send an email",
-        "SearchPlaceholder": "Search for a new apartment in..."
+        "Voir le détail": "View details"
     },
     "Nav": {
         "Ajouter": "Add project",
