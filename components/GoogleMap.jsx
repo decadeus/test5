@@ -26,7 +26,8 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'YOUR_API_KEY_HERE'
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'YOUR_API_KEY_HERE',
+    libraries: ['places'],
   });
 
   // Vérifier si la clé API est configurée
