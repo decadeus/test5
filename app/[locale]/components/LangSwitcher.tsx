@@ -80,7 +80,7 @@ const LangSwitcher: React.FC = () => {
          
 
           {/* Desktop View */}
-          <div className="hidden lg:flex gap-2 items-center">
+          <div className="flex items-center gap-2">
             <FiGlobe color="black" size={18} />
             <p className="text-sm">{capitalize(currentLang)}</p>
           </div>

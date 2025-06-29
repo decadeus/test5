@@ -365,3 +365,10 @@
   transform-origin: center;
 }
 
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+

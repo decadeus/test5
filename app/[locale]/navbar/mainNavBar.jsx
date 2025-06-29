@@ -157,27 +157,33 @@ export default function MainNavBar({ user }) {
                   })}
                 </div>
 
-                {/* Sélecteur de langue mobile */}
+                {/* Sélecteur de langue mobile (dropdown) */}
                 <div className="mt-6 pt-6 border-t">
-                  <div className="space-y-2">
-                    {locales.map(lang => (
-                      <button
-                        key={lang.code}
-                        onClick={() => {
-                          handleLocaleChange(lang.code);
-                          setIsMobileMenuOpen(false);
-                        }}
-                        className={`w-full flex items-center gap-2 px-4 py-3 rounded-lg text-base font-medium ${
-                          lang.code === currentLocale
-                            ? "bg-green-700 text-white"
-                            : "text-gray-700 hover:bg-green-50 hover:text-green-700"
-                        }`}
-                      >
-                        <span className="text-xl">{lang.flag}</span>
-                        {lang.label}
-                      </button>
-                    ))}
-                  </div>
+                  <button
+                    className="w-full flex items-center gap-2 px-4 py-3 rounded-lg text-base font-medium bg-gray-100 hover:bg-gray-200 text-gray-800"
+                    onClick={() => setOpen(o => !o)}
+                  >
+                    <span className="text-xl">{currentLang.flag}</span>
+                    {currentLang.label}
+                    <svg className={`ml-auto w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                  </button>
+                  {open && (
+                    <div className="mt-2 space-y-2 bg-white rounded-lg shadow border">
+                      {otherLangs.map(lang => (
+                        <button
+                          key={lang.code}
+                          onClick={() => {
+                            handleLocaleChange(lang.code);
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="w-full flex items-center gap-2 px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:bg-green-50 hover:text-green-700"
+                        >
+                          <span className="text-xl">{lang.flag}</span>
+                          {lang.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Connexion/Utilisateur mobile */}

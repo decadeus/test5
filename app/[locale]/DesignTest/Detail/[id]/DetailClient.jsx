@@ -55,6 +55,68 @@ function renderLanguages(langs) {
   );
 }
 
+// PromoterCard component
+function PromoterCard({ project }) {
+  return (
+    <div className="bg-white rounded-xl shadow p-4 flex flex-col items-center border border-gray-100">
+      <img
+        src="/appart.png"
+        alt="Avatar promoteur"
+        className="w-16 h-16 rounded-full object-cover border-2 border-green-100 shadow mb-3"
+      />
+      <div className="text-lg font-bold text-gray-900 mb-4 text-center">{project.promoter_first_name || ""} {project.promoter_last_name || "Non renseigné"}</div>
+      <div className="w-full flex flex-col gap-3">
+        {/* Email */}
+        <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
+          <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
+            <FiMail className="h-5 w-5 text-white" />
+          </div>
+          <div>
+            <div className="font-semibold text-base text-gray-900">Email</div>
+            <div className="text-gray-700 text-sm">{project.promoter_email || "Non renseigné"}</div>
+          </div>
+        </div>
+        {/* Téléphone */}
+        <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
+          <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
+            <FiPhone className="h-5 w-5 text-white" />
+          </div>
+          <div>
+            <div className="font-semibold text-base text-gray-900">Téléphone</div>
+            <div className="text-gray-700 text-sm">{project.promoter_phone || "Non renseigné"}</div>
+          </div>
+        </div>
+        {/* Langues */}
+        <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
+          <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
+            <FaLanguage className="h-5 w-5 text-white" />
+          </div>
+          <div className="flex-1">
+            <div className="font-semibold text-base text-gray-900">Langues parlées</div>
+            {renderLanguages(project.promoter_languages)}
+          </div>
+        </div>
+        {/* Site web */}
+        <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
+          <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
+            <FiGlobe className="h-5 w-5 text-white" />
+          </div>
+          <div>
+            <div className="font-semibold text-base text-gray-900">Site web</div>
+            {project.link ? (
+              <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800 transition-colors text-sm">
+                {project.link}
+              </a>
+            ) : (
+              <div className="text-gray-700 text-sm">Non renseigné</div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function DetailClient({ project, locale }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [images, setImages] = useState([]);
@@ -70,6 +132,9 @@ export default function DetailClient({ project, locale }) {
   const containerRef = useRef(null);
   const sliderRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(600);
+  const [showPromoterModal, setShowPromoterModal] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalAnimation, setModalAnimation] = useState(false);
 
   // Mesure dynamique du conteneur
   useEffect(() => {
@@ -126,9 +191,9 @@ export default function DetailClient({ project, locale }) {
     setProjectList(sortedData);
   };
 
-  const SortableHeader = ({ label, sortKey }) => (
+  const SortableHeader = ({ label, sortKey, extraClass = "" }) => (
     <th 
-      className="w-8 font-normal cursor-pointer hover:bg-green-300/50 transition-colors"
+      className={`w-8 font-normal cursor-pointer hover:bg-green-300/50 transition-colors ${extraClass}`}
       onClick={() => sortData(projectList, sortKey)}
     >
       <div className="flex items-center justify-center gap-1">
@@ -259,6 +324,19 @@ export default function DetailClient({ project, locale }) {
     }
   }, [project, locale]);
 
+  // Gère l'ouverture animée du modal
+  useEffect(() => {
+    if (showPromoterModal) {
+      setModalVisible(true);
+      setTimeout(() => setModalAnimation(true), 10); // Laisse le temps au DOM d'afficher
+    } else if (modalVisible) {
+      setModalAnimation(false);
+      // Attend la fin de l'animation avant de retirer du DOM
+      const timeout = setTimeout(() => setModalVisible(false), 250);
+      return () => clearTimeout(timeout);
+    }
+  }, [showPromoterModal]);
+
   if (!project) return <p>Appartement introuvable</p>;
 
   return (
@@ -327,9 +405,9 @@ export default function DetailClient({ project, locale }) {
         ) : null}
       </div>
       {/* Nouveau layout deux colonnes : texte à gauche, carte+promoteur à droite */}
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 mb-8">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-12 mb-8">
         {/* Colonne gauche : texte */}
-        <div className="w-full md:w-1/2 flex flex-col gap-8">
+        <div className="w-full md:w-1/2 flex flex-col gap-8 px-8">
           <div className="bg-white rounded-xl shadow p-6">
             <h3 className="text-2xl font-bold mb-4">Description</h3>
             <p className="text-gray-700 whitespace-pre-line">{projectDescription}</p>
@@ -356,7 +434,7 @@ export default function DetailClient({ project, locale }) {
           </div>
         </div>
         {/* Colonne droite : carte + promoteur + équipements */}
-        <div className="w-full md:w-1/2 flex flex-col gap-8">
+        <div className="w-full md:w-1/2 flex flex-col gap-8 px-8">
           <div className="bg-white rounded-xl shadow p-6">
             <h3 className="text-2xl font-bold mb-4">Localisation du projet</h3>
             {isLoaded ? (
@@ -371,62 +449,9 @@ export default function DetailClient({ project, locale }) {
               <div>Chargement de la carte...</div>
             )}
           </div>
-          {/* Nouveau design promoteur compact */}
-          <div className="bg-white rounded-xl shadow p-4 flex flex-col items-center border border-gray-100">
-            <img
-              src="/appart.png"
-              alt="Avatar promoteur"
-              className="w-16 h-16 rounded-full object-cover border-2 border-green-100 shadow mb-3"
-            />
-            <div className="text-lg font-bold text-gray-900 mb-4 text-center">{project.promoter_first_name || ""} {project.promoter_last_name || "Non renseigné"}</div>
-            <div className="w-full flex flex-col gap-3">
-              {/* Email */}
-              <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
-                <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
-                  <FiMail className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <div className="font-semibold text-base text-gray-900">Email</div>
-                  <div className="text-gray-700 text-sm">{project.promoter_email || "Non renseigné"}</div>
-                </div>
-              </div>
-              {/* Téléphone */}
-              <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
-                <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
-                  <FiPhone className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <div className="font-semibold text-base text-gray-900">Téléphone</div>
-                  <div className="text-gray-700 text-sm">{project.promoter_phone || "Non renseigné"}</div>
-                </div>
-              </div>
-              {/* Langues */}
-              <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
-                <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
-                  <FaLanguage className="h-5 w-5 text-white" />
-                </div>
-                <div className="flex-1">
-                  <div className="font-semibold text-base text-gray-900">Langues parlées</div>
-                  {renderLanguages(project.promoter_languages)}
-                </div>
-              </div>
-              {/* Site web */}
-              <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
-                <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
-                  <FiGlobe className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <div className="font-semibold text-base text-gray-900">Site web</div>
-                  {project.link ? (
-                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800 transition-colors text-sm">
-                      {project.link}
-                    </a>
-                  ) : (
-                    <div className="text-gray-700 text-sm">Non renseigné</div>
-                  )}
-                </div>
-              </div>
-            </div>
+          {/* Promoteur visible seulement sur desktop */}
+          <div className="hidden md:block">
+            <PromoterCard project={project} />
           </div>
         </div>
       </div>
@@ -437,37 +462,66 @@ export default function DetailClient({ project, locale }) {
           <table className="min-w-full border border-gray-200">
             <thead>
               <tr className="bg-gray-100">
-                <SortableHeader label="Réf" sortKey="ref" />
-                <SortableHeader label="Chambres" sortKey="bed" />
-                <SortableHeader label="Étage" sortKey="floor" />
-                <SortableHeader label="Surface" sortKey="surface" />
-                <SortableHeader label="Jardin" sortKey="garden" />
-                <SortableHeader label="Rooftop" sortKey="rooftop" />
-                <SortableHeader label="Prix" sortKey="price" />
-                <th className="w-32 font-normal">Description</th>
+                <SortableHeader label="Chambres" sortKey="bed" extraClass="px-4" />
+                <SortableHeader label="Étage" sortKey="floor" extraClass="px-4" />
+                <SortableHeader label="Surface" sortKey="surface" extraClass="px-4" />
+                <SortableHeader label="Jardin" sortKey="garden" extraClass="px-4" />
+                <SortableHeader label="Rooftop" sortKey="rooftop" extraClass="px-4" />
+                <SortableHeader label="Prix (€)" sortKey="price" extraClass="px-4" />
+                <th className="w-32 font-normal px-4">Description</th>
               </tr>
             </thead>
             <tbody>
               {projectList.map((lot, idx) => (
                 <tr key={idx} className="border-t">
-                  <td className="text-center py-2">{lot.ref}</td>
-                  <td className="text-center py-2">{lot.bed}</td>
-                  <td className="text-center py-2">{lot.floor}</td>
-                  <td className="text-center py-2">{lot.surface} m²</td>
-                  <td className="text-center py-2">
+                  <td className="text-center py-2 px-4">{lot.bed}</td>
+                  <td className="text-center py-2 px-4">{lot.floor}</td>
+                  <td className="text-center py-2 px-4">{lot.surface} m²</td>
+                  <td className="text-center py-2 px-4">
                     {lot.garden ? "🌸" : ""}
                   </td>
-                  <td className="text-center py-2">
+                  <td className="text-center py-2 px-4">
                     {lot.rooftop ? "🏙️" : ""}
                   </td>
-                  <td className="text-center py-2">{formatPrice(lot.price)}</td>
-                  <td className="text-center py-2">{lot.des}</td>
+                  <td className="text-center py-2 px-4">
+                    {Number(lot.price)?.toLocaleString('fr-FR')}
+                  </td>
+                  <td className="text-center py-2 px-4">{lot.des}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
+      {/* Bouton flottant pour ouvrir la modal sur mobile */}
+      <button
+        className="fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-green-600 text-white rounded-tl-2xl rounded-bl-2xl shadow-lg px-3 py-4 flex flex-col items-center md:hidden hover:bg-green-700 transition-colors"
+        onClick={() => setShowPromoterModal(true)}
+        aria-label="Contact promoteur"
+      >
+        <span className="vertical-text text-xs">Contact promoteur</span>
+      </button>
+      {/* Modal promoteur sur mobile */}
+      {modalVisible && (
+        <div
+          className={`fixed inset-0 z-50 flex items-center justify-center md:hidden transition-opacity duration-300 ${modalAnimation ? 'opacity-100' : 'opacity-0'}`}
+          style={{ background: 'rgba(0,0,0,0.4)' }}
+        >
+          <div
+            className={`bg-white rounded-xl shadow-lg p-6 max-w-sm w-full relative transform transition-all duration-300
+              ${modalAnimation ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
+          >
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl font-bold"
+              onClick={() => setShowPromoterModal(false)}
+              aria-label="Fermer"
+            >
+              ×
+            </button>
+            <PromoterCard project={project} />
+          </div>
+        </div>
+      )}
     </div>
   );
 } 
