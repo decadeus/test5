@@ -47,7 +47,14 @@
         "Vue Carte": "Карта",
         "Réinitialiser": "Скинути",
         "Ouvrir les filtres": "Відкрити фільтри",
-        "Voir le détail du projet": "Переглянути деталі проекту"
+        "Voir le détail du projet": "Переглянути деталі проекту",
+        "Réduire": "Згорнути",
+        "Voir tous les lots": "Переглянути всі квартири",
+        "Appartements": "Квартири",
+        "Appartement": "Квартира",
+        "contact.title": "Зв'яжіться з нами",
+        "contact.link": "Надіслати листа",
+        "SearchPlaceholder": "Пошук нової квартири в..."
     },
     "Nav": {
         "Ajouter": "Додати проект",

@@ -37,7 +37,7 @@
         "Chargement": "Wird geladen...",
         "ChargementCarte": "Karte wird geladen...",
         "Aucun résultat": "Keine Ergebnisse",
-        "Aller à l'image": "Gehe zu Bild",
+        "Aller à l'image": "Zum Bild gehen",
         "projets": "Projekte",
         "projet": "Projekt",
         "trouvé": "gefunden",
@@ -47,7 +47,14 @@
         "Vue Carte": "Kartenansicht",
         "Réinitialiser": "Zurücksetzen",
         "Ouvrir les filtres": "Filter öffnen",
-        "Voir le détail du projet": "Projektdetails anzeigen"
+        "Voir le détail du projet": "Projektdetails anzeigen",
+        "Réduire": "Reduzieren",
+        "Voir tous les lots": "Alle Wohnungen anzeigen",
+        "Appartements": "Wohnungen",
+        "Appartement": "Wohnung",
+        "contact.title": "Kontaktieren Sie uns",
+        "contact.link": "E-Mail senden",
+        "SearchPlaceholder": "Neue Wohnung suchen in..."
     },
     "Nav": {
         "Ajouter": "Ein Projekt hinzufügen",

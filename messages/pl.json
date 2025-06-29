@@ -47,7 +47,14 @@
         "Vue Carte": "Widok mapy",
         "Réinitialiser": "Resetuj",
         "Ouvrir les filtres": "Otwórz filtry",
-        "Voir le détail du projet": "Zobacz szczegóły projektu"
+        "Voir le détail du projet": "Zobacz szczegóły projektu",
+        "Réduire": "Zwiń",
+        "Voir tous les lots": "Zobacz wszystkie lokale",
+        "Appartements": "Mieszkania",
+        "Appartement": "Mieszkanie",
+        "contact.title": "Skontaktuj się z nami",
+        "contact.link": "Wyślij e-mail",
+        "SearchPlaceholder": "Szukaj nowego mieszkania w..."
     },
     "Nav": {
         "Ajouter": "Dodaj projekt",

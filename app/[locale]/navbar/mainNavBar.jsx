@@ -68,7 +68,7 @@ export default function MainNavBar({ user }) {
   // Liens principaux (adaptés à la navbar principale)
   const links = [
     { href: `/${currentLocale}/`, label: n("Accueil") },
-    { href: `/${currentLocale}/DesignTest/List`, label: "Projects" },
+    { href: `/${currentLocale}/promoteur`, label: "Espace Promoteur" },
     ...(
       profile && (profile.role === "promoteur" || profile.role === "collaborateur")
         ? [{ href: `/${currentLocale}/cproject`, label: n("VosProjets") }]

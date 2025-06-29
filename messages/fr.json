@@ -47,7 +47,14 @@
         "Voir le détail": "Voir le détail",
         "Réinitialiser": "Réinitialiser",
         "Ouvrir les filtres": "Ouvrir les filtres",
-        "Voir le détail du projet": "Voir le détail du projet"
+        "Voir le détail du projet": "Voir le détail du projet",
+        "Réduire": "Réduire",
+        "Voir tous les lots": "Voir tous les lots",
+        "Appartements": "Appartements",
+        "Appartement": "Appartement",
+        "contact.title": "Contactez-nous",
+        "contact.link": "Envoyer un email",
+        "SearchPlaceholder": "Rechercher un nouvel appartement à..."
     },
     "Nav": {
         "Ajouter": "Ajouter un projet",

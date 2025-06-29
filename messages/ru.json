@@ -47,7 +47,14 @@
         "Vue Carte": "Карта",
         "Réinitialiser": "Сбросить",
         "Ouvrir les filtres": "Открыть фильтры",
-        "Voir le détail du projet": "Посмотреть детали проекта"
+        "Voir le détail du projet": "Посмотреть детали проекта",
+        "Réduire": "Свернуть",
+        "Voir tous les lots": "Показать все квартиры",
+        "Appartements": "Квартиры",
+        "Appartement": "Квартира",
+        "contact.title": "Связаться с нами",
+        "contact.link": "Отправить письмо",
+        "SearchPlaceholder": "Поиск новой квартиры в..."
     },
     "Nav": {
         "Ajouter": "Добавить проект",
