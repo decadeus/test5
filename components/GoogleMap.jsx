@@ -104,7 +104,7 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
       <div className="w-full h-[500px] bg-gray-200 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{t("Chargement de la carte...")}</p>
+          <p className="text-gray-600">{t("ChargementCarte")}</p>
         </div>
       </div>
     );

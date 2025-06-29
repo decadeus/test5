@@ -34,7 +34,7 @@
         "Rooftop": "Rooftop",
         "jardin": "Jardin",
         "rooftop": "Rooftop",
-        "Chargement": "Chargement...",
+        "ChargementCarte": "Chargement de la carte...",
         "Aucun résultat": "Aucun résultat",
         "Aller à l'image": "Aller à l'image",
         "projets": "projets",
@@ -44,7 +44,6 @@
         "disponible": "disponible",
         "Vue Liste": "Vue Liste",
         "Vue Carte": "Vue Carte",
-        "Chargement de la carte...": "Chargement de la carte...",
         "Voir le détail": "Voir le détail"
     },
     "Nav": {
