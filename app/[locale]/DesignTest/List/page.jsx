@@ -935,16 +935,6 @@ export default function ApartmentList() {
             />
           </div>
         )}
-
-        {/* Bouton flottant filtres mobile */}
-        <button
-          className="fixed bottom-6  right-6 bg-green-600 text-white rounded-full shadow-lg p-4 z-50 block sm:hidden focus:outline-green-600"
-          onClick={() => setShowFilters(true)}
-          aria-label={t('Ouvrir les filtres')}
-          tabIndex={0}
-        >
-          <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-        </button>
       </div>
 
       {/* Styles pour focus visible, fade-in, img-fade */}
