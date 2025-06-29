@@ -103,7 +103,7 @@ function ApartmentCard({
       {/* Ligne nom projet à gauche, promoteur à droite */}
       <div className="flex flex-row items-center justify-between px-4 pt-2 pb-1">
         <span className="text-base font-bold text-gray-900 truncate text-left max-w-[60%]">{highlight(apt.title, debouncedSearchTerm)}</span>
-        <span className="text-xs text-gray-500 font-medium text-right truncate max-w-[38%]">by {apt.compagny && apt.compagny !== 'null' ? apt.compagny : '-'}</span>
+        <span className="text-xs text-gray-500 font-medium text-right truncate max-w-[38%]">by {apt.compagny && apt.compagny !== 'null' ? apt.compagny : 'Non renseigné'}</span>
       </div>
       {/* Bouton détail discret en bas à droite */}
       <div className="flex justify-end px-4 pb-2">
@@ -359,6 +359,7 @@ export default function ApartmentList() {
         const apartmentsWithList = (projects || []).map((item) => ({
           id: item.id,
           title: item.name,
+          compagny: item.compagny,
           summary: item.compagny,
           price: item.country,
           city: item.city,
