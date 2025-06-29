@@ -35,6 +35,7 @@
         "jardin": "Сад",
         "rooftop": "Крыша-терраса",
         "Chargement": "Загрузка...",
+        "ChargementCarte": "Загрузка карты...",
         "Aucun résultat": "Нет результатов",
         "Aller à l'image": "Перейти к изображению",
         "projets": "проекты",
@@ -43,7 +44,10 @@
         "appartement": "квартира",
         "disponible": "доступно",
         "Vue Liste": "Список",
-        "Vue Carte": "Карта"
+        "Vue Carte": "Карта",
+        "Réinitialiser": "Сбросить",
+        "Ouvrir les filtres": "Открыть фильтры",
+        "Voir le détail du projet": "Посмотреть детали проекта"
     },
     "Nav": {
         "Ajouter": "Добавить проект",

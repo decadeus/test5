@@ -35,6 +35,7 @@
         "jardin": "Garden",
         "rooftop": "Rooftop",
         "Chargement": "Loading...",
+        "ChargementCarte": "Loading map...",
         "Aucun résultat": "No results",
         "Aller à l'image": "Go to image",
         "projets": "projects",
@@ -43,7 +44,10 @@
         "appartement": "apartment",
         "disponible": "available",
         "Vue Liste": "List View",
-        "Vue Carte": "Map View"
+        "Vue Carte": "Map View",
+        "Réinitialiser": "Reset",
+        "Ouvrir les filtres": "Open filters",
+        "Voir le détail du projet": "View project details"
     },
     "Nav": {
         "Ajouter": "Add project",

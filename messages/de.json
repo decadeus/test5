@@ -35,6 +35,7 @@
         "jardin": "Garten",
         "rooftop": "Dachterrasse",
         "Chargement": "Wird geladen...",
+        "ChargementCarte": "Karte wird geladen...",
         "Aucun résultat": "Keine Ergebnisse",
         "Aller à l'image": "Gehe zu Bild",
         "projets": "Projekte",
@@ -43,7 +44,10 @@
         "appartement": "Wohnung",
         "disponible": "verfügbar",
         "Vue Liste": "Listenansicht",
-        "Vue Carte": "Kartenansicht"
+        "Vue Carte": "Kartenansicht",
+        "Réinitialiser": "Zurücksetzen",
+        "Ouvrir les filtres": "Filter öffnen",
+        "Voir le détail du projet": "Projektdetails anzeigen"
     },
     "Nav": {
         "Ajouter": "Ein Projekt hinzufügen",

@@ -35,6 +35,7 @@
         "jardin": "Ogród",
         "rooftop": "Taras na dachu",
         "Chargement": "Ładowanie...",
+        "ChargementCarte": "Ładowanie mapy...",
         "Aucun résultat": "Brak wyników",
         "Aller à l'image": "Przejdź do obrazu",
         "projets": "projekty",
@@ -43,7 +44,10 @@
         "appartement": "mieszkanie",
         "disponible": "dostępne",
         "Vue Liste": "Widok listy",
-        "Vue Carte": "Widok mapy"
+        "Vue Carte": "Widok mapy",
+        "Réinitialiser": "Resetuj",
+        "Ouvrir les filtres": "Otwórz filtry",
+        "Voir le détail du projet": "Zobacz szczegóły projektu"
     },
     "Nav": {
         "Ajouter": "Dodaj projekt",

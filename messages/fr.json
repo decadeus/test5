@@ -44,7 +44,10 @@
         "disponible": "disponible",
         "Vue Liste": "Vue Liste",
         "Vue Carte": "Vue Carte",
-        "Voir le détail": "Voir le détail"
+        "Voir le détail": "Voir le détail",
+        "Réinitialiser": "Réinitialiser",
+        "Ouvrir les filtres": "Ouvrir les filtres",
+        "Voir le détail du projet": "Voir le détail du projet"
     },
     "Nav": {
         "Ajouter": "Ajouter un projet",
