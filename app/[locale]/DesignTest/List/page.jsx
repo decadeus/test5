@@ -895,9 +895,9 @@ export default function ApartmentList() {
                     <span className="text-2xl font-bold text-black">{city}</span>
                   </div>
                   <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-green-200 scrollbar-track-white">
-                    <div className="flex flex-row gap-12 min-w-[340px]">
-                      {grouped[city].map(apt => (
-                        <div key={apt.id} className="min-w-[320px] max-w-xs w-full">
+                    <div className="flex flex-row gap-44 md:gap-16 min-w-[340px]">
+                      {grouped[city].map((apt, idx) => (
+                        <div key={apt.id} className="min-w-[45vw] max-w-[50vw] sm:min-w-[320px] sm:max-w-xs w-full">
                           <ApartmentCard
                             apt={apt}
                             projectImages={projectImages}
