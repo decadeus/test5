@@ -595,12 +595,12 @@ export default function ApartmentList() {
                 />
               </div>
             </div>
-            {/* Boutons Jardin/Rooftop */}
-            <div className="flex flex-col gap-3 mt-2 w-full">
+            {/* Filtres Jardin et Rooftop (desktop, en ligne sous les sliders, unique) */}
+            <div className="flex flex-row gap-4 justify-center items-center mt-4 w-full">
               <button
                 onClick={() => setOnlyGarden((v) => !v)}
                 aria-pressed={onlyGarden}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 w-full text-sm ${onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
               >
                 <span>{t("AvecJardin")}</span>
                 <span>🌸</span>
@@ -608,19 +608,19 @@ export default function ApartmentList() {
               <button
                 onClick={() => setOnlyRooftop((v) => !v)}
                 aria-pressed={onlyRooftop}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 w-full text-sm ${onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
               >
                 <span>{t("Rooftop")}</span>
                 <span>🏙️</span>
               </button>
-              <button
-                onClick={resetFilters}
-                className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-full border-2 border-red-500 font-semibold transition-colors duration-200 w-full text-sm bg-white text-red-500 hover:bg-red-500 hover:text-white"
-              >
-                <span>{t("Réinitialiser les filtres")}</span>
-                <span>🔄</span>
-              </button>
             </div>
+            <button
+              onClick={resetFilters}
+              className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-full border-2 border-red-500 font-semibold transition-colors duration-200 w-full text-sm bg-white text-red-500 hover:bg-red-500 hover:text-white"
+            >
+              <span>{t("Réinitialiser les filtres")}</span>
+              <span>🔄</span>
+            </button>
           </div>
         </Dialog>
         {/* Filtres inline desktop */}
@@ -806,6 +806,25 @@ export default function ApartmentList() {
                     />
                   </div>
                 </div>
+              </div>
+              {/* Filtres Jardin et Rooftop (desktop, en ligne sous les sliders, unique) */}
+              <div className="flex flex-row gap-4 justify-center items-center mt-4 w-full">
+                <button
+                  onClick={() => setOnlyGarden((v) => !v)}
+                  aria-pressed={onlyGarden}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                >
+                  <span>{t("AvecJardin")}</span>
+                  <span>🌸</span>
+                </button>
+                <button
+                  onClick={() => setOnlyRooftop((v) => !v)}
+                  aria-pressed={onlyRooftop}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                >
+                  <span>{t("Rooftop")}</span>
+                  <span>🏙️</span>
+                </button>
               </div>
             </div>
           </div>
