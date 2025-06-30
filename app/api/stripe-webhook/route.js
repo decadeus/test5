@@ -127,7 +127,32 @@ export async function POST(req) {
       }
       const status = subscription.status;
       const is_active = status === 'active' || status === 'trialing';
-      
+      const created_at = subscription.created ? new Date(subscription.created * 1000).toISOString() : null;
+
+      // LOG des valeurs à insérer
+      console.log('Tentative d\'insertion dans subscriptions:', {
+        id: subscription.id,
+        customer_id: subscription.customer,
+        email,
+        status,
+        is_active,
+        created_at,
+        plan_id,
+        product_id,
+      });
+
+      // Vérification des champs obligatoires
+      if (!subscription.id || !subscription.customer || !status || is_active === undefined || !created_at) {
+        console.error('Champ obligatoire manquant pour l\'insertion subscription', {
+          id: subscription.id,
+          customer_id: subscription.customer,
+          status,
+          is_active,
+          created_at,
+        });
+        return new Response('Champ obligatoire manquant pour l\'insertion subscription', { status: 400 });
+      }
+
       // Si c'est un changement d'abonnement, désactiver l'ancien
       if (isChangeSubscription && oldSubscriptionId) {
         console.log("Désactivation de l'ancien abonnement :", oldSubscriptionId);
@@ -156,7 +181,7 @@ export async function POST(req) {
           email,
           status,
           is_active,
-          created_at: new Date(subscription.created * 1000).toISOString(),
+          created_at,
           plan_id,
           product_id,
         },
