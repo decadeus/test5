@@ -174,8 +174,22 @@ export async function POST(req) {
         }
       }
       
-      // Insertion dans subscriptions : uniquement les champs existants dans la table
-      const subscriptionInsert = {
+      // Liste stricte des champs autorisés dans la table subscriptions
+      const allowedFields = [
+        'id',
+        'customer_id',
+        'email',
+        'status',
+        'is_active',
+        'created_at',
+        'plan_id',
+        'product_id',
+        'description',
+        'nickname',
+        'product_name',
+      ];
+      // Construction de l'objet à insérer
+      let subscriptionInsert = {
         id: subscription.id,
         customer_id: subscription.customer,
         email,
@@ -186,12 +200,13 @@ export async function POST(req) {
         product_id,
         // description, nickname, product_name peuvent être ajoutés ici si tu veux les remplir
       };
-      // Nettoyage : on retire les champs undefined
+      // Nettoyage : on retire tout champ non autorisé ou undefined
       Object.keys(subscriptionInsert).forEach(key => {
-        if (subscriptionInsert[key] === undefined) {
+        if (!allowedFields.includes(key) || subscriptionInsert[key] === undefined) {
           delete subscriptionInsert[key];
         }
       });
+      console.log('Objet envoyé à Supabase:', subscriptionInsert);
       const { error: insertError } = await supabase.from('subscriptions').insert([
         subscriptionInsert
       ]);
@@ -209,14 +224,26 @@ export async function POST(req) {
     const subscription = event.data.object;
     const status = subscription.status;
     const is_active = status === 'active' || status === 'trialing';
-
+    // Construction de l'objet à updater
+    const allowedFields = [
+      'status',
+      'is_active',
+      // tu peux ajouter d'autres champs autorisés ici si besoin
+    ];
+    let updateObj = {
+      status,
+      is_active,
+      // autres champs si besoin
+    };
+    Object.keys(updateObj).forEach(key => {
+      if (!allowedFields.includes(key) || updateObj[key] === undefined) {
+        delete updateObj[key];
+      }
+    });
+    console.log('Objet envoyé à Supabase (update):', updateObj);
     const { error: updateError } = await supabase
       .from('subscriptions')
-      .update({
-        status,
-        is_active,
-        // tu peux aussi mettre à jour d'autres champs si besoin
-      })
+      .update(updateObj)
       .eq('id', subscription.id);
 
     if (updateError) {
