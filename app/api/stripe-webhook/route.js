@@ -206,13 +206,30 @@ export async function POST(req) {
           delete subscriptionInsert[key];
         }
       });
-      console.log('Objet envoyé à Supabase:', subscriptionInsert);
-      const { error: upsertError } = await supabase.from('subscriptions').upsert([
-        subscriptionInsert
-      ], { onConflict: 'id' });
-      if (upsertError) {
-        console.error('Erreur upsert subscription :', upsertError);
-        return new Response('Erreur upsert subscription', { status: 500 });
+
+      // Protection : ne pas écraser un statut 'active' ou 'trialing' par un statut inférieur
+      let shouldUpsert = true;
+      if (event.type === 'customer.subscription.created') {
+        // Vérifier si la ligne existe déjà et a un statut 'active' ou 'trialing'
+        const { data: existingSub, error: fetchError } = await supabase
+          .from('subscriptions')
+          .select('status')
+          .eq('id', subscription.id)
+          .single();
+        if (existingSub && (existingSub.status === 'active' || existingSub.status === 'trialing')) {
+          shouldUpsert = false;
+          console.log('Abonnement déjà actif/trialing, on ne remplace pas par un statut inférieur.');
+        }
+      }
+      if (shouldUpsert) {
+        console.log('Objet envoyé à Supabase:', subscriptionInsert);
+        const { error: upsertError } = await supabase.from('subscriptions').upsert([
+          subscriptionInsert
+        ], { onConflict: 'id' });
+        if (upsertError) {
+          console.error('Erreur upsert subscription :', upsertError);
+          return new Response('Erreur upsert subscription', { status: 500 });
+        }
       }
     }
   }
