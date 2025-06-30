@@ -65,7 +65,7 @@ export default function Text({ user }) {
   return (
     <>
       <button onClick={onOpen} className="flex items-center gap-2 px-3 py-1 h-9 rounded-full border font-semibold text-green-700 border-green-700 bg-white/70 hover:bg-green-700 hover:text-white transition select-none text-base">
-        Mon Compte
+        Mon Abonnement
       </button>
       <Modal
         isOpen={isOpen}
@@ -79,71 +79,11 @@ export default function Text({ user }) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                <h2 className="text-xl font-bold text-gray-800">Mon Compte</h2>
+                <h2 className="text-xl font-bold text-gray-800">Abonnement</h2>
+                <p className="text-sm text-gray-600">{user?.email}</p>
               </ModalHeader>
               <ModalBody>
-                <Tabs aria-label="Options" className="w-full">
-                  <Tab key="profile" title="Profil">
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-4">
-                        <Avatar user={user} />
-                        <div>
-                          <h3 className="font-semibold text-gray-800">{username || user?.email}</h3>
-                          <p className="text-sm text-gray-600">{user?.email}</p>
-                        </div>
-                      </div>
-                      
-                      <Divider />
-                      
-                      <div className="space-y-3">
-                        <Input
-                          label="Nom d'utilisateur"
-                          value={username}
-                          onChange={(e) => setUsername(e.target.value)}
-                          placeholder="Entrez votre nom d'utilisateur"
-                        />
-                        <Input
-                          label="URL Avatar"
-                          value={avatarUrl || ""}
-                          onChange={(e) => setAvatarUrl(e.target.value)}
-                          placeholder="URL de votre avatar"
-                        />
-                        <Button
-                          color="primary"
-                          onClick={updateProfile}
-                          isLoading={loading}
-                          className="w-full"
-                        >
-                          Mettre à jour le profil
-                        </Button>
-                      </div>
-                    </div>
-                  </Tab>
-                  
-                  <Tab key="subscription" title="Abonnement">
-                    <SubscriptionManager user={user} />
-                  </Tab>
-                  
-                  <Tab key="logout" title="Déconnexion">
-                    <div className="flex flex-col justify-center items-center p-8 bg-gray-100 rounded-lg">
-                      <h3 className="font-bold text-gray-800 text-xl mb-2">
-                        Se déconnecter ?
-                      </h3>
-                      <p className="text-gray-600 mb-6 text-center">
-                        Vous pouvez toujours vous reconnecter à tout moment
-                      </p>
-                      <form action="/auth/signout" method="post">
-                        <Button
-                          type="submit"
-                          color="danger"
-                          className="w-full"
-                        >
-                          Se déconnecter 👋
-                        </Button>
-                      </form>
-                    </div>
-                  </Tab>
-                </Tabs>
+                <SubscriptionManager user={user} />
               </ModalBody>
             </>
           )}

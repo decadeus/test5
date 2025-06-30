@@ -8,11 +8,12 @@ export function Connect({selectedLanguage}) {
   return (
     <div className="flex justify-center items-center gap-8">
       <Link href={`/${selectedLanguage}/login`} className="">
-        <div className="flex gap-4">
-          <div className="rounded-lg border-black border-2 flex justify-center items-center">
-            <p className="text-black text-sm px-1">Login</p>
-          </div>
-        </div>
+        <button
+          className="flex items-center gap-2 px-4 py-2 rounded-full border border-green-700 text-green-700 font-semibold bg-white/70 hover:bg-green-700 hover:text-white transition text-base"
+        >
+          <FaRegUserCircle size={20} />
+          Se connecter
+        </button>
       </Link>
     </div>
   );

@@ -5,7 +5,7 @@ import Image from "next/legacy/image";
 import H from "@/components/H.png";
 import Connect from "./connect";
 import Text from "./text";
-import { FaNetworkWired } from "react-icons/fa";
+import { FaNetworkWired, FaSignOutAlt } from "react-icons/fa";
 import { HiOutlinePlusCircle, HiMenu, HiX } from "react-icons/hi";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, useRef } from "react";
@@ -250,6 +250,15 @@ export default function MainNavBar({ user }) {
         {user ? (
           <div className="flex items-center gap-3 ml-4">
             <Text user={user} />
+            <form action="/auth/signout" method="post">
+              <button
+                type="submit"
+                className="flex items-center gap-2 px-4 py-2 rounded-full border border-green-700 text-green-700 font-semibold bg-white/70 hover:bg-green-700 hover:text-white transition text-base"
+              >
+                <FaSignOutAlt size={20} />
+                Déconnexion
+              </button>
+            </form>
           </div>
         ) : (
           <div className="flex items-center gap-3 ml-4">
