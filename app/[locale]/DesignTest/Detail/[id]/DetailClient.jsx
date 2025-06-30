@@ -10,6 +10,7 @@ import Disabled from '@/components/svg/disabled';
 import Fitness from '@/components/svg/fitness';
 import { FiMail, FiPhone, FiGlobe } from 'react-icons/fi';
 import { FaLanguage } from 'react-icons/fa';
+import { notFound } from 'next/navigation';
 
 function formatPrice(price) {
   if (typeof price === "number") return price.toLocaleString("fr-FR") + " €";
@@ -337,7 +338,7 @@ export default function DetailClient({ project, locale }) {
     }
   }, [showPromoterModal]);
 
-  if (!project) return <p>Appartement introuvable</p>;
+  if (!project) notFound();
 
   return (
     <div className="bg-green-100/10 min-h-screen w-full">

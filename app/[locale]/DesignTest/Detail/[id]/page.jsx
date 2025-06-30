@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import DetailClient from "./DetailClient";
 import { headers } from 'next/headers';
+import { notFound } from 'next/navigation';
 
 export async function generateMetadata({ params }) {
   const { id, locale } = params;
@@ -66,7 +67,7 @@ export default async function DetailPage({ params }) {
     .eq("id", id)
     .single();
 
-  if (!project) return <div>Projet introuvable</div>;
+  if (!project) notFound();
 
   return <DetailClient project={project} locale={locale} />;
 }
