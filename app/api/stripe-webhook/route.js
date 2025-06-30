@@ -207,12 +207,12 @@ export async function POST(req) {
         }
       });
       console.log('Objet envoyé à Supabase:', subscriptionInsert);
-      const { error: insertError } = await supabase.from('subscriptions').insert([
+      const { error: upsertError } = await supabase.from('subscriptions').upsert([
         subscriptionInsert
-      ]);
-      if (insertError) {
-        console.error('Erreur insertion subscription :', insertError);
-        return new Response('Erreur insertion subscription', { status: 500 });
+      ], { onConflict: 'id' });
+      if (upsertError) {
+        console.error('Erreur upsert subscription :', upsertError);
+        return new Response('Erreur upsert subscription', { status: 500 });
       }
     }
   }
