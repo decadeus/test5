@@ -174,17 +174,26 @@ export async function POST(req) {
         }
       }
       
+      // Insertion dans subscriptions : uniquement les champs existants dans la table
+      const subscriptionInsert = {
+        id: subscription.id,
+        customer_id: subscription.customer,
+        email,
+        status,
+        is_active,
+        created_at,
+        plan_id,
+        product_id,
+        // description, nickname, product_name peuvent être ajoutés ici si tu veux les remplir
+      };
+      // Nettoyage : on retire les champs undefined
+      Object.keys(subscriptionInsert).forEach(key => {
+        if (subscriptionInsert[key] === undefined) {
+          delete subscriptionInsert[key];
+        }
+      });
       const { error: insertError } = await supabase.from('subscriptions').insert([
-        {
-          id: subscription.id,
-          customer_id: subscription.customer,
-          email,
-          status,
-          is_active,
-          created_at,
-          plan_id,
-          product_id,
-        },
+        subscriptionInsert
       ]);
       if (insertError) {
         console.error('Erreur insertion subscription :', insertError);
