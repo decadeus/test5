@@ -508,7 +508,7 @@ export default function DetailClient({ project, locale }) {
       </section>
       {/* Bouton flottant pour ouvrir la modal sur mobile */}
       <button
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-green-600 text-white rounded-tl-2xl rounded-bl-2xl shadow-lg px-3 py-4 flex flex-col items-center md:hidden hover:bg-green-700 transition-colors"
+        className="fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-green-800 text-white rounded-tl-2xl rounded-bl-2xl shadow-lg px-3 py-4 flex flex-col items-center md:hidden hover:bg-green-900 transition-colors border border-green-900"
         onClick={() => setShowPromoterModal(true)}
         aria-label="Contact promoteur"
       >

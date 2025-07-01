@@ -35,12 +35,15 @@ export default function Footer() {
           <div className="flex space-x-2 mt-1">
             <a href="#" className="hover:text-white">
               <i className="fab fa-facebook"></i>
+              <span className="sr-only">Facebook</span>
             </a>
             <a href="#" className="hover:text-white">
               <i className="fab fa-twitter"></i>
+              <span className="sr-only">Twitter</span>
             </a>
             <a href="#" className="hover:text-white">
               <i className="fab fa-instagram"></i>
+              <span className="sr-only">Instagram</span>
             </a>
           </div>
         </div>

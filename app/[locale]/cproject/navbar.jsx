@@ -242,6 +242,7 @@ export default function Layout() {
               className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg transition-all
                 ${activeView === "overview" ? "bg-gray-800 border-l-4 border-blue-200 text-blue-200" : "hover:bg-gray-800 text-gray-200 hover:text-blue-200"}
               `}
+              aria-label={t('overview')}
             >
               <FaBuilding className="text-xl" />
               <span className="text-sm font-medium flex-1 text-left">{t('overview')}</span>
@@ -257,6 +258,7 @@ export default function Layout() {
                 className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg transition-all
                   ${activeView === "collaborators" ? "bg-gray-800 border-l-4 border-blue-200 text-blue-200" : "hover:bg-gray-800 text-gray-200 hover:text-blue-200"}
                 `}
+                aria-label={t('projects_collaborators')}
               >
                 <FaUsers className="text-xl" />
                 <span className="text-sm font-medium flex-1 text-left">{t('projects_collaborators')}</span>
@@ -266,6 +268,7 @@ export default function Layout() {
                 className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg transition-all
                   ${activeView === "privileges" ? "bg-gray-800 border-l-4 border-blue-500 text-blue-200" : "hover:bg-gray-800 text-gray-200 hover:text-blue-200"}
                 `}
+                aria-label={t('privileges')}
               >
                 <FaShieldAlt className="text-xl" />
                 <span className="text-sm font-medium flex-1 text-left">{t('privileges')}</span>
@@ -286,6 +289,7 @@ export default function Layout() {
                   className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg transition-all
                     ${selectedProject?.id === project.id && activeView === "appartements" ? "bg-gray-800 border-l-4 border-blue-200 text-blue-200" : "hover:bg-gray-800 text-gray-200 hover:text-blue-200"}
                   `}
+                  aria-label={project.name}
                 >
                   <FaBuilding
                     className={`text-xl ${project.online === true || project.online === "TRUE" ? "text-green-400" : "text-gray-500"}`}
