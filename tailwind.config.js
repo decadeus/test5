@@ -6,6 +6,25 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: [
+    'bg-green-600',
+    'text-green-900',
+    'bg-green-100',
+    'border-green-400',
+    'text-green-700',
+    'bg-blue-100',
+    'border-blue-400',
+    'text-blue-700',
+    'bg-white',
+    'rounded-xl',
+    'shadow',
+    'object-cover',
+    'z-0',
+    'z-10',
+    'h-[340px]',
+    'min-h-[400px]',
+    'min-h-[300px]',
+  ],
   theme: {
     extend: {
       keyframes: {
