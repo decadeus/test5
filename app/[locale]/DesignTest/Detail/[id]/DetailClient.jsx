@@ -14,6 +14,7 @@ import { notFound } from 'next/navigation';
 import Badge from "@/components/ui/Badge";
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 const GoogleMapComponent = dynamic(() => import('@/components/GoogleMap'), { ssr: false, loading: () => <div>Chargement de la carte…</div> });
 
 function formatPrice(price) {
@@ -343,192 +344,203 @@ export default function DetailClient({ project, locale }) {
   if (!project) notFound();
 
   return (
-    <main className="bg-green-100/10 min-h-screen w-full">
-      <header>
-        <div className="w-full h-[340px] mb-8 shadow-md flex justify-center items-center relative overflow-hidden rounded-none">
-          <Image
-            src="/appart.webp"
-            alt={`${project.name} ${project.city}`}
-            fill
-            className="object-cover z-0"
-            priority
-            draggable={false}
-            placeholder="blur"
-            blurDataURL="/appart.webp"
-          />
-          <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
-          <div className="flex flex-col justify-center items-center relative z-10">
-            <h1 className="text-5xl font-bold mb-2">{project[`name_${locale}`] || project.name}</h1>
-            <h2 className="text-xl text-black mb-2">{project.city}</h2>
-          </div>
-        </div>
-      </header>
-      <section
-        className={`max-w-7xl mx-auto px-4 mb-8 transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}
-      >
-        {loading ? (
-          <div className="flex justify-center items-center h-[220px]">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
-          </div>
-        ) : images.length > 0 ? (
-          <div className="max-w-3xl w-full mx-auto">
-            <div className="relative w-full h-[340px] flex items-center justify-center">
-              {/* Image courante */}
-              <div className="w-full h-full flex items-center justify-center">
-                <Image
-                  src={images[currentSlide]}
-                  alt={`${project[`name_${locale}`] || project.name} - Image ${currentSlide + 1}`}
-                  fill
-                  className="object-cover w-full h-full rounded-2xl select-none border-2 border-white shadow-lg"
-                  draggable={false}
-                  sizes="(max-width: 768px) 100vw, 700px"
-                />
-              </div>
-              {/* Flèches de navigation slider */}
-              {images.length > 1 && (
-                <>
-                  <button
-                    onClick={() => setCurrentSlide((prev) => Math.max(prev - 1, 0))}
-                    disabled={currentSlide === 0}
-                    aria-label="Image précédente"
-                    className={`absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-20 ${currentSlide === 0 ? 'opacity-40 cursor-not-allowed' : ''}`}
-                  >
-                    ◀
-                  </button>
-                  <button
-                    onClick={() => setCurrentSlide((prev) => Math.min(prev + 1, images.length - 1))}
-                    disabled={currentSlide === images.length - 1}
-                    aria-label="Image suivante"
-                    className={`absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-20 ${currentSlide === images.length - 1 ? 'opacity-40 cursor-not-allowed' : ''}`}
-                  >
-                    ▶
-                  </button>
-                </>
-              )}
-            </div>
-            {/* Pagination X/Y */}
-            {images.length > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-4">
-                <span className="text-lg font-semibold text-blue-800">{currentSlide + 1}</span>
-                <span className="text-gray-400">/</span>
-                <span className="text-gray-400">{images.length}</span>
-              </div>
-            )}
-          </div>
-        ) : null}
-      </section>
-      {/* Nouveau layout deux colonnes : texte à gauche, carte+promoteur à droite */}
-      <section className="max-w-6xl mx-auto flex flex-col md:flex-row gap-12 mb-8">
-        {/* Colonne gauche : texte */}
-        <div className="w-full md:w-1/2 flex flex-col gap-8 px-8">
-          <div className="bg-white rounded-xl shadow p-6">
-            <h3 className="text-2xl font-bold mb-4">Description</h3>
-            <p className="text-gray-900 whitespace-pre-line">{projectDescription}</p>
-          </div>
-          <div className="bg-white rounded-xl shadow p-6">
-            <h3 className="text-2xl font-bold mb-4">Équipements communautaires</h3>
-            <p className="text-gray-900 whitespace-pre-line mb-3">{communityAmenities}</p>
-            {/* Badges équipements */}
-            <div className="flex flex-wrap gap-2 mt-2">
-              {equipmentList.map(eq =>
-                equipments[eq.key] && (
-                  <Badge
-                    key={eq.key}
-                    className={`flex items-center gap-2 px-1 pr-3 py-1 ${eq.bg} ${eq.text}`}
-                  >
-                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow">
-                      {eq.icon}
-                    </span>
-                    {eq.label}
-                  </Badge>
-                )
-              )}
-            </div>
-          </div>
-        </div>
-        {/* Colonne droite : carte + promoteur + équipements */}
-        <div className="w-full md:w-1/2 flex flex-col gap-8 px-8">
-          <div className="bg-white rounded-xl shadow p-6">
-            <h3 className="text-2xl font-bold mb-4">Localisation du projet</h3>
-            <GoogleMapComponent
-              mapContainerStyle={{ width: '100%', height: '300px', borderRadius: '1rem' }}
-              center={center}
-              zoom={15}
+    <>
+      <Head>
+        <link
+          rel="preload"
+          as="image"
+          href="/appart.webp"
+          imagesrcset="/appart.webp 1x, /appart.webp 2x"
+          imagesizes="100vw"
+        />
+      </Head>
+      <main className="bg-green-100/10 min-h-screen w-full">
+        <header>
+          <div className="w-full h-[340px] mb-8 shadow-md flex justify-center items-center relative overflow-hidden rounded-none">
+            <Image
+              src="/appart.webp"
+              alt={`${project.name} ${project.city}`}
+              fill
+              className="object-cover z-0"
+              priority
+              draggable={false}
+              placeholder="blur"
+              blurDataURL="/appart.webp"
             />
+            <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
+            <div className="flex flex-col justify-center items-center relative z-10">
+              <h1 className="text-5xl font-bold mb-2">{project[`name_${locale}`] || project.name}</h1>
+              <h2 className="text-xl text-black mb-2">{project.city}</h2>
+            </div>
           </div>
-          {/* Promoteur visible seulement sur desktop */}
-          <div className="hidden md:block">
-            <PromoterCard project={project} />
-          </div>
-        </div>
-      </section>
-      {/* Tableau des lots */}
-      <section className="max-w-6xl mx-auto bg-white rounded-xl shadow p-6 mb-8">
-        <h3 className="text-2xl font-bold mb-4">Lots disponibles</h3>
-        <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-200">
-            <thead>
-              <tr className="bg-gray-100">
-                <SortableHeader label="Chambres" sortKey="bed" extraClass="px-4" />
-                <SortableHeader label="Étage" sortKey="floor" extraClass="px-4" />
-                <SortableHeader label="Surface" sortKey="surface" extraClass="px-4" />
-                <SortableHeader label="Jardin" sortKey="garden" extraClass="px-4" />
-                <SortableHeader label="Rooftop" sortKey="rooftop" extraClass="px-4" />
-                <SortableHeader label="Prix (€)" sortKey="price" extraClass="px-4" />
-                <th className="w-32 font-normal px-4">Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {projectList.map((lot, idx) => (
-                <tr key={idx} className="border-t">
-                  <td className="text-center py-2 px-4">{lot.bed}</td>
-                  <td className="text-center py-2 px-4">{lot.floor}</td>
-                  <td className="text-center py-2 px-4">{lot.surface} m²</td>
-                  <td className="text-center py-2 px-4">
-                    {lot.garden ? "🌸" : ""}
-                  </td>
-                  <td className="text-center py-2 px-4">
-                    {lot.rooftop ? "🏙️" : ""}
-                  </td>
-                  <td className="text-center py-2 px-4">
-                    {Number(lot.price)?.toLocaleString('fr-FR')}
-                  </td>
-                  <td className="text-center py-2 px-4">{lot.des}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-      {/* Bouton flottant pour ouvrir la modal sur mobile */}
-      <button
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-green-800 text-white rounded-tl-2xl rounded-bl-2xl shadow-lg px-3 py-4 flex flex-col items-center md:hidden hover:bg-green-900 transition-colors border border-green-900"
-        onClick={() => setShowPromoterModal(true)}
-        aria-label="Contact promoteur"
-      >
-        <span className="vertical-text text-xs">Contact promoteur</span>
-      </button>
-      {/* Modal promoteur sur mobile */}
-      {modalVisible && (
-        <div
-          className={`fixed inset-0 z-50 flex items-center justify-center md:hidden transition-opacity duration-300 ${modalAnimation ? 'opacity-100' : 'opacity-0'}`}
-          style={{ background: 'rgba(0,0,0,0.4)' }}
+        </header>
+        <section
+          className={`max-w-7xl mx-auto px-4 mb-8 transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}
         >
-          <div
-            className={`bg-white rounded-xl shadow-lg p-6 max-w-sm w-full relative transform transition-all duration-300
-              ${modalAnimation ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
-          >
-            <button
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl font-bold"
-              onClick={() => setShowPromoterModal(false)}
-              aria-label="Fermer la fenêtre de contact promoteur"
-            >
-              ×
-            </button>
-            <PromoterCard project={project} />
+          {loading ? (
+            <div className="flex justify-center items-center h-[220px]">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+            </div>
+          ) : images.length > 0 ? (
+            <div className="max-w-3xl w-full mx-auto">
+              <div className="relative w-full h-[340px] flex items-center justify-center">
+                {/* Image courante */}
+                <div className="w-full h-full flex items-center justify-center">
+                  <Image
+                    src={images[currentSlide]}
+                    alt={`${project[`name_${locale}`] || project.name} - Image ${currentSlide + 1}`}
+                    fill
+                    className="object-cover w-full h-full rounded-2xl select-none border-2 border-white shadow-lg"
+                    draggable={false}
+                    sizes="(max-width: 768px) 100vw, 700px"
+                  />
+                </div>
+                {/* Flèches de navigation slider */}
+                {images.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => setCurrentSlide((prev) => Math.max(prev - 1, 0))}
+                      disabled={currentSlide === 0}
+                      aria-label="Image précédente"
+                      className={`absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-20 ${currentSlide === 0 ? 'opacity-40 cursor-not-allowed' : ''}`}
+                    >
+                      ◀
+                    </button>
+                    <button
+                      onClick={() => setCurrentSlide((prev) => Math.min(prev + 1, images.length - 1))}
+                      disabled={currentSlide === images.length - 1}
+                      aria-label="Image suivante"
+                      className={`absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-20 ${currentSlide === images.length - 1 ? 'opacity-40 cursor-not-allowed' : ''}`}
+                    >
+                      ▶
+                    </button>
+                  </>
+                )}
+              </div>
+              {/* Pagination X/Y */}
+              {images.length > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-4">
+                  <span className="text-lg font-semibold text-blue-800">{currentSlide + 1}</span>
+                  <span className="text-gray-400">/</span>
+                  <span className="text-gray-400">{images.length}</span>
+                </div>
+              )}
+            </div>
+          ) : null}
+        </section>
+        {/* Nouveau layout deux colonnes : texte à gauche, carte+promoteur à droite */}
+        <section className="max-w-6xl mx-auto flex flex-col md:flex-row gap-12 mb-8">
+          {/* Colonne gauche : texte */}
+          <div className="w-full md:w-1/2 flex flex-col gap-8 px-8">
+            <div className="bg-white rounded-xl shadow p-6">
+              <h3 className="text-2xl font-bold mb-4">Description</h3>
+              <p className="text-gray-900 whitespace-pre-line">{projectDescription}</p>
+            </div>
+            <div className="bg-white rounded-xl shadow p-6">
+              <h3 className="text-2xl font-bold mb-4">Équipements communautaires</h3>
+              <p className="text-gray-900 whitespace-pre-line mb-3">{communityAmenities}</p>
+              {/* Badges équipements */}
+              <div className="flex flex-wrap gap-2 mt-2">
+                {equipmentList.map(eq =>
+                  equipments[eq.key] && (
+                    <Badge
+                      key={eq.key}
+                      className={`flex items-center gap-2 px-1 pr-3 py-1 ${eq.bg} ${eq.text}`}
+                    >
+                      <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow">
+                        {eq.icon}
+                      </span>
+                      {eq.label}
+                    </Badge>
+                  )
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      )}
-    </main>
+          {/* Colonne droite : carte + promoteur + équipements */}
+          <div className="w-full md:w-1/2 flex flex-col gap-8 px-8">
+            <div className="bg-white rounded-xl shadow p-6">
+              <h3 className="text-2xl font-bold mb-4">Localisation du projet</h3>
+              <GoogleMapComponent
+                mapContainerStyle={{ width: '100%', height: '300px', borderRadius: '1rem' }}
+                center={center}
+                zoom={15}
+              />
+            </div>
+            {/* Promoteur visible seulement sur desktop */}
+            <div className="hidden md:block">
+              <PromoterCard project={project} />
+            </div>
+          </div>
+        </section>
+        {/* Tableau des lots */}
+        <section className="max-w-6xl mx-auto bg-white rounded-xl shadow p-6 mb-8">
+          <h3 className="text-2xl font-bold mb-4">Lots disponibles</h3>
+          <div className="overflow-x-auto">
+            <table className="min-w-full border border-gray-200">
+              <thead>
+                <tr className="bg-gray-100">
+                  <SortableHeader label="Chambres" sortKey="bed" extraClass="px-4" />
+                  <SortableHeader label="Étage" sortKey="floor" extraClass="px-4" />
+                  <SortableHeader label="Surface" sortKey="surface" extraClass="px-4" />
+                  <SortableHeader label="Jardin" sortKey="garden" extraClass="px-4" />
+                  <SortableHeader label="Rooftop" sortKey="rooftop" extraClass="px-4" />
+                  <SortableHeader label="Prix (€)" sortKey="price" extraClass="px-4" />
+                  <th className="w-32 font-normal px-4">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {projectList.map((lot, idx) => (
+                  <tr key={idx} className="border-t">
+                    <td className="text-center py-2 px-4">{lot.bed}</td>
+                    <td className="text-center py-2 px-4">{lot.floor}</td>
+                    <td className="text-center py-2 px-4">{lot.surface} m²</td>
+                    <td className="text-center py-2 px-4">
+                      {lot.garden ? "🌸" : ""}
+                    </td>
+                    <td className="text-center py-2 px-4">
+                      {lot.rooftop ? "🏙️" : ""}
+                    </td>
+                    <td className="text-center py-2 px-4">
+                      {Number(lot.price)?.toLocaleString('fr-FR')}
+                    </td>
+                    <td className="text-center py-2 px-4">{lot.des}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+        {/* Bouton flottant pour ouvrir la modal sur mobile */}
+        <button
+          className="fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-green-800 text-white rounded-tl-2xl rounded-bl-2xl shadow-lg px-3 py-4 flex flex-col items-center md:hidden hover:bg-green-900 transition-colors border border-green-900"
+          onClick={() => setShowPromoterModal(true)}
+          aria-label="Contact promoteur"
+        >
+          <span className="vertical-text text-xs">Contact promoteur</span>
+        </button>
+        {/* Modal promoteur sur mobile */}
+        {modalVisible && (
+          <div
+            className={`fixed inset-0 z-50 flex items-center justify-center md:hidden transition-opacity duration-300 ${modalAnimation ? 'opacity-100' : 'opacity-0'}`}
+            style={{ background: 'rgba(0,0,0,0.4)' }}
+          >
+            <div
+              className={`bg-white rounded-xl shadow-lg p-6 max-w-sm w-full relative transform transition-all duration-300
+                ${modalAnimation ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
+            >
+              <button
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl font-bold"
+                onClick={() => setShowPromoterModal(false)}
+                aria-label="Fermer la fenêtre de contact promoteur"
+              >
+                ×
+              </button>
+              <PromoterCard project={project} />
+            </div>
+          </div>
+        )}
+      </main>
+    </>
   );
 } 
