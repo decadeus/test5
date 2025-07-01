@@ -355,6 +355,8 @@ export default function DetailClient({ project, locale }) {
             className="object-cover z-0"
             priority
             draggable={false}
+            placeholder="blur"
+            blurDataURL="/appart.webp"
           />
           <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
           <div className="flex flex-col justify-center items-center relative z-10">
