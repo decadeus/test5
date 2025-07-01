@@ -115,7 +115,7 @@ export default function ListNav({ userId }) {
   return (
     <div className="flex text-center  items-center">
       <ul
-        className={`flex gap-${profile?.rules === "Admin" ? "8" : "4"} ${
+        className={`flex ${profile?.rules === "Admin" ? "gap-8" : "gap-4"} ${
           profile?.rules === "Proprio" ? "hidden lg:flex justify-start" : ""
         }`}
       >

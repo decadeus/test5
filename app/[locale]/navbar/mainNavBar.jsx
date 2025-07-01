@@ -109,6 +109,7 @@ export default function MainNavBar({ user }) {
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="inline-flex items-center justify-center p-3 rounded-full bg-black text-white shadow-lg hover:bg-gray-800 transition-colors"
+            aria-label="Ouvrir le menu principal"
           >
             {isMobileMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
           </button>
@@ -128,6 +129,7 @@ export default function MainNavBar({ user }) {
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="p-2 rounded-full hover:bg-gray-100"
+                  aria-label="Fermer le menu mobile"
                 >
                   <HiX size={24} />
                 </button>
