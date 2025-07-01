@@ -11,6 +11,7 @@ import Fitness from '@/components/svg/fitness';
 import { FiMail, FiPhone, FiGlobe } from 'react-icons/fi';
 import { FaLanguage } from 'react-icons/fa';
 import { notFound } from 'next/navigation';
+import Badge from "@/components/ui/Badge";
 
 function formatPrice(price) {
   if (typeof price === "number") return price.toLocaleString("fr-FR") + " €";
@@ -341,23 +342,27 @@ export default function DetailClient({ project, locale }) {
   if (!project) notFound();
 
   return (
-    <div className="bg-green-100/10 min-h-screen w-full">
-      <div
-        className="w-full h-[340px] mb-8 shadow-md flex justify-center items-center relative"
-        style={{
-          backgroundImage: "url(/appart.png)",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
-        <div className="flex flex-col justify-center items-center relative z-10">
-          <h1 className="text-5xl font-bold mb-2">{project[`name_${locale}`] || project.name}</h1>
-          <h2 className="text-xl text-black mb-2">{project.city}</h2>
+    <main className="bg-green-100/10 min-h-screen w-full">
+      <header>
+        <div
+          className="w-full h-[340px] mb-8 shadow-md flex justify-center items-center relative"
+          style={{
+            backgroundImage: "url(/appart.png)",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+          }}
+        >
+          <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
+          <div className="flex flex-col justify-center items-center relative z-10">
+            <h1 className="text-5xl font-bold mb-2">{project[`name_${locale}`] || project.name}</h1>
+            <h2 className="text-xl text-black mb-2">{project.city}</h2>
+          </div>
         </div>
-      </div>
-      <div className="max-w-7xl mx-auto px-4 mb-8">
+      </header>
+      <section
+        className={`max-w-7xl mx-auto px-4 mb-8 transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}
+      >
         {loading ? (
           <div className="flex justify-center items-center h-[220px]">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
@@ -404,9 +409,9 @@ export default function DetailClient({ project, locale }) {
             )}
           </div>
         ) : null}
-      </div>
+      </section>
       {/* Nouveau layout deux colonnes : texte à gauche, carte+promoteur à droite */}
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-12 mb-8">
+      <section className="max-w-6xl mx-auto flex flex-col md:flex-row gap-12 mb-8">
         {/* Colonne gauche : texte */}
         <div className="w-full md:w-1/2 flex flex-col gap-8 px-8">
           <div className="bg-white rounded-xl shadow p-6">
@@ -420,15 +425,15 @@ export default function DetailClient({ project, locale }) {
             <div className="flex flex-wrap gap-2 mt-2">
               {equipmentList.map(eq =>
                 equipments[eq.key] && (
-                  <span
+                  <Badge
                     key={eq.key}
-                    className={`flex items-center gap-2 px-1 pr-3 py-1 ${eq.bg} ${eq.text} rounded-full text-sm`}
+                    className={`flex items-center gap-2 px-1 pr-3 py-1 ${eq.bg} ${eq.text}`}
                   >
                     <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow">
                       {eq.icon}
                     </span>
                     {eq.label}
-                  </span>
+                  </Badge>
                 )
               )}
             </div>
@@ -455,9 +460,9 @@ export default function DetailClient({ project, locale }) {
             <PromoterCard project={project} />
           </div>
         </div>
-      </div>
+      </section>
       {/* Tableau des lots */}
-      <div className="max-w-6xl mx-auto bg-white rounded-xl shadow p-6 mb-8">
+      <section className="max-w-6xl mx-auto bg-white rounded-xl shadow p-6 mb-8">
         <h3 className="text-2xl font-bold mb-4">Lots disponibles</h3>
         <div className="overflow-x-auto">
           <table className="min-w-full border border-gray-200">
@@ -493,7 +498,7 @@ export default function DetailClient({ project, locale }) {
             </tbody>
           </table>
         </div>
-      </div>
+      </section>
       {/* Bouton flottant pour ouvrir la modal sur mobile */}
       <button
         className="fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-green-600 text-white rounded-tl-2xl rounded-bl-2xl shadow-lg px-3 py-4 flex flex-col items-center md:hidden hover:bg-green-700 transition-colors"
@@ -523,6 +528,6 @@ export default function DetailClient({ project, locale }) {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 } 
