@@ -12,6 +12,7 @@ import { FiMail, FiPhone, FiGlobe } from 'react-icons/fi';
 import { FaLanguage } from 'react-icons/fa';
 import { notFound } from 'next/navigation';
 import Badge from "@/components/ui/Badge";
+import Image from 'next/image';
 
 function formatPrice(price) {
   if (typeof price === "number") return price.toLocaleString("fr-FR") + " €";
@@ -345,13 +346,13 @@ export default function DetailClient({ project, locale }) {
     <main className="bg-green-100/10 min-h-screen w-full">
       <header>
         <div className="w-full h-[340px] mb-8 shadow-md flex justify-center items-center relative overflow-hidden rounded-none">
-          <img
-            src="/appart.png"
+          <Image
+            src="/appart.webp"
             alt="Visuel du projet résidentiel"
-            className="absolute inset-0 w-full h-full object-cover z-0"
-            fetchpriority="high"
-            decoding="async"
-            draggable="false"
+            fill
+            className="object-cover z-0"
+            priority
+            draggable={false}
           />
           <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
           <div className="flex flex-col justify-center items-center relative z-10">
