@@ -152,11 +152,11 @@ export default function ApartmentList() {
   const locale = params?.locale || 'fr';
   const [debouncedSearchTerm] = useDebounce(searchTerm, 300);
 
-  // Hydratation côté client : synchronise les filtres avec localStorage si dispo
+  // Initialisation des filtres à l'hydratation
   useEffect(() => {
     setIsHydrated(true);
     if (typeof window !== 'undefined') {
-      setSelectedCity(localStorage.getItem('selectedCity') || t("Tous"));
+      setSelectedCity(t("Tous")); // Toujours initialiser à Tous
       setSearchTerm(localStorage.getItem('searchTerm') || "");
       const price = localStorage.getItem('priceRange');
       setPriceRange(price ? JSON.parse(price) : [100000, 5000000]);
@@ -169,10 +169,9 @@ export default function ApartmentList() {
     }
   }, []);
 
-  // Sauvegarder les filtres dans le localStorage quand ils changent
+  // Persistance intelligente : on ne sauvegarde pas selectedCity
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem('selectedCity', selectedCity);
       localStorage.setItem('searchTerm', searchTerm);
       localStorage.setItem('priceRange', JSON.stringify(priceRange));
       localStorage.setItem('bedRange', JSON.stringify(bedRange));
@@ -180,7 +179,12 @@ export default function ApartmentList() {
       localStorage.setItem('onlyGarden', onlyGarden);
       localStorage.setItem('onlyRooftop', onlyRooftop);
     }
-  }, [selectedCity, searchTerm, priceRange, bedRange, surfaceRange, onlyGarden, onlyRooftop]);
+  }, [searchTerm, priceRange, bedRange, surfaceRange, onlyGarden, onlyRooftop]);
+
+  // Réinitialiser la ville à chaque changement de langue
+  useEffect(() => {
+    setSelectedCity(t("Tous"));
+  }, [locale, t]);
 
   // Fonction pour réinitialiser tous les filtres
   const resetFilters = () => {
