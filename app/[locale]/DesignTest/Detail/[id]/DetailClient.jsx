@@ -14,7 +14,7 @@ import { notFound } from 'next/navigation';
 import Badge from "@/components/ui/Badge";
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import GoogleMapComponent from '@/components/GoogleMap';
+const GoogleMapComponent = dynamic(() => import('@/components/GoogleMap'), { ssr: false, loading: () => <div>Chargement de la carte…</div> });
 
 function formatPrice(price) {
   if (typeof price === "number") return price.toLocaleString("fr-FR") + " €";
