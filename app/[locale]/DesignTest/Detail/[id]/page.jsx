@@ -4,6 +4,8 @@ import DetailClient from "./DetailClient";
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 
+export const revalidate = 60;
+
 export async function generateMetadata({ params }) {
   const { id, locale } = params;
   const supabase = createClient();
