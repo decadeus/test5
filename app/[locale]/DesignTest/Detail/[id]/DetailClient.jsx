@@ -396,7 +396,7 @@ export default function DetailClient({ project, locale }) {
           </div>
         </header>
         <section
-          className={`max-w-7xl mx-auto px-4 mb-8 transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}
+          className={`max-w-7xl mx-auto px-4 mb-8 min-h-[400px] transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}
         >
           {loading ? (
             <div className="flex justify-center items-center h-[220px]">
@@ -453,7 +453,7 @@ export default function DetailClient({ project, locale }) {
         <section className="max-w-6xl mx-auto flex flex-col md:flex-row gap-12 mb-8">
           {/* Colonne gauche : texte */}
           <div className="w-full md:w-1/2 flex flex-col gap-8 px-8">
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-white rounded-xl shadow p-6 min-h-[300px]">
               <h3 className="text-2xl font-bold mb-4">Description</h3>
               <p className="text-gray-900 whitespace-pre-line">{projectDescription}</p>
             </div>
