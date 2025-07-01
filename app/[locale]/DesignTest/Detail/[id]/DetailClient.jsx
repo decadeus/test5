@@ -62,9 +62,11 @@ function renderLanguages(langs) {
 function PromoterCard({ project }) {
   return (
     <div className="bg-white rounded-xl shadow p-4 flex flex-col items-center border border-gray-100">
-      <img
+      <Image
         src="/appart.webp"
-        alt="Avatar promoteur"
+        alt={`${project.promoter_first_name || ''} ${project.promoter_last_name || ''} ${project.city || ''}`.trim() || 'Avatar promoteur'}
+        width={64}
+        height={64}
         className="w-16 h-16 rounded-full object-cover border-2 border-green-100 shadow mb-3"
       />
       <div className="text-lg font-bold text-gray-900 mb-4 text-center">{project.promoter_first_name || ""} {project.promoter_last_name || "Non renseigné"}</div>
@@ -348,7 +350,7 @@ export default function DetailClient({ project, locale }) {
         <div className="w-full h-[340px] mb-8 shadow-md flex justify-center items-center relative overflow-hidden rounded-none">
           <Image
             src="/appart.webp"
-            alt="Visuel du projet résidentiel"
+            alt={`${project.name} ${project.city}`}
             fill
             className="object-cover z-0"
             priority
@@ -373,11 +375,13 @@ export default function DetailClient({ project, locale }) {
             <div className="relative w-full h-[340px] flex items-center justify-center">
               {/* Image courante */}
               <div className="w-full h-full flex items-center justify-center">
-                <img
+                <Image
                   src={images[currentSlide]}
                   alt={`${project[`name_${locale}`] || project.name} - Image ${currentSlide + 1}`}
+                  fill
                   className="object-cover w-full h-full rounded-2xl select-none border-2 border-white shadow-lg"
-                  draggable="false"
+                  draggable={false}
+                  sizes="(max-width: 768px) 100vw, 700px"
                 />
               </div>
               {/* Flèches de navigation slider */}

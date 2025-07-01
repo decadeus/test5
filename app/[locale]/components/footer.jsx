@@ -1,6 +1,6 @@
 import React from "react";
 import LinK from "next/link";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { FaTwitter } from "react-icons/fa";
 
 export default function Footer() {
@@ -49,10 +49,10 @@ export default function Footer() {
         <div className="flex flex-col items-center sm:items-start mt-2">
           <div className="flex gap-2">
             <a href="#" target="_blank" rel="noopener noreferrer">
-              <img src="/applestore.png" alt="Disponible sur l'App Store" style={{ height: 40 }} />
+              <Image src="/applestore.png" alt="Disponible sur l'App Store" width={120} height={40} style={{ height: 40 }} />
             </a>
             <a href="#" target="_blank" rel="noopener noreferrer">
-              <img src="/androidstore.png" alt="Disponible sur Google Play" style={{ height: 40 }} />
+              <Image src="/androidstore.png" alt="Disponible sur Google Play" width={120} height={40} style={{ height: 40 }} />
             </a>
           </div>
         </div>
