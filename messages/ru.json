@@ -62,7 +62,8 @@
         "Rechercher": "Поиск",
         "Connexion": "Вход",
         "Accueil": "Главная",
-        "VosProjets": "Ваши проекты"
+        "VosProjets": "Ваши проекты",
+        "EspacePromoteur": "Кабинет застройщика"
     },
     "Projet": {
         "Modifier": "Изменить информацию о проекте",

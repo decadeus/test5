@@ -61,7 +61,8 @@
         "Rechercher": "Пошук",
         "Connexion": "Вхід",
         "Accueil": "Головна",
-        "VosProjets": "Ваші проекти"
+        "VosProjets": "Ваші проекти",
+        "EspacePromoteur": "Кабінет промоутера"
     },
     "Projet": {
         "Modifier": "Редагувати інформацію про проект",

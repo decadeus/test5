@@ -841,7 +841,7 @@ export default function ApartmentList() {
                   : 'bg-white text-gray-600 hover:bg-gray-100'
               }`}
             >
-              📋 Vue Liste
+              📋 {t('Vue Liste')}
             </button>
             <button
               onClick={() => setViewMode('map')}
@@ -851,7 +851,7 @@ export default function ApartmentList() {
                   : 'bg-white text-gray-600 hover:bg-gray-100'
               }`}
             >
-              🗺️ Vue Carte
+              🗺️ {t('Vue Carte')}
             </button>
           </div>
         </div>

@@ -61,7 +61,8 @@
         "Rechercher": "Szukaj",
         "Connexion": "Połączenie",
         "Accueil": "Strona główna",
-        "VosProjets": "Twoje projekty"
+        "VosProjets": "Twoje projekty",
+        "EspacePromoteur": "Strefa Dewelopera"
     },
     "Projet": {
         "Modifier": "Edytuj informacje o projekcie",

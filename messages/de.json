@@ -62,7 +62,8 @@
         "Rechercher": "Suche",
         "Connexion": "Verbindung",
         "Accueil": "Zuhause",
-        "VosProjets": "Ihre Projekte"
+        "VosProjets": "Ihre Projekte",
+        "EspacePromoteur": "Projektentwickler-Bereich"
     },
     "Projet": {
         "Modifier": "Projektinformationen bearbeiten",

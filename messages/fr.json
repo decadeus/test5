@@ -61,7 +61,8 @@
         "Rechercher": "Rechercher",
         "Connexion": "Connexion",
         "Accueil": "Accueil",
-        "VosProjets": "Vos projets"
+        "VosProjets": "Vos projets",
+        "EspacePromoteur": "Espace Promoteur"
     },
     "Projet": {
         "Modifier": "Modifier les informations du projet",

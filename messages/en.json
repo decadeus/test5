@@ -54,7 +54,8 @@
         "Rechercher": "Search",
         "Connexion": "Connection",
         "Accueil": "Home",
-        "VosProjets": "Your projects"
+        "VosProjets": "Your projects",
+        "EspacePromoteur": "Property Developer Area"
     },
     "Projet": {
         "Modifier": "Edit project information",
