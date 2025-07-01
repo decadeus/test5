@@ -353,10 +353,31 @@ export default function DetailClient({ project, locale }) {
           imagesrcset="/appart.webp 1x, /appart.webp 2x"
           imagesizes="100vw"
         />
+        <link
+          rel="preload"
+          href="/fonts/roboto/roboto-v48-latin-regular.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/roboto/roboto-v48-latin-700.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/roboto/roboto-v48-latin-italic.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
       </Head>
       <main className="bg-green-100/10 min-h-screen w-full">
         <header>
-          <div className="w-full h-[340px] mb-8 shadow-md flex justify-center items-center relative overflow-hidden rounded-none">
+          <div className="w-full h-[340px] relative mb-8 shadow-md flex justify-center items-center overflow-hidden rounded-none">
             <Image
               src="/appart.webp"
               alt={`${project.name} ${project.city}`}
