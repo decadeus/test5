@@ -52,8 +52,10 @@
         "Voir tous les lots": "Voir tous les lots",
         "Appartements": "Appartements",
         "Appartement": "Appartement",
-        "contact.title": "Contactez-nous",
-        "contact.link": "Envoyer un email",
+        "contact": {
+            "title": "Contactez-nous",
+            "link": "Envoyer un email"
+        },
         "SearchPlaceholder": "Rechercher un nouvel appartement à..."
     },
     "Nav": {

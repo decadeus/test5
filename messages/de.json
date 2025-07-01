@@ -52,8 +52,10 @@
         "Voir tous les lots": "Alle Wohnungen anzeigen",
         "Appartements": "Wohnungen",
         "Appartement": "Wohnung",
-        "contact.title": "Kontaktieren Sie uns",
-        "contact.link": "E-Mail senden",
+        "contact": {
+            "title": "Kontaktieren Sie uns",
+            "link": "E-Mail senden"
+        },
         "SearchPlaceholder": "Neue Wohnung suchen in...",
         "Voir le détail": "Details anzeigen"
     },

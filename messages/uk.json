@@ -52,8 +52,11 @@
         "Voir tous les lots": "Переглянути всі квартири",
         "Appartements": "Квартири",
         "Appartement": "Квартира",
-        "contact.title": "Зв'яжіться з нами",
-        "contact.link": "Надіслати листа",
+        "contact": {
+            "title": "Зв'яжіться з нами",
+            "link": "Надіслати листа",
+            "SearchPlaceholder": "Пошук нової квартири в..."
+        },
         "SearchPlaceholder": "Пошук нової квартири в..."
     },
     "Nav": {

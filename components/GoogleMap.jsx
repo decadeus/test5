@@ -24,15 +24,12 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
   const [selectedApartment, setSelectedApartment] = useState(null);
   const [map, setMap] = useState(null);
 
+  // Reviens à l'appel direct
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'YOUR_API_KEY_HERE',
     libraries: ['places'],
   });
-
-  // Vérifier si la clé API est configurée
-  const isApiKeyConfigured = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY && 
-                            process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY !== 'YOUR_API_KEY_HERE';
 
   const onLoad = useCallback((map) => {
     setMap(map);
@@ -96,28 +93,6 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
     valid.forEach(apt => bounds.extend({ lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) }));
     map.fitBounds(bounds);
   }, [map, apartments]);
-
-  if (!isApiKeyConfigured) {
-    return (
-      <div className="w-full h-[500px] bg-gray-200 flex items-center justify-center">
-        <div className="text-center p-6">
-          <div className="text-6xl mb-4">🗺️</div>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">Clé API Google Maps manquante</h3>
-          <p className="text-gray-600 mb-4">
-            Pour afficher la carte, vous devez configurer votre clé API Google Maps.
-          </p>
-          <a 
-            href="/GOOGLE_MAPS_SETUP.md" 
-            className="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Voir les instructions
-          </a>
-        </div>
-      </div>
-    );
-  }
 
   if (!isLoaded) {
     return (

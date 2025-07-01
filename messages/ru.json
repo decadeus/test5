@@ -52,8 +52,10 @@
         "Voir tous les lots": "Показать все квартиры",
         "Appartements": "Квартиры",
         "Appartement": "Квартира",
-        "contact.title": "Связаться с нами",
-        "contact.link": "Отправить письмо",
+        "contact": {
+            "title": "Связаться с нами",
+            "link": "Отправить письмо"
+        },
         "SearchPlaceholder": "Поиск новой квартиры в...",
         "Voir le détail": "Подробнее"
     },

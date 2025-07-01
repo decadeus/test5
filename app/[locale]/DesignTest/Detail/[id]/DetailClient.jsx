@@ -13,6 +13,8 @@ import { FaLanguage } from 'react-icons/fa';
 import { notFound } from 'next/navigation';
 import Badge from "@/components/ui/Badge";
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
+import GoogleMapComponent from '@/components/GoogleMap';
 
 function formatPrice(price) {
   if (typeof price === "number") return price.toLocaleString("fr-FR") + " €";
@@ -224,10 +226,6 @@ export default function DetailClient({ project, locale }) {
     lat: Number(project.lat) || 52.2297,
     lng: Number(project.lng) || 21.0122,
   };
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-    libraries: ['places'],
-  });
 
   const equipmentList = [
     {
@@ -452,17 +450,11 @@ export default function DetailClient({ project, locale }) {
         <div className="w-full md:w-1/2 flex flex-col gap-8 px-8">
           <div className="bg-white rounded-xl shadow p-6">
             <h3 className="text-2xl font-bold mb-4">Localisation du projet</h3>
-            {isLoaded ? (
-              <GoogleMap
-                mapContainerStyle={{ width: '100%', height: '300px', borderRadius: '1rem' }}
-                center={center}
-                zoom={15}
-              >
-                <Marker position={center} />
-              </GoogleMap>
-            ) : (
-              <div>Chargement de la carte...</div>
-            )}
+            <GoogleMapComponent
+              mapContainerStyle={{ width: '100%', height: '300px', borderRadius: '1rem' }}
+              center={center}
+              zoom={15}
+            />
           </div>
           {/* Promoteur visible seulement sur desktop */}
           <div className="hidden md:block">

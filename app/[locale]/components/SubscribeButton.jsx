@@ -1,12 +1,7 @@
 "use client";
 
-import { loadStripe } from "@stripe/stripe-js";
 import { useState } from "react";
 import { useTranslations } from 'next-intl';
-
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-);
 
 export default function SubscribeButton({ subtitle, paragraphe }) {
   const [loading, setLoading] = useState(false);
@@ -28,6 +23,8 @@ export default function SubscribeButton({ subtitle, paragraphe }) {
         return;
       }
 
+      const { loadStripe } = await import("@stripe/stripe-js");
+      const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
       const stripe = await stripePromise;
       await stripe.redirectToCheckout({ sessionId });
     } catch (err) {
@@ -94,7 +91,8 @@ export default function SubscribeButton({ subtitle, paragraphe }) {
         ))}
 
         <div className="sm:col-span-1 lg:col-span-3 text-center mt-6 text-xl">
-          {t('contact.title')}<br />
+          {t('contact.title')}
+          <br />
           <a
             href="mailto:hoomge@decadeus.com"
             className="inline-block mt-2 underline hover:text-black font-medium"

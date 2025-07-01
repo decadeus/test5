@@ -52,8 +52,11 @@
         "Voir tous les lots": "Zobacz wszystkie lokale",
         "Appartements": "Mieszkania",
         "Appartement": "Mieszkanie",
-        "contact.title": "Skontaktuj się z nami",
-        "contact.link": "Wyślij e-mail",
+        "contact": {
+            "title": "Skontaktuj się z nami",
+            "link": "Wyślij e-mail",
+            "SearchPlaceholder": "Szukaj nowego mieszkania w..."
+        },
         "SearchPlaceholder": "Szukaj nowego mieszkania w..."
     },
     "Nav": {
