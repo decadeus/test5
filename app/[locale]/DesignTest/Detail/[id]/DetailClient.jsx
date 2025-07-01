@@ -62,7 +62,7 @@ function PromoterCard({ project }) {
   return (
     <div className="bg-white rounded-xl shadow p-4 flex flex-col items-center border border-gray-100">
       <img
-        src="/appart.png"
+        src="/appart.webp"
         alt="Avatar promoteur"
         className="w-16 h-16 rounded-full object-cover border-2 border-green-100 shadow mb-3"
       />
