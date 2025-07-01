@@ -75,7 +75,7 @@ function PromoterCard({ project }) {
           </div>
           <div>
             <div className="font-semibold text-base text-gray-900">Email</div>
-            <div className="text-gray-700 text-sm">{project.promoter_email || "Non renseigné"}</div>
+            <div className="text-gray-900 text-sm">{project.promoter_email || "Non renseigné"}</div>
           </div>
         </div>
         {/* Téléphone */}
@@ -85,7 +85,7 @@ function PromoterCard({ project }) {
           </div>
           <div>
             <div className="font-semibold text-base text-gray-900">Téléphone</div>
-            <div className="text-gray-700 text-sm">{project.promoter_phone || "Non renseigné"}</div>
+            <div className="text-gray-900 text-sm">{project.promoter_phone || "Non renseigné"}</div>
           </div>
         </div>
         {/* Langues */}
@@ -107,10 +107,10 @@ function PromoterCard({ project }) {
             <div className="font-semibold text-base text-gray-900">Site web</div>
             {project.link ? (
               <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800 transition-colors text-sm">
-                {project.link}
+                <span className="sr-only">Site du promoteur : </span>{project.link}
               </a>
             ) : (
-              <div className="text-gray-700 text-sm">Non renseigné</div>
+              <div className="text-gray-900 text-sm">Non renseigné</div>
             )}
           </div>
         </div>
@@ -344,15 +344,15 @@ export default function DetailClient({ project, locale }) {
   return (
     <main className="bg-green-100/10 min-h-screen w-full">
       <header>
-        <div
-          className="w-full h-[340px] mb-8 shadow-md flex justify-center items-center relative"
-          style={{
-            backgroundImage: "url(/appart.png)",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-          }}
-        >
+        <div className="w-full h-[340px] mb-8 shadow-md flex justify-center items-center relative overflow-hidden rounded-none">
+          <img
+            src="/appart.png"
+            alt="Visuel du projet résidentiel"
+            className="absolute inset-0 w-full h-full object-cover z-0"
+            fetchpriority="high"
+            decoding="async"
+            draggable="false"
+          />
           <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
           <div className="flex flex-col justify-center items-center relative z-10">
             <h1 className="text-5xl font-bold mb-2">{project[`name_${locale}`] || project.name}</h1>
@@ -385,6 +385,7 @@ export default function DetailClient({ project, locale }) {
                   <button
                     onClick={() => setCurrentSlide((prev) => Math.max(prev - 1, 0))}
                     disabled={currentSlide === 0}
+                    aria-label="Image précédente"
                     className={`absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-20 ${currentSlide === 0 ? 'opacity-40 cursor-not-allowed' : ''}`}
                   >
                     ◀
@@ -392,6 +393,7 @@ export default function DetailClient({ project, locale }) {
                   <button
                     onClick={() => setCurrentSlide((prev) => Math.min(prev + 1, images.length - 1))}
                     disabled={currentSlide === images.length - 1}
+                    aria-label="Image suivante"
                     className={`absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-20 ${currentSlide === images.length - 1 ? 'opacity-40 cursor-not-allowed' : ''}`}
                   >
                     ▶
@@ -416,11 +418,11 @@ export default function DetailClient({ project, locale }) {
         <div className="w-full md:w-1/2 flex flex-col gap-8 px-8">
           <div className="bg-white rounded-xl shadow p-6">
             <h3 className="text-2xl font-bold mb-4">Description</h3>
-            <p className="text-gray-700 whitespace-pre-line">{projectDescription}</p>
+            <p className="text-gray-900 whitespace-pre-line">{projectDescription}</p>
           </div>
           <div className="bg-white rounded-xl shadow p-6">
             <h3 className="text-2xl font-bold mb-4">Équipements communautaires</h3>
-            <p className="text-gray-700 whitespace-pre-line mb-3">{communityAmenities}</p>
+            <p className="text-gray-900 whitespace-pre-line mb-3">{communityAmenities}</p>
             {/* Badges équipements */}
             <div className="flex flex-wrap gap-2 mt-2">
               {equipmentList.map(eq =>
@@ -520,7 +522,7 @@ export default function DetailClient({ project, locale }) {
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl font-bold"
               onClick={() => setShowPromoterModal(false)}
-              aria-label="Fermer"
+              aria-label="Fermer la fenêtre de contact promoteur"
             >
               ×
             </button>
