@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { useDebounce } from 'use-debounce';
 import { useSwipeable } from 'react-swipeable';
 import { useRouter, useParams } from 'next/navigation';
+import Image from "next/image";
 
 import React from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -94,9 +95,12 @@ function ApartmentCard({
         </div>
       </div>
       <div className="relative overflow-hidden">
-        <img
+        <Image
           src={(projectImages[apt.id] && projectImages[apt.id].length > 0 ? projectImages[apt.id] : ["/components/image/placeholder.jpg"])[currentImageIndexes[apt.id] || 0]}
           alt={apt.title}
+          width={400}
+          height={256}
+          priority
           className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300 img-fade"
         />
       </div>
