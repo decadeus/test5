@@ -486,6 +486,8 @@ export default function DetailClient({ project, locale }) {
                 mapContainerStyle={{ width: '100%', height: '300px', borderRadius: '1rem' }}
                 center={center}
                 zoom={15}
+                apartments={[project]}
+                inactiveMarker
               />
             </div>
             {/* Promoteur visible seulement sur desktop */}

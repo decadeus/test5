@@ -16,7 +16,7 @@ const defaultCenter = {
   lng: 2.3522
 };
 
-const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, locale }) => {
+const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, locale, inactiveMarker }) => {
   const t = useTranslations("Filtre");
   const params = useParams();
   const currentLocale = params?.locale || 'fr';
@@ -137,7 +137,7 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
             <Marker
               key={apt.id}
               position={{ lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) }}
-              onClick={() => setSelectedApartment(apt)}
+              {...(!inactiveMarker && { onClick: () => setSelectedApartment(apt) })}
               icon={{
                 url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
                   <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
@@ -151,7 +151,7 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
             />
           ))}
 
-        {selectedApartment && (
+        {!inactiveMarker && selectedApartment && (
           <InfoWindow
             position={{ lat: parseFloat(selectedApartment.lat), lng: parseFloat(selectedApartment.lng) }}
             onCloseClick={() => setSelectedApartment(null)}
@@ -159,7 +159,7 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
             <div className="max-w-xs p-2">
               <div className="mb-2">
                 <img
-                  src={(projectImages[selectedApartment.id] && projectImages[selectedApartment.id].length > 0 
+                  src={(projectImages && currentImageIndexes && projectImages[selectedApartment.id] && projectImages[selectedApartment.id].length > 0 
                     ? projectImages[selectedApartment.id][currentImageIndexes[selectedApartment.id] || 0] 
                     : "/components/image/placeholder.jpg")}
                   alt={selectedApartment.title}

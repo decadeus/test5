@@ -9,7 +9,7 @@ const securityHeaders = [
   },
   {
     key: 'Content-Security-Policy-Report-Only',
-    value: "default-src 'self'; img-src * data:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; frame-src 'self' https://js.stripe.com https://hooks.stripe.com; connect-src 'self' https://igoqwthxpqjrnflhpkil.supabase.co https://api.stripe.com wss://igoqwthxpqjrnflhpkil.supabase.co;",
+    value: "default-src 'self'; img-src * data:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; frame-src 'self' https://js.stripe.com https://hooks.stripe.com; connect-src 'self' https://igoqwthxpqjrnflhpkil.supabase.co https://api.stripe.com wss://igoqwthxpqjrnflhpkil.supabase.co https://maps.googleapis.com; font-src 'self' data: https://fonts.gstatic.com;",
   },
 ];
 
