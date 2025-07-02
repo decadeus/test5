@@ -450,14 +450,14 @@ export default function DetailClient({ project, locale }) {
           ) : null}
         </section>
         {/* Nouveau layout deux colonnes : texte à gauche, carte+promoteur à droite */}
-        <section className="max-w-6xl mx-auto flex flex-col md:flex-row gap-12 mb-8">
+        <section className="max-w-6xl mx-auto flex flex-col md:flex-row md:gap-0 gap-12 mb-8">
           {/* Colonne gauche : texte */}
-          <div className="w-full md:w-1/2 flex flex-col gap-8 px-8">
-            <div className="bg-white rounded-xl shadow p-6 min-h-[300px]">
+          <div className="w-full md:w-1/2 flex flex-col gap-8 md:pr-2 px-4">
+            <div className="bg-white rounded-xl shadow p-4 min-h-[300px]">
               <h3 className="text-2xl font-bold mb-4">Description</h3>
               <p className="text-gray-900 whitespace-pre-line">{projectDescription}</p>
             </div>
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-white rounded-xl shadow p-4">
               <h3 className="text-2xl font-bold mb-4">Équipements communautaires</h3>
               <p className="text-gray-900 whitespace-pre-line mb-3">{communityAmenities}</p>
               {/* Badges équipements */}
@@ -479,8 +479,8 @@ export default function DetailClient({ project, locale }) {
             </div>
           </div>
           {/* Colonne droite : carte + promoteur + équipements */}
-          <div className="w-full md:w-1/2 flex flex-col gap-8 px-8">
-            <div className="bg-white rounded-xl shadow p-6">
+          <div className="w-full md:w-1/2 flex flex-col gap-8 md:px-4 px-4">
+            <div className="bg-white rounded-xl shadow p-4">
               <h3 className="text-2xl font-bold mb-4">Localisation du projet</h3>
               <GoogleMapComponent
                 mapContainerStyle={{ width: '100%', height: '300px', borderRadius: '1rem' }}
@@ -497,7 +497,7 @@ export default function DetailClient({ project, locale }) {
           </div>
         </section>
         {/* Tableau des lots */}
-        <section className="max-w-6xl mx-auto bg-white rounded-xl shadow p-6 mb-8">
+        <section className="max-w-6xl mx-auto bg-white rounded-xl shadow p-6  m-8">
           <h3 className="text-2xl font-bold mb-4">Lots disponibles</h3>
           <div className="overflow-x-auto">
             <table className="min-w-full border border-gray-200">
