@@ -9,6 +9,9 @@ const nextConfig = {
       // ajoute d'autres domaines ici si besoin
     ],
   },
+  experimental: {
+    legacyBrowsers: false,
+  },
 };
 
 export default withNextIntl(nextConfig) ;

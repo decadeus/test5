@@ -12,12 +12,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <Head>
         <link rel="preload" as="image" href="/appart.png" />
         {/* Optimisation Google Fonts supprimée car polices locales utilisées */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-          rel="stylesheet"
-        /> */}
+        {/* Toutes les balises Google Fonts supprimées */}
       </Head>
       {/* ... reste du layout ... */}
       {children}
