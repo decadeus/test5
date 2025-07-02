@@ -81,7 +81,10 @@ export default async function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#ffffff" />
-        
+        {/* Préchargement des polices Roboto locales */}
+        <link rel="preload" href="/fonts/roboto/roboto-v48-latin-regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/roboto/roboto-v48-latin-700.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/roboto/roboto-v48-latin-italic.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         {/* Balises hreflang pour le SEO multilingue */}
         <HreflangTags pathname={pathname} />
       </head>
