@@ -1,7 +1,7 @@
 import React from "react";
 import LinK from "next/link";
 import Image from "next/legacy/image";
-import { FaTwitter } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 
 export default function Foot() {
   return (
@@ -34,13 +34,16 @@ export default function Foot() {
           </p>
           <div className="flex space-x-2 mt-1">
             <a href="#" className="hover:text-white">
-              <i className="fab fa-facebook"></i>
+              <FaFacebook />
+              <span className="sr-only">Facebook</span>
             </a>
             <a href="#" className="hover:text-white">
-              <i className="fab fa-twitter"></i>
+              <FaTwitter />
+              <span className="sr-only">Twitter</span>
             </a>
             <a href="#" className="hover:text-white">
-              <i className="fab fa-instagram"></i>
+              <FaInstagram />
+              <span className="sr-only">Instagram</span>
             </a>
           </div>
         </div>
