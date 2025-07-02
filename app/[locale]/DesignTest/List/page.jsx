@@ -351,7 +351,10 @@ export default function ApartmentList() {
         // Récupère les projets
         const { data: projects, error: errorProjects } = await supabase
           .from("project")
-          .select("id, name, compagny, country, city, lat, lng");
+          .select("id, name, compagny, country, city, lat, lng, online");
+
+        // Filtre pour ne garder que les projets en ligne
+        const onlineProjects = (projects || []).filter(item => item.online === true);
 
         // Récupère les projectlists
         const { data: projectlists, error: errorProjectlists } = await supabase
@@ -364,7 +367,7 @@ export default function ApartmentList() {
         }
 
         // Associe les projectlists à leur projet parent
-        const apartmentsWithList = (projects || []).map((item) => ({
+        const apartmentsWithList = (onlineProjects || []).map((item) => ({
           id: item.id,
           title: item.name,
           compagny: item.compagny,

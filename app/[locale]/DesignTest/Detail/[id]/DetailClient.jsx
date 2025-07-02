@@ -390,7 +390,7 @@ export default function DetailClient({ project, locale }) {
             />
             <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
             <div className="flex flex-col justify-center items-center relative z-10">
-              <h1 className="text-5xl font-bold mb-2">{project[`name_${locale}`] || project.name}</h1>
+              <h1 className="text-5xl font-bold mb-2">{project.name}</h1>
               <h2 className="text-xl text-black mb-2">{project.city}</h2>
             </div>
           </div>
@@ -409,7 +409,7 @@ export default function DetailClient({ project, locale }) {
                 <div className="w-full h-full flex items-center justify-center">
                   <Image
                     src={images[currentSlide]}
-                    alt={`${project[`name_${locale}`] || project.name} - Image ${currentSlide + 1}`}
+                    alt={`${project.name} - Image ${currentSlide + 1}`}
                     fill
                     className="object-cover w-full h-full rounded-2xl select-none border-2 border-white shadow-lg"
                     draggable={false}
@@ -536,7 +536,7 @@ export default function DetailClient({ project, locale }) {
         </section>
         {/* Bouton flottant pour ouvrir la modal sur mobile */}
         <button
-          className="fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-green-800 text-white rounded-tl-2xl rounded-bl-2xl shadow-lg px-3 py-4 flex flex-col items-center md:hidden hover:bg-green-900 transition-colors border border-green-900"
+          className="fixed right-0 top-20 z-50 bg-green-800 text-white rounded-tl-2xl rounded-bl-2xl shadow-lg px-3 py-4 flex flex-col items-center md:hidden hover:bg-green-900 transition-colors border border-green-900"
           onClick={() => setShowPromoterModal(true)}
           aria-label="Contact promoteur"
         >
@@ -563,6 +563,14 @@ export default function DetailClient({ project, locale }) {
             </div>
           </div>
         )}
+        {/* Ajoute un padding-bottom sur mobile pour éviter que le bouton ne masque le contenu */}
+        <style jsx>{`
+          @media (max-width: 768px) {
+            main {
+              padding-bottom: 90px !important;
+            }
+          }
+        `}</style>
       </main>
     </>
   );
