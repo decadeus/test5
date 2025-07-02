@@ -1,3 +1,4 @@
+export const revalidate = 0;
 import ListProjectPage from "./ListProjectPage";
 import { createClient } from "@/utils/supabase/server";
 
