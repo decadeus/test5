@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { IoSearch } from "react-icons/io5";
+import Image from "next/image";
 
 export default function IntroSection({
   t,
@@ -24,22 +25,19 @@ export default function IntroSection({
   return (
     <>
       <link rel="preload" href="/buildwhite.jpg" as="image" />
-      <div className="relative overflow-hidden w-full pb-6 sm:pb-10">
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            transform: `translateY(${scrollPosition * 0.4}px)`,
-            transition: "none",
-            backgroundImage: "url(/home.png)",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-          }}
-        >
+      <div className="relative overflow-hidden w-full pb-6 sm:pb-10 h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px]">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/home.png"
+            alt="Fond d'accueil Hoomge"
+            fill
+            priority
+            style={{ objectFit: "cover" }}
+          />
           <div className="absolute inset-0 bg-green-500/60 backdrop-blur-sm"></div>
         </div>
         <div className="absolute inset-0 bg-white/70 z-10" />
-        <div className="relative z-20 flex flex-col justify-between px-4 sm:px-6 lg:px-8 text-black">
+        <div className="relative z-20 flex flex-col justify-between px-4 sm:px-6 lg:px-8 text-black h-full">
           <div className="flex flex-col items-center gap-4 sm:gap-6 mt-12 sm:mt-16 md:mt-24 text-center">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold max-w-3xl leading-tight">
               {t("title")}
