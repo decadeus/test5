@@ -11,14 +11,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <>
       <Head>
         <link rel="preload" as="image" href="/appart.png" />
-        {/* Optimisation Google Fonts */}
+        {/* Optimisation Google Fonts supprimée car polices locales utilisées */}
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Exemple d'import de police avec display=swap (à adapter selon ta police réelle) */}
-        <link
+        {/* <link
           href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
           rel="stylesheet"
-        />
+        /> */}
       </Head>
       {/* ... reste du layout ... */}
       {children}
