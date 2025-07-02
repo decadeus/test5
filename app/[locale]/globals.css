@@ -24,7 +24,7 @@
   font-display: swap;
 }
 
-body {
+body, html {
   font-family: 'Roboto', Arial, sans-serif;
 }
 

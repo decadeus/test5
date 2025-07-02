@@ -181,7 +181,7 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
                 )}
                 <Link 
                   href={`/${currentLocale}/DesignTest/Detail/${selectedApartment.id}`}
-                  className="inline-block bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition-colors"
+                  className="inline-block bg-green-800 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-900 transition-colors"
                 >
                   {t("Voir le détail")}
                 </Link>

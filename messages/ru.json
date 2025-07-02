@@ -57,7 +57,8 @@
             "link": "Отправить письмо"
         },
         "SearchPlaceholder": "Поиск новой квартиры в...",
-        "Voir le détail": "Подробнее"
+        "Voir le détail": "Подробнее",
+        "Réinitialiser les filtres": "Сбросить фильтры"
     },
     "Nav": {
         "Ajouter": "Добавить проект",

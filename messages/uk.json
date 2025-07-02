@@ -57,7 +57,8 @@
             "link": "Надіслати листа",
             "SearchPlaceholder": "Пошук нової квартири в..."
         },
-        "SearchPlaceholder": "Пошук нової квартири в..."
+        "SearchPlaceholder": "Пошук нової квартири в...",
+        "Réinitialiser les filtres": "Скинути фільтри"
     },
     "Nav": {
         "Ajouter": "Додати проект",

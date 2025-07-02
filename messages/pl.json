@@ -57,7 +57,8 @@
             "link": "Wyślij e-mail",
             "SearchPlaceholder": "Szukaj nowego mieszkania w..."
         },
-        "SearchPlaceholder": "Szukaj nowego mieszkania w..."
+        "SearchPlaceholder": "Szukaj nowego mieszkania w...",
+        "Réinitialiser les filtres": "Zresetuj filtry"
     },
     "Nav": {
         "Ajouter": "Dodaj projekt",
