@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import Link from 'next/link';
 import { useTranslations } from "next-intl";
 import { useParams } from 'next/navigation';
+
+// Préparation migration Advanced Marker
+const libraries = ['places', 'marker']; // <-- à garder en dehors du composant
 
 const containerStyle = {
   width: '100%',
@@ -23,12 +26,13 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
   
   const [selectedApartment, setSelectedApartment] = useState(null);
   const [map, setMap] = useState(null);
+  const markersRef = useRef([]);
 
   // Reviens à l'appel direct
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'YOUR_API_KEY_HERE',
-    libraries: ['places'],
+    libraries,
   });
 
   const onLoad = useCallback((map) => {
@@ -94,6 +98,35 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
     map.fitBounds(bounds);
   }, [map, apartments]);
 
+  // Ajout des Advanced Markers après chargement de la carte
+  useEffect(() => {
+    if (!map || !window.google || !window.google.maps || !window.google.maps.marker) return;
+    // Nettoyage des anciens markers
+    markersRef.current.forEach(marker => marker.setMap(null));
+    markersRef.current = [];
+    if (!Array.isArray(apartments)) return;
+    const valid = apartments.filter(apt =>
+      apt.lat && apt.lng &&
+      !isNaN(parseFloat(apt.lat)) && !isNaN(parseFloat(apt.lng)) &&
+      parseFloat(apt.lat) !== 0 && parseFloat(apt.lng) !== 0
+    );
+    valid.forEach((apt) => {
+      const marker = new window.google.maps.marker.AdvancedMarkerElement({
+        map,
+        position: { lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) },
+        title: apt.title || '',
+        // icon: tu peux personnaliser ici si besoin
+      });
+      // Marker inactif : pas d'event
+      markersRef.current.push(marker);
+    });
+    // Pas d'InfoWindow pour l'instant (marker inactif)
+    return () => {
+      markersRef.current.forEach(marker => marker.setMap(null));
+      markersRef.current = [];
+    };
+  }, [map, apartments]);
+
   if (!isLoaded) {
     return (
       <div className="w-full h-[500px] bg-gray-200 flex items-center justify-center">
@@ -114,81 +147,14 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
         onLoad={onLoad}
         onUnmount={onUnmount}
         options={{
+          mapId: 'DEMO_MAP_ID', // <-- à remplacer par ton vrai mapId si tu en as un
           zoomControl: true,
           streetViewControl: false,
           mapTypeControl: true,
           fullscreenControl: true,
-          styles: [
-            {
-              featureType: "poi",
-              elementType: "labels",
-              stylers: [{ visibility: "off" }]
-            }
-          ]
         }}
       >
-        {(apartments || [])
-          .filter(apt => 
-            apt.lat && apt.lng && 
-            !isNaN(parseFloat(apt.lat)) && !isNaN(parseFloat(apt.lng)) &&
-            parseFloat(apt.lat) !== 0 && parseFloat(apt.lng) !== 0
-          )
-          .map((apt) => (
-            <Marker
-              key={apt.id}
-              position={{ lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) }}
-              {...(!inactiveMarker && { onClick: () => setSelectedApartment(apt) })}
-              icon={{
-                url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-                  <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="20" cy="20" r="18" fill="#16a34a" stroke="#ffffff" stroke-width="2"/>
-                    <text x="20" y="25" text-anchor="middle" fill="white" font-family="Arial" font-size="12" font-weight="bold">🏠</text>
-                  </svg>
-                `),
-                scaledSize: new window.google.maps.Size(40, 40),
-                anchor: new window.google.maps.Point(20, 20)
-              }}
-            />
-          ))}
-
-        {!inactiveMarker && selectedApartment && (
-          <InfoWindow
-            position={{ lat: parseFloat(selectedApartment.lat), lng: parseFloat(selectedApartment.lng) }}
-            onCloseClick={() => setSelectedApartment(null)}
-          >
-            <div className="max-w-xs p-2">
-              <div className="mb-2">
-                <img
-                  src={(projectImages && currentImageIndexes && projectImages[selectedApartment.id] && projectImages[selectedApartment.id].length > 0 
-                    ? projectImages[selectedApartment.id][currentImageIndexes[selectedApartment.id] || 0] 
-                    : "/components/image/placeholder.jpg")}
-                  alt={selectedApartment.title}
-                  className="w-full h-32 object-cover rounded-lg mb-2"
-                />
-                <h3 className="font-bold text-lg text-gray-900 mb-1">
-                  {selectedApartment.title}
-                </h3>
-                <p className="text-sm text-gray-600 mb-2">
-                  📍 {selectedApartment.city}
-                </p>
-                <p className="text-sm text-gray-700 mb-2">
-                  🏢 {selectedApartment.projectlist?.length || 0} {t("appartement")}{(selectedApartment.projectlist?.length || 0) > 1 ? 's' : ''}
-                </p>
-                {getMinPrice(selectedApartment.projectlist) && (
-                  <p className="text-sm font-semibold text-green-600 mb-3">
-                    À partir de {formatPrice(getMinPrice(selectedApartment.projectlist))}
-                  </p>
-                )}
-                <Link 
-                  href={`/${currentLocale}/DesignTest/Detail/${selectedApartment.id}`}
-                  className="inline-block bg-green-800 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-900 transition-colors"
-                >
-                  {t("Voir le détail")}
-                </Link>
-              </div>
-            </div>
-          </InfoWindow>
-        )}
+        {/* Markers avancés gérés via useEffect */}
       </GoogleMap>
     </div>
   );
