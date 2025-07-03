@@ -90,7 +90,7 @@ export default function Page() {
 
   return (
     <>
-      <section className="relative overflow-hidden w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[400px] px-4 sm:px-8 flex flex-col items-center text-center">
+      <section className="relative overflow-hidden w-full h-[250px] sm:h-[350px] md:h-[400px] lg:h-[400px] px-4 sm:px-8 flex flex-col items-center text-center">
         <div className="absolute inset-0 z-0">
           <Image
             src="/bg_Promoteur.png"
@@ -103,11 +103,11 @@ export default function Page() {
         </div>
         <div className="absolute inset-0 bg-white/70 z-10" />
         <div className="relative z-20 flex flex-col items-center justify-center h-full w-full">
-          <div className="flex flex-col items-center gap-4 sm:gap-6 mt-12 sm:mt-16 md:mt-24 text-center justify-center h-full">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-green-800 mb-6 max-w-7xl">{headerTitle}</h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-green-900 mb-8 max-w-2xl">{headerSubtitle}</p>
+          <div className="flex flex-col items-center md:gap-4 mt-12 sm:mt-16 md:mt-24 text-center justify-center h-full">
+            <h1 className="text-xl sm:text-4xl md:text-5xl font-bold text-green-800 md:mb-6 max-w-7xl">{headerTitle}</h1>
+            <p className="text-md sm:text-xl md:text-2xl text-green-900 md:mb-8 mb-2 max-w-2xl">{headerSubtitle}</p>
             <button
-              className="bg-green-700 hover:bg-green-800 text-white font-semibold px-8 py-4 rounded-xl text-lg shadow-lg transition"
+              className="bg-green-700 hover:bg-green-800 text-white font-semibold md:px-8 md:py-4 px-2 py-2 rounded-xl md:text-lg text-sm shadow-lg transition"
               onClick={() => {
                 const el = document.getElementById('abonnements');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
