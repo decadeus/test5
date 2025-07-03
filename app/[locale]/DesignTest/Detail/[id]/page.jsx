@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import DetailClient from "./DetailClient";
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
+import Chatbot from "../../../../components/Chatbot";
 
 export const revalidate = 60;
 
@@ -71,5 +72,10 @@ export default async function DetailPage({ params }) {
 
   if (!project) notFound();
 
-  return <DetailClient project={project} locale={locale} />;
+  return (
+    <>
+      <DetailClient project={project} locale={locale} />
+      <Chatbot />
+    </>
+  );
 }

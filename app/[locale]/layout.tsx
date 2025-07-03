@@ -14,6 +14,7 @@ import ConditionalDownloadButtons from "./components/ConditionalDownloadButtons"
 import { LanguageProvider } from "@/app/LanguageContext";
 import HreflangTags from "./components/HreflangTags";
 import { headers } from 'next/headers';
+import Chatbot from "../components/Chatbot";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -97,6 +98,7 @@ export default async function RootLayout({
               {children}
               <Analytics />
               <SpeedInsights />
+              <Chatbot />
             </main>
             <Foot />
             <ConditionalDownloadButtons />
