@@ -309,5 +309,25 @@
     "Promoteur": {
         "autoTranslationTitle": "Internationalisation automatique",
         "autoTranslationInfoLong": "Pour faciliter la recherche d'appartements par des utilisateurs du monde entier, tous les éléments ajoutés par les promoteurs (titres, descriptions, équipements, etc.) sont automatiquement traduits dans plusieurs langues.\nCette fonctionnalité permet à chaque projet d'être visible et compréhensible par un public international, notamment dans les moteurs de recherche, sans effort supplémentaire de la part des promoteurs.\nCela constitue également un atout pour attirer des investisseurs potentiels à l'international."
+    },
+    "DetailProject": {
+        "Description": "Description",
+        "CommunityAmenities": "Équipements communautaires",
+        "Location": "Localisation du projet",
+        "Lots": "Lots disponibles",
+        "Bedrooms": "Chambres",
+        "Floor": "Étage",
+        "Surface": "Surface",
+        "Garden": "Jardin",
+        "Rooftop": "Rooftop",
+        "Price": "Prix (€)",
+        "ContactPromoter": "Contact promoteur"
+    },
+    "PromoterCard": {
+        "Email": "Email",
+        "Phone": "Téléphone",
+        "Languages": "Langues parlées",
+        "Website": "Site web",
+        "NotProvided": "Non renseigné"
     }
 }

@@ -15,6 +15,7 @@ import Badge from "@/components/ui/Badge";
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import { useTranslations } from "next-intl";
 const GoogleMapComponent = dynamic(() => import('@/components/GoogleMap'), { ssr: false, loading: () => <div>Chargement de la carte…</div> });
 
 function formatPrice(price) {
@@ -63,6 +64,7 @@ function renderLanguages(langs) {
 
 // PromoterCard component
 function PromoterCard({ project }) {
+  const t = useTranslations("PromoterCard");
   return (
     <div className="bg-white rounded-xl shadow p-4 flex flex-col items-center border border-gray-100">
       <Image
@@ -72,7 +74,7 @@ function PromoterCard({ project }) {
         height={64}
         className="w-16 h-16 rounded-full object-cover border-2 border-green-100 shadow mb-3"
       />
-      <div className="text-lg font-bold text-gray-900 mb-4 text-center">{project.promoter_first_name || ""} {project.promoter_last_name || "Non renseigné"}</div>
+      <div className="text-lg font-bold text-gray-900 mb-4 text-center">{project.promoter_first_name || ""} {project.promoter_last_name || t('NotProvided')}</div>
       <div className="w-full flex flex-col gap-3">
         {/* Email */}
         <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
@@ -80,8 +82,8 @@ function PromoterCard({ project }) {
             <FiMail className="h-5 w-5 text-white" />
           </div>
           <div>
-            <div className="font-semibold text-base text-gray-900">Email</div>
-            <div className="text-gray-900 text-sm">{project.promoter_email || "Non renseigné"}</div>
+            <div className="font-semibold text-base text-gray-900">{t('Email')}</div>
+            <div className="text-gray-900 text-sm">{project.promoter_email || t('NotProvided')}</div>
           </div>
         </div>
         {/* Téléphone */}
@@ -90,8 +92,8 @@ function PromoterCard({ project }) {
             <FiPhone className="h-5 w-5 text-white" />
           </div>
           <div>
-            <div className="font-semibold text-base text-gray-900">Téléphone</div>
-            <div className="text-gray-900 text-sm">{project.promoter_phone || "Non renseigné"}</div>
+            <div className="font-semibold text-base text-gray-900">{t('Phone')}</div>
+            <div className="text-gray-900 text-sm">{project.promoter_phone || t('NotProvided')}</div>
           </div>
         </div>
         {/* Langues */}
@@ -100,7 +102,7 @@ function PromoterCard({ project }) {
             <FaLanguage className="h-5 w-5 text-white" />
           </div>
           <div className="flex-1">
-            <div className="font-semibold text-base text-gray-900">Langues parlées</div>
+            <div className="font-semibold text-base text-gray-900">{t('Languages')}</div>
             {renderLanguages(project.promoter_languages)}
           </div>
         </div>
@@ -110,13 +112,13 @@ function PromoterCard({ project }) {
             <FiGlobe className="h-5 w-5 text-white" />
           </div>
           <div>
-            <div className="font-semibold text-base text-gray-900">Site web</div>
+            <div className="font-semibold text-base text-gray-900">{t('Website')}</div>
             {project.link ? (
               <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800 transition-colors text-sm">
-                <span className="sr-only">Site du promoteur : </span>{project.link}
+                <span className="sr-only">{t('Website')}: </span>{project.link}
               </a>
             ) : (
-              <div className="text-gray-900 text-sm">Non renseigné</div>
+              <div className="text-gray-900 text-sm">{t('NotProvided')}</div>
             )}
           </div>
         </div>
@@ -126,14 +128,14 @@ function PromoterCard({ project }) {
 }
 
 export default function DetailClient({ project, locale }) {
+  const t = useTranslations("DetailProject");
+  const tProj = useTranslations("Projet");
   const [currentSlide, setCurrentSlide] = useState(0);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [projectList, setProjectList] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: 'bed', direction: 'ascending' });
   const [equipments, setEquipments] = useState({});
-  const [projectDescription, setProjectDescription] = useState('');
-  const [communityAmenities, setCommunityAmenities] = useState('');
   const supabase = createClient();
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [transitionEnabled, setTransitionEnabled] = useState(true);
@@ -322,8 +324,6 @@ export default function DetailClient({ project, locale }) {
         sauna: project.sauna,
         lift: project.lift,
       });
-      setProjectDescription(project[`fulldescr_${lang}`] || project.fulldescr || '');
-      setCommunityAmenities(project[`coam_${lang}`] || project.coam || '');
       fetchDetails();
     }
   }, [project, locale]);
@@ -342,6 +342,11 @@ export default function DetailClient({ project, locale }) {
   }, [showPromoterModal]);
 
   if (!project) notFound();
+
+  const lang = locale || 'fr';
+  // Champs projet multilingues
+  const projectName = project[`name_${lang}`] || project.name_fr || project.name;
+  const projectCity = project[`city_${lang}`] || project.city_fr || project.city;
 
   return (
     <>
@@ -380,7 +385,7 @@ export default function DetailClient({ project, locale }) {
           <div className="w-full h-[340px] relative mb-8 shadow-md flex justify-center items-center overflow-hidden rounded-none">
             <Image
               src="/appart.webp"
-              alt={`${project.name} ${project.city}`}
+              alt={`${projectName} ${projectCity}`}
               fill
               className="object-cover z-0"
               priority
@@ -390,8 +395,8 @@ export default function DetailClient({ project, locale }) {
             />
             <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
             <div className="flex flex-col justify-center items-center relative z-10">
-              <h1 className="text-5xl font-bold mb-2">{project.name}</h1>
-              <h2 className="text-xl text-black mb-2">{project.city}</h2>
+              <h1 className="text-5xl font-bold mb-2">{projectName}</h1>
+              <h2 className="text-xl text-black mb-2">{projectCity}</h2>
             </div>
           </div>
         </header>
@@ -409,7 +414,7 @@ export default function DetailClient({ project, locale }) {
                 <div className="w-full h-full flex items-center justify-center">
                   <Image
                     src={images[currentSlide]}
-                    alt={`${project.name} - Image ${currentSlide + 1}`}
+                    alt={`${projectName} - Image ${currentSlide + 1}`}
                     fill
                     className="object-cover w-full h-full rounded-2xl select-none border-2 border-white shadow-lg"
                     draggable={false}
@@ -454,12 +459,12 @@ export default function DetailClient({ project, locale }) {
           {/* Colonne gauche : texte */}
           <div className="w-full md:w-1/2 flex flex-col gap-8 md:pr-2 px-4">
             <div className="bg-white rounded-xl shadow p-4 min-h-[300px]">
-              <h3 className="text-2xl font-bold mb-4">Description</h3>
-              <p className="text-gray-900 whitespace-pre-line">{projectDescription}</p>
+              <h3 className="text-2xl font-bold mb-4">{t('Description')}</h3>
+              <p className="text-gray-900 whitespace-pre-line">{project[`fulldescr_${lang}`] || project.fulldescr || ''}</p>
             </div>
             <div className="bg-white rounded-xl shadow p-4">
-              <h3 className="text-2xl font-bold mb-4">Équipements communautaires</h3>
-              <p className="text-gray-900 whitespace-pre-line mb-3">{communityAmenities}</p>
+              <h3 className="text-2xl font-bold mb-4">{t('CommunityAmenities')}</h3>
+              <p className="text-gray-900 whitespace-pre-line mb-3">{project[`coam_${lang}`] || project.coam || ''}</p>
               {/* Badges équipements */}
               <div className="flex flex-wrap gap-2 mt-2">
                 {equipmentList.map(eq =>
@@ -471,7 +476,7 @@ export default function DetailClient({ project, locale }) {
                       <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow">
                         {eq.icon}
                       </span>
-                      {eq.label}
+                      {tProj(eq.key)}
                     </Badge>
                   )
                 )}
@@ -481,7 +486,7 @@ export default function DetailClient({ project, locale }) {
           {/* Colonne droite : carte + promoteur + équipements */}
           <div className="w-full md:w-1/2 flex flex-col gap-8 md:px-4 px-4">
             <div className="bg-white rounded-xl shadow p-4">
-              <h3 className="text-2xl font-bold mb-4">Localisation du projet</h3>
+              <h3 className="text-2xl font-bold mb-4">{t('Location')}</h3>
               <GoogleMapComponent
                 mapContainerStyle={{ width: '100%', height: '300px', borderRadius: '1rem' }}
                 center={center}
@@ -498,18 +503,18 @@ export default function DetailClient({ project, locale }) {
         </section>
         {/* Tableau des lots */}
         <section className="max-w-6xl mx-auto bg-white rounded-xl shadow p-6  m-8">
-          <h3 className="text-2xl font-bold mb-4">Lots disponibles</h3>
+          <h3 className="text-2xl font-bold mb-4">{t('Lots')}</h3>
           <div className="overflow-x-auto">
             <table className="min-w-full border border-gray-200">
               <thead>
                 <tr className="bg-gray-100">
-                  <SortableHeader label="Chambres" sortKey="bed" extraClass="px-4" />
-                  <SortableHeader label="Étage" sortKey="floor" extraClass="px-4" />
-                  <SortableHeader label="Surface" sortKey="surface" extraClass="px-4" />
-                  <SortableHeader label="Jardin" sortKey="garden" extraClass="px-4" />
-                  <SortableHeader label="Rooftop" sortKey="rooftop" extraClass="px-4" />
-                  <SortableHeader label="Prix (€)" sortKey="price" extraClass="px-4" />
-                  <th className="w-32 font-normal px-4">Description</th>
+                  <SortableHeader label={t('Bedrooms')} sortKey="bed" extraClass="px-4" />
+                  <SortableHeader label={t('Floor')} sortKey="floor" extraClass="px-4" />
+                  <SortableHeader label={t('Surface')} sortKey="surface" extraClass="px-4" />
+                  <SortableHeader label={t('Garden')} sortKey="garden" extraClass="px-4" />
+                  <SortableHeader label={t('Rooftop')} sortKey="rooftop" extraClass="px-4" />
+                  <SortableHeader label={t('Price')} sortKey="price" extraClass="px-4" />
+                  <th className="w-32 font-normal px-4">{t('Description')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -540,7 +545,7 @@ export default function DetailClient({ project, locale }) {
           onClick={() => setShowPromoterModal(true)}
           aria-label="Contact promoteur"
         >
-          <span className="vertical-text text-xs">Contact promoteur</span>
+          <span className="vertical-text text-xs">{t('ContactPromoter')}</span>
         </button>
         {/* Modal promoteur sur mobile */}
         {modalVisible && (

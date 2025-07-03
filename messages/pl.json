@@ -312,5 +312,25 @@
     "Promoteur": {
         "autoTranslationTitle": "Automatyczna internacjonalizacja",
         "autoTranslationInfoLong": "Aby ułatwić wyszukiwanie mieszkań użytkownikom z całego świata, wszystkie elementy dodane przez deweloperów (tytuły, opisy, udogodnienia itp.) są automatycznie tłumaczone na wiele języków.\nTa funkcjonalność sprawia, że każdy projekt jest widoczny i zrozumiały dla międzynarodowej publiczności, zwłaszcza w wyszukiwarkach, bez dodatkowego wysiłku ze strony deweloperów.\nTo także cenny atut w przyciąganiu potencjalnych inwestorów z zagranicy."
+    },
+    "DetailProject": {
+        "Description": "Opis",
+        "CommunityAmenities": "Udogodnienia wspólnotowe",
+        "Location": "Lokalizacja projektu",
+        "Lots": "Dostępne lokale",
+        "Bedrooms": "Sypialnie",
+        "Floor": "Piętro",
+        "Surface": "Powierzchnia",
+        "Garden": "Ogród",
+        "Rooftop": "Taras na dachu",
+        "Price": "Cena (€)",
+        "ContactPromoter": "Kontakt z deweloperem"
+    },
+    "PromoterCard": {
+        "Email": "Email",
+        "Phone": "Telefon",
+        "Languages": "Języki",
+        "Website": "Strona internetowa",
+        "NotProvided": "Brak informacji"
     }
 }

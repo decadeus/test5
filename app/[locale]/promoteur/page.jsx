@@ -134,7 +134,7 @@ export default function Page() {
           <div className="h-[2000px]"></div>
         </div>
         <ManageSection subtitle={subtitle} paragraphe={paragraphe} />
-        <Magic />
+        <Magic showTopBars={false} />
         <FAQ subtitle={subtitle} paragraphe={paragraphe} />
         <div id="abonnements">
           <SubscribeButton subtitle={subtitle} paragraphe={paragraphe} />

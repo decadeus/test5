@@ -12,7 +12,7 @@ const BAR_HEIGHT = {
   lg: 180,
 };
 
-export default function Magic() {
+export default function Magic({ showTopBars = true }) {
   const t = useTranslations("Magic");
   const [activeStep, setActiveStep] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -53,29 +53,33 @@ export default function Magic() {
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Barres du haut alignées */}
-      <div className="hidden lg:grid grid-cols-3 gap-8 sm:gap-12 lg:gap-16 mb-2 place-items-center">
-        {steps.map((_, idx) => (
-          <div
-            key={idx}
-            className={`h-2 w-full max-w-[320px] rounded-full transition-colors duration-500 ${
-              idx <= activeStep ? stepColors[idx] : "bg-gray-200"
-            }`}
-            style={{ minWidth: 220 }}
-          ></div>
-        ))}
-      </div>
-      {/* Mobile: barres individuelles */}
-      <div className="lg:hidden flex flex-col gap-8 mb-2">
-        {steps.map((_, idx) => (
-          <div
-            key={idx}
-            className={`h-2 w-full max-w-[320px] rounded-full mx-auto transition-colors duration-500 ${
-              idx <= activeStep ? stepColors[idx] : "bg-gray-200"
-            }`}
-            style={{ minWidth: 220 }}
-          ></div>
-        ))}
-      </div>
+      {showTopBars && (
+        <>
+          <div className="hidden lg:grid grid-cols-3 gap-8 sm:gap-12 lg:gap-16 mb-2 place-items-center">
+            {steps.map((_, idx) => (
+              <div
+                key={idx}
+                className={`h-2 w-full max-w-[320px] rounded-full transition-colors duration-500 ${
+                  idx <= activeStep ? stepColors[idx] : "bg-gray-200"
+                }`}
+                style={{ minWidth: 220 }}
+              ></div>
+            ))}
+          </div>
+          {/* Mobile: barres individuelles */}
+          <div className="lg:hidden flex flex-col gap-8 mb-2">
+            {steps.map((_, idx) => (
+              <div
+                key={idx}
+                className={`h-2 w-full max-w-[320px] rounded-full mx-auto transition-colors duration-500 ${
+                  idx <= activeStep ? stepColors[idx] : "bg-gray-200"
+                }`}
+                style={{ minWidth: 220 }}
+              ></div>
+            ))}
+          </div>
+        </>
+      )}
       {/* Icônes, titres, barres du bas, descriptions */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12 lg:gap-16">
         {steps.map((step, idx) => {
