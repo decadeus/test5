@@ -15,38 +15,12 @@ const WELCOME_MESSAGE = {
     "Bonjour ! 👋 Je suis l'assistant IA de ce site. Posez-moi vos questions sur le fonctionnement, les bugs, les suggestions ou l'amélioration de cette webapp. Je ne réponds qu'aux questions concernant ce site."
 };
 
-const BOT_AVATAR = (
-  <div style={{
-    width: 36,
-    height: 36,
-    borderRadius: "50%",
-    background: "linear-gradient(135deg, #2563eb 60%, #6366f1 100%)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#fff",
-    fontWeight: 700,
-    fontSize: 20,
-    boxShadow: "0 2px 8px rgba(37,99,235,0.10)",
-  }}>
-    <span role="img" aria-label="bot">🤖</span>
-  </div>
-);
-
-const USER_AVATAR = (
-  <img
-    src="https://randomuser.me/api/portraits/men/32.jpg"
-    alt="user avatar"
-    style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover", boxShadow: "0 2px 8px rgba(0,0,0,0.10)" }}
-  />
-);
-
 export default function Chatbot() {
-  const [messages, setMessages] = useState([WELCOME_MESSAGE]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   async function sendMessage(e) {
     e.preventDefault();
@@ -67,213 +41,141 @@ export default function Chatbot() {
     const data = await res.json();
     setMessages([...newMessages, { role: "assistant", content: data.reply }]);
     setLoading(false);
+    if (newMessages.length > 1) {
+      logBotAnswer(newMessages.length - 1);
+    }
+  }
+
+  // Enregistre chaque réponse du bot dans chatbot_feedback
+  async function logBotAnswer(messageIndex) {
+    const message = messages[messageIndex];
+    if (!message) return;
+    const userMessage = messages.slice(0, messageIndex).reverse().find(m => m.role === 'user');
+    await fetch('/api/chatbot/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        question: userMessage ? userMessage.content : '',
+        answer: message.content,
+        email
+      })
+    });
+  }
+
+  if (!open) {
+    return (
+      <button
+        onClick={() => setOpen(true)}
+        className="fixed bottom-8 right-8 z-[1000] bg-green-600 text-white border-none rounded-full w-14 h-14 shadow-lg text-3xl cursor-pointer flex items-center justify-center"
+        aria-label="Ouvrir le chat"
+      >
+        💬
+      </button>
+    );
   }
 
   return (
-    <>
-      {/* Bouton flottant pour ouvrir/fermer le chat */}
-      <button
-        onClick={() => setOpen((o) => !o)}
-        style={{
-          position: "fixed",
-          bottom: 32,
-          right: 32,
-          zIndex: 1000,
-          background: "#2563eb",
-          color: "white",
-          border: "none",
-          borderRadius: "50%",
-          width: 56,
-          height: 56,
-          boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-          fontSize: 28,
-          cursor: "pointer",
-        }}
-        aria-label={open ? "Fermer le chat" : "Ouvrir le chat"}
-      >
-        {open ? "×" : "💬"}
-      </button>
-
-      {/* Fenêtre de chat flottante */}
-      {open && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: 100,
-            right: 32,
-            width: 370,
-            maxWidth: "95vw",
-            background: "#fff",
-            borderRadius: 18,
-            boxShadow: "0 8px 32px rgba(37,99,235,0.18)",
-            zIndex: 1000,
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden",
-            fontFamily: 'Inter, Arial, sans-serif',
-          }}
-        >
-          {/* Header stylé */}
-          <div style={{
-            background: "linear-gradient(90deg, #2563eb 60%, #6366f1 100%)",
-            color: "white",
-            padding: "16px 20px 14px 20px",
-            fontWeight: 700,
-            fontSize: 18,
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            borderBottom: "1px solid #e5e7eb"
-          }}>
-            <span style={{ fontSize: 22, background: "#fff", borderRadius: "50%", padding: 4, color: "#2563eb" }}>💬</span>
-            AI ChatBot
+    <div className="fixed bottom-10 right-10 w-[380px] max-w-[95vw] bg-slate-50 rounded-[32px] shadow-2xl z-[1000] flex flex-col overflow-hidden font-sans">
+      {/* Header arrondi avec dégradé */}
+      <div className="bg-gradient-to-br from-lime-300 to-green-700 px-8 pt-7 pb-4 rounded-t-[32px] flex items-center justify-between min-h-[80px]">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-md border-2 border-green-100">
+            <span className="text-2xl">💬</span>
           </div>
-          <div
-            style={{
-              minHeight: 120,
-              maxHeight: 340,
-              overflowY: "auto",
-              padding: 18,
-              background: "#f6f8fa",
-              display: "flex",
-              flexDirection: "column",
-              gap: 16,
-            }}
-          >
-            {/* Champ email optionnel affiché en haut */}
-            <form
-              onSubmit={e => e.preventDefault()}
-              style={{ marginBottom: 8, display: "flex", flexDirection: "column", gap: 4 }}
-            >
-              <div style={{
-                background: "#eef2ff",
-                color: "#3730a3",
-                borderRadius: 8,
-                padding: "8px 10px",
-                fontSize: 13,
-                marginBottom: 4,
-              }}>
-                <strong>Pourquoi indiquer votre email&nbsp;?</strong><br />
-                Pour améliorer le service, nous enregistrons les questions et réponses du chatbot <strong>uniquement si vous indiquez votre email</strong>.<br />
-                Cela nous permet de prendre en compte vos suggestions, de vous recontacter si besoin, et d'assurer un meilleur suivi de vos demandes.<br />
-                <em>Votre email ne sera jamais utilisé à des fins commerciales et restera confidentiel.</em>
-              </div>
-             
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="Votre email (obligatoire pour l'enregistrement)"
-                style={{
-                  border: "1px solid #e5e7eb",
-                  borderRadius: 8,
-                  padding: "6px 10px",
-                  fontSize: 14,
-                  outline: "none",
-                }}
-              />
-            </form>
-            {messages.map((m, i) => (
-              <div
-                key={i}
-                style={{
-                  display: "flex",
-                  flexDirection: m.role === "user" ? "row-reverse" : "row",
-                  alignItems: "flex-end",
-                  gap: 10,
-                }}
-              >
-                {/* Avatar */}
-                {m.role === "user" ? USER_AVATAR : BOT_AVATAR}
-                {/* Bulle de message */}
-                <div style={{
-                  background: m.role === "user"
-                    ? "#fff"
-                    : "linear-gradient(90deg, #2563eb 60%, #6366f1 100%)",
-                  color: m.role === "user" ? "#222" : "#fff",
-                  borderRadius: m.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px",
-                  padding: "12px 18px",
-                  fontSize: 15,
-                  boxShadow: m.role === "user"
-                    ? "0 1px 4px rgba(0,0,0,0.06)"
-                    : "0 2px 8px rgba(99,102,241,0.10)",
-                  maxWidth: "70%",
-                  position: "relative",
-                  marginBottom: 2,
-                  wordBreak: "break-word",
-                }}>
-                  {m.content}
-                  {/* Badge "Answered by AI" pour le bot */}
-                  {m.role === "assistant" && i !== 0 && (
-                    <div style={{
-                      marginTop: 8,
-                      fontSize: 11,
-                      color: "#e0e7ff",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 4,
-                    }}>
-                      <span style={{ fontSize: 13 }}>✨</span> Answered by AI
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-            {loading && (
-              <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-end", gap: 10 }}>
-                <Loader3D />
-                <div style={{
-                  background: "linear-gradient(90deg, #2563eb 60%, #6366f1 100%)",
-                  color: "#fff",
-                  borderRadius: "18px 18px 18px 4px",
-                  padding: "12px 18px",
-                  fontSize: 15,
-                  boxShadow: "0 2px 8px rgba(99,102,241,0.10)",
-                  maxWidth: "70%",
-                }}>
-                  Le bot réfléchit…
-                </div>
-              </div>
-            )}
+          <div>
+            <div className="font-extrabold text-2xl text-white tracking-tight">Assistant IA</div>
+            <div className="text-sm text-white font-medium">Posez vos questions sur la webapp</div>
           </div>
-          <form
-            onSubmit={sendMessage}
-            style={{ display: "flex", gap: 8, padding: 14, borderTop: "1px solid #e5e7eb", background: "#fff" }}
-          >
-            <input
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              placeholder="Posez une question ou donnez un feedback"
-              style={{
-                flex: 1,
-                border: "1px solid #e5e7eb",
-                borderRadius: 8,
-                padding: "10px 14px",
-                fontSize: 15,
-                outline: "none",
-              }}
-            />
-            <button
-              type="submit"
-              disabled={loading || !input.trim()}
-              style={{
-                background: "linear-gradient(90deg, #2563eb 60%, #6366f1 100%)",
-                color: "white",
-                border: "none",
-                borderRadius: 8,
-                padding: "0 22px",
-                fontWeight: 600,
-                fontSize: 15,
-                cursor: loading || !input.trim() ? "not-allowed" : "pointer",
-                opacity: loading || !input.trim() ? 0.7 : 1,
-                boxShadow: "0 1px 4px rgba(99,102,241,0.10)",
-              }}
-            >
-              Envoyer
-            </button>
-          </form>
         </div>
-      )}
-    </>
+        <button
+          onClick={() => setOpen(false)}
+          className="bg-white/80 border-none rounded-full w-9 h-9 text-green-400 text-xl cursor-pointer flex items-center justify-center shadow-sm transition"
+          aria-label="Fermer le chat"
+        >
+          &minus;
+        </button>
+      </div>
+
+      {/* Carte message bot */}
+      <div className="bg-white rounded-[18px] shadow-md mt-6 mx-6 p-5 flex items-start gap-3">
+        <div className="w-36 p-2 rounded-full bg-lime-300 flex items-center justify-center shadow-md overflow-hidden">
+          <span role="img" aria-label="bot" className="text-2xl leading-none">🤖</span>
+        </div>
+        <div>
+          <div className="font-semibold text-slate-600 text-[15px] mb-0.5">ChatBot</div>
+          <div className="text-slate-900 text-[15px]">
+            Bonjour ! 👋 Je suis l'assistant IA de ce site. Posez-moi vos questions sur le fonctionnement, les bugs, les suggestions ou l'amélioration de notre webapp. Je ne réponds qu'aux questions concernant ce site.
+          </div>
+        </div>
+      </div>
+
+      {/* Carte explication email */}
+      <div className="bg-white rounded-[18px] shadow-md mt-6 mx-6 p-5 flex items-start gap-3">
+      <div className="w-36 p-2 rounded-full bg-green-700 flex items-center justify-center shadow-md overflow-hidden">
+          <span role="img" aria-label="bot" className="text-2xl leading-none">✉️</span>
+        </div>
+        <div>
+          <div className="font-semibold text-gray-700 text-[15px] mb-0.5">Pourquoi indiquer votre email&nbsp;?</div>
+          <div className="text-slate-900 text-[15px]">
+            Fournir  votre email nous peret de valider que nous pouvons enregistrer cette conversation afin d'améliorer le service et de mieux prendre en compte vos suggestions. Il ne sera jamais utilisé à des fins commerciales.
+          </div>
+        </div>
+      </div>
+
+      {/* Champ email au-dessus de la zone de saisie */}
+      <div className="px-5 pt-2 pb-0 mt-2">
+        <input
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          placeholder="Votre email (optionnel)"
+          className="w-full border border-gray-500 rounded-lg px-3 py-2 text-[15px] outline-none bg-slate-50"
+        />
+      </div>
+
+      {/* Zone de chat scrollable */}
+      <div className="flex-1 min-h-[120px] max-h-[320px] overflow-y-auto px-5 pt-5 pb-0 bg-slate-50 flex flex-col gap-3">
+        {messages && messages.map((m, i) => (
+          <div
+            key={i}
+            className={
+              (m.role === "user"
+                ? "self-end bg-gradient-to-br from-lime-100 to-green-200 text-slate-900 rounded-[18px] rounded-br-[4px]"
+                : "self-start bg-white text-slate-900 rounded-[18px] rounded-bl-[4px]") +
+              " px-4 py-2.5 text-[15px] shadow max-w-[75%] mb-0.5 break-words"
+            }
+          >
+            {m.content}
+          </div>
+        ))}
+      </div>
+
+      {/* Zone de saisie utilisateur */}
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          if (!input.trim()) return;
+          sendMessage(e);
+        }}
+        className="flex gap-2.5 p-5 border-t border-gray-200 bg-white mt-4"
+      >
+        <input
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          placeholder="Posez votre question..."
+          className="flex-1 border border-gray-200 rounded-lg px-3 py-2.5 text-[15px] outline-none"
+        />
+        <button
+          type="submit"
+          disabled={!input.trim()}
+          className={
+            "bg-green-400 text-slate-900 border-none rounded-lg px-6 font-semibold text-[15px] cursor-pointer shadow " +
+            (!input.trim() ? "opacity-70 cursor-not-allowed" : "hover:bg-green-500 transition")
+          }
+        >
+          Envoyer
+        </button>
+      </form>
+    </div>
   );
 } 

@@ -1,0 +1,3 @@
+export default function abonnementInfo() {
+  return `\nSi l'utilisateur pose des questions sur les abonnements :\n- Explique qu'il existe plusieurs formules d'abonnement pour accéder à des fonctionnalités avancées du site.\n- Précise que l'abonnement permet de bénéficier de services supplémentaires, comme la gestion de projets, l'accès à des outils d'IA, ou des fonctionnalités réservées aux membres.\n- Indique que l'utilisateur peut souscrire, modifier ou annuler son abonnement à tout moment depuis son espace personnel.\n- Mentionne que le paiement est sécurisé et que l'utilisateur peut contacter le support en cas de question.`;
+} 

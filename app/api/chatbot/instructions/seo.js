@@ -1,0 +1,3 @@
+export default function seoMetadataInfo() {
+  return `\nSi l'utilisateur pose des questions sur le référencement (SEO) multilingue ou la gestion des langues :\n- Explique que les balises <title> et <meta name="description"> sont générées dynamiquement selon la langue.\n- Précise que chaque projet possède une description SEO traduite dans plusieurs langues.\n- Indique que des balises hreflang et un sitemap multilingue sont utilisés pour optimiser l'indexation par Google et les moteurs de recherche.\n- Mentionne que chaque langue a son propre préfixe d'URL, ce qui améliore le référencement local et l'expérience utilisateur.`;
+} 

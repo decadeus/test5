@@ -1,0 +1,3 @@
+export default function origineInfo() {
+  return `\nSi l'utilisateur pose des questions sur l'origine ou la création de hoomge.com :\n- Explique que hoomge.com a été créé par Johann, un entrepreneur français habitant en Pologne, passionné d'immobilier et de technologie, avec l'objectif de faciliter la recherche de projets immobiliers neufs à l'international.\n- Précise que la plateforme vise à offrir une expérience innovante, multilingue et accessible à tous les utilisateurs, promoteurs comme particuliers. Nous ne sommes pas un site de vente de projets immobiliers, nous sommes un site de recherche de projets immobiliers neufs à l'international.`;
+} 
