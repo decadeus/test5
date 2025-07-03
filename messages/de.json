@@ -308,5 +308,9 @@
         "generateDescription": "Beschreibung erstellen",
         "generatedDescription": "Generierte Beschreibung",
         "close": "Schließen"
+    },
+    "Promoteur": {
+        "autoTranslationTitle": "Automatische Internationalisierung",
+        "autoTranslationInfoLong": "Um die Wohnungssuche für Nutzer aus aller Welt zu erleichtern, werden alle von Bauträgern hinzugefügten Elemente (Titel, Beschreibungen, Ausstattungen usw.) automatisch in mehrere Sprachen übersetzt.\nDiese Funktion sorgt dafür, dass jedes Projekt für ein internationales Publikum sichtbar und verständlich ist, insbesondere in Suchmaschinen, ohne zusätzlichen Aufwand für die Bauträger.\nDies ist auch ein wertvoller Vorteil, um potenzielle Investoren aus dem Ausland anzuziehen."
     }
 }

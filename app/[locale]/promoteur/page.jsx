@@ -6,6 +6,8 @@ import { useTranslations } from "next-intl";
 import { createClient } from "@/utils/supabase/client";
 import Loading from "../loading";
 import SubscribeButton from "@/app/[locale]/components/SubscribeButton";
+import { FaRocket, FaGlobe, FaChartBar, FaHandsHelping } from "react-icons/fa";
+import Image from "next/image";
 
 // Import des composants
 import IntroSection from "@/app/[locale]/components/home/IntroSection";
@@ -14,6 +16,7 @@ import ProjetSection from "@/app/[locale]/components/home/ProjetSection";
 import ManageSection from "@/app/[locale]/components/home/ManageSection";
 import Magic from "@/app/[locale]/components/home/Magic";
 import FAQ from "@/app/[locale]/components/home/FAQ";
+import AutoTranslationInfo from "@/app/[locale]/components/AutoTranslationInfo";
 
 export default function Page() {
   const [projects, setProjects] = useState([]);
@@ -81,22 +84,41 @@ export default function Page() {
   const uniqueCompanies = new Set(projects.map((project) => project.compagny));
   const uniqueIdeas = new Set(projects.map((project) => project.ide));
 
-  if (loading) return <Loading />;
+  // Header marketing
+  const headerTitle = "Développez votre activité immobilière avec Hoomge";
+  const headerSubtitle = "Touchez une audience internationale en bénéficiant de la traduction automatique";
 
   return (
     <>
-      <IntroSection
-        t={t}
-        uniqueCompanies={uniqueCompanies}
-        uniqueIdeas={uniqueIdeas}
-        totalApartments={totalApartments}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        fetchProjectsA={fetchProjectsA}
-        loading={loading}
-        router={router}
-        locale={locale}
-      />
+      <section className="relative overflow-hidden w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[400px] px-4 sm:px-8 flex flex-col items-center text-center">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/bg_Promoteur.png"
+            alt="Fond promoteur Hoomge"
+            fill
+            priority
+            style={{ objectFit: "cover" }}
+          />
+          <div className="absolute inset-0 bg-green-500/60 backdrop-blur-sm"></div>
+        </div>
+        <div className="absolute inset-0 bg-white/70 z-10" />
+        <div className="relative z-20 flex flex-col items-center justify-center h-full w-full">
+          <div className="flex flex-col items-center gap-4 sm:gap-6 mt-12 sm:mt-16 md:mt-24 text-center justify-center h-full">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-green-800 mb-6 max-w-7xl">{headerTitle}</h1>
+            <p className="text-lg sm:text-xl md:text-2xl text-green-900 mb-8 max-w-2xl">{headerSubtitle}</p>
+            <button
+              className="bg-green-700 hover:bg-green-800 text-white font-semibold px-8 py-4 rounded-xl text-lg shadow-lg transition"
+              onClick={() => {
+                const el = document.getElementById('abonnements');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              Publier un projet
+            </button>
+          </div>
+        </div>
+      </section>
+
       <div className="w-full max-w-[95%] sm:max-w-[90%] md:max-w-[85%] lg:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <style jsx>{`
           .letter {
@@ -106,6 +128,7 @@ export default function Page() {
           }
         `}</style>
         <SEO subtitle={subtitle} paragraphe={paragraphe} />
+        <AutoTranslationInfo />
         <div className="relative h-[2000px]">
           <ProjetSection subtitle={subtitle} paragraphe={paragraphe} />
           <div className="h-[2000px]"></div>
@@ -113,7 +136,9 @@ export default function Page() {
         <ManageSection subtitle={subtitle} paragraphe={paragraphe} />
         <Magic />
         <FAQ subtitle={subtitle} paragraphe={paragraphe} />
-        <SubscribeButton subtitle={subtitle} paragraphe={paragraphe} />
+        <div id="abonnements">
+          <SubscribeButton subtitle={subtitle} paragraphe={paragraphe} />
+        </div>
       </div>
     </>
   );

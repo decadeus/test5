@@ -298,5 +298,10 @@
         "generateDescription": "Generate Description",
         "generatedDescription": "Generated Description",
         "close": "Close"
+    },
+    "Promoteur": {
+        "autoTranslationInfo": "Items added by promoters are automatically translated to make apartment searches easier for international users.",
+        "autoTranslationTitle": "Automatic Internationalization",
+        "autoTranslationInfoLong": "To make apartment searches easier for users around the world, all items added by promoters (titles, descriptions, amenities, etc.) are automatically translated into multiple languages.\nThis feature ensures that every project is visible and understandable to an international audience, especially in search engines, without any extra effort from promoters.\nIt is also a valuable asset for attracting potential investors internationally."
     }
 }
