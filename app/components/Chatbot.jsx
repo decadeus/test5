@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { useTranslations } from 'next-intl';
 const Loader3D = dynamic(() => import("./Loader3D"), { ssr: false });
 
 const SYSTEM_PROMPT = {
@@ -20,7 +21,8 @@ export default function Chatbot() {
   const [input, setInput] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+  const t = useTranslations('chatbot');
 
   async function sendMessage(e) {
     e.preventDefault();
@@ -83,8 +85,8 @@ export default function Chatbot() {
             <span className="text-2xl">💬</span>
           </div>
           <div>
-            <div className="font-extrabold text-2xl text-white tracking-tight">Assistant IA</div>
-            <div className="text-sm text-white font-medium">Posez vos questions sur la webapp</div>
+            <div className="font-extrabold text-2xl text-white tracking-tight">{t('title')}</div>
+            <div className="text-sm text-white font-medium">{t('subtitle')}</div>
           </div>
         </div>
         <button
@@ -104,7 +106,7 @@ export default function Chatbot() {
         <div>
           <div className="font-semibold text-slate-600 text-[15px] mb-0.5">ChatBot</div>
           <div className="text-slate-900 text-[15px]">
-            Bonjour ! 👋 Je suis l'assistant IA de ce site. Posez-moi vos questions sur le fonctionnement, les bugs, les suggestions ou l'amélioration de notre webapp. Je ne réponds qu'aux questions concernant ce site.
+            {t('welcome')}
           </div>
         </div>
       </div>
@@ -115,9 +117,9 @@ export default function Chatbot() {
           <span role="img" aria-label="bot" className="text-2xl leading-none">✉️</span>
         </div>
         <div>
-          <div className="font-semibold text-gray-700 text-[15px] mb-0.5">Pourquoi indiquer votre email&nbsp;?</div>
+          <div className="font-semibold text-gray-700 text-[15px] mb-0.5">{t('emailWhy')}</div>
           <div className="text-slate-900 text-[15px]">
-            Fournir  votre email nous peret de valider que nous pouvons enregistrer cette conversation afin d'améliorer le service et de mieux prendre en compte vos suggestions. Il ne sera jamais utilisé à des fins commerciales.
+            {t('emailExplain')}
           </div>
         </div>
       </div>
@@ -128,7 +130,7 @@ export default function Chatbot() {
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          placeholder="Votre email (optionnel)"
+          placeholder={t('emailPlaceholder')}
           className="w-full border border-gray-500 rounded-lg px-3 py-2 text-[15px] outline-none bg-slate-50"
         />
       </div>
@@ -162,7 +164,7 @@ export default function Chatbot() {
         <input
           value={input}
           onChange={e => setInput(e.target.value)}
-          placeholder="Posez votre question..."
+          placeholder={t('placeholder')}
           className="flex-1 border border-gray-200 rounded-lg px-3 py-2.5 text-[15px] outline-none"
         />
         <button
@@ -173,7 +175,7 @@ export default function Chatbot() {
             (!input.trim() ? "opacity-70 cursor-not-allowed" : "hover:bg-green-500 transition")
           }
         >
-          Envoyer
+          {t('send')}
         </button>
       </form>
     </div>

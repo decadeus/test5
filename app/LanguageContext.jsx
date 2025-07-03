@@ -5,17 +5,15 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 const LanguageContext = createContext();
 
-export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState("en");
+export const LanguageProvider = ({ children, initialLanguage }) => {
+  const [language, setLanguage] = useState(initialLanguage || "fr");
 
   useEffect(() => {
-    const storedLanguage = localStorage.getItem("selectedLanguage") || "en";
-    setLanguage(storedLanguage);
-  }, []);
+    setLanguage(initialLanguage || "fr");
+  }, [initialLanguage]);
 
   const changeLanguage = (lang) => {
     setLanguage(lang);
-    localStorage.setItem("selectedLanguage", lang);
   };
 
   return (

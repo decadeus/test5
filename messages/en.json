@@ -323,5 +323,15 @@
         "Languages": "Languages spoken",
         "Website": "Website",
         "NotProvided": "Not provided"
+    },
+    "chatbot": {
+        "title": "AI Assistant",
+        "subtitle": "Ask your questions about the webapp",
+        "welcome": "Hello! 👋 I am the AI assistant of this site. Ask me your questions about how it works, bugs, suggestions, or improvements to our webapp. I only answer questions about this site.",
+        "emailWhy": "Why provide your email?",
+        "emailExplain": "Providing your email allows us to validate that we can record this conversation to improve the service and better take your suggestions into account. It will never be used for commercial purposes.",
+        "emailPlaceholder": "Your email (optional)",
+        "placeholder": "Ask your question...",
+        "send": "Send"
     }
 }

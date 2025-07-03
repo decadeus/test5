@@ -1,7 +1,13 @@
+import { LanguageProvider } from "./LanguageContext";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="fr">
-      <body>{children}</body>
+      <body>
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
+      </body>
     </html>
   );
 } 

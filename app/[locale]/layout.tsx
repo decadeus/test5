@@ -91,7 +91,7 @@ export default async function RootLayout({
       </head>
       <body>
         <NextIntlClientProvider messages={messages}>
-        <LanguageProvider>
+        <LanguageProvider initialLanguage={params.locale}>
           <Providers>
             <MainNavBar user={user} />
             <main className="min-h-screen w-full flex flex-col items-center text-black ">

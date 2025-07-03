@@ -332,5 +332,15 @@
         "Languages": "Języki",
         "Website": "Strona internetowa",
         "NotProvided": "Brak informacji"
+    },
+    "chatbot": {
+        "title": "Asystent AI",
+        "subtitle": "Zadaj pytania dotyczące aplikacji",
+        "welcome": "Cześć! 👋 Jestem asystentem AI tej strony. Zadawaj pytania dotyczące działania, błędów, sugestii lub ulepszeń naszej aplikacji. Odpowiadam tylko na pytania dotyczące tej strony.",
+        "emailWhy": "Dlaczego podać swój e-mail?",
+        "emailExplain": "Podanie e-maila pozwala nam potwierdzić, że możemy zapisać tę rozmowę, aby ulepszyć usługę i lepiej uwzględnić Twoje sugestie. Nigdy nie będzie używany do celów komercyjnych.",
+        "emailPlaceholder": "Twój e-mail (opcjonalnie)",
+        "placeholder": "Zadaj pytanie...",
+        "send": "Wyślij"
     }
 }

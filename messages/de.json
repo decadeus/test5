@@ -332,5 +332,15 @@
         "Languages": "Gesprochene Sprachen",
         "Website": "Webseite",
         "NotProvided": "Nicht angegeben"
+    },
+    "chatbot": {
+        "title": "KI-Assistent",
+        "subtitle": "Stellen Sie Ihre Fragen zur Webapp",
+        "welcome": "Hallo! 👋 Ich bin der KI-Assistent dieser Seite. Stellen Sie mir Ihre Fragen zur Funktionsweise, zu Fehlern, Vorschlägen oder zur Verbesserung unserer Webapp. Ich beantworte nur Fragen zu dieser Seite.",
+        "emailWhy": "Warum Ihre E-Mail angeben?",
+        "emailExplain": "Die Angabe Ihrer E-Mail ermöglicht es uns, zu bestätigen, dass wir dieses Gespräch speichern dürfen, um den Service zu verbessern und Ihre Vorschläge besser zu berücksichtigen. Sie wird niemals für kommerzielle Zwecke verwendet.",
+        "emailPlaceholder": "Ihre E-Mail (optional)",
+        "placeholder": "Stellen Sie Ihre Frage...",
+        "send": "Senden"
     }
 }
