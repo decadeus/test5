@@ -620,7 +620,7 @@ export function ProjectMainForm({ projectId, formData, updateFormData }) {
               className="w-full h-full object-cover rounded-full"
             />
           ) : (
-            <span className="text-xs text-gray-400">No images</span>
+            <span className="text-xs text-gray-400">No imagees</span>
           )}
           <input
             type="file"
@@ -1229,6 +1229,12 @@ export default function Maindata({ project, onProjectUpdate }) {
         </span>
       </div>
 
+      {/* Formulaire principal promoteur et infos projet */}
+      <div className="mb-6">
+        <ProjectMainForm projectId={project.id} formData={formData} updateFormData={updateFormData} />
+      </div>
+
+      {/* Images du projet */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Images du projet</h2>
         <ProjectImages projectId={project.id} />
@@ -1238,9 +1244,6 @@ export default function Maindata({ project, onProjectUpdate }) {
         <div>
           {/* Champs de base */}
           <BasicFields formData={formData} updateFormData={updateFormData} />
-          
-          {/* Informations du promoteur */}
-          <ProjectMainForm projectId={project.id} formData={formData} updateFormData={updateFormData} />
           
           {/* Sélecteur pays/ville */}
           <CountryCitySelector formData={formData} updateFormData={updateFormData} />

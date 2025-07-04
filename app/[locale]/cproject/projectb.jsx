@@ -128,14 +128,16 @@ export default function Projectb({ project, onProjectUpdate }) {
     <div className="w-full max-w-7xl mx-auto px-4 mt-16">
       {projectData && (
         <>
-      <Maindata
-        project={projectData}
-        onProjectUpdate={(updatedProject) => {
-          setProjectData(updatedProject);
-          if (onProjectUpdate) onProjectUpdate(updatedProject);
-        }}
-      />
-
+          <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+            {projectData.name}
+          </h1>
+          <Maindata
+            project={projectData}
+            onProjectUpdate={(updatedProject) => {
+              setProjectData(updatedProject);
+              if (onProjectUpdate) onProjectUpdate(updatedProject);
+            }}
+          />
 
           <div className="mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
             <input
