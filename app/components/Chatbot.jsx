@@ -101,8 +101,8 @@ export default function Chatbot() {
 
       {/* Carte message bot */}
       <div className="bg-white rounded-[18px] shadow-md mt-4 mx-2 p-3 flex items-start gap-2 sm:mt-6 sm:mx-6 sm:p-5 sm:gap-3">
-        <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-lime-300 flex items-center justify-center shadow-md overflow-hidden">
-          <img src="/chatbotImage.png" alt="Chatbot" className="w-full h-full object-cover" />
+        <div className="w-24 sm:w-44 rounded-full flex items-center justify-center shadow-md overflow-hidden">
+          <img src="/chatbotImage.png" alt="Chatbot" className="w-10 h-10 object-cover" />
         </div>
         <div>
           <div className="font-semibold text-slate-600 text-[13px] sm:text-[15px] mb-0.5">ChatBot</div>
@@ -114,7 +114,7 @@ export default function Chatbot() {
 
       {/* Carte explication email */}
       <div className="bg-white rounded-[18px] shadow-md mt-4 mx-2 p-3 flex items-start gap-2 sm:mt-6 sm:mx-6 sm:p-5 sm:gap-3">
-        <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-green-700 flex items-center justify-center shadow-md overflow-hidden">
+      <div className="w-24 sm:w-44 rounded-full flex items-center justify-center shadow-md overflow-hidden">
           <span role="img" aria-label="bot" className="text-lg sm:text-2xl leading-none">✉️</span>
         </div>
         <div>
@@ -143,8 +143,8 @@ export default function Chatbot() {
             key={i}
             className={
               (m.role === "user"
-                ? "self-end bg-gradient-to-br from-lime-100 to-green-200 text-slate-900 rounded-[18px] rounded-br-[4px]"
-                : "self-start bg-white text-slate-900 rounded-[18px] rounded-bl-[4px]") +
+                ? "self-end bg-white  text-slate-900 rounded-[18px] rounded-br-[4px]"
+                : "self-start bg-gradient-to-br from-lime-100 to-green-200 text-slate-900 rounded-[18px] rounded-bl-[4px]") +
               " px-3 py-2 text-[13px] sm:px-4 sm:py-2.5 sm:text-[15px] shadow max-w-[85%] sm:max-w-[75%] mb-0.5 break-words"
             }
           >
