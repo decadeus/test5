@@ -477,10 +477,14 @@ function BasicFields({ formData, updateFormData }) {
 }
 
 // Composant pour les informations du promoteur
-function PromoterInfoCard({ formData, updateFormData }) {
-  const f = useTranslations("Projet");
+export function ProjectMainForm({ projectId, formData, updateFormData }) {
+  const [images, setImages] = useState({});
+  const fileInputRefs = useRef([null, null, null, null, null]);
+  const [isUploading, setIsUploading] = useState(false);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
-  
+  const supabase = createClient();
+  const f = useTranslations("Projet");
+
   const availableLanguages = [
     { code: "fr", name: "Français" },
     { code: "en", name: "English" },
@@ -494,25 +498,148 @@ function PromoterInfoCard({ formData, updateFormData }) {
     { code: "nl", name: "Nederlands" },
   ];
 
-  // Initialiser les langues sélectionnées depuis formData
   useEffect(() => {
     if (formData.promoter_languages && Array.isArray(formData.promoter_languages)) {
       setSelectedLanguages(formData.promoter_languages);
     }
   }, [formData.promoter_languages]);
 
+  // --- Bloc langues promoteur ---
   const toggleLanguage = (langCode) => {
-    const newSelectedLanguages = selectedLanguages.includes(langCode) 
+    const newSelectedLanguages = selectedLanguages.includes(langCode)
       ? selectedLanguages.filter(lang => lang !== langCode)
       : [...selectedLanguages, langCode];
-    
     setSelectedLanguages(newSelectedLanguages);
-    // Mettre à jour formData avec le nouveau tableau de langues
     updateFormData('promoter_languages', newSelectedLanguages);
   };
 
+  // --- Bloc avatar promoteur ---
+  async function handleAvatarUpload(e) {
+    const files = e.target.files;
+    if (!files.length || !projectId) return;
+    const file = files[0];
+    setIsUploading(true);
+    try {
+      // Upload avatar dans Supabase Storage (prefix image6-)
+      const ext = file.name.split('.').pop();
+      const prefix = `image6-`;
+      const name = `${prefix}${Date.now()}.${ext}`;
+      // Supprimer anciens avatars
+      const { data: existingFiles } = await supabase.storage.from('project').list(`${projectId}/`, { limit: 20 });
+      if (existingFiles) {
+        const toDelete = existingFiles.filter(f => f.name.startsWith(prefix)).map(f => `${projectId}/${f.name}`);
+        if (toDelete.length > 0) await supabase.storage.from('project').remove(toDelete);
+      }
+      // Upload
+      const { error } = await supabase.storage.from('project').upload(`${projectId}/${name}`, file, { upsert: true });
+      if (error) throw error;
+      // Stocker le chemin (comme pour les autres images)
+      updateFormData('promoter_avatar_url', `${projectId}/${name}`);
+    } catch (err) {
+      alert(err.message || 'Erreur lors de l\'upload de l\'avatar');
+    }
+    setIsUploading(false);
+  }
+
+  // --- Bloc images du projet ---
+  const slots = [1, 2, 3, 4, 5, 6];
+  async function fetchImages() {
+    const { data, error } = await supabase
+      .storage
+      .from("project")
+      .list(`${projectId}/`, { limit: 20, offset: 0 });
+    if (error || !data) {
+      setImages({});
+      return;
+    }
+    const slotImages = {};
+    slots.forEach(num => {
+      const prefix = `image${num}-`;
+      const file = data.find(f => f.name.startsWith(prefix));
+      slotImages[num] = file
+        ? supabase.storage.from("project").getPublicUrl(`${projectId}/${file.name}`).data.publicUrl
+        : null;
+    });
+    setImages(slotImages);
+  }
+  useEffect(() => {
+    if (projectId) fetchImages();
+    // eslint-disable-next-line
+  }, [projectId]);
+
+  async function handleUpload(e, slotNum) {
+    const files = e.target.files;
+    if (!files.length) return;
+    const file = files[0];
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+    if (!allowedTypes.includes(file.type)) {
+      alert("Seuls les fichiers PNG, JPG ou JPEG sont autorisés.");
+      return;
+    }
+    const maxSize = 3 * 1024 * 1024;
+    if (file.size > maxSize) {
+      alert("La taille maximale autorisée est de 3 Mo.");
+      return;
+    }
+    const ext = file.name.split('.').pop();
+    const prefix = `image${slotNum}-`;
+    const name = `${prefix}${Date.now()}.${ext}`;
+    const { data: existingFiles, error: listError } = await supabase
+      .storage
+      .from("project")
+      .list(`${projectId}/`, { limit: 20, offset: 0 });
+    if (!listError && existingFiles) {
+      const toDelete = existingFiles
+        .filter(f => f.name.startsWith(prefix))
+        .map(f => `${projectId}/${f.name}`);
+      if (toDelete.length > 0) {
+        await supabase.storage.from("project").remove(toDelete);
+      }
+    }
+    const { error } = await supabase
+      .storage
+      .from("project")
+      .upload(`${projectId}/${name}`, file, { upsert: true });
+    if (error) alert("Erreur upload: " + error.message);
+    setTimeout(() => {
+      if (fileInputRefs.current[slotNum - 1]) fileInputRefs.current[slotNum - 1].value = "";
+      fetchImages();
+    }, 1000);
+  }
+
+  // --- Render ---
   return (
     <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-xl border border-blue-200 shadow-sm mb-8">
+      {/* Bloc avatar promoteur en haut du formulaire */}
+      <div className="flex flex-col items-center mb-6">
+        <div className="w-32 h-32 relative flex items-center justify-center rounded-full border-2 border-blue-200 bg-white overflow-hidden mb-2">
+          {images[6] ? (
+            <img
+              src={images[6]}
+              alt="Avatar promoteur"
+              className="w-full h-full object-cover rounded-full"
+            />
+          ) : (
+            <span className="text-xs text-gray-400">No image</span>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            ref={el => (fileInputRefs.current[5] = el)}
+            onChange={e => handleUpload(e, 6)}
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRefs.current[5]?.click()}
+            className="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow hover:bg-gray-200"
+            title="Uploader/Remplacer la photo du promoteur"
+          >
+            <FiUpload size={24} color="#222" />
+          </button>
+        </div>
+      </div>
+      {/* --- Formulaire promoteur --- */}
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
           <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -521,7 +648,6 @@ function PromoterInfoCard({ formData, updateFormData }) {
         </div>
         <h3 className="text-xl font-semibold text-gray-800">Informations du Promoteur</h3>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Nom */}
         <div className="flex flex-col">
@@ -530,11 +656,10 @@ function PromoterInfoCard({ formData, updateFormData }) {
             type="text"
             value={formData.promoter_last_name || ""}
             onChange={(e) => updateFormData('promoter_last_name', e.target.value)}
-            className={`${STYLES.input} ${STYLES.bginput} focus:ring-blue-500 focus:border-blue-500`}
+            className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Nom du promoteur"
           />
         </div>
-
         {/* Prénom */}
         <div className="flex flex-col">
           <label className="text-gray-700 font-medium mb-2">Prénom *</label>
@@ -542,46 +667,33 @@ function PromoterInfoCard({ formData, updateFormData }) {
             type="text"
             value={formData.promoter_first_name || ""}
             onChange={(e) => updateFormData('promoter_first_name', e.target.value)}
-            className={`${STYLES.input} ${STYLES.bginput} focus:ring-blue-500 focus:border-blue-500`}
+            className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Prénom du promoteur"
           />
         </div>
-
         {/* Téléphone */}
         <div className="flex flex-col">
           <label className="text-gray-700 font-medium mb-2">Téléphone *</label>
-          <div className="relative">
-            <input
-              type="tel"
-              value={formData.promoter_phone || ""}
-              onChange={(e) => updateFormData('promoter_phone', e.target.value)}
-              className={`${STYLES.input} ${STYLES.bginput} focus:ring-blue-500 focus:border-blue-500 pl-10`}
-              placeholder="+33 1 23 45 67 89"
-            />
-            <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
-          </div>
+          <input
+            type="tel"
+            value={formData.promoter_phone || ""}
+            onChange={(e) => updateFormData('promoter_phone', e.target.value)}
+            className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Téléphone du promoteur"
+          />
         </div>
-
         {/* Email */}
         <div className="flex flex-col">
           <label className="text-gray-700 font-medium mb-2">Email *</label>
-          <div className="relative">
-            <input
-              type="email"
-              value={formData.promoter_email || ""}
-              onChange={(e) => updateFormData('promoter_email', e.target.value)}
-              className={`${STYLES.input} ${STYLES.bginput} focus:ring-blue-500 focus:border-blue-500 pl-10`}
-              placeholder="promoteur@exemple.com"
-            />
-            <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-          </div>
+          <input
+            type="email"
+            value={formData.promoter_email || ""}
+            onChange={(e) => updateFormData('promoter_email', e.target.value)}
+            className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Email du promoteur"
+          />
         </div>
       </div>
-
       {/* Langues parlées */}
       <div className="mt-6">
         <label className="text-gray-700 font-medium mb-3 block">Langues parlées *</label>
@@ -614,17 +726,11 @@ function PromoterInfoCard({ formData, updateFormData }) {
         </div>
         {selectedLanguages.length > 0 && (
           <div className="mt-3 text-sm text-gray-600">
-            Langues sélectionnées : {selectedLanguages.map(code => 
+            Langues sélectionnées : {selectedLanguages.map(code =>
               availableLanguages.find(lang => lang.code === code)?.name
             ).join(', ')}
           </div>
         )}
-      </div>
-
-      {/* Indicateur de statut */}
-      <div className="mt-6 flex items-center gap-2 text-sm text-gray-600">
-        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-        <span>Informations du promoteur</span>
       </div>
     </div>
   );
@@ -1134,7 +1240,7 @@ export default function Maindata({ project, onProjectUpdate }) {
           <BasicFields formData={formData} updateFormData={updateFormData} />
           
           {/* Informations du promoteur */}
-          <PromoterInfoCard formData={formData} updateFormData={updateFormData} />
+          <ProjectMainForm projectId={project.id} formData={formData} updateFormData={updateFormData} />
           
           {/* Sélecteur pays/ville */}
           <CountryCitySelector formData={formData} updateFormData={updateFormData} />
