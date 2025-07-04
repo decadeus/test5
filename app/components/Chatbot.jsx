@@ -68,10 +68,11 @@ export default function Chatbot() {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-8 right-8 z-[1000] bg-green-600 text-white border-none rounded-full w-14 h-14 shadow-lg text-3xl cursor-pointer flex items-center justify-center"
+        className="fixed bottom-8 right-8 z-[1000] text-white border-none rounded-full w-18  shadow-lg text-3xl cursor-pointer flex flex-col items-center justify-center p-3"
         aria-label="Ouvrir le chat"
       >
-        💬
+        <img src="/chatbotImage.png" alt="Chatbot" className="w-12 h-12 object-cover rounded-full" />
+        <span className="text-xs font-semibold mt-1 text-black">Chatbot</span>
       </button>
     );
   }
@@ -81,8 +82,8 @@ export default function Chatbot() {
       {/* Header arrondi avec dégradé */}
       <div className="bg-gradient-to-br from-lime-300 to-green-700 px-4 pt-5 pb-3 rounded-t-2xl sm:px-8 sm:pt-7 sm:pb-4 sm:rounded-t-[32px] flex items-center justify-between min-h-[64px] sm:min-h-[80px]">
         <div className="flex items-center gap-2 sm:gap-4">
-          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center shadow-md border-2 border-green-100">
-            <span className="text-lg sm:text-2xl">💬</span>
+          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center shadow-md border-2 border-green-100 overflow-hidden">
+            <img src="/chatbotImage.png" alt="Chatbot" className="w-full h-full object-cover" />
           </div>
           <div>
             <div className="font-extrabold text-lg sm:text-2xl text-white tracking-tight">{t('title')}</div>
@@ -91,7 +92,7 @@ export default function Chatbot() {
         </div>
         <button
           onClick={() => setOpen(false)}
-          className="bg-white/80 border-none rounded-full w-8 h-8 sm:w-9 sm:h-9 text-green-400 text-lg sm:text-xl cursor-pointer flex items-center justify-center shadow-sm transition"
+          className="bg-white/80 border-none rounded-full w-8 h-8 sm:w-9 sm:h-9 text-black text-lg sm:text-xl cursor-pointer flex items-center justify-center shadow-sm transition"
           aria-label="Fermer le chat"
         >
           &minus;
@@ -101,7 +102,7 @@ export default function Chatbot() {
       {/* Carte message bot */}
       <div className="bg-white rounded-[18px] shadow-md mt-4 mx-2 p-3 flex items-start gap-2 sm:mt-6 sm:mx-6 sm:p-5 sm:gap-3">
         <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-lime-300 flex items-center justify-center shadow-md overflow-hidden">
-          <span role="img" aria-label="bot" className="text-lg sm:text-2xl leading-none">🤖</span>
+          <img src="/chatbotImage.png" alt="Chatbot" className="w-full h-full object-cover" />
         </div>
         <div>
           <div className="font-semibold text-slate-600 text-[13px] sm:text-[15px] mb-0.5">ChatBot</div>
