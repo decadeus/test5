@@ -123,6 +123,7 @@ function useProjectData(project, onProjectUpdate) {
   });
 
   const [isSaving, setIsSaving] = useState(false);
+  const [initialFormData, setInitialFormData] = useState(null);
 
   // Mise à jour des données quand le projet change
   useEffect(() => {
@@ -159,6 +160,30 @@ function useProjectData(project, onProjectUpdate) {
       fitness: project?.fitness || false,
     });
   }, [project]);
+
+  useEffect(() => {
+    setInitialFormData(project ? {
+      compagny: project?.compagny || "",
+      country: project?.country || "",
+      city: project?.city || "",
+      lat: project?.lat || "",
+      lng: project?.lng || "",
+      link: project?.link || "",
+      cur: project?.cur || "",
+      online: project?.online || false,
+      aponsel: project?.aponsel || "",
+      promoter_last_name: project?.promoter_last_name || "",
+      promoter_first_name: project?.promoter_first_name || "",
+      promoter_phone: project?.promoter_phone || "",
+      promoter_email: project?.promoter_email || "",
+      promoter_languages: project?.promoter_languages || [],
+      ...Object.fromEntries(Object.entries(project || {}).filter(([k]) => k.startsWith('name_') || k.startsWith('fulldescr_') || k.startsWith('coam_') || k.startsWith('des_')))
+    } : null);
+  }, [project]);
+
+  const t = useTranslations("Projet");
+  const hasTextChanges = initialFormData && JSON.stringify(formData) !== JSON.stringify(initialFormData);
+  const buttonText = isSaving ? t("Saving") : hasTextChanges ? "Enregistrer les modifications" : "Sauvegarder";
 
   const updateFormData = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -340,6 +365,9 @@ function useProjectData(project, onProjectUpdate) {
     setActiveLang,
     handleTranslate,
     isTranslating,
+    initialFormData,
+    hasTextChanges,
+    buttonText,
   };
 }
 
@@ -935,7 +963,7 @@ function IASEOShort({ projectData, formData, onResult, onClose }) {
   };
 
   return (
-    <div className="p-4 py-10 bg-white rounded-lg shadow-xl w-[600px]">
+    <div className="p-4 py-10 bg-white rounded-lg shadow-md w-[600px]">
       {/* <h3 className="text-xl font-bold text-gray-800">{t("IASEO")} ({language.toUpperCase()})</h3> */}
       {/* <p className="text-sm text-gray-600 mb-4">{t("IASEODescription")}</p> */}
       
@@ -1012,7 +1040,7 @@ function IASEOFull({ projectData, formData, onResult, onClose }) {
   };
 
   return (
-    <div className="p-4 py-10 bg-white rounded-lg shadow-xl w-[600px]">
+    <div className="p-4 py-10 bg-white rounded-lg shadow-md w-[600px]">
       {/* <h3 className="text-xl font-bold text-gray-800">{t("IADESCRIPTION")} ({language.toUpperCase()})</h3> */}
       {/* <p className="text-sm text-gray-600 mb-4">{t("IADESCRIPTIONDetail")}</p> */}
       
@@ -1087,7 +1115,7 @@ function IACOMMUNITYEnhanced({ projectData, formData, onResult, onClose }) {
   };
 
   return (
-    <div className="p-4 py-10 bg-white rounded-lg shadow-xl w-[600px]">
+    <div className="p-4 py-10 bg-white rounded-lg shadow-md w-[600px]">
       {/* <h3 className="text-xl font-bold text-gray-800">{t("GenerateAmenities")} ({language.toUpperCase()})</h3> */}
       {/* <p className="text-sm text-gray-600 mb-4">{t("CommunityDescription")}</p> */}
       <div className="mb-4">
@@ -1179,7 +1207,7 @@ const LANG_LABELS = {
   nl: 'Néerlandais',
 };
 
-// Ajout d'une fiche récapitulative à côté du formulaire principal
+// Remettre ProjectRecapCard comme fonction interne non exportée
 function ProjectRecapCard({ formData, images }) {
   // Utilise images[6] comme source de l'avatar
   const avatarUrl = images && images[6] ? images[6] : null;
@@ -1196,11 +1224,11 @@ function ProjectRecapCard({ formData, images }) {
     }
   }
   return (
-    <div className="bg-white border border-green-100 rounded-3xl shadow-lg px-10 py-12 w-[370px] flex flex-col items-center transition-all duration-300 my-8 mt-12 mb-12 hover:shadow-2xl hover:shadow-green-200/40">
+    <div className="bg-white border border-gray-100 rounded-3xl shadow-md px-10 py-12 w-[370px] flex flex-col items-center transition-all duration-300 my-8 mt-12 mb-12 hover:shadow-2xl hover:shadow-gray-200/40">
       {/* Avatar promoteur avec halo premium */}
       <div className="relative mb-6">
-        <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-green-200/60 via-green-100/80 to-white blur-lg opacity-80"></div>
-        <div className="relative w-32 h-32 rounded-full shadow flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100 overflow-hidden">
+        <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-gray-200/60 via-gray-100/80 to-white blur-lg opacity-80"></div>
+        <div className="relative w-32 h-32 rounded-full shadow flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
           {avatarUrl ? (
             <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
           ) : (
@@ -1222,7 +1250,7 @@ function ProjectRecapCard({ formData, images }) {
           <span className="text-xs text-gray-500 mb-1 flex items-center gap-1"><FiGlobe className="inline text-gray-400" />Langues parlées</span>
           <div className="flex flex-wrap gap-2 justify-center">
             {langues.filter(Boolean).map((lang, i) => (
-              <span key={i} className="bg-gray-50 text-gray-700 px-3 py-1 rounded-full text-xs font-semibold border border-green-100 shadow-sm flex items-center gap-1">
+              <span key={i} className="bg-gray-50 text-gray-700 px-3 py-1 rounded-full text-xs font-semibold border border-gray-100 shadow-sm flex items-center gap-1">
                 {LANG_LABELS[lang] || lang}
               </span>
             ))}
@@ -1235,7 +1263,7 @@ function ProjectRecapCard({ formData, images }) {
           href={formData.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-green-700 hover:to-green-900 text-black font-bold px-6 py-2 rounded-full shadow shadow-green-100/30 transition mb-4 mt-2 text-base tracking-wide hover:border-green-900"
+          className="inline-flex items-center gap-2 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-700 hover:to-gray-900 text-black font-bold px-6 py-2 rounded-full shadow shadow-gray-100/30 transition mb-4 mt-2 text-base tracking-wide hover:border-gray-900"
         >
           <FiGlobe className="text-lg" />
           Plus d'infos sur le projet
@@ -1243,10 +1271,10 @@ function ProjectRecapCard({ formData, images }) {
       )}
       {/* Icônes email et téléphone premium */}
       <div className="flex gap-6 justify-center mt-3 mb-1">
-        <div className="rounded-full bg-green-700 border border-green-200 shadow p-3 flex items-center justify-center hover:bg-green-100 transition">
+        <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition">
           <FiMail className="text-2xl text-white" title="Email" />
         </div>
-        <div className="rounded-full bg-green-700 border border-green-200 shadow p-3 flex items-center justify-center hover:bg-green-100 transition">
+        <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition">
           <FiPhone className="text-2xl text-white" title="Téléphone" />
         </div>
       </div>
@@ -1268,6 +1296,9 @@ export default function Maindata({ project, onProjectUpdate }) {
     setActiveLang,
     handleTranslate,
     isTranslating,
+    initialFormData,
+    hasTextChanges,
+    buttonText,
   } = useProjectData(project, onProjectUpdate);
 
   const t = useTranslations("Projet");
@@ -1302,115 +1333,109 @@ export default function Maindata({ project, onProjectUpdate }) {
 
   useEffect(() => { fetchImages(); }, [project?.id]);
 
+  const tableRef = useRef(null);
+  const [hideSticky, setHideSticky] = useState(false);
+
+  useEffect(() => {
+    if (!tableRef.current) return;
+    const observer = new window.IntersectionObserver(
+      ([entry]) => {
+        setHideSticky(entry.isIntersecting);
+      },
+      { root: null, threshold: 0 }
+    );
+    observer.observe(tableRef.current);
+    return () => observer.disconnect();
+  }, [tableRef]);
+
   return (
-    <div className="bg-white p-8 rounded-lg shadow-lg w-full mb-8 border border-blue-100">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold text-gray-800">{t("FormTitle")}</h2>
-      </div>
+    <div className="max-w-6xl mx-auto px-4 py-10">
+      {/* Titre principal */}
+      <h1 className="text-4xl font-extrabold text-gray-900 mb-2">{formData.name || t("NomProjet")}</h1>
+      <p className="text-lg text-gray-500 mb-8">{t("FormTitle")}</p>
 
-      {/* Affichage du nom du projet en haut */}
-      <div className="mb-4">
-        <span className="text-lg font-semibold text-blue-700">
-          {formData.name || t("NomProjet")}
-        </span>
-      </div>
-
-      {/* Layout formulaire + fiche */}
-      <div className="flex flex-row gap-8 items-start">
-        <div className="flex-1 min-w-0">
-          {/* Formulaire principal promoteur et infos projet */}
-          <div className="mb-6">
-            <ProjectMainForm projectId={project.id} formData={formData} updateFormData={updateFormData} images={images} setImages={setImages} fetchImages={fetchImages} />
-          </div>
-        </div>
-        <ProjectRecapCard formData={formData} images={images} />
-      </div>
-
-      {/* Séparateur premium fort entre fiche et galerie */}
-      <div className="relative w-full flex flex-col items-center my-14">
-        <div className="w-full h-12 bg-gradient-to-r from-green-50 via-green-100 to-green-50 border-b-2 border-green-200 rounded-b-2xl shadow-md flex items-center justify-center">
-          <span className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white px-6 py-2 rounded-full shadow text-green-700 font-bold text-xl flex items-center gap-2 border border-green-100">
-            <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 7h2l.4 2M7 7h10l1 2h2a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg>
-            Images du projet
-          </span>
-        </div>
-      </div>
-
-      {/* Images du projet */}
-      <div className="mb-6 mt-8">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Images du projet</h2>
-        <ProjectImages projectId={project.id} />
-      </div>
-      
-      <div className="flex gap-8">
-        <div>
-          {/* Champs de base */}
-          <BasicFields formData={formData} updateFormData={updateFormData} />
-          
-          {/* Sélecteur pays/ville */}
-          <CountryCitySelector formData={formData} updateFormData={updateFormData} />
-          
-          {/* Fonctionnalités */}
-          <FeaturesSection features={features} toggleFeature={toggleFeature} />
-          
-          {/* Statut en ligne */}
-          <OnlineStatus formData={formData} updateFormData={updateFormData} />
-          
-          <Divider className="my-4" />
-
-          {/* Description complète */}
-          <TextFieldWithAI
-            label={t("DesPro")}
-            value={formData[`fulldescr_${activeLang}`] || ""}
-            onChange={(value) => updateFormData(`fulldescr_${activeLang}`, value)}
-            rows={6}
-            onAIGenerate={() => handleOpenAI("seo_full")}
-            aiButtonText={t("IADESCRIPTION")}
-            projectData={project}
-            placeholder={t("FieldPlaceholder")}
-          />
-
-          {/* Équipements communautaires */}
-          <div className="flex flex-col mt-8">
-            <div className="w-full flex items-center justify-between">
-              <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
-                {t("CommunityAmenities")}
-              </h2>
-              <Button
-                className="flex items-center gap-2 bg-transparent min-w-fit"
-                onClick={() => handleOpenAI("community")}
-              >
-                <span role="img" aria-label="ia">🤖</span>
-                {t("GenerateWithAI")}
-              </Button>
+      {/* Début zone sticky locale */}
+      <div className="relative">
+        <div className="space-y-10">
+          {/* Zone principale : formulaire + fiche promoteur */}
+          <div className="flex flex-col md:flex-row gap-10 mb-16">
+            {/* Formulaire principal */}
+            <div className="flex-1 bg-white rounded-2xl shadow-md p-8 border border-gray-100">
+              <ProjectMainForm projectId={project.id} formData={formData} updateFormData={updateFormData} images={images} setImages={setImages} fetchImages={fetchImages} />
             </div>
-            <TextFieldWithAI
-              value={formData[`coam_${activeLang}`] || ""}
-              onChange={(value) => updateFormData(`coam_${activeLang}`, value)}
-              maxLength={1000}
-              rows={9}
-            />
+            {/* Fiche promoteur */}
+            <div className="w-full md:w-[370px]">
+              <ProjectRecapCard formData={formData} images={images} />
+            </div>
           </div>
 
-          {/* Description SEO */}
-          <TextFieldWithAI
-            label={t("DesSEO")}
-            value={formData[`des_${activeLang}`] || ""}
-            onChange={(value) => updateFormData(`des_${activeLang}`, value)}
-            maxLength={160}
-            onAIGenerate={() => handleOpenAI("seo_short")}
-            aiButtonText={t("IASEO")}
-            projectData={project}
-            placeholder={t("DesSEOExplication")}
-          />
+          {/* Section infos complémentaires (champs de base, pays/ville, features, etc.) */}
+          <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-100 mb-16">
+            <div className="flex flex-col gap-8">
+              <BasicFields formData={formData} updateFormData={updateFormData} />
+              <CountryCitySelector formData={formData} updateFormData={updateFormData} />
+              <FeaturesSection features={features} toggleFeature={toggleFeature} />
+              <OnlineStatus formData={formData} updateFormData={updateFormData} />
+              <Divider className="my-4" />
+              <TextFieldWithAI
+                label={t("DesPro")}
+                value={formData[`fulldescr_${activeLang}`] || ""}
+                onChange={(value) => updateFormData(`fulldescr_${activeLang}`, value)}
+                rows={6}
+                onAIGenerate={() => handleOpenAI("seo_full")}
+                aiButtonText={t("IADESCRIPTION")}
+                projectData={project}
+                placeholder={t("FieldPlaceholder")}
+              />
+              <div className="flex flex-col mt-8">
+                <div className="w-full flex items-center justify-between">
+                  <h2 className="font-semibold text-lg sm:text-xl text-gray-700">
+                    {t("CommunityAmenities")}
+                  </h2>
+                  <Button
+                    className="flex items-center gap-2 bg-transparent min-w-fit"
+                    onClick={() => handleOpenAI("community")}
+                  >
+                    <span role="img" aria-label="ia">🤖</span>
+                    {t("GenerateWithAI")}
+                  </Button>
+                </div>
+                <TextFieldWithAI
+                  value={formData[`coam_${activeLang}`] || ""}
+                  onChange={(value) => updateFormData(`coam_${activeLang}`, value)}
+                  maxLength={1000}
+                  rows={9}
+                />
+              </div>
+              <TextFieldWithAI
+                label={t("DesSEO")}
+                value={formData[`des_${activeLang}`] || ""}
+                onChange={(value) => updateFormData(`des_${activeLang}`, value)}
+                maxLength={160}
+                onAIGenerate={() => handleOpenAI("seo_short")}
+                aiButtonText={t("IASEO")}
+                projectData={project}
+                placeholder={t("DesSEOExplication")}
+              />
+            </div>
+          </div>
+        </div>
+        {/* Bouton Enregistrer sticky local */}
+        <div className="sticky bottom-0 left-0 w-full flex justify-center py-4 z-30">
+          <Button onClick={saveProject} className="bg-blue-600 text-white px-8 py-3 rounded-xl shadow-md" disabled={isSaving}>
+            {buttonText}
+          </Button>
         </div>
       </div>
+      {/* Fin zone sticky locale */}
 
-      {/* Bouton Enregistrer à la fin du formulaire, centré */}
-      <div className="w-full flex justify-center mt-8">
-        <Button onClick={saveProject} className="bg-blue-600 text-white px-8 py-3 rounded-xl shadow-lg" disabled={isSaving}>
-          {isSaving ? t("Saving") : t("Sauvegarder")}
-        </Button>
+      {/* Galerie d'images dans une carte premium */}
+      <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-100 mb-16" ref={tableRef}>
+        <h2 className="text-2xl font-bold text-gray-700 mb-6 flex items-center gap-2">
+          <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 7h2l.4 2M7 7h10l1 2h2a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg>
+          Images du projet
+        </h2>
+        <ProjectImages projectId={project.id} />
       </div>
 
       {/* Modales IA améliorées */}

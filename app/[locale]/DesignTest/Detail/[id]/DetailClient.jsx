@@ -16,6 +16,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useTranslations } from "next-intl";
+
 const GoogleMapComponent = dynamic(() => import('@/components/GoogleMap'), { ssr: false, loading: () => <div>Chargement de la carte…</div> });
 
 function formatPrice(price) {
@@ -62,65 +63,93 @@ function renderLanguages(langs) {
   );
 }
 
-// PromoterCard component
-function PromoterCard({ project }) {
-  const t = useTranslations("PromoterCard");
+// Copier le design premium ProjectRecapCard ici :
+const LANG_LABELS = {
+  fr: 'Français',
+  en: 'Anglais',
+  pl: 'Polonais',
+  de: 'Allemand',
+  ru: 'Russe',
+  uk: 'Ukrainien',
+  es: 'Espagnol',
+  it: 'Italien',
+  pt: 'Portugais',
+  nl: 'Néerlandais',
+};
+
+function ProjectRecapCard({ formData, images }) {
+  // Utilise images[0] (première image du tableau) comme source de l'avatar si dispo, sinon formData.avatar ou null
+  const avatarUrl = images && images.length > 0 ? images[0] : (formData.avatar || null);
+  // Affichage lisible des langues
+  let langues = [];
+  if (Array.isArray(formData.promoter_languages)) {
+    langues = formData.promoter_languages;
+  } else if (typeof formData.promoter_languages === 'string') {
+    try {
+      const arr = JSON.parse(formData.promoter_languages);
+      langues = Array.isArray(arr) ? arr : [formData.promoter_languages];
+    } catch {
+      langues = [formData.promoter_languages];
+    }
+  }
   return (
-    <div className="bg-white rounded-xl shadow p-4 flex flex-col items-center border border-gray-100">
-      <Image
-        src="/appart.webp"
-        alt={`${project.promoter_first_name || ''} ${project.promoter_last_name || ''} ${project.city || ''}`.trim() || 'Avatar promoteur'}
-        width={64}
-        height={64}
-        className="w-16 h-16 rounded-full object-cover border-2 border-green-100 shadow mb-3"
-      />
-      <div className="text-lg font-bold text-gray-900 mb-4 text-center">{project.promoter_first_name || ""} {project.promoter_last_name || t('NotProvided')}</div>
-      <div className="w-full flex flex-col gap-3">
-        {/* Email */}
-        <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
-          <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
-            <FiMail className="h-5 w-5 text-white" />
-          </div>
-          <div>
-            <div className="font-semibold text-base text-gray-900">{t('Email')}</div>
-            <div className="text-gray-900 text-sm">{project.promoter_email || t('NotProvided')}</div>
+    <div className=" w-full flex flex-col items-center text-center justify-center transition-all duration-300 hover:shadow-2xl hover:shadow-gray-200/40">
+      <div className="flex  gap-8 justify-center items-center">
+      {/* Avatar promoteur avec halo premium */}
+      <div className="relative mb-6">
+        <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-gray-200/60 via-gray-100/80 to-white blur-lg opacity-80"></div>
+        <div className="relative w-20 h-20 md:w-20 md:h-20 rounded-full shadow flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+          {avatarUrl ? (
+            <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-300 text-lg font-semibold">No avatar</div>
+          )}
+        </div>
+      </div>
+      
+      {/* Prénom + Nom promoteur */}
+      <div>
+      <h3 className="text-xl font-extrabold text-gray-700 mb-1 text-center tracking-tight leading-tight drop-shadow-sm">
+        {formData.promoter_first_name} {formData.promoter_last_name}
+      </h3>
+      {/* Compagnie */}
+      <div className="text-gray-500 text-lg font-semibold italic mb-3 text-center">
+        {formData.compagny}
+      </div>
+      </div>
+      </div>
+      {/* Langues */}
+      {langues.length > 0 && (
+        <div className="flex flex-col items-center mb-4">
+          <span className="text-xs text-gray-500 mb-1 flex items-center gap-1"><FiGlobe className="inline text-gray-400" />Langues parlées</span>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {langues.filter(Boolean).map((lang, i) => (
+              <span key={i} className="bg-gray-50 text-gray-700 px-3 py-1 rounded-full text-xs font-semibold border border-gray-100 shadow-sm flex items-center gap-1">
+                {LANG_LABELS[lang] || lang}
+              </span>
+            ))}
           </div>
         </div>
-        {/* Téléphone */}
-        <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
-          <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
-            <FiPhone className="h-5 w-5 text-white" />
-          </div>
-          <div>
-            <div className="font-semibold text-base text-gray-900">{t('Phone')}</div>
-            <div className="text-gray-900 text-sm">{project.promoter_phone || t('NotProvided')}</div>
-          </div>
+      )}
+      {/* Bouton vers le site web promoteur */}
+      {formData.link && (
+        <a
+          href={formData.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-700 hover:to-gray-900 text-black hover:text-white font-bold px-6 py-2 rounded-full shadow shadow-gray-100/30 transition mb-4 mt-2 text-base tracking-wide hover:border-gray-900"
+        >
+          <FiGlobe className="text-lg" />
+          Plus d'infos sur le projet
+        </a>
+      )}
+      {/* Icônes email et téléphone premium */}
+      <div className="flex gap-6 justify-center mt-3 mb-1">
+        <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition group">
+          <FiMail className="text-2xl text-white group-hover:text-red-700 transition-colors" title="Email" />
         </div>
-        {/* Langues */}
-        <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
-          <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
-            <FaLanguage className="h-5 w-5 text-white" />
-          </div>
-          <div className="flex-1">
-            <div className="font-semibold text-base text-gray-900">{t('Languages')}</div>
-            {renderLanguages(project.promoter_languages)}
-          </div>
-        </div>
-        {/* Site web */}
-        <div className="flex items-center bg-gray-50 rounded-2xl p-3 shadow-sm">
-          <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full mr-3">
-            <FiGlobe className="h-5 w-5 text-white" />
-          </div>
-          <div>
-            <div className="font-semibold text-base text-gray-900">{t('Website')}</div>
-            {project.link ? (
-              <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800 transition-colors text-sm">
-                <span className="sr-only">{t('Website')}: </span>{project.link}
-              </a>
-            ) : (
-              <div className="text-gray-900 text-sm">{t('NotProvided')}</div>
-            )}
-          </div>
+        <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition group">
+          <FiPhone className="text-2xl text-white group-hover:text-red-700 transition-colors" title="Téléphone" />
         </div>
       </div>
     </div>
@@ -496,8 +525,8 @@ export default function DetailClient({ project, locale }) {
               />
             </div>
             {/* Promoteur visible seulement sur desktop */}
-            <div className="hidden md:block">
-              <PromoterCard project={project} />
+            <div className="hidden md:block bg-white rounded-xl shadow p-4">
+              <ProjectRecapCard formData={project} images={images} />
             </div>
           </div>
         </section>
@@ -564,7 +593,7 @@ export default function DetailClient({ project, locale }) {
               >
                 ×
               </button>
-              <PromoterCard project={project} />
+              <ProjectRecapCard formData={project} images={images} />
             </div>
           </div>
         )}
