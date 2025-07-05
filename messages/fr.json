@@ -22,6 +22,8 @@
         "Chambres": "Chambres",
         "AvecJardin": "Avec jardin",
         "MesFavoris": "Mes favoris",
+        "AfficherMesFavoris": "Afficher mes favoris",
+        "VoirTousLesProjets": "Voir tous les projets",
         "Residence": "Tous les filtres",
         "AppartementTrouve": "appartement(s) trouvé(s)",
         "TrierPar": "Trier par",
@@ -57,7 +59,10 @@
             "link": "Envoyer un email"
         },
         "SearchPlaceholder": "Rechercher un nouvel appartement à...",
-        "Réinitialiser les filtres": "Réinitialiser les filtres"
+        "Réinitialiser les filtres": "Réinitialiser les filtres",
+        "Vos Favoris": "Vos favoris",
+        "Chargement...": "Chargement...",
+        "Aucun favori enregistré.": "Aucun favori enregistré."
     },
     "Nav": {
         "Ajouter": "Ajouter un projet",
@@ -65,7 +70,8 @@
         "Connexion": "Connexion",
         "Accueil": "Accueil",
         "VosProjets": "Vos projets",
-        "EspacePromoteur": "Espace Promoteur"
+        "EspacePromoteur": "Espace Promoteur",
+        "Favoris": "Favoris"
     },
     "Projet": {
         "Modifier": "Modifier les informations du projet",

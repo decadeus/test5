@@ -5,7 +5,7 @@ import Image from "next/legacy/image";
 import H from "@/components/H.png";
 import Connect from "./connect";
 import Text from "./text";
-import { FaNetworkWired, FaSignOutAlt } from "react-icons/fa";
+import { FaNetworkWired, FaSignOutAlt, FaHeart } from "react-icons/fa";
 import { HiOutlinePlusCircle, HiMenu, HiX } from "react-icons/hi";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, useRef } from "react";

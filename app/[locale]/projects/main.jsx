@@ -63,6 +63,76 @@ export const metadata = generateMetadata(
   "Bienvenue sur notre site !"
 );
 
+function ProjectCard({ item, isFavorite, handleToggleFavorite }) {
+  return (
+    <div className="bg-white rounded-2xl shadow p-2">
+      <div className="flex flex-col w-full px-1">
+        {/* Image du projet avec cœur superposé */}
+        <div className="relative w-full h-40 mb-2 rounded-xl overflow-hidden">
+          {item.project.mainpic_url ? (
+            <img
+              src={item.project.mainpic_url}
+              alt={item.project.name}
+              className="object-cover w-full h-full"
+            />
+          ) : (
+            <div className="bg-gray-200 w-full h-full" />
+          )}
+          <button
+            onClick={() => handleToggleFavorite(item)}
+            className="absolute top-2 right-2 bg-white/80 rounded-full p-1 shadow hover:bg-white transition"
+            aria-label="favorite"
+            style={{ zIndex: 2 }}
+          >
+            {isFavorite(item) ? (
+              <FaHeart fill="#bfae9b" size={22} />
+            ) : (
+              <FaRegHeart fill="#bfae9b" size={22} />
+            )}
+          </button>
+        </div>
+        {/* Titre et autres infos */}
+        <div className="pt-1 w-full h-1/4">
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold text-sm truncate"> {item.project.name}</h3>
+          </div>
+        </div>
+        <p className="text-sm text-gray-600 truncate mt-0 mb-1">{item.project.city}</p>
+        <div className="flex items-center text-gray-600 gap-4 mt-2 mb-1 text-xs w-full">
+          <div className="w-1/2 flex flex-col gap-1">
+            <div className="flex items-center gap-1">
+              <Ruler className="w-4 h-4" />
+              {item.surface} m²
+            </div>
+            <div className="flex items-center gap-1">
+              <BedDouble className="w-4 h-4" />
+              {item.bed}
+            </div>
+          </div>
+          {item.des && (
+            <div className="flex items-center gap-1 text-rose-700">
+              <p className="text-xs" title={item.des}>{item.des}</p>
+            </div>
+          )}
+        </div>
+        <div className="flex items-center pt-2">
+          <span className="text-gray-600 font-bold text-base">
+            {item.noprice || item.price === null ? (
+              <span className="italic text-gray-500">undefined</span>
+            ) : item.project.cur === "PLN" ? (
+              <span className="flex">{item.price} <TbCurrencyZloty size={15} /></span>
+            ) : (
+              <span className="flex">{item.price} <FaEuroSign size={10} /></span>
+            )}
+          </span>
+          <span className="flex-grow text-gray-500 text-sm text-center truncate">{item.project.compagny}</span>
+          <ExternalLink className="ml-auto w-5 h-5 text-gray-500 hover:text-primary-600 cursor-pointer" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Main() {
   const [projects, setProjects] = useState([]);
   const [originalProjects, setOriginalProjects] = useState([]);
@@ -420,80 +490,12 @@ function Main() {
             <ScrollArea className="h-fit w-full px-1 sm:pb-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 ">
                 {projects.map((item, index) => (
-                  <div key={index} className="bg-white rounded-2xl shadow p-2">
-                    <div className="flex flex-col  w-full px-1">
-                      <div className="pt-1 w-full h-1/4">
-                        {/* Title + favorite */}
-                        <div className="flex items-center justify-between">
-                          <h3 className="font-semibold text-sm truncate">
-                            {" "}
-                            {item.project.name}
-                          </h3>
-                          <Button
-                            onClick={() => handleToggleFavorite(item)}
-                            className="inline-flex leading-none bg-transparent text-white hover:bg-opacity-10 p-0 m-0"
-                            aria-label="favorite"
-                            isIconOnly
-                          >
-                            {isFavorite(item) ? (
-                              <FaHeart fill="#bfae9b" size={15} />
-                            ) : (
-                              <FaRegHeart fill="#bfae9b" size={15} />
-                            )}
-                          </Button>
-                        </div>
-                      </div>
-
-                      {/* Location under title */}
-
-                      <p className="text-sm text-gray-600 truncate mt-0 mb-1">
-                        {item.project.city}
-                      </p>
-                      {/* Details: surface, beds, optional comment */}
-                      <div className="flex items-center text-gray-600 gap-4 mt-2 mb-1 text-xs w-full">
-                        <div className="w-1/2 flex flex-col gap-1">
-                          <div className="flex items-center gap-1">
-                            <Ruler className="w-4 h-4" />
-                            {item.surface} m²
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <BedDouble className="w-4 h-4" />
-                            {item.bed}
-                          </div>
-                        </div>
-                        {item.des && (
-                          <div className="flex items-center gap-1 text-rose-700">
-                            <p className="text-xs" title={item.des}>
-                              {item.des}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Price, promoter, link at bottom */}
-                      <div className="flex items-center pt-2">
-                        <span className="text-gray-600 font-bold text-base">
-                          {item.noprice || item.price === null ? (
-                            <span className="italic text-gray-500">
-                              undefined
-                            </span>
-                          ) : item.project.cur === "PLN" ? (
-                            <span className="flex">
-                              {item.price} <TbCurrencyZloty size={15} />
-                            </span>
-                          ) : (
-                            <span className="flex">
-                              {item.price} <FaEuroSign size={10} />
-                            </span>
-                          )}
-                        </span>
-                        <span className="flex-grow text-gray-500 text-sm text-center truncate">
-                          {item.project.compagny}
-                        </span>
-                        <ExternalLink className="ml-auto w-5 h-5 text-gray-500 hover:text-primary-600 cursor-pointer" />
-                      </div>
-                    </div>
-                  </div>
+                  <ProjectCard
+                    key={index}
+                    item={item}
+                    isFavorite={isFavorite}
+                    handleToggleFavorite={handleToggleFavorite}
+                  />
                 ))}
               </div>
               <div className="flex justify-between items-center mt-4 text-gray-500 px-4">
@@ -584,7 +586,6 @@ function FilterB({
   onBedRangeChange,
   showFavorites,
   onFavoritesChange,
-
   f,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -777,7 +778,15 @@ function FilterB({
     onFavoritesChange(!showFavorites);
   };
   return (
-    <div className="">
+    <div className="flex flex-wrap items-center gap-4 mb-4">
+      <button
+        onClick={() => onFavoritesChange(!showFavorites)}
+        className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 font-semibold transition-colors duration-200 text-sm ${showFavorites ? 'bg-green-600 text-white border-green-600' : 'bg-white text-green-600 border-green-600 hover:bg-green-50'}`}
+        aria-pressed={showFavorites}
+      >
+        {showFavorites ? <FaHeart /> : <FaRegHeart />}
+        {showFavorites ? f('Voir tous les projets') : f('Afficher mes favoris')}
+      </button>
       <div className="hidden lg:block  py-4 w-full">
         <div className="flex justify-between">
           <div className="flex gap-2  w-1/2">
@@ -827,18 +836,14 @@ function FilterB({
                 </Checkbox>
               </div>
             </div>
-            <div
-              onClick={handleIconClick}
-              className={`cursor-pointer flex w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2  ${
-                showFavorites ? "text-red-500" : "text-gray-600"
-              }`}
-              aria-label="favorite"
-            >
-              <p className="pr-2 text-sm text-gray-800">Your favorite</p>
+            <div className="w-fit bg-white border border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 flex items-center cursor-pointer ml-2"
+                 onClick={() => onFavoritesChange(!showFavorites)}
+                 aria-label="favorite">
+              <span className="pr-2 text-sm text-gray-800">Mes favoris</span>
               {showFavorites ? (
-                <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
+                <FaHeart size={20} color="#bfae9b" />
               ) : (
-                <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
+                <FaRegHeart size={20} color="#bfae9b" />
               )}
             </div>
             <div className="">
@@ -937,16 +942,14 @@ function FilterB({
         <div className="flex justify-between items-center px-4 ">
           <div className="flex justify-center items-center pl-5">
             <div
-              onClick={handleIconClick}
-              className={`cursor-pointer flex items-center ${
-                showFavorites ? "text-gray-500" : "text-gray-600"
-              }`}
+              onClick={() => onFavoritesChange(!showFavorites)}
+              className={`cursor-pointer flex items-center ${showFavorites ? "text-gray-500" : "text-gray-600"}`}
               aria-label="favorite"
             >
               {showFavorites ? (
-                <FaHeart size={20} color="#bfae9b" /> // Cœur plein si favori
+                <FaHeart size={20} color="#bfae9b" />
               ) : (
-                <FaRegHeart size={20} color="#bfae9b" /> // Cœur vide si non favori
+                <FaRegHeart size={20} color="#bfae9b" />
               )}
               <p className="pl-4">{f("MesFavoris")}</p>
             </div>

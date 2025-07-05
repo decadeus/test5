@@ -9,6 +9,7 @@ import { useDebounce } from 'use-debounce';
 import { useSwipeable } from 'react-swipeable';
 import { useRouter, useParams } from 'next/navigation';
 import Image from "next/image";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 import React from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -68,7 +69,10 @@ function ApartmentCard({
   setShowAllLots,
   locale,
   tGlobal,
-  showLotsTable
+  showLotsTable,
+  favorites,
+  handleToggleFavorite,
+  isFavorite
 }) {
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => handleNextImage(apt.id, (projectImages[apt.id]||[]).length),
@@ -103,6 +107,17 @@ function ApartmentCard({
           priority
           className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300 img-fade"
         />
+        <button
+          onClick={() => handleToggleFavorite(apt)}
+          className={`absolute top-2 right-2 bg-white/80 rounded-full p-1 shadow hover:bg-white transition border-2 ${isFavorite(apt) ? 'border-red-600' : 'border-gray-300'}`}
+          aria-label="favorite"
+        >
+          {isFavorite(apt) ? (
+            <FaHeart className="text-red-600" size={22} />
+          ) : (
+            <FaRegHeart className="text-gray-400" size={22} />
+          )}
+        </button>
       </div>
       {/* Ligne nom projet à gauche, promoteur à droite */}
       <div className="flex flex-row items-center justify-between px-4 pt-2 pb-1">
@@ -128,6 +143,9 @@ function groupByCity(apartments) {
     return acc;
   }, {});
 }
+
+// Ajout gestion favoris locale
+const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
 
 export default function ApartmentList() {
   const supabase = createClient();
@@ -155,6 +173,8 @@ export default function ApartmentList() {
   const params = useParams();
   const locale = params?.locale || 'fr';
   const [debouncedSearchTerm] = useDebounce(searchTerm, 300);
+  const [favorites, setFavorites] = useState([]);
+  const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
 
   // Initialisation des filtres à l'hydratation
   useEffect(() => {
@@ -338,7 +358,8 @@ export default function ApartmentList() {
       a.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       a.summary.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRange = hasProjectListInRange(a);
-    return matchesCity && matchesSearch && matchesRange;
+    const matchesFavorite = !showOnlyFavorites || favorites.includes(a.id);
+    return matchesCity && matchesSearch && matchesRange && matchesFavorite;
   });
 
   // Pour la carte : on veut tous les projets de la ville sélectionnée, sans filtrer sur les lots
@@ -397,6 +418,23 @@ export default function ApartmentList() {
     };
     fetchProjects();
   }, []);
+
+  // Chargement favoris au montage
+  useEffect(() => {
+    const storedFavorites = JSON.parse(localStorage.getItem(NEW_FAVORITE_APARTMENTS_KEY)) || [];
+    setFavorites(storedFavorites);
+  }, []);
+
+  // Fonction toggle favori
+  const handleToggleFavorite = (apt) => {
+    const itemId = apt.id;
+    const newFavorites = favorites.includes(itemId)
+      ? favorites.filter((id) => id !== itemId)
+      : [...favorites, itemId];
+    setFavorites(newFavorites);
+    localStorage.setItem(NEW_FAVORITE_APARTMENTS_KEY, JSON.stringify(newFavorites));
+  };
+  const isFavorite = (apt) => favorites.includes(apt.id);
 
   // Highlight du texte recherché
   function highlight(text, term) {
@@ -607,24 +645,36 @@ export default function ApartmentList() {
                 />
               </div>
             </div>
-            {/* Filtres Jardin et Rooftop (desktop, en ligne sous les sliders, unique) */}
-            <div className="flex flex-row gap-4 justify-center items-center mt-4 w-full">
-              <button
-                onClick={() => setOnlyGarden((v) => !v)}
-                aria-pressed={onlyGarden}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
-              >
-                <span>{t("AvecJardin")}</span>
-                <span>🌸</span>
-              </button>
-              <button
-                onClick={() => setOnlyRooftop((v) => !v)}
-                aria-pressed={onlyRooftop}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
-              >
-                <span>{t("Rooftop")}</span>
-                <span>🏙️</span>
-              </button>
+            {/* Filtres Jardin, Rooftop, Favoris */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-4 w-full">
+              <div className="flex flex-row gap-4 w-full justify-center items-center">
+                <button
+                  onClick={() => setOnlyGarden((v) => !v)}
+                  aria-pressed={onlyGarden}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                >
+                  <span>{t("AvecJardin")}</span>
+                  <span>🌸</span>
+                </button>
+                <button
+                  onClick={() => setOnlyRooftop((v) => !v)}
+                  aria-pressed={onlyRooftop}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                >
+                  <span>{t("Rooftop")}</span>
+                  <span>🏙️</span>
+                </button>
+              </div>
+              <div className="w-full flex justify-center items-center mt-2 sm:mt-0">
+                <button
+                  onClick={() => setShowOnlyFavorites((v) => !v)}
+                  aria-pressed={showOnlyFavorites}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${showOnlyFavorites ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                >
+                  {showOnlyFavorites ? <FaHeart className="text-red-600" /> : <FaRegHeart className="text-gray-400" />}
+                  <span>{t("MesFavoris")}</span>
+                </button>
+              </div>
             </div>
             <button
               onClick={resetFilters}
@@ -819,24 +869,36 @@ export default function ApartmentList() {
                   </div>
                 </div>
               </div>
-              {/* Filtres Jardin et Rooftop (desktop, en ligne sous les sliders, unique) */}
-              <div className="flex flex-row gap-4 justify-center items-center mt-4 w-full">
-                <button
-                  onClick={() => setOnlyGarden((v) => !v)}
-                  aria-pressed={onlyGarden}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
-                >
-                  <span>{t("AvecJardin")}</span>
-                  <span>🌸</span>
-                </button>
-                <button
-                  onClick={() => setOnlyRooftop((v) => !v)}
-                  aria-pressed={onlyRooftop}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
-                >
-                  <span>{t("Rooftop")}</span>
-                  <span>🏙️</span>
-                </button>
+              {/* Filtres Jardin, Rooftop, Favoris */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-4 w-full">
+                <div className="flex flex-row gap-4 w-full justify-center items-center">
+                  <button
+                    onClick={() => setOnlyGarden((v) => !v)}
+                    aria-pressed={onlyGarden}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                  >
+                    <span>{t("AvecJardin")}</span>
+                    <span>🌸</span>
+                  </button>
+                  <button
+                    onClick={() => setOnlyRooftop((v) => !v)}
+                    aria-pressed={onlyRooftop}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                  >
+                    <span>{t("Rooftop")}</span>
+                    <span>🏙️</span>
+                  </button>
+                </div>
+                <div className="w-full flex justify-center items-center mt-2 sm:mt-0">
+                  <button
+                    onClick={() => setShowOnlyFavorites((v) => !v)}
+                    aria-pressed={showOnlyFavorites}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${showOnlyFavorites ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                  >
+                    {showOnlyFavorites ? <FaHeart className="text-red-600" /> : <FaRegHeart className="text-gray-400" />}
+                    <span>{t("MesFavoris")}</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -927,6 +989,9 @@ export default function ApartmentList() {
                             locale={locale}
                             tGlobal={tGlobal}
                             showLotsTable={false}
+                            favorites={favorites}
+                            handleToggleFavorite={handleToggleFavorite}
+                            isFavorite={isFavorite}
                           />
                         </div>
                       ))}
