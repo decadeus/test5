@@ -39,6 +39,20 @@ const languageLabels = {
   // Ajoute d'autres si besoin
 };
 
+// Mapping natif unique pour toutes les langues
+const NATIVE_LANG_LABELS = {
+  fr: 'Français',
+  en: 'English',
+  pl: 'Polski',
+  de: 'Deutsch',
+  ru: 'Русский',
+  uk: 'Українська',
+  es: 'Español',
+  it: 'Italiano',
+  pt: 'Português',
+  nl: 'Nederlands',
+};
+
 // Fonction pour parser et afficher les langues
 function renderLanguages(langs) {
   let arr = [];
@@ -126,7 +140,7 @@ function ProjectRecapCard({ formData, images }) {
           <div className="flex flex-wrap gap-2 justify-center">
             {langues.filter(Boolean).map((lang, i) => (
               <span key={i} className="bg-gray-50 text-gray-700 px-3 py-1 rounded-full text-xs font-semibold border border-gray-100 shadow-sm flex items-center gap-1">
-                {t(lang) || LANG_LABELS[lang] || lang}
+                {NATIVE_LANG_LABELS[lang] || lang}
               </span>
             ))}
           </div>

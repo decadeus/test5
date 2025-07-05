@@ -39,6 +39,20 @@ const STYLES = {
   textarea: "border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm",
 };
 
+// Mapping natif unique pour toutes les langues
+const NATIVE_LANG_LABELS = {
+  fr: 'Français',
+  en: 'English',
+  pl: 'Polski',
+  de: 'Deutsch',
+  ru: 'Русский',
+  uk: 'Українська',
+  es: 'Español',
+  it: 'Italiano',
+  pt: 'Português',
+  nl: 'Nederlands',
+};
+
 // --- NOUVEAU : Composant pour les onglets de langue ---
 const LanguageTabs = ({ supportedLangs, activeLang, setActiveLang }) => (
   <div className="flex items-center border-b border-gray-200 mb-4">
@@ -353,6 +367,21 @@ function useProjectData(project, onProjectUpdate) {
     setIsTranslating(false);
   };
 
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
+
+  useEffect(() => {
+    let langs = formData.promoter_languages;
+    if (typeof langs === "string") {
+      try {
+        langs = JSON.parse(langs);
+      } catch {
+        langs = langs ? [langs] : [];
+      }
+    }
+    if (!Array.isArray(langs)) langs = [];
+    setSelectedLanguages(langs);
+  }, [formData.promoter_languages]);
+
   return {
     formData,
     features,
@@ -368,6 +397,8 @@ function useProjectData(project, onProjectUpdate) {
     initialFormData,
     hasTextChanges,
     buttonText,
+    selectedLanguages,
+    setSelectedLanguages,
   };
 }
 
@@ -510,23 +541,20 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
   const supabase = createClient();
   const f = useTranslations("Projet");
 
-  const availableLanguages = [
-    { code: "fr", name: "Français" },
-    { code: "en", name: "English" },
-    { code: "pl", name: "Polski" },
-    { code: "de", name: "Deutsch" },
-    { code: "ru", name: "Русский" },
-    { code: "uk", name: "Українська" },
-    { code: "es", name: "Español" },
-    { code: "it", name: "Italiano" },
-    { code: "pt", name: "Português" },
-    { code: "nl", name: "Nederlands" },
-  ];
+  // Mapping natif pour les langues
+  const availableLanguages = Object.entries(NATIVE_LANG_LABELS).map(([code, name]) => ({ code, name }));
 
   useEffect(() => {
-    if (formData.promoter_languages && Array.isArray(formData.promoter_languages)) {
-      setSelectedLanguages(formData.promoter_languages);
+    let langs = formData.promoter_languages;
+    if (typeof langs === "string") {
+      try {
+        langs = JSON.parse(langs);
+      } catch {
+        langs = langs ? [langs] : [];
+      }
     }
+    if (!Array.isArray(langs)) langs = [];
+    setSelectedLanguages(langs);
   }, [formData.promoter_languages]);
 
   // --- Bloc langues promoteur ---
@@ -613,7 +641,7 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
     <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-xl border border-blue-200 shadow-sm mb-8">
       {/* Bloc avatar promoteur en haut du formulaire */}
       <div className="flex flex-col items-center mb-6">
-        <div className="w-32 h-32 relative flex items-center justify-center rounded-full border-2 border-blue-200 bg-white overflow-hidden mb-2">
+        <div className="w-20 h-20 md:w-24 md:h-24 relative flex items-center justify-center rounded-full border-2 border-blue-200 bg-white overflow-hidden mb-2">
           {images[6] ? (
             <img
               src={images[6]}
@@ -721,7 +749,7 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
                   </svg>
                 )}
               </div>
-              <span className="text-sm font-medium">{lang.name}</span>
+              <span className="text-xs font-medium">{lang.name}</span>
             </button>
           ))}
         </div>
@@ -1193,22 +1221,9 @@ function AIModal({ isOpen, onClose, children }) {
   );
 }
 
-// Mapping code langue -> nom complet
-const LANG_LABELS = {
-  fr: 'Français',
-  en: 'Anglais',
-  pl: 'Polonais',
-  de: 'Allemand',
-  ru: 'Russe',
-  uk: 'Ukrainien',
-  es: 'Espagnol',
-  it: 'Italien',
-  pt: 'Portugais',
-  nl: 'Néerlandais',
-};
-
 // Remettre ProjectRecapCard comme fonction interne non exportée
 function ProjectRecapCard({ formData, images }) {
+  const t = useTranslations('Projet');
   // Utilise images[6] comme source de l'avatar
   const avatarUrl = images && images[6] ? images[6] : null;
   // Affichage lisible des langues
@@ -1225,17 +1240,19 @@ function ProjectRecapCard({ formData, images }) {
   }
   return (
     <div className="bg-white border border-gray-100 rounded-3xl shadow-md px-10 py-12 w-[370px] flex flex-col items-center transition-all duration-300 my-8 mt-12 mb-12 hover:shadow-2xl hover:shadow-gray-200/40">
+      <div className="flex items-center justify-center gap-4">
       {/* Avatar promoteur avec halo premium */}
       <div className="relative mb-6">
         <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-gray-200/60 via-gray-100/80 to-white blur-lg opacity-80"></div>
-        <div className="relative w-32 h-32 rounded-full shadow flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+        <div className="relative w-20 h-20 md:w-20 md:h-20 rounded-full shadow flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
           {avatarUrl ? (
             <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-300 text-lg font-semibold">No avatar</div>
+            <div className="w-full h-full flex items-center justify-center text-gray-300 text-lg font-semibold">{t('NoAvatar') || 'No avatar'}</div>
           )}
         </div>
       </div>
+      <div>
       {/* Prénom + Nom promoteur */}
       <h3 className="text-xl font-extrabold text-gray-700 mb-1 text-center tracking-tight leading-tight drop-shadow-sm">
         {formData.promoter_first_name} {formData.promoter_last_name}
@@ -1244,14 +1261,16 @@ function ProjectRecapCard({ formData, images }) {
       <div className="text-gray-500 text-lg font-semibold italic mb-3 text-center">
         {formData.compagny}
       </div>
+      </div>
+      </div>
       {/* Langues */}
       {langues.length > 0 && (
         <div className="flex flex-col items-center mb-4">
-          <span className="text-xs text-gray-500 mb-1 flex items-center gap-1"><FiGlobe className="inline text-gray-400" />Langues parlées</span>
+          <span className="text-xs text-gray-500 mb-1 flex items-center gap-1"><FiGlobe className="inline text-gray-400" />{t('LanguesParlees') || 'Langues parlées'}</span>
           <div className="flex flex-wrap gap-2 justify-center">
             {langues.filter(Boolean).map((lang, i) => (
               <span key={i} className="bg-gray-50 text-gray-700 px-3 py-1 rounded-full text-xs font-semibold border border-gray-100 shadow-sm flex items-center gap-1">
-                {LANG_LABELS[lang] || lang}
+                {NATIVE_LANG_LABELS[lang] || lang}
               </span>
             ))}
           </div>
@@ -1266,16 +1285,16 @@ function ProjectRecapCard({ formData, images }) {
           className="inline-flex items-center gap-2 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-700 hover:to-gray-900 text-black font-bold px-6 py-2 rounded-full shadow shadow-gray-100/30 transition mb-4 mt-2 text-base tracking-wide hover:border-gray-900"
         >
           <FiGlobe className="text-lg" />
-          Plus d'infos sur le projet
+          {t('PlusInfosProjet') || "Plus d'infos sur le projet"}
         </a>
       )}
       {/* Icônes email et téléphone premium */}
       <div className="flex gap-6 justify-center mt-3 mb-1">
         <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition">
-          <FiMail className="text-2xl text-white" title="Email" />
+          <FiMail className="text-2xl text-white" title={t('Email') || "Email"} />
         </div>
         <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition">
-          <FiPhone className="text-2xl text-white" title="Téléphone" />
+          <FiPhone className="text-2xl text-white" title={t('Telephone') || "Téléphone"} />
         </div>
       </div>
     </div>
@@ -1299,6 +1318,8 @@ export default function Maindata({ project, onProjectUpdate }) {
     initialFormData,
     hasTextChanges,
     buttonText,
+    selectedLanguages,
+    setSelectedLanguages,
   } = useProjectData(project, onProjectUpdate);
 
   const t = useTranslations("Projet");
