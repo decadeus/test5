@@ -129,7 +129,22 @@
         "LaunchGeneration": "Rozpocznij generowanie",
         "GeneratedDescription": "Wygenerowany opis",
         "CopyText": "Kopiuj tekst",
-        "ApplyToField": "Zastosuj do pola"
+        "ApplyToField": "Zastosuj do pola",
+        "LanguesParlees": "Języki mówione",
+        "PlusInfosProjet": "Więcej informacji o projekcie",
+        "NoAvatar": "Brak awatara",
+        "Email": "Email",
+        "Telephone": "Telefon",
+        "fr": "Francuski",
+        "en": "Angielski",
+        "pl": "Polski",
+        "de": "Niemiecki",
+        "ru": "Rosyjski",
+        "uk": "Ukraiński",
+        "es": "Hiszpański",
+        "it": "Włoski",
+        "pt": "Portugalski",
+        "nl": "Holenderski"
     },
     "SEO": {
         "Title": "Katalog projektów nieruchomości",

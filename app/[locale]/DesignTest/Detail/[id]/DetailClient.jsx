@@ -78,6 +78,7 @@ const LANG_LABELS = {
 };
 
 function ProjectRecapCard({ formData, images }) {
+  const t = useTranslations('Projet');
   // Utilise images[0] (première image du tableau) comme source de l'avatar si dispo, sinon formData.avatar ou null
   const avatarUrl = images && images.length > 0 ? images[0] : (formData.avatar || null);
   // Affichage lisible des langues
@@ -102,7 +103,7 @@ function ProjectRecapCard({ formData, images }) {
           {avatarUrl ? (
             <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-300 text-lg font-semibold">No avatar</div>
+            <div className="w-full h-full flex items-center justify-center text-gray-300 text-lg font-semibold">{t('NoAvatar') || 'No avatar'}</div>
           )}
         </div>
       </div>
@@ -121,11 +122,11 @@ function ProjectRecapCard({ formData, images }) {
       {/* Langues */}
       {langues.length > 0 && (
         <div className="flex flex-col items-center mb-4">
-          <span className="text-xs text-gray-500 mb-1 flex items-center gap-1"><FiGlobe className="inline text-gray-400" />Langues parlées</span>
+          <span className="text-xs text-gray-500 mb-1 flex items-center gap-1"><FiGlobe className="inline text-gray-400" />{t('LanguesParlees') || 'Langues parlées'}</span>
           <div className="flex flex-wrap gap-2 justify-center">
             {langues.filter(Boolean).map((lang, i) => (
               <span key={i} className="bg-gray-50 text-gray-700 px-3 py-1 rounded-full text-xs font-semibold border border-gray-100 shadow-sm flex items-center gap-1">
-                {LANG_LABELS[lang] || lang}
+                {t(lang) || LANG_LABELS[lang] || lang}
               </span>
             ))}
           </div>
@@ -140,16 +141,16 @@ function ProjectRecapCard({ formData, images }) {
           className="inline-flex items-center gap-2 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-700 hover:to-gray-900 text-black hover:text-white font-bold px-6 py-2 rounded-full shadow shadow-gray-100/30 transition mb-4 mt-2 text-base tracking-wide hover:border-gray-900"
         >
           <FiGlobe className="text-lg" />
-          Plus d'infos sur le projet
+          {t('PlusInfosProjet') || "Plus d'infos sur le projet"}
         </a>
       )}
       {/* Icônes email et téléphone premium */}
       <div className="flex gap-6 justify-center mt-3 mb-1">
         <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition group">
-          <FiMail className="text-2xl text-white group-hover:text-red-700 transition-colors" title="Email" />
+          <FiMail className="text-2xl text-white group-hover:text-red-700 transition-colors" title={t('Email') || "Email"} />
         </div>
         <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition group">
-          <FiPhone className="text-2xl text-white group-hover:text-red-700 transition-colors" title="Téléphone" />
+          <FiPhone className="text-2xl text-white group-hover:text-red-700 transition-colors" title={t('Telephone') || "Téléphone"} />
         </div>
       </div>
     </div>

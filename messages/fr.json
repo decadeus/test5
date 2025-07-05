@@ -126,7 +126,22 @@
         "LaunchGeneration": "Lancer la génération",
         "GeneratedDescription": "Description générée",
         "CopyText": "Copier le texte",
-        "ApplyToField": "Appliquer au champ"
+        "ApplyToField": "Appliquer au champ",
+        "LanguesParlees": "Langues parlées",
+        "PlusInfosProjet": "Plus d'infos sur le projet",
+        "NoAvatar": "Pas d'avatar",
+        "Email": "Email",
+        "Telephone": "Téléphone",
+        "fr": "Français",
+        "en": "Anglais",
+        "pl": "Polonais",
+        "de": "Allemand",
+        "ru": "Russe",
+        "uk": "Ukrainien",
+        "es": "Espagnol",
+        "it": "Italien",
+        "pt": "Portugais",
+        "nl": "Néerlandais"
     },
     "SEO": {
         "Title": "Annuaire de projets immobiliers",

@@ -119,7 +119,22 @@
         "LaunchGeneration": "Launch generation",
         "GeneratedDescription": "Generated description",
         "CopyText": "Copy text",
-        "ApplyToField": "Apply to field"
+        "ApplyToField": "Apply to field",
+        "LanguesParlees": "Spoken languages",
+        "PlusInfosProjet": "More info about the project",
+        "NoAvatar": "No avatar",
+        "Email": "Email",
+        "Telephone": "Phone",
+        "fr": "French",
+        "en": "English",
+        "pl": "Polish",
+        "de": "German",
+        "ru": "Russian",
+        "uk": "Ukrainian",
+        "es": "Spanish",
+        "it": "Italian",
+        "pt": "Portuguese",
+        "nl": "Dutch"
     },
     "SEO": {
         "Title": "Real estate project directory",
