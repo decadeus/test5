@@ -16,7 +16,7 @@ import {
   ModalFooter,
   Button,
 } from "@heroui/react";
-import { FiUpload, FiGlobe } from "react-icons/fi";
+import { FiUpload, FiGlobe, FiMail, FiPhone } from "react-icons/fi";
 import { useLanguage } from "@/app/LanguageContext";
 
 // Types et constantes
@@ -477,10 +477,7 @@ function BasicFields({ formData, updateFormData }) {
 }
 
 // Composant pour les informations du promoteur
-export function ProjectMainForm({ projectId, formData, updateFormData }) {
-  const [images, setImages] = useState({});
-  const fileInputRefs = useRef([null, null, null, null, null]);
-  const [isUploading, setIsUploading] = useState(false);
+export function ProjectMainForm({ projectId, formData, updateFormData, images, setImages, fetchImages }) {
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const supabase = createClient();
   const f = useTranslations("Projet");
@@ -514,11 +511,11 @@ export function ProjectMainForm({ projectId, formData, updateFormData }) {
   };
 
   // --- Bloc avatar promoteur ---
+  const avatarInputRef = useRef(null);
   async function handleAvatarUpload(e) {
     const files = e.target.files;
     if (!files.length || !projectId) return;
     const file = files[0];
-    setIsUploading(true);
     try {
       // Upload avatar dans Supabase Storage (prefix image6-)
       const ext = file.name.split('.').pop();
@@ -535,38 +532,15 @@ export function ProjectMainForm({ projectId, formData, updateFormData }) {
       if (error) throw error;
       // Stocker le chemin (comme pour les autres images)
       updateFormData('promoter_avatar_url', `${projectId}/${name}`);
+      // Rafraîchir les images pour affichage instantané
+      if (fetchImages) await fetchImages();
     } catch (err) {
       alert(err.message || 'Erreur lors de l\'upload de l\'avatar');
     }
-    setIsUploading(false);
   }
 
   // --- Bloc images du projet ---
   const slots = [1, 2, 3, 4, 5, 6];
-  async function fetchImages() {
-    const { data, error } = await supabase
-      .storage
-      .from("project")
-      .list(`${projectId}/`, { limit: 20, offset: 0 });
-    if (error || !data) {
-      setImages({});
-      return;
-    }
-    const slotImages = {};
-    slots.forEach(num => {
-      const prefix = `image${num}-`;
-      const file = data.find(f => f.name.startsWith(prefix));
-      slotImages[num] = file
-        ? supabase.storage.from("project").getPublicUrl(`${projectId}/${file.name}`).data.publicUrl
-        : null;
-    });
-    setImages(slotImages);
-  }
-  useEffect(() => {
-    if (projectId) fetchImages();
-    // eslint-disable-next-line
-  }, [projectId]);
-
   async function handleUpload(e, slotNum) {
     const files = e.target.files;
     if (!files.length) return;
@@ -602,7 +576,6 @@ export function ProjectMainForm({ projectId, formData, updateFormData }) {
       .upload(`${projectId}/${name}`, file, { upsert: true });
     if (error) alert("Erreur upload: " + error.message);
     setTimeout(() => {
-      if (fileInputRefs.current[slotNum - 1]) fileInputRefs.current[slotNum - 1].value = "";
       fetchImages();
     }, 1000);
   }
@@ -625,13 +598,13 @@ export function ProjectMainForm({ projectId, formData, updateFormData }) {
           <input
             type="file"
             accept="image/*"
-            ref={el => (fileInputRefs.current[5] = el)}
-            onChange={e => handleUpload(e, 6)}
+            ref={avatarInputRef}
+            onChange={handleAvatarUpload}
             className="hidden"
           />
           <button
             type="button"
-            onClick={() => fileInputRefs.current[5]?.click()}
+            onClick={() => avatarInputRef.current && avatarInputRef.current.click()}
             className="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow hover:bg-gray-200"
             title="Uploader/Remplacer la photo du promoteur"
           >
@@ -1192,6 +1165,95 @@ function AIModal({ isOpen, onClose, children }) {
   );
 }
 
+// Mapping code langue -> nom complet
+const LANG_LABELS = {
+  fr: 'Français',
+  en: 'Anglais',
+  pl: 'Polonais',
+  de: 'Allemand',
+  ru: 'Russe',
+  uk: 'Ukrainien',
+  es: 'Espagnol',
+  it: 'Italien',
+  pt: 'Portugais',
+  nl: 'Néerlandais',
+};
+
+// Ajout d'une fiche récapitulative à côté du formulaire principal
+function ProjectRecapCard({ formData, images }) {
+  // Utilise images[6] comme source de l'avatar
+  const avatarUrl = images && images[6] ? images[6] : null;
+  // Affichage lisible des langues
+  let langues = [];
+  if (Array.isArray(formData.promoter_languages)) {
+    langues = formData.promoter_languages;
+  } else if (typeof formData.promoter_languages === 'string') {
+    try {
+      const arr = JSON.parse(formData.promoter_languages);
+      langues = Array.isArray(arr) ? arr : [formData.promoter_languages];
+    } catch {
+      langues = [formData.promoter_languages];
+    }
+  }
+  return (
+    <div className="bg-white border border-green-100 rounded-3xl shadow-lg px-10 py-12 w-[370px] flex flex-col items-center transition-all duration-300 my-8 mt-12 mb-12 hover:shadow-2xl hover:shadow-green-200/40">
+      {/* Avatar promoteur avec halo premium */}
+      <div className="relative mb-6">
+        <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-green-200/60 via-green-100/80 to-white blur-lg opacity-80"></div>
+        <div className="relative w-32 h-32 rounded-full shadow flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100 overflow-hidden">
+          {avatarUrl ? (
+            <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-300 text-lg font-semibold">No avatar</div>
+          )}
+        </div>
+      </div>
+      {/* Prénom + Nom promoteur */}
+      <h3 className="text-xl font-extrabold text-gray-700 mb-1 text-center tracking-tight leading-tight drop-shadow-sm">
+        {formData.promoter_first_name} {formData.promoter_last_name}
+      </h3>
+      {/* Compagnie */}
+      <div className="text-gray-500 text-lg font-semibold italic mb-3 text-center">
+        {formData.compagny}
+      </div>
+      {/* Langues */}
+      {langues.length > 0 && (
+        <div className="flex flex-col items-center mb-4">
+          <span className="text-xs text-gray-500 mb-1 flex items-center gap-1"><FiGlobe className="inline text-gray-400" />Langues parlées</span>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {langues.filter(Boolean).map((lang, i) => (
+              <span key={i} className="bg-gray-50 text-gray-700 px-3 py-1 rounded-full text-xs font-semibold border border-green-100 shadow-sm flex items-center gap-1">
+                {LANG_LABELS[lang] || lang}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+      {/* Bouton vers le site web promoteur */}
+      {formData.link && (
+        <a
+          href={formData.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-green-700 hover:to-green-900 text-black font-bold px-6 py-2 rounded-full shadow shadow-green-100/30 transition mb-4 mt-2 text-base tracking-wide hover:border-green-900"
+        >
+          <FiGlobe className="text-lg" />
+          Plus d'infos sur le projet
+        </a>
+      )}
+      {/* Icônes email et téléphone premium */}
+      <div className="flex gap-6 justify-center mt-3 mb-1">
+        <div className="rounded-full bg-green-700 border border-green-200 shadow p-3 flex items-center justify-center hover:bg-green-100 transition">
+          <FiMail className="text-2xl text-white" title="Email" />
+        </div>
+        <div className="rounded-full bg-green-700 border border-green-200 shadow p-3 flex items-center justify-center hover:bg-green-100 transition">
+          <FiPhone className="text-2xl text-white" title="Téléphone" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Composant principal
 export default function Maindata({ project, onProjectUpdate }) {
   const {
@@ -1216,6 +1278,30 @@ export default function Maindata({ project, onProjectUpdate }) {
 
   const { language } = useLanguage();
 
+  const [images, setImages] = useState({});
+
+  const fetchImages = async () => {
+    if (!project?.id) return;
+    const supabase = createClient();
+    const { data, error } = await supabase.storage.from("project").list(`${project.id}`);
+    if (!error && data) {
+      const slots = [1,2,3,4,5,6];
+      const imgs = {};
+      for (let slot of slots) {
+        const file = data.find(f => f.name.startsWith(`image${slot}-`));
+        if (file) {
+          const { data: urlData } = supabase.storage.from("project").getPublicUrl(`${project.id}/${file.name}`);
+          imgs[slot] = urlData.publicUrl;
+        }
+      }
+      setImages(imgs);
+    } else {
+      setImages({});
+    }
+  };
+
+  useEffect(() => { fetchImages(); }, [project?.id]);
+
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg w-full mb-8 border border-blue-100">
       <div className="flex justify-between items-center mb-6">
@@ -1229,13 +1315,29 @@ export default function Maindata({ project, onProjectUpdate }) {
         </span>
       </div>
 
-      {/* Formulaire principal promoteur et infos projet */}
-      <div className="mb-6">
-        <ProjectMainForm projectId={project.id} formData={formData} updateFormData={updateFormData} />
+      {/* Layout formulaire + fiche */}
+      <div className="flex flex-row gap-8 items-start">
+        <div className="flex-1 min-w-0">
+          {/* Formulaire principal promoteur et infos projet */}
+          <div className="mb-6">
+            <ProjectMainForm projectId={project.id} formData={formData} updateFormData={updateFormData} images={images} setImages={setImages} fetchImages={fetchImages} />
+          </div>
+        </div>
+        <ProjectRecapCard formData={formData} images={images} />
+      </div>
+
+      {/* Séparateur premium fort entre fiche et galerie */}
+      <div className="relative w-full flex flex-col items-center my-14">
+        <div className="w-full h-12 bg-gradient-to-r from-green-50 via-green-100 to-green-50 border-b-2 border-green-200 rounded-b-2xl shadow-md flex items-center justify-center">
+          <span className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white px-6 py-2 rounded-full shadow text-green-700 font-bold text-xl flex items-center gap-2 border border-green-100">
+            <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 7h2l.4 2M7 7h10l1 2h2a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg>
+            Images du projet
+          </span>
+        </div>
       </div>
 
       {/* Images du projet */}
-      <div className="mb-6">
+      <div className="mb-6 mt-8">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Images du projet</h2>
         <ProjectImages projectId={project.id} />
       </div>
@@ -1392,30 +1494,26 @@ export function ProjectImages({ projectId, className = "" }) {
   // Génère les slots image1- à image5-
   const slots = [1, 2, 3, 4, 5];
 
-  async function fetchImages() {
-    const { data, error } = await supabase
-      .storage
-      .from("project")
-      .list(`${projectId}/`, { limit: 20, offset: 0 });
-    if (error || !data) {
+  // Fonction pour charger les images du projet
+  const fetchImages = async () => {
+    if (!projectId) return;
+    const { data, error } = await supabase.storage.from("project").list(`${projectId}`);
+    if (!error && data) {
+      const imgs = {};
+      for (let slot of slots) {
+        const file = data.find(f => f.name.startsWith(`image${slot}-`));
+        if (file) {
+          const { data: urlData } = supabase.storage.from("project").getPublicUrl(`${projectId}/${file.name}`);
+          imgs[slot] = urlData.publicUrl;
+        }
+      }
+      setImages(imgs);
+    } else {
       setImages({});
-      return;
     }
-    const slotImages = {};
-    slots.forEach(num => {
-      const prefix = `image${num}-`;
-      const file = data.find(f => f.name.startsWith(prefix));
-      slotImages[num] = file
-        ? supabase.storage.from("project").getPublicUrl(`${projectId}/${file.name}`).data.publicUrl
-        : null;
-    });
-    setImages(slotImages);
-  }
+  };
 
-  useEffect(() => {
-    if (projectId) fetchImages();
-    // eslint-disable-next-line
-  }, [projectId]);
+  useEffect(() => { fetchImages(); }, [projectId]);
 
   async function handleUpload(e, slotNum) {
     const files = e.target.files;
