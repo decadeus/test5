@@ -279,7 +279,9 @@
         "garden": "Сад",
         "special_info": "Особая информация",
         "action": "Действие",
-        "required_fields_missing": "Обязательные поля не заполнены."
+        "required_fields_missing": "Обязательные поля не заполнены.",
+        "limit_collaborators_reached": "Достигнут лимит сотрудников.",
+        "limit_projects_reached": "Достигнут лимит проектов."
     },
     "IAComponents": {
         "seoShortTitle": "Генератор коротких SEO-описаний",

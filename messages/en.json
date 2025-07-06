@@ -285,7 +285,9 @@
         "garden": "Garden",
         "special_info": "Special info",
         "action": "Action",
-        "required_fields_missing": "Required fields missing."
+        "required_fields_missing": "Required fields missing.",
+        "limit_collaborators_reached": "Collaborator limit reached.",
+        "limit_projects_reached": "Project limit reached."
     },
     "IAComponents": {
         "seoShortTitle": "Short SEO Description Generator",

@@ -45,7 +45,7 @@ export default function CollaboratorManager({
 
         <div className="flex flex-col gap-3 mt-4">
           {collaborators.length >= maxCollaborators ? (
-            <p className="text-sm text-red-600 font-semibold">Limite de collaborateurs atteinte.</p>
+            <p className="text-sm text-red-600 font-semibold">{t('limit_collaborators_reached')}</p>
           ) : (
             <>
               <Input

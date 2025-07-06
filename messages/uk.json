@@ -278,7 +278,9 @@
         "garden": "Сад",
         "special_info": "Спеціальна інформація",
         "action": "Дія",
-        "required_fields_missing": "Відсутні обов'язкові поля."
+        "required_fields_missing": "Відсутні обов'язкові поля.",
+        "limit_collaborators_reached": "Досягнуто ліміту співробітників.",
+        "limit_projects_reached": "Досягнуто ліміту проектів."
     },
     "IAComponents": {
         "seoShortTitle": "Генератор коротких SEO-описів",

@@ -212,9 +212,6 @@ export default function ProjectManager({ t }) {
   return (
     <Card className="flex-1 shadow-md border border-gray-200 max-w-2xl mx-auto">
       <CardContent className="space-y-6 p-6">
-        {subscriptionProductId && (
-          <div className="text-xs text-gray-500 mb-2">product_id: <span className="font-mono">{subscriptionProductId}</span></div>
-        )}
         <h2 className="text-2xl font-semibold">{t('projects')} ({projects.length}/{maxProjects ?? '-'})</h2>
 
         {/* Liste des projets */}
@@ -239,7 +236,7 @@ export default function ProjectManager({ t }) {
         {/* Ajout d'un projet */}
         <div className="flex flex-col gap-3 mt-4">
           {projects.length >= maxProjects ? (
-            <p className="text-sm text-red-600 font-semibold">Limite de projets atteinte.</p>
+            <p className="text-sm text-red-600 font-semibold">{t('limit_projects_reached')}</p>
           ) : (
             <>
               <Input

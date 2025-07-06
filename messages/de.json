@@ -278,7 +278,9 @@
         "garden": "Garten",
         "special_info": "Spezielle Info",
         "action": "Aktion",
-        "required_fields_missing": "Erforderliche Felder fehlen."
+        "required_fields_missing": "Erforderliche Felder fehlen.",
+        "limit_collaborators_reached": "Mitarbeiterlimit erreicht.",
+        "limit_projects_reached": "Projektlimit erreicht."
     },
     "IAComponents": {
         "seoShortTitle": "Generator für kurze SEO-Beschreibungen",
