@@ -197,7 +197,11 @@ function useProjectData(project, onProjectUpdate) {
 
   const t = useTranslations("Projet");
   const hasTextChanges = initialFormData && JSON.stringify(formData) !== JSON.stringify(initialFormData);
-  const buttonText = isSaving ? t("Saving") : hasTextChanges ? "Enregistrer les modifications" : "Sauvegarder";
+  const buttonText = isSaving
+    ? t("Saving")
+    : hasTextChanges
+      ? t("EnregistrerModifications", { default: "Enregistrer les modifications" })
+      : t("Sauvegarder", { default: "Sauvegarder" });
 
   const updateFormData = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -1442,8 +1446,8 @@ export default function Maindata({ project, onProjectUpdate }) {
           </div>
         </div>
         {/* Bouton Enregistrer sticky local */}
-        <div className="sticky bottom-0 left-0 w-full flex justify-center py-4 z-30">
-          <Button onClick={saveProject} className="bg-blue-600 text-white px-8 py-3 rounded-xl shadow-md" disabled={isSaving}>
+        <div className="sticky bottom-0 left-0 w-full flex justify-center py-4 z-30 ">
+          <Button onClick={saveProject} className="bg-blue-600 text-white px-8 py-3 rounded-xl shadow-md w-11/12" disabled={isSaving}>
             {buttonText}
           </Button>
         </div>

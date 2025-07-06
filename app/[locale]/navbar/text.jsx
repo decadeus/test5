@@ -25,6 +25,7 @@ export default function Text({ user }) {
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState(null);
   const n = useTranslations("Nav");
 
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function Text({ user }) {
       if (!user?.id) return;
       const { data, error } = await supabase
         .from("profiles")
-        .select("avatar_url, username")
+        .select("avatar_url, username, role")
         .eq("id", user.id)
         .single();
       if (error) {
@@ -40,6 +41,7 @@ export default function Text({ user }) {
       } else {
         setAvatarUrl(data.avatar_url);
         setUsername(data.username);
+        setRole(data.role);
       }
     };
     fetchProfile();
@@ -63,6 +65,8 @@ export default function Text({ user }) {
       setLoading(false);
     }
   }, [username, avatarUrl, supabase, user?.id]);
+
+  if (role !== "promoteur") return null;
 
   return (
     <>
