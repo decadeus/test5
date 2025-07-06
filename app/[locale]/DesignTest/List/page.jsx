@@ -81,55 +81,56 @@ function ApartmentCard({
   return (
     <div
       key={apt.id}
-      className="bg-white/90 border border-gray-200 text-gray-900 shadow-sm rounded-3xl overflow-hidden hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 flex flex-col relative group card fade-in min-w-[340px] max-w-sm w-full p-0"
-      style={{ minHeight: 220 }}
+      className="bg-white/90 border border-gray-200 text-gray-900 shadow-sm rounded-3xl overflow-hidden hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-[340px] min-h-[340px] relative group card fade-in min-w-[260px] max-w-[340px] w-full p-0"
     >
       {/* Badges en haut */}
-      <div className="flex items-center justify-between px-4 pt-3 pb-1">
-        <span className="bg-green-600 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">
-          {filterProjectListByRange(apt.projectlist).length} {tGlobal(filterProjectListByRange(apt.projectlist).length > 1 ? 'Appartements' : 'Appartement')}
-        </span>
-        <div className="flex gap-1">
-          {apt.projectlist.some(lot => !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false') && (
-            <span className="bg-green-100 border border-green-400 text-green-700 rounded-full px-2 py-0.5 text-[10px] font-bold">🌸 {t("jardin")}</span>
-          )}
-          {apt.projectlist.some(lot => !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false') && (
-            <span className="bg-blue-100 border border-blue-400 text-blue-700 rounded-full px-2 py-0.5 text-[10px] font-bold">🏙️ {t("rooftop")}</span>
-          )}
+      <div className="flex-1 flex flex-col justify-between">
+        <div className="flex items-center justify-between px-4 pt-3 pb-1">
+          <span className="bg-green-600 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">
+            {filterProjectListByRange(apt.projectlist).length} {tGlobal(filterProjectListByRange(apt.projectlist).length > 1 ? 'Appartements' : 'Appartement')}
+          </span>
+          <div className="flex gap-1">
+            {apt.projectlist.some(lot => !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false') && (
+              <span className="bg-green-100 border border-green-400 text-green-700 rounded-full px-2 py-0.5 text-[10px] font-bold">🌸 {t("jardin")}</span>
+            )}
+            {apt.projectlist.some(lot => !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false') && (
+              <span className="bg-blue-100 border border-blue-400 text-blue-700 rounded-full px-2 py-0.5 text-[10px] font-bold">🏙️ {t("rooftop")}</span>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="relative overflow-hidden">
-        <Image
-          src={(projectImages[apt.id] && projectImages[apt.id].length > 0 ? projectImages[apt.id] : ["/components/image/placeholder.jpg"])[currentImageIndexes[apt.id] || 0]}
-          alt={apt.title}
-          width={400}
-          height={256}
-          priority
-          className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300 img-fade"
-        />
-        <button
-          onClick={() => handleToggleFavorite(apt)}
-          className={`absolute top-2 right-2 bg-white/80 rounded-full p-1 shadow hover:bg-white transition border-2 ${isFavorite(apt) ? 'border-red-600' : 'border-gray-300'}`}
-          aria-label="favorite"
-        >
-          {isFavorite(apt) ? (
-            <FaHeart className="text-red-600" size={22} />
-          ) : (
-            <FaRegHeart className="text-gray-400" size={22} />
-          )}
-        </button>
-      </div>
-      {/* Ligne nom projet à gauche, promoteur à droite */}
-      <div className="flex flex-row items-center justify-between px-4 pt-2 pb-1">
-        <span className="text-base font-bold text-gray-900 truncate text-left max-w-[60%]">{highlight(apt.title, debouncedSearchTerm)}</span>
-        <span className="text-xs text-gray-500 font-medium text-right truncate max-w-[38%]">by {apt.compagny && apt.compagny !== 'null' ? apt.compagny : 'Non renseigné'}</span>
-      </div>
-      {/* Bouton détail discret en bas à droite */}
-      <div className="flex justify-end px-4 pb-2">
-        <Link href={`/${locale}/DesignTest/Detail/${apt.id}`} className="inline-flex items-center gap-1 bg-green-50 hover:bg-green-100 text-green-700 rounded-full px-3 py-1 transition-all duration-200 text-xs font-semibold border border-green-200">
-          {t('Voir le détail')}
-          <PlusIcon className="w-3 h-3" />
-        </Link>
+        <div className="relative overflow-hidden">
+          <Image
+            src={(projectImages[apt.id] && projectImages[apt.id].length > 0 ? projectImages[apt.id] : ["/components/image/placeholder.jpg"])[currentImageIndexes[apt.id] || 0]}
+            alt={apt.title}
+            width={320}
+            height={180}
+            priority
+            className="w-full aspect-[16/9] object-cover group-hover:scale-105 transition-transform duration-300 img-fade"
+          />
+          <button
+            onClick={() => handleToggleFavorite(apt)}
+            className={`absolute top-2 right-2 bg-white/80 rounded-full p-1 shadow hover:bg-white transition border-2 ${isFavorite(apt) ? 'border-red-600' : 'border-gray-300'}`}
+            aria-label="favorite"
+          >
+            {isFavorite(apt) ? (
+              <FaHeart className="text-red-600" size={22} />
+            ) : (
+              <FaRegHeart className="text-gray-400" size={22} />
+            )}
+          </button>
+        </div>
+        {/* Ligne nom projet à gauche, promoteur à droite */}
+        <div className="flex flex-row items-center justify-between px-4 pt-2 pb-1">
+          <span className="text-base font-bold text-gray-900 truncate text-left max-w-[60%]">{highlight(apt.title, debouncedSearchTerm)}</span>
+          <span className="text-xs text-gray-500 font-medium text-right truncate max-w-[38%]">by {apt.compagny && apt.compagny !== 'null' ? apt.compagny : 'Non renseigné'}</span>
+        </div>
+        {/* Bouton détail discret en bas à droite */}
+        <div className="flex justify-end px-4 pb-2">
+          <Link href={`/${locale}/DesignTest/Detail/${apt.id}`} className="inline-flex items-center gap-1 bg-green-50 hover:bg-green-100 text-green-700 rounded-full px-3 py-1 transition-all duration-200 text-xs font-semibold border border-green-200">
+            {t('Voir le détail')}
+            <PlusIcon className="w-3 h-3" />
+          </Link>
+        </div>
       </div>
     </div>
   );
@@ -968,9 +969,9 @@ export default function ApartmentList() {
                     <span className="text-2xl font-bold text-black">{city}</span>
                   </div>
                   <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-green-200 scrollbar-track-white">
-                    <div className="flex flex-row gap-44 md:gap-16 min-w-[340px]">
+                    <div className="flex flex-row gap-4 min-w-[260px]">
                       {grouped[city].map((apt, idx) => (
-                        <div key={apt.id} className="min-w-[45vw] max-w-[50vw] sm:min-w-[320px] sm:max-w-xs w-full">
+                        <div key={apt.id} className="min-w-[260px] max-w-[340px] w-full">
                           <ApartmentCard
                             apt={apt}
                             projectImages={projectImages}
