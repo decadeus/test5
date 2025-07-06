@@ -16,6 +16,9 @@ export default function CollaboratorManager({
   deleteCollaborator,
   t
 }) {
+  if (maxCollaborators === null) {
+    return null;
+  }
   return (
     <Card className="flex-1 shadow-md border border-gray-200">
       <CardContent className="space-y-6 p-6">
@@ -41,32 +44,34 @@ export default function CollaboratorManager({
         </div>
 
         <div className="flex flex-col gap-3 mt-4">
-          <Input
-            placeholder={t('first_name')}
-            value={newFirstName}
-            onChange={(e) => setNewFirstName(e.target.value)}
-            disabled={collaborators.length >= maxCollaborators}
-          />
-          <Input
-            placeholder={t('last_name')}
-            value={newLastName}
-            onChange={(e) => setNewLastName(e.target.value)}
-            disabled={collaborators.length >= maxCollaborators}
-          />
-          <Input
-            placeholder={t('collaborator_email')}
-            value={newEmail}
-            onChange={(e) => setNewEmail(e.target.value)}
-            disabled={collaborators.length >= maxCollaborators}
-          />
-          <Button onClick={addCollaborator} disabled={collaborators.length >= maxCollaborators}>
-            {t('add')}
-          </Button>
+          {collaborators.length >= maxCollaborators ? (
+            <p className="text-sm text-red-600 font-semibold">Limite de collaborateurs atteinte.</p>
+          ) : (
+            <>
+              <Input
+                placeholder={t('first_name')}
+                value={newFirstName}
+                onChange={(e) => setNewFirstName(e.target.value)}
+                disabled={collaborators.length >= maxCollaborators}
+              />
+              <Input
+                placeholder={t('last_name')}
+                value={newLastName}
+                onChange={(e) => setNewLastName(e.target.value)}
+                disabled={collaborators.length >= maxCollaborators}
+              />
+              <Input
+                placeholder={t('collaborator_email')}
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+                disabled={collaborators.length >= maxCollaborators}
+              />
+              <Button onClick={addCollaborator} disabled={collaborators.length >= maxCollaborators}>
+                {t('add')}
+              </Button>
+            </>
+          )}
         </div>
-
-        {collaborators.length >= maxCollaborators && (
-          <p className="text-sm text-red-500">{t('limit_reached')}</p>
-        )}
       </CardContent>
     </Card>
   );

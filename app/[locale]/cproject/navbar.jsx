@@ -26,7 +26,13 @@ export default function Layout() {
   const [newEmail, setNewEmail] = useState("");
   const [newFirstName, setNewFirstName] = useState("");
   const [newLastName, setNewLastName] = useState("");
-  const maxCollaborators = 5;
+  const subscriptionLimits = {
+    'prod_SJ0eZqrhNInh0e': { collaborators: 6, projects: 5 },
+    'prod_SIpRbNvkPezP4u': { collaborators: 1, projects: 1 },
+    'prod_SJLg1bGI4Sfeqs': { collaborators: 11, projects: 10 },
+  };
+  const [subscriptionProductId, setSubscriptionProductId] = useState(null);
+  const [maxCollaborators, setMaxCollaborators] = useState(null);
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -118,6 +124,27 @@ export default function Layout() {
         } else {
           setCollaborators(collabs || []);
         }
+      }
+
+      // Récupérer le product_id d'abonnement
+      try {
+        const res = await fetch(`/api/get-subscription?userId=${user.id}`);
+        const subData = await res.json();
+        let productId = null;
+        if (subData?.subscription?.product_id) productId = subData.subscription.product_id;
+        else if (subData?.directSubscription?.product_id) productId = subData.directSubscription.product_id;
+        else if (Array.isArray(subData?.allSubscriptions)) {
+          const active = subData.allSubscriptions.find(sub => sub.is_active && sub.status === 'active');
+          if (active?.product_id) productId = active.product_id;
+        }
+        setSubscriptionProductId(productId);
+        if (productId && subscriptionLimits[productId]) {
+          setMaxCollaborators(subscriptionLimits[productId].collaborators);
+        } else {
+          setMaxCollaborators(5);
+        }
+      } catch (e) {
+        setMaxCollaborators(5);
       }
     };
 
@@ -216,6 +243,10 @@ export default function Layout() {
     }
   };
 
+  if (maxCollaborators === null) {
+    return null;
+  }
+
   return (
     <div className="flex h-screen w-full">
       <aside className="w-64 bg-gray-900 shadow-lg flex flex-col border-r border-gray-800 h-full">
@@ -306,7 +337,7 @@ export default function Layout() {
           <FullDetail project={selectedProject} />
         )}
 
-        {activeView === "collaborators" && !isCollaborator && (
+        {activeView === "collaborators" && !isCollaborator && maxCollaborators !== null && (
           <div className="p-6 overflow-y-auto">
             <div className="flex gap-6">
               <div className="w-1/2">

@@ -28,17 +28,7 @@ export default function DownloadCircle({ icon, qrImg, color, label }) {
           icon
         ) : (
           <div className="flex flex-col items-center p-2">
-            <img
-              src={qrImg}
-              alt="QR code"
-              style={{
-                width: "70px",
-                height: "70px",
-                borderRadius: "8px",
-                background: "#fff",
-              }}
-            />
-            <span className="text-xs text-white mt-2">Scannez-moi</span>
+            <span className="text-xs text-white mt-2">Coming soon</span>
           </div>
         )}
       </button>
@@ -46,12 +36,7 @@ export default function DownloadCircle({ icon, qrImg, color, label }) {
       {open && (
         <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setOpen(false)}>
           <div className="absolute bottom-20 left-1/2 -translate-x-1/2 bg-white p-4 rounded-lg shadow-lg">
-            <img
-              src={qrImg}
-              alt="QR code"
-              className="w-48 h-48 rounded-lg"
-            />
-            <p className="text-center mt-2 text-sm font-medium">{label}</p>
+            <p className="text-center mt-2 text-sm font-medium">Coming soon</p>
           </div>
         </div>
       )}
