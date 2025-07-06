@@ -71,7 +71,9 @@
         "Accueil": "Accueil",
         "VosProjets": "Vos projets",
         "EspacePromoteur": "Espace Promoteur",
-        "Favoris": "Favoris"
+        "Favoris": "Favoris",
+        "MonAbonnement": "Mon Abonnement",
+        "Déconnexion": "Déconnexion"
     },
     "Projet": {
         "Modifier": "Modifier les informations du projet",
@@ -360,5 +362,8 @@
         "emailPlaceholder": "Votre email (optionnel)",
         "placeholder": "Posez votre question...",
         "send": "Envoyer"
-    }
+    },
+    "PromoteurSlogan": "Hoomge : la plateforme pour promouvoir vos projets immobiliers",
+    "PromoteurSubtitle": "Touchez une audience internationale en bénéficiant de la traduction automatique",
+    "PublierUnProjet": "Publier un projet"
 }

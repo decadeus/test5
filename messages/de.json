@@ -66,7 +66,9 @@
         "Connexion": "Verbindung",
         "Accueil": "Zuhause",
         "VosProjets": "Ihre Projekte",
-        "EspacePromoteur": "Projektentwickler-Bereich"
+        "EspacePromoteur": "Projektentwickler-Bereich",
+        "MonAbonnement": "Mein Abonnement",
+        "Déconnexion": "Abmelden"
     },
     "Projet": {
         "Modifier": "Projektinformationen bearbeiten",
@@ -342,5 +344,8 @@
         "emailPlaceholder": "Ihre E-Mail (optional)",
         "placeholder": "Stellen Sie Ihre Frage...",
         "send": "Senden"
-    }
+    },
+    "PromoteurSlogan": "Hoomge: die Plattform zur Förderung Ihrer Immobilienprojekte",
+    "PromoteurSubtitle": "Erreichen Sie ein internationales Publikum dank automatischer Übersetzung",
+    "PublierUnProjet": "Projekt veröffentlichen"
 }

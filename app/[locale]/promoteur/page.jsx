@@ -27,7 +27,7 @@ export default function Page() {
   const router = useRouter();
   const pathname = usePathname();
   const locale = pathname ? pathname.split("/")[1] : "en";
-  const t = useTranslations("Homepage");
+  const t = useTranslations();
 
   const subtitle = "text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold w-full lg:w-[620px] text-left leading-tight pb-8 sm:pb-12 md:pb-16 lg:pb-20";
   const paragraphe = "text-base sm:text-lg md:text-xl lg:text-2xl font-normal pb-4 sm:pb-6 md:pb-8";
@@ -85,12 +85,12 @@ export default function Page() {
   const uniqueIdeas = new Set(projects.map((project) => project.ide));
 
   // Header marketing
-  const headerTitle = "Développez votre activité immobilière avec Hoomge";
-  const headerSubtitle = "Touchez une audience internationale en bénéficiant de la traduction automatique";
+  const headerTitle = t("PromoteurSlogan");
+  const headerSubtitle = t("PromoteurSubtitle");
 
   return (
     <>
-      <section className="relative overflow-hidden w-full h-[250px] sm:h-[350px] md:h-[400px] lg:h-[400px] px-4 sm:px-8 flex flex-col items-center text-center">
+      <section className="relative overflow-hidden w-full h-[270px] sm:h-[350px] md:h-[430px] lg:h-[430px] px-4 sm:px-8 flex flex-col items-center text-center">
         <div className="absolute inset-0 z-0">
           <Image
             src="/bg_Promoteur.png"
@@ -102,7 +102,7 @@ export default function Page() {
           <div className="absolute inset-0 bg-green-500/60 backdrop-blur-sm"></div>
         </div>
         <div className="absolute inset-0 bg-white/70 z-10" />
-        <div className="relative z-20 flex flex-col items-center justify-center h-full w-full">
+        <div className="relative z-20 flex flex-col items-center justify-center h-full w-full py-8">
           <div className="flex flex-col items-center md:gap-4 mt-12 sm:mt-16 md:mt-24 text-center justify-center h-full">
             <h1 className="text-xl sm:text-4xl md:text-5xl font-bold text-green-800 md:mb-6 max-w-7xl">{headerTitle}</h1>
             <p className="text-md sm:text-xl md:text-2xl text-green-900 md:mb-8 mb-2 max-w-2xl">{headerSubtitle}</p>
@@ -113,7 +113,7 @@ export default function Page() {
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              Publier un projet
+              {t("PublierUnProjet")}
             </button>
           </div>
         </div>

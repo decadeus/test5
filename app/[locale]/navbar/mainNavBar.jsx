@@ -258,7 +258,7 @@ export default function MainNavBar({ user }) {
                 className="flex items-center gap-2 px-4 py-2 rounded-full border border-green-700 text-green-700 font-semibold bg-white/70 hover:bg-green-700 hover:text-white transition text-base"
               >
                 <FaSignOutAlt size={20} />
-                Déconnexion
+                {n("Déconnexion")}
               </button>
             </form>
           </div>

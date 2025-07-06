@@ -68,7 +68,9 @@
         "Connexion": "Вхід",
         "Accueil": "Головна",
         "VosProjets": "Ваші проекти",
-        "EspacePromoteur": "Кабінет промоутера"
+        "EspacePromoteur": "Кабінет промоутера",
+        "MonAbonnement": "Моя підписка",
+        "Déconnexion": "Вийти"
     },
     "Projet": {
         "Modifier": "Редагувати інформацію про проект",
@@ -342,5 +344,8 @@
         "emailPlaceholder": "Ваш email (необов'язково)",
         "placeholder": "Поставте своє запитання...",
         "send": "Відправити"
-    }
+    },
+    "PromoteurSlogan": "Hoomge: платформа для просування ваших проєктів нерухомості",
+    "PromoteurSubtitle": "Охопіть міжнародну аудиторію завдяки автоматичному перекладу",
+    "PublierUnProjet": "Опублікувати проєкт"
 } 

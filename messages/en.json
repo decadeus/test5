@@ -58,7 +58,9 @@
         "Connexion": "Connection",
         "Accueil": "Home",
         "VosProjets": "Your projects",
-        "EspacePromoteur": "Property Developer Area"
+        "EspacePromoteur": "Property Developer Area",
+        "MonAbonnement": "My Subscription",
+        "Déconnexion": "Sign out"
     },
     "Projet": {
         "Modifier": "Edit project information",
@@ -350,5 +352,8 @@
         "emailPlaceholder": "Your email (optional)",
         "placeholder": "Ask your question...",
         "send": "Send"
-    }
+    },
+    "PromoteurSlogan": "Hoomge: the platform to promote your real estate projects",
+    "PromoteurSubtitle": "Reach an international audience with automatic translation",
+    "PublierUnProjet": "Publish a project"
 }

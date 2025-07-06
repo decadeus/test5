@@ -68,7 +68,9 @@
         "Connexion": "Połączenie",
         "Accueil": "Strona główna",
         "VosProjets": "Twoje projekty",
-        "EspacePromoteur": "Strefa Dewelopera"
+        "EspacePromoteur": "Strefa Dewelopera",
+        "MonAbonnement": "Moja subskrypcja",
+        "Déconnexion": "Wyloguj się"
     },
     "Projet": {
         "Modifier": "Edytuj informacje o projekcie",
@@ -359,5 +361,8 @@
         "emailPlaceholder": "Twój e-mail (opcjonalnie)",
         "placeholder": "Zadaj pytanie...",
         "send": "Wyślij"
-    }
+    },
+    "PromoteurSlogan": "Hoomge: platforma do promowania Twoich projektów nieruchomości",
+    "PromoteurSubtitle": "Dotrzyj do międzynarodowej publiczności dzięki automatycznemu tłumaczeniu",
+    "PublierUnProjet": "Opublikuj projekt"
 }
