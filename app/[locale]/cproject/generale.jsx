@@ -46,9 +46,6 @@ export default function Generale({ projects }) {
               <MdApartment className="inline-block mr-2 text-gray-500" />
               {project.apart_count || 0} {t('apartments')}
             </p>
-            <div className="bg-gray-100 h-32 rounded flex items-center justify-center text-gray-400 text-sm">
-              [Graphique projet #{project.id}]
-            </div>
           </div>
         ))}
       </div>
