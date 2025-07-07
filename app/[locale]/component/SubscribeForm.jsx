@@ -12,10 +12,18 @@ const supabase = createClient(
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-const PRICE_147 = 'price_147xxx'; // remplace par le vrai ID Stripe
-const PRICE_500 = 'price_500xxx'; // remplace par le vrai ID Stripe
+const PRICES = {
+  PLN: {
+    "1": { id: "price_147xxx", amount: 147 },
+    "5": { id: "price_500xxx", amount: 500 }
+  },
+  EUR: {
+    "1": { id: "price_eur_1", amount: 35 },
+    "5": { id: "price_eur_5", amount: 120 }
+  }
+};
 
-export default function SubscribeForm() {
+export default function SubscribeForm({ currency = "PLN" }) {
   const searchParams = useSearchParams();
   const defaultOffer = searchParams.get('offre'); // "1" ou "5"
 
@@ -24,11 +32,11 @@ export default function SubscribeForm() {
   const [priceId, setPriceId] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Appliquer l'offre passée en URL (offre=1 ou offre=5)
+  // Appliquer l'offre passée en URL (offre=1 ou offre=5) et la devise
   useEffect(() => {
-    if (defaultOffer === '1') setPriceId(PRICE_147);
-    if (defaultOffer === '5') setPriceId(PRICE_500);
-  }, [defaultOffer]);
+    if (defaultOffer === '1') setPriceId(PRICES[currency]["1"].id);
+    if (defaultOffer === '5') setPriceId(PRICES[currency]["5"].id);
+  }, [defaultOffer, currency]);
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
@@ -92,21 +100,21 @@ export default function SubscribeForm() {
       <div className="flex gap-4">
         <button
           type="button"
-          onClick={() => setPriceId(PRICE_147)}
+          onClick={() => setPriceId(PRICES[currency]["1"].id)}
           className={`px-4 py-2 rounded border ${
-            priceId === PRICE_147 ? 'bg-blue-600 text-white' : ''
+            priceId === PRICES[currency]["1"].id ? 'bg-blue-600 text-white' : ''
           }`}
         >
-          1 Projet – 147 PLN/mois
+          1 Projet – {PRICES[currency]["1"].amount} {currency}/mois
         </button>
         <button
           type="button"
-          onClick={() => setPriceId(PRICE_500)}
+          onClick={() => setPriceId(PRICES[currency]["5"].id)}
           className={`px-4 py-2 rounded border ${
-            priceId === PRICE_500 ? 'bg-green-600 text-white' : ''
+            priceId === PRICES[currency]["5"].id ? 'bg-green-600 text-white' : ''
           }`}
         >
-          5 Projets – 500 PLN/mois
+          5 Projets – {PRICES[currency]["5"].amount} {currency}/mois
         </button>
       </div>
 
