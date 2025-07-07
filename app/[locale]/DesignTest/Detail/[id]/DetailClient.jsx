@@ -389,7 +389,7 @@ export default function DetailClient({ project, locale }) {
 
   const lang = locale || 'fr';
   // Champs projet multilingues
-  const projectName = project[`name_${lang}`] || project.name_fr || project.name;
+  const projectName = project.name;
   const projectCity = project[`city_${lang}`] || project.city_fr || project.city;
 
   return (
