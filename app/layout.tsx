@@ -8,14 +8,16 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <>
-      <Head>
+    <html lang="fr">
+      <head>
         <link rel="preload" as="image" href="/appart.png" />
         {/* Optimisation Google Fonts supprimée car polices locales utilisées */}
         {/* Toutes les balises Google Fonts supprimées */}
-      </Head>
-      {/* ... reste du layout ... */}
-      {children}
-    </>
+      </head>
+      <body>
+        {/* ... reste du layout ... */}
+        {children}
+      </body>
+    </html>
   );
 } 
