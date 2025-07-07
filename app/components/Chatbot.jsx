@@ -80,7 +80,14 @@ export default function Chatbot() {
   }
 
   return (
-    <div className="fixed bottom-0 inset-x-0 w-full max-w-screen-sm mx-auto overflow-x-hidden sm:bottom-10 sm:right-10 sm:left-auto sm:inset-x-auto sm:w-[380px] sm:max-w-[95vw] bg-slate-50 rounded-t-2xl sm:rounded-[32px] shadow-2xl z-[1000] flex flex-col overflow-hidden font-sans">
+    <div
+      className="fixed bottom-0 inset-x-0 w-full max-w-screen-sm mx-auto overflow-x-hidden sm:bottom-10 sm:right-10 sm:left-auto sm:inset-x-auto sm:w-[380px] sm:max-w-[95vw] bg-slate-50 rounded-t-2xl sm:rounded-[32px] shadow-2xl z-[1000] flex flex-col overflow-hidden font-sans"
+      style={{
+        paddingLeft: 'env(safe-area-inset-left)',
+        paddingRight: 'env(safe-area-inset-right)',
+        boxSizing: 'border-box',
+      }}
+    >
       {/* Header arrondi avec dégradé */}
       <div className="bg-gradient-to-br from-lime-300 to-green-700 px-4 pt-5 pb-3 rounded-t-2xl sm:px-8 sm:pt-7 sm:pb-4 sm:rounded-t-[32px] flex items-center justify-between min-h-[64px] sm:min-h-[80px]">
         <div className="flex items-center gap-2 sm:gap-4">
