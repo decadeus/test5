@@ -22,12 +22,13 @@ export default function Chatbot() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [category, setCategory] = useState("utilisation");
   const t = useTranslations('chatbot');
 
   async function sendMessage(e) {
     e.preventDefault();
     if (!input.trim()) return;
-    const newMessages = [...messages, { role: "user", content: input }];
+    const newMessages = [...messages, { role: "user", content: input, category }];
     setMessages(newMessages);
     setInput("");
     setLoading(true);
@@ -38,7 +39,7 @@ export default function Chatbot() {
     const res = await fetch("/api/chatbot", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: messagesToSend, email }),
+      body: JSON.stringify({ messages: messagesToSend, email, category }),
     });
     const data = await res.json();
     setMessages([...newMessages, { role: "assistant", content: data.reply }]);
@@ -59,7 +60,8 @@ export default function Chatbot() {
       body: JSON.stringify({
         question: userMessage ? userMessage.content : '',
         answer: message.content,
-        email
+        email,
+        category
       })
     });
   }
@@ -113,29 +115,7 @@ export default function Chatbot() {
       </div>
 
       {/* Carte explication email */}
-      <div className="bg-white rounded-[18px] shadow-md mt-4 mx-2 p-3 flex items-start gap-2 sm:mt-6 sm:mx-6 sm:p-5 sm:gap-3">
-      <div className="w-24 sm:w-44 rounded-full flex items-center justify-center shadow-md overflow-hidden">
-          <span role="img" aria-label="bot" className="text-lg sm:text-2xl leading-none">✉️</span>
-        </div>
-        <div>
-          <div className="font-semibold text-gray-700 text-[13px] sm:text-[15px] mb-0.5">{t('emailWhy')}</div>
-          <div className="text-slate-900 text-[13px] sm:text-[15px]">
-            {t('emailExplain')}
-          </div>
-        </div>
-      </div>
-
-      {/* Champ email au-dessus de la zone de saisie */}
-      <div className="px-2 pt-2 pb-0 mt-2 sm:px-5">
-        <input
-          type="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          placeholder={t('emailPlaceholder')}
-          className="w-full border border-gray-500 rounded-lg px-2 py-2 text-[13px] sm:px-3 sm:py-2 sm:text-[15px] outline-none bg-slate-50"
-        />
-      </div>
-
+    
       {/* Zone de chat scrollable */}
       <div className="flex-1 min-h-[100px] max-h-[40vh] sm:min-h-[120px] sm:max-h-[320px] overflow-y-auto px-2 pt-3 pb-0 bg-slate-50 flex flex-col gap-2 sm:px-5 sm:pt-5 sm:gap-3 ">
         {messages && messages.map((m, i) => (
@@ -160,25 +140,69 @@ export default function Chatbot() {
           if (!input.trim()) return;
           sendMessage(e);
         }}
-        className="flex gap-2 p-3 border-t border-gray-200 bg-white mt-2 sm:gap-2.5 sm:p-5 sm:mt-4"
+        className="flex flex-col gap-2 p-3 border-t border-gray-200 bg-white mt-2 sm:gap-2.5 sm:p-5 sm:mt-4"
       >
-        <input
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          placeholder={t('placeholder')}
-          className="flex-1 border border-gray-200 rounded-lg px-2 py-2 text-[13px] sm:px-3 sm:py-2.5 sm:text-[15px] outline-none"
-        />
-        <button
-          type="submit"
-          disabled={!input.trim()}
-          className={
-            "bg-green-400 text-slate-900 border-none rounded-lg px-4 font-semibold text-[13px] shadow " +
-            (!input.trim() ? "opacity-70 cursor-not-allowed" : "hover:bg-green-500 transition") +
-            " sm:px-6 sm:text-[15px]"
-          }
-        >
-          {t('send')}
-        </button>
+        {/* Sélecteur de catégorie moderne */}
+        <div className="flex gap-2 mb-2">
+          <button
+            type="button"
+            onClick={() => setCategory("bug")}
+            className={
+              `flex items-center gap-1 px-3 py-1.5 rounded-full border transition text-sm font-medium ` +
+              (category === "bug"
+                ? "bg-red-100 border-red-400 text-red-700 shadow"
+                : "bg-white border-gray-300 text-gray-700 hover:bg-red-50 hover:border-red-300")
+            }
+            aria-pressed={category === "bug"}
+          >
+            <span className="text-base">🐞</span> Bug
+          </button>
+          <button
+            type="button"
+            onClick={() => setCategory("design")}
+            className={
+              `flex items-center gap-1 px-3 py-1.5 rounded-full border transition text-sm font-medium ` +
+              (category === "design"
+                ? "bg-blue-100 border-blue-400 text-blue-700 shadow"
+                : "bg-white border-gray-300 text-gray-700 hover:bg-blue-50 hover:border-blue-300")
+            }
+            aria-pressed={category === "design"}
+          >
+            <span className="text-base">🎨</span> Design
+          </button>
+          <button
+            type="button"
+            onClick={() => setCategory("utilisation")}
+            className={
+              `flex items-center gap-1 px-3 py-1.5 rounded-full border transition text-sm font-medium ` +
+              (category === "utilisation"
+                ? "bg-green-100 border-green-400 text-green-700 shadow"
+                : "bg-white border-gray-300 text-gray-700 hover:bg-green-50 hover:border-green-300")
+            }
+            aria-pressed={category === "utilisation"}
+          >
+            <span className="text-base">🧑‍💻</span> Utilisation
+          </button>
+        </div>
+        <div className="flex gap-2">
+          <input
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            placeholder={t('placeholder')}
+            className="flex-1 border border-gray-200 rounded-lg px-2 py-2 text-[13px] sm:px-3 sm:py-2.5 sm:text-[15px] outline-none"
+          />
+          <button
+            type="submit"
+            disabled={!input.trim()}
+            className={
+              "bg-green-400 text-slate-900 border-none rounded-lg px-4 font-semibold text-[13px] shadow " +
+              (!input.trim() ? "opacity-70 cursor-not-allowed" : "hover:bg-green-500 transition") +
+              " sm:px-6 sm:text-[15px]"
+            }
+          >
+            {t('send')}
+          </button>
+        </div>
       </form>
     </div>
   );
