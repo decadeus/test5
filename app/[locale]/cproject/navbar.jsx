@@ -30,6 +30,9 @@ export default function Layout() {
     'prod_SJ0eZqrhNInh0e': { collaborators: 6, projects: 5 },
     'prod_SIpRbNvkPezP4u': { collaborators: 1, projects: 1 },
     'prod_SJLg1bGI4Sfeqs': { collaborators: 11, projects: 10 },
+    'prod_SdPzE3lkSWgpK2': { collaborators: 11, projects: 10 }, // 180€ (10 projets)
+    'prod_SdPwqOxfZGldXt': { collaborators: 6, projects: 5 },   // 120€ (5 projets)
+    'prod_SdPsYyqcyWXp8d': { collaborators: 1, projects: 1 },   // 35€ (1 projet)
   };
   const [subscriptionProductId, setSubscriptionProductId] = useState(null);
   const [maxCollaborators, setMaxCollaborators] = useState(null);
