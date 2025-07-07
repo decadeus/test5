@@ -150,7 +150,7 @@ export default function Chatbot() {
         className="flex flex-col gap-2 p-3 border-t border-gray-200 bg-white mt-2 sm:gap-2.5 sm:p-5 sm:mt-4"
       >
         {/* Sélecteur de catégorie moderne */}
-        <div className="flex gap-2 mb-2">
+        <div className="flex flex-wrap gap-2 mb-2">
           <button
             type="button"
             onClick={() => setCategory("bug")}
