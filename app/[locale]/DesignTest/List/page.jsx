@@ -156,13 +156,6 @@ export default function ApartmentList() {
   const [apartments, setApartments] = useState([]);
   const [projectImages, setProjectImages] = useState({});
   const [currentImageIndexes, setCurrentImageIndexes] = useState({});
-  const [selectedCity, setSelectedCity] = useState(t("Tous"));
-  const [searchTerm, setSearchTerm] = useState("");
-  const [priceRange, setPriceRange] = useState([100000, 5000000]);
-  const [bedRange, setBedRange] = useState([1, 5]);
-  const [surfaceRange, setSurfaceRange] = useState([10, 200]);
-  const [onlyGarden, setOnlyGarden] = useState(false);
-  const [onlyRooftop, setOnlyRooftop] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -173,92 +166,60 @@ export default function ApartmentList() {
   const router = useRouter();
   const params = useParams();
   const locale = params?.locale || 'fr';
-  const [debouncedSearchTerm] = useDebounce(searchTerm, 300);
+  const defaultFilters = {
+    selectedCity: t("Tous"),
+    searchTerm: "",
+    priceRange: [100000, 5000000],
+    bedRange: [1, 5],
+    surfaceRange: [10, 200],
+    onlyGarden: false,
+    onlyRooftop: false,
+  };
+  const [filters, setFilters] = useState(defaultFilters);
+  const [debouncedSearchTerm] = useDebounce(filters.searchTerm, 300);
   const [favorites, setFavorites] = useState([]);
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
+  const [justUnselectedGarden, setJustUnselectedGarden] = useState(false);
+  const [justUnselectedRooftop, setJustUnselectedRooftop] = useState(false);
+  const [justUnselectedFavorites, setJustUnselectedFavorites] = useState(false);
 
-  // Initialisation des filtres à l'hydratation
+  // 2. Initialiser les filtres depuis le localStorage au montage
   useEffect(() => {
     setIsHydrated(true);
     if (typeof window !== 'undefined') {
-      setSelectedCity(t("Tous")); // Toujours initialiser à Tous
-      setSearchTerm(localStorage.getItem('searchTerm') || "");
-      const price = localStorage.getItem('priceRange');
-      setPriceRange(price ? JSON.parse(price) : [100000, 5000000]);
-      const bed = localStorage.getItem('bedRange');
-      setBedRange(bed ? JSON.parse(bed) : [1, 5]);
-      const surface = localStorage.getItem('surfaceRange');
-      setSurfaceRange(surface ? JSON.parse(surface) : [10, 200]);
-      setOnlyGarden(localStorage.getItem('onlyGarden') === 'true');
-      setOnlyRooftop(localStorage.getItem('onlyRooftop') === 'true');
+      const saved = localStorage.getItem('filters');
+      if (saved) {
+        setFilters(JSON.parse(saved));
+      }
     }
   }, []);
 
-  // Persistance intelligente : on ne sauvegarde pas selectedCity
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('searchTerm', searchTerm);
-      localStorage.setItem('priceRange', JSON.stringify(priceRange));
-      localStorage.setItem('bedRange', JSON.stringify(bedRange));
-      localStorage.setItem('surfaceRange', JSON.stringify(surfaceRange));
-      localStorage.setItem('onlyGarden', onlyGarden);
-      localStorage.setItem('onlyRooftop', onlyRooftop);
-    }
-  }, [searchTerm, priceRange, bedRange, surfaceRange, onlyGarden, onlyRooftop]);
+  // 3. Fonction générique pour modifier les filtres
+  function updateFilter(key, value) {
+    setFilters(prev => {
+      const newValue = typeof value === 'function' ? value(prev[key]) : value;
+      const updated = { ...prev, [key]: newValue };
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('filters', JSON.stringify(updated));
+      }
+      return updated;
+    });
+  }
 
-  // Réinitialiser la ville à chaque changement de langue
+  // 4. Réinitialiser tous les filtres proprement
+  function resetFilters() {
+    setFilters(defaultFilters);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('filters', JSON.stringify(defaultFilters));
+    }
+  }
+
+  // 5. Réinitialiser la ville à chaque changement de langue
   useEffect(() => {
-    setSelectedCity(t("Tous"));
+    updateFilter('selectedCity', t("Tous"));
   }, [locale, t]);
 
-  // Fonction pour réinitialiser tous les filtres
-  const resetFilters = () => {
-    setSelectedCity(t("Tous"));
-    setSearchTerm("");
-    setPriceRange([100000, 5000000]);
-    setBedRange([1, 5]);
-    setSurfaceRange([10, 200]);
-    setOnlyGarden(false);
-    setOnlyRooftop(false);
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('selectedCity');
-      localStorage.removeItem('searchTerm');
-      localStorage.removeItem('priceRange');
-      localStorage.removeItem('bedRange');
-      localStorage.removeItem('surfaceRange');
-      localStorage.removeItem('onlyGarden');
-      localStorage.removeItem('onlyRooftop');
-    }
-  };
-
-  // Fonction pour formater le prix en euros
-  const formatPriceForDisplay = (price) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'EUR',
-      maximumFractionDigits: 0
-    }).format(price);
-  };
-
-  const handlePriceChange = (event, newValue) => {
-    setPriceRange(newValue);
-  };
-
-  const handleNextImage = (aptId, totalImages) => {
-    setCurrentImageIndexes(prev => ({
-      ...prev,
-      [aptId]: ((prev[aptId] || 0) + 1) % totalImages
-    }));
-  };
-
-  const handlePrevImage = (aptId, totalImages) => {
-    setCurrentImageIndexes(prev => ({
-      ...prev,
-      [aptId]: ((prev[aptId] || 0) - 1 + totalImages) % totalImages
-    }));
-  };
-
-  // Fonction pour obtenir le min/max des prix, des chambres et de la surface
+  // 6. Utiliser les filtres dans le filtrage
   const getMinMaxValues = () => {
     let minPrice = Infinity, maxPrice = -Infinity;
     let minBed = Infinity, maxBed = -Infinity;
@@ -291,31 +252,9 @@ export default function ApartmentList() {
       maxSurface: maxSurface === -Infinity ? 200 : maxSurface
     };
   };
-
-  // Optimisation : mémoriser les min/max avec useMemo
   const minMaxValues = useMemo(() => getMinMaxValues(), [apartments]);
 
-  // Initialiser les valeurs min/max basées sur les données réelles
-  useEffect(() => {
-    if (apartments.length > 0) {
-      const { minPrice, maxPrice, minBed, maxBed, minSurface, maxSurface } = getMinMaxValues();
-      // Ne mettre à jour que si les valeurs n'ont pas été sauvegardées dans le localStorage
-      if (typeof window !== 'undefined' && !localStorage.getItem('priceRange')) {
-        const priceRangeVal = maxPrice - minPrice;
-        const startPrice = Math.round(minPrice + priceRangeVal * 0.1);
-        const endPrice = Math.round(minPrice + priceRangeVal * 0.9);
-        setPriceRange([startPrice, endPrice]);
-      }
-      if (typeof window !== 'undefined' && !localStorage.getItem('bedRange')) {
-        setBedRange([minBed, maxBed]);
-      }
-      if (typeof window !== 'undefined' && !localStorage.getItem('surfaceRange')) {
-        setSurfaceRange([minSurface, maxSurface]);
-      }
-    }
-  }, [apartments]);
-
-  // Fonction pour vérifier si un projet a des lots dans la gamme de prix ET de chambres
+  // 7. Utiliser les filtres dans le filtrage
   const hasProjectListInRange = (project) => {
     if (!project.projectlist || project.projectlist.length === 0) return false;
     return project.projectlist.some(lot => {
@@ -325,16 +264,14 @@ export default function ApartmentList() {
       const hasGarden = !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false';
       const hasRooftop = !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false';
       return (
-        lotPrice >= priceRange[0] && lotPrice <= priceRange[1] &&
-        lotBed >= bedRange[0] && lotBed <= bedRange[1] &&
-        lotSurface >= surfaceRange[0] && lotSurface <= surfaceRange[1] &&
-        (!onlyGarden || hasGarden) &&
-        (!onlyRooftop || hasRooftop)
+        lotPrice >= filters.priceRange[0] && lotPrice <= filters.priceRange[1] &&
+        lotBed >= filters.bedRange[0] && lotBed <= filters.bedRange[1] &&
+        lotSurface >= filters.surfaceRange[0] && lotSurface <= filters.surfaceRange[1] &&
+        (!filters.onlyGarden || hasGarden) &&
+        (!filters.onlyRooftop || hasRooftop)
       );
     });
   };
-
-  // Fonction pour filtrer les lots d'un projet selon la gamme de prix ET de chambres
   const filterProjectListByRange = (projectlist) => {
     if (!projectlist) return [];
     return projectlist.filter(lot => {
@@ -344,27 +281,26 @@ export default function ApartmentList() {
       const hasGarden = !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false';
       const hasRooftop = !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false';
       return (
-        lotPrice >= priceRange[0] && lotPrice <= priceRange[1] &&
-        lotBed >= bedRange[0] && lotBed <= bedRange[1] &&
-        lotSurface >= surfaceRange[0] && lotSurface <= surfaceRange[1] &&
-        (!onlyGarden || hasGarden) &&
-        (!onlyRooftop || hasRooftop)
+        lotPrice >= filters.priceRange[0] && lotPrice <= filters.priceRange[1] &&
+        lotBed >= filters.bedRange[0] && lotBed <= filters.bedRange[1] &&
+        lotSurface >= filters.surfaceRange[0] && lotSurface <= filters.surfaceRange[1] &&
+        (!filters.onlyGarden || hasGarden) &&
+        (!filters.onlyRooftop || hasRooftop)
       );
     });
   };
-
   const filteredApartments = apartments.filter((a) => {
-    const matchesCity = selectedCity === t("Tous") || a.city === selectedCity;
+    const matchesCity = filters.selectedCity === t("Tous") || a.city === filters.selectedCity;
     const matchesSearch =
-      a.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      a.summary.toLowerCase().includes(searchTerm.toLowerCase());
+      a.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+      a.summary.toLowerCase().includes(filters.searchTerm.toLowerCase());
     const matchesRange = hasProjectListInRange(a);
     const matchesFavorite = !showOnlyFavorites || favorites.includes(a.id);
     return matchesCity && matchesSearch && matchesRange && matchesFavorite;
   });
 
   // Pour la carte : on veut tous les projets de la ville sélectionnée, sans filtrer sur les lots
-  const apartmentsForMap = apartments.filter(a => selectedCity === t('Tous') || a.city === selectedCity);
+  const apartmentsForMap = apartments.filter(a => filters.selectedCity === t('Tous') || a.city === filters.selectedCity);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -452,6 +388,22 @@ export default function ApartmentList() {
   const paginatedApartments = filteredApartments.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage);
   const pageCount = Math.ceil(filteredApartments.length / itemsPerPage);
 
+  // Fonction pour passer à l'image suivante d'un appartement
+  const handleNextImage = (aptId, totalImages) => {
+    setCurrentImageIndexes(prev => ({
+      ...prev,
+      [aptId]: ((prev[aptId] || 0) + 1) % totalImages
+    }));
+  };
+
+  // Fonction pour passer à l'image précédente d'un appartement
+  const handlePrevImage = (aptId, totalImages) => {
+    setCurrentImageIndexes(prev => ({
+      ...prev,
+      [aptId]: ((prev[aptId] || 0) - 1 + totalImages) % totalImages
+    }));
+  };
+
   if (!isHydrated) return null;
   return (
     <>
@@ -485,10 +437,10 @@ export default function ApartmentList() {
                 ].map((city) => (
                   <button
                     key={city}
-                    onClick={() => setSelectedCity(city)}
-                    aria-pressed={selectedCity === city}
+                    onClick={() => updateFilter('selectedCity', city)}
+                    aria-pressed={filters.selectedCity === city}
                     className={`h-10 px-3 border-2 border-black rounded-full text-sm font-semibold transition-colors duration-200 whitespace-nowrap ${
-                      selectedCity === city
+                      filters.selectedCity === city
                         ? "bg-green-600 text-white"
                         : "bg-white text-black hover:bg-green-600 hover:text-white"
                     }`}
@@ -499,8 +451,8 @@ export default function ApartmentList() {
               </div>
               <input
                 type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                value={filters.searchTerm}
+                onChange={(e) => updateFilter('searchTerm', e.target.value)}
                 placeholder={t("Rechercher:")}
                 className="h-10 w-full pl-3 text-left border-2 border-black rounded-full text-sm font-semibold text-gray-500 placeholder:text-black/50 placeholder:font-semibold"
               />
@@ -511,12 +463,12 @@ export default function ApartmentList() {
                 <div className="w-full bg-white/90 p-1.5 shadow-lg px-3 border-2 border-black rounded-full flex flex-row justify-between items-center mb-1">
                   <span className="text-xs font-semibold">{t("Prix")}</span>
                   <span className="text-xs font-semibold text-black">
-                    {formatPriceForDisplay(priceRange[0])} - {formatPriceForDisplay(priceRange[1])}
+                    {formatPrice(filters.priceRange[0])} - {formatPrice(filters.priceRange[1])}
                   </span>
                 </div>
                 <Slider
-                  value={priceRange}
-                  onChange={(_, v) => setPriceRange(v)}
+                  value={filters.priceRange}
+                  onChange={(_, v) => updateFilter('priceRange', v)}
                   valueLabelDisplay="off"
                   min={minMaxValues.minPrice}
                   max={minMaxValues.maxPrice}
@@ -557,12 +509,12 @@ export default function ApartmentList() {
                 <div className="w-full bg-white/90 p-1.5 shadow-lg px-3 border-2 border-black rounded-full flex flex-row justify-between items-center mb-1">
                   <span className="text-xs font-semibold">{t("Chambres")}</span>
                   <span className="text-xs font-semibold text-black">
-                    {bedRange[0]} - {bedRange[1]}
+                    {filters.bedRange[0]} - {filters.bedRange[1]}
                   </span>
                 </div>
                 <Slider
-                  value={bedRange}
-                  onChange={(_, v) => setBedRange(v)}
+                  value={filters.bedRange}
+                  onChange={(_, v) => updateFilter('bedRange', v)}
                   valueLabelDisplay="off"
                   min={minMaxValues.minBed}
                   max={minMaxValues.maxBed}
@@ -603,12 +555,12 @@ export default function ApartmentList() {
                 <div className="w-full bg-white/90 p-1.5 shadow-lg px-3 border-2 border-black rounded-full flex flex-row justify-between items-center mb-1">
                   <span className="text-xs font-semibold">{t("Surface")}</span>
                   <span className="text-xs font-semibold text-black">
-                    {surfaceRange[0]} - {surfaceRange[1]}
+                    {filters.surfaceRange[0]} - {filters.surfaceRange[1]}
                   </span>
                 </div>
                 <Slider
-                  value={surfaceRange}
-                  onChange={(_, v) => setSurfaceRange(v)}
+                  value={filters.surfaceRange}
+                  onChange={(_, v) => updateFilter('surfaceRange', v)}
                   valueLabelDisplay="off"
                   min={minMaxValues.minSurface}
                   max={minMaxValues.maxSurface}
@@ -650,17 +602,31 @@ export default function ApartmentList() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-4 w-full">
               <div className="flex flex-row gap-4 w-full justify-center items-center">
                 <button
-                  onClick={() => setOnlyGarden((v) => !v)}
-                  aria-pressed={onlyGarden}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                  onClick={e => {
+                    updateFilter('onlyGarden', v => {
+                      if (v) setJustUnselectedGarden(true);
+                      return !v;
+                    });
+                    e.currentTarget.blur();
+                  }}
+                  onMouseLeave={() => setJustUnselectedGarden(false)}
+                  aria-pressed={filters.onlyGarden}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${filters.onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black'} ${!filters.onlyGarden && !justUnselectedGarden ? 'hover:bg-green-600 hover:text-white' : ''}`}
                 >
                   <span>{t("AvecJardin")}</span>
                   <span>🌸</span>
                 </button>
                 <button
-                  onClick={() => setOnlyRooftop((v) => !v)}
-                  aria-pressed={onlyRooftop}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                  onClick={e => {
+                    updateFilter('onlyRooftop', v => {
+                      if (v) setJustUnselectedRooftop(true);
+                      return !v;
+                    });
+                    e.currentTarget.blur();
+                  }}
+                  onMouseLeave={() => setJustUnselectedRooftop(false)}
+                  aria-pressed={filters.onlyRooftop}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${filters.onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black'} ${!filters.onlyRooftop && !justUnselectedRooftop ? 'hover:bg-green-600 hover:text-white' : ''}`}
                 >
                   <span>{t("Rooftop")}</span>
                   <span>🏙️</span>
@@ -668,9 +634,16 @@ export default function ApartmentList() {
               </div>
               <div className="w-full flex justify-center items-center mt-2 sm:mt-0">
                 <button
-                  onClick={() => setShowOnlyFavorites((v) => !v)}
+                  onClick={e => {
+                    setShowOnlyFavorites(v => {
+                      if (v) setJustUnselectedFavorites(true);
+                      return !v;
+                    });
+                    e.currentTarget.blur();
+                  }}
+                  onMouseLeave={() => setJustUnselectedFavorites(false)}
                   aria-pressed={showOnlyFavorites}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${showOnlyFavorites ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${showOnlyFavorites ? 'bg-green-600 text-white' : 'bg-white text-black'} ${!showOnlyFavorites && !justUnselectedFavorites ? 'hover:bg-green-600 hover:text-white' : ''}`}
                 >
                   {showOnlyFavorites ? <FaHeart className="text-red-600" /> : <FaRegHeart className="text-gray-400" />}
                   <span>{t("MesFavoris")}</span>
@@ -702,10 +675,10 @@ export default function ApartmentList() {
                   ].map((city) => (
                     <button
                       key={city}
-                      onClick={() => setSelectedCity(city)}
-                      aria-pressed={selectedCity === city}
+                      onClick={() => updateFilter('selectedCity', city)}
+                      aria-pressed={filters.selectedCity === city}
                       className={`h-10 sm:h-12 px-3 sm:px-6 border-2 border-black rounded-full text-sm sm:text-lg font-semibold transition-colors duration-200 whitespace-nowrap ${
-                        selectedCity === city
+                        filters.selectedCity === city
                           ? "bg-green-600 text-white"
                           : "bg-white text-black hover:bg-green-600 hover:text-white"
                       }`}
@@ -716,8 +689,8 @@ export default function ApartmentList() {
                 </div>
                 <input
                   type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={filters.searchTerm}
+                  onChange={(e) => updateFilter('searchTerm', e.target.value)}
                   placeholder={t("Rechercher:")}
                   className="h-10 sm:h-12 w-full sm:w-96 ml-0 sm:ml-8 pl-3 sm:pl-4 text-left border-2 border-black rounded-full text-sm sm:text-lg font-semibold text-gray-500 placeholder:text-black/50 placeholder:font-semibold"
                 />
@@ -732,12 +705,12 @@ export default function ApartmentList() {
                     <div className="w-full bg-white/90 p-1.5 sm:p-2 shadow-lg px-3 sm:px-4 border-2 border-black rounded-full flex flex-row justify-between items-center mb-1">
                       <span className="text-xs sm:text-sm font-semibold">{t("Prix")}</span>
                       <span className="text-xs sm:text-sm font-semibold text-black">
-                        {formatPriceForDisplay(priceRange[0])} - {formatPriceForDisplay(priceRange[1])}
+                        {formatPrice(filters.priceRange[0])} - {formatPrice(filters.priceRange[1])}
                       </span>
                     </div>
                     <Slider
-                      value={priceRange}
-                      onChange={(_, v) => setPriceRange(v)}
+                      value={filters.priceRange}
+                      onChange={(_, v) => updateFilter('priceRange', v)}
                       valueLabelDisplay="off"
                       min={minMaxValues.minPrice}
                       max={minMaxValues.maxPrice}
@@ -779,12 +752,12 @@ export default function ApartmentList() {
                     <div className="w-full bg-white/90 p-1.5 sm:p-2 shadow-lg px-3 sm:px-4 border-2 border-black rounded-full flex flex-row justify-between items-center mb-1">
                       <span className="text-xs sm:text-sm font-semibold">{t("Chambres")}</span>
                       <span className="text-xs sm:text-sm font-semibold text-black">
-                        {bedRange[0]} - {bedRange[1]}
+                        {filters.bedRange[0]} - {filters.bedRange[1]}
                       </span>
                     </div>
                     <Slider
-                      value={bedRange}
-                      onChange={(_, v) => setBedRange(v)}
+                      value={filters.bedRange}
+                      onChange={(_, v) => updateFilter('bedRange', v)}
                       valueLabelDisplay="off"
                       min={minMaxValues.minBed}
                       max={minMaxValues.maxBed}
@@ -826,12 +799,12 @@ export default function ApartmentList() {
                     <div className="w-full bg-white/90 p-1.5 sm:p-2 shadow-lg px-3 sm:px-4 border-2 border-black rounded-full flex flex-row justify-between items-center mb-1">
                       <span className="text-xs sm:text-sm font-semibold">{t("Surface")}</span>
                       <span className="text-xs sm:text-sm font-semibold text-black">
-                        {surfaceRange[0]} - {surfaceRange[1]}
+                        {filters.surfaceRange[0]} - {filters.surfaceRange[1]}
                       </span>
                     </div>
                     <Slider
-                      value={surfaceRange}
-                      onChange={(_, v) => setSurfaceRange(v)}
+                      value={filters.surfaceRange}
+                      onChange={(_, v) => updateFilter('surfaceRange', v)}
                       valueLabelDisplay="off"
                       min={minMaxValues.minSurface}
                       max={minMaxValues.maxSurface}
@@ -874,17 +847,31 @@ export default function ApartmentList() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-4 w-full">
                 <div className="flex flex-row gap-4 w-full justify-center items-center">
                   <button
-                    onClick={() => setOnlyGarden((v) => !v)}
-                    aria-pressed={onlyGarden}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                    onClick={e => {
+                      updateFilter('onlyGarden', v => {
+                        if (v) setJustUnselectedGarden(true);
+                        return !v;
+                      });
+                      e.currentTarget.blur();
+                    }}
+                    onMouseLeave={() => setJustUnselectedGarden(false)}
+                    aria-pressed={filters.onlyGarden}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${filters.onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black'} ${!filters.onlyGarden && !justUnselectedGarden ? 'hover:bg-green-600 hover:text-white' : ''}`}
                   >
                     <span>{t("AvecJardin")}</span>
                     <span>🌸</span>
                   </button>
                   <button
-                    onClick={() => setOnlyRooftop((v) => !v)}
-                    aria-pressed={onlyRooftop}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                    onClick={e => {
+                      updateFilter('onlyRooftop', v => {
+                        if (v) setJustUnselectedRooftop(true);
+                        return !v;
+                      });
+                      e.currentTarget.blur();
+                    }}
+                    onMouseLeave={() => setJustUnselectedRooftop(false)}
+                    aria-pressed={filters.onlyRooftop}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${filters.onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black'} ${!filters.onlyRooftop && !justUnselectedRooftop ? 'hover:bg-green-600 hover:text-white' : ''}`}
                   >
                     <span>{t("Rooftop")}</span>
                     <span>🏙️</span>
@@ -892,9 +879,16 @@ export default function ApartmentList() {
                 </div>
                 <div className="w-full flex justify-center items-center mt-2 sm:mt-0">
                   <button
-                    onClick={() => setShowOnlyFavorites((v) => !v)}
+                    onClick={e => {
+                      setShowOnlyFavorites(v => {
+                        if (v) setJustUnselectedFavorites(true);
+                        return !v;
+                      });
+                      e.currentTarget.blur();
+                    }}
+                    onMouseLeave={() => setJustUnselectedFavorites(false)}
                     aria-pressed={showOnlyFavorites}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${showOnlyFavorites ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-green-600 hover:text-white'}`}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${showOnlyFavorites ? 'bg-green-600 text-white' : 'bg-white text-black'} ${!showOnlyFavorites && !justUnselectedFavorites ? 'hover:bg-green-600 hover:text-white' : ''}`}
                   >
                     {showOnlyFavorites ? <FaHeart className="text-red-600" /> : <FaRegHeart className="text-gray-400" />}
                     <span>{t("MesFavoris")}</span>
