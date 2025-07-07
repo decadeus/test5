@@ -81,7 +81,7 @@ export default function Chatbot() {
 
   return (
     <div
-      className="fixed bottom-0 inset-x-0 w-full max-w-screen-sm mx-auto overflow-x-hidden sm:bottom-10 sm:right-10 sm:left-auto sm:inset-x-auto sm:w-[380px] sm:max-w-[95vw] bg-slate-50 rounded-t-2xl sm:rounded-[32px] shadow-2xl z-[1000] flex flex-col overflow-hidden font-sans"
+      className="fixed bottom-0 inset-x-0 w-[100px] sm:w-[380px] sm:max-w-[95vw] max-w-screen-sm mx-auto overflow-x-hidden sm:bottom-10 sm:right-10 sm:left-auto sm:inset-x-auto bg-slate-50 rounded-t-2xl sm:rounded-[32px] shadow-2xl z-[1000] flex flex-col overflow-hidden font-sans"
       style={{
         paddingLeft: 'env(safe-area-inset-left)',
         paddingRight: 'env(safe-area-inset-right)',
