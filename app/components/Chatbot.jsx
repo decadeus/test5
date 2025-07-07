@@ -78,7 +78,7 @@ export default function Chatbot() {
   }
 
   return (
-    <div className="fixed bottom-0 right-0 w-[95vw] max-w-[95vw] left-1/2 -translate-x-1/2 sm:bottom-10 sm:right-10 sm:left-auto sm:translate-x-0 sm:w-[380px] sm:max-w-[95vw] bg-slate-50 rounded-t-2xl sm:rounded-[32px] shadow-2xl z-[1000] flex flex-col overflow-hidden font-sans">
+    <div className="fixed bottom-0 right-0 w-full max-w-xs box-border left-1/2 -translate-x-1/2 sm:bottom-10 sm:right-10 sm:left-auto sm:translate-x-0 sm:w-[380px] sm:max-w-[95vw] bg-slate-50 rounded-t-2xl sm:rounded-[32px] shadow-2xl z-[1000] flex flex-col overflow-hidden font-sans">
       {/* Header arrondi avec dégradé */}
       <div className="bg-gradient-to-br from-lime-300 to-green-700 px-4 pt-5 pb-3 rounded-t-2xl sm:px-8 sm:pt-7 sm:pb-4 sm:rounded-t-[32px] flex items-center justify-between min-h-[64px] sm:min-h-[80px]">
         <div className="flex items-center gap-2 sm:gap-4">
