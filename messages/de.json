@@ -365,5 +365,7 @@
     "PromoteurSlogan": "Hoomge: die Plattform zur Förderung Ihrer Immobilienprojekte",
     "PromoteurSubtitle": "Erreichen Sie ein internationales Publikum dank automatischer Übersetzung",
     "PublierUnProjet": "Projekt veröffentlichen",
-    "ImagesProjet": "Projektbilder"
+    "ImagesProjet": "Projektbilder",
+    "ErreurTel": "Ungültiges Telefonformat",
+    "ErreurEmail": "Ungültiges E-Mail-Format"
 }

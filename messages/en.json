@@ -371,5 +371,7 @@
     "PromoteurSlogan": "Hoomge: the platform to promote your real estate projects",
     "PromoteurSubtitle": "Reach an international audience with automatic translation",
     "PublierUnProjet": "Publish a project",
-    "ImagesProjet": "Project images"
+    "ImagesProjet": "Project images",
+    "ErreurTel": "Invalid phone format",
+    "ErreurEmail": "Invalid email format"
 }

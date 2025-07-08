@@ -239,6 +239,7 @@ function useProjectData(project, onProjectUpdate) {
       promoter_phone: formData.promoter_phone,
       promoter_email: formData.promoter_email,
       promoter_languages: formData.promoter_languages,
+      TitrePromo: formData.TitrePromo, // <-- Ajout ici
       ...features,
     };
 
@@ -399,6 +400,10 @@ function useProjectData(project, onProjectUpdate) {
 
   const [keywords, setKeywords] = useState("");
 
+  // Ajout des hooks d'erreur pour le téléphone et l'email
+  const [phoneError, setPhoneError] = useState("");
+  const [emailError, setEmailError] = useState("");
+
   return {
     formData,
     features,
@@ -418,6 +423,8 @@ function useProjectData(project, onProjectUpdate) {
     setSelectedLanguages,
     keywords,
     setKeywords,
+    phoneError,
+    emailError,
   };
 }
 
@@ -534,6 +541,9 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
   const [isOtherCompany, setIsOtherCompany] = useState(
     !!formData.compagny && !companies.some(c => c.name === formData.compagny)
   );
+  // Ajout ici : hooks d'erreur pour téléphone et email
+  const [phoneError, setPhoneError] = useState("");
+  const [emailError, setEmailError] = useState("");
 
   // Mapping natif pour les langues
   const availableLanguages = Object.entries(NATIVE_LANG_LABELS).map(([code, name]) => ({ code, name }));
@@ -743,10 +753,20 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
           <input
             type="tel"
             value={formData.promoter_phone || ""}
-            onChange={(e) => updateFormData('promoter_phone', e.target.value)}
+            onChange={e => {
+              const value = e.target.value;
+              // Autorise chiffres, espaces, +, -, (, )
+              if (/^[0-9+\-()\s]*$/.test(value)) {
+                updateFormData('promoter_phone', value);
+                setPhoneError("");
+              } else {
+                setPhoneError(f('ErreurTel', { default: 'Format de téléphone invalide' }));
+              }
+            }}
             className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder={f('TelephonePromoteur', { default: 'Téléphone du promoteur' })}
           />
+          {phoneError && <span className="text-xs text-red-500 mt-1">{phoneError}</span>}
         </div>
         {/* Email */}
         <div className="flex flex-col">
@@ -754,10 +774,20 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
           <input
             type="email"
             value={formData.promoter_email || ""}
-            onChange={(e) => updateFormData('promoter_email', e.target.value)}
+            onChange={e => {
+              const value = e.target.value;
+              updateFormData('promoter_email', value);
+              // Validation email simple
+              if (value && !/^\S+@\S+\.\S+$/.test(value)) {
+                setEmailError(f('ErreurEmail', { default: 'Format d\'email invalide' }));
+              } else {
+                setEmailError("");
+              }
+            }}
             className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder={f('EmailPromoteur', { default: 'Email du promoteur' })}
           />
+          {emailError && <span className="text-xs text-red-500 mt-1">{emailError}</span>}
         </div>
       </div>
        {/* 1. Dans ProjectMainForm, au-dessus du champ 'Lien vers le projet' : */}
@@ -1533,6 +1563,8 @@ export default function Maindata({ project, onProjectUpdate }) {
     setSelectedLanguages,
     keywords,
     setKeywords,
+    phoneError,
+    emailError,
   } = useProjectData(project, onProjectUpdate);
 
   const t = useTranslations("Projet");

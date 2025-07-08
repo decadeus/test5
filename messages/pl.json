@@ -380,5 +380,7 @@
     "PromoteurSlogan": "Hoomge: platforma do promowania Twoich projektów nieruchomości",
     "PromoteurSubtitle": "Dotrzyj do międzynarodowej publiczności dzięki automatycznemu tłumaczeniu",
     "PublierUnProjet": "Opublikuj projekt",
-    "ImagesProjet": "Zdjęcia projektu"
+    "ImagesProjet": "Zdjęcia projektu",
+    "ErreurTel": "Nieprawidłowy format telefonu",
+    "ErreurEmail": "Nieprawidłowy format adresu e-mail"
 }
