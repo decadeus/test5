@@ -490,24 +490,7 @@ function BasicFields({ formData, updateFormData }) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
-      <div className="flex flex-col mb-4">
-        <label className="text-black mb-1">{f("Compagnie")}</label>
-        <select
-          value={formData.compagny}
-          onChange={(e) => updateFormData('compagny', e.target.value)}
-          className={`${STYLES.input} ${STYLES.bginput}`}
-        >
-          <option value="" disabled>
-            {f("Compagnie")}
-          </option>
-          {companies.map((company) => (
-            <option key={company.id} value={company.name}>
-              {company.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
+      {/* Champ compagnie supprimé ici */}
       <div className="flex flex-col">
         <label className={`${STYLES.label}`}>{f("Latitude")}</label>
         <input
@@ -517,7 +500,6 @@ function BasicFields({ formData, updateFormData }) {
           className={`${STYLES.input} ${STYLES.bginput}`}
         />
       </div>
-
       <div className="flex flex-col">
         <label className="text-black mb-1">{f("Longitude")}</label>
         <input
@@ -527,7 +509,6 @@ function BasicFields({ formData, updateFormData }) {
           className={`${STYLES.input} ${STYLES.bginput}`}
         />
       </div>
-
       <div className="flex flex-col">
         <label className="text-black mb-1">{f("Monnaie")}</label>
         <select
@@ -540,16 +521,7 @@ function BasicFields({ formData, updateFormData }) {
           ))}
         </select>
       </div>
-
-      <div className="flex flex-col">
-        <label className="text-black mb-1">{f("Link")}</label>
-        <input
-          type="text"
-          value={formData.link}
-          onChange={(e) => updateFormData('link', e.target.value)}
-          className={`${STYLES.input} ${STYLES.bginput}`}
-        />
-      </div>
+      {/* Champ link supprimé ici */}
     </div>
   );
 }
@@ -559,6 +531,9 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const supabase = createClient();
   const f = useTranslations("Projet");
+  const [isOtherCompany, setIsOtherCompany] = useState(
+    !!formData.compagny && !companies.some(c => c.name === formData.compagny)
+  );
 
   // Mapping natif pour les langues
   const availableLanguages = Object.entries(NATIVE_LANG_LABELS).map(([code, name]) => ({ code, name }));
@@ -697,9 +672,52 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
         <h3 className="text-xl font-semibold text-gray-800">Informations du Promoteur</h3>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Compagnie */}
+        <div className="flex flex-col mb-4">
+          <label className="text-black mb-1">Compagnie</label>
+          <select
+            value={isOtherCompany ? "__other__" : formData.compagny}
+            onChange={e => {
+              if (e.target.value === "__other__") {
+                setIsOtherCompany(true);
+                updateFormData('compagny', '');
+              } else {
+                setIsOtherCompany(false);
+                updateFormData('compagny', e.target.value);
+              }
+            }}
+            className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="" disabled>Compagnie</option>
+            {companies.map((company) => (
+              <option key={company.id} value={company.name}>{company.name}</option>
+            ))}
+            <option value="__other__">Autre...</option>
+          </select>
+          {isOtherCompany && (
+            <input
+              type="text"
+              className="border rounded px-3 py-2 mt-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Nom de la compagnie"
+              value={formData.compagny}
+              onChange={e => updateFormData('compagny', e.target.value)}
+            />
+          )}
+        </div>
+        {/* Lien vers le projet */}
+        <div className="flex flex-col mb-4">
+          <label className="text-gray-700 font-medium mb-2">Lien vers le projet</label>
+          <input
+            type="text"
+            value={formData.link || ""}
+            onChange={(e) => updateFormData('link', e.target.value)}
+            className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="https://..."
+          />
+        </div>
         {/* Nom */}
         <div className="flex flex-col">
-          <label className="text-gray-700 font-medium mb-2">Nom *</label>
+          <label className="text-gray-700 font-medium mb-2">Nom</label>
           <input
             type="text"
             value={formData.promoter_last_name || ""}
@@ -710,7 +728,7 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
         </div>
         {/* Prénom */}
         <div className="flex flex-col">
-          <label className="text-gray-700 font-medium mb-2">Prénom *</label>
+          <label className="text-gray-700 font-medium mb-2">Prénom</label>
           <input
             type="text"
             value={formData.promoter_first_name || ""}
@@ -721,7 +739,7 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
         </div>
         {/* Téléphone */}
         <div className="flex flex-col">
-          <label className="text-gray-700 font-medium mb-2">Téléphone *</label>
+          <label className="text-gray-700 font-medium mb-2">Téléphone</label>
           <input
             type="tel"
             value={formData.promoter_phone || ""}
@@ -732,7 +750,7 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
         </div>
         {/* Email */}
         <div className="flex flex-col">
-          <label className="text-gray-700 font-medium mb-2">Email *</label>
+          <label className="text-gray-700 font-medium mb-2">Email</label>
           <input
             type="email"
             value={formData.promoter_email || ""}
@@ -744,7 +762,7 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
       </div>
       {/* Langues parlées */}
       <div className="mt-6">
-        <label className="text-gray-700 font-medium mb-3 block">Langues parlées *</label>
+        <label className="text-gray-700 font-medium mb-3 block">Langues parlées</label>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
           {availableLanguages.map((lang) => (
             <button
@@ -779,6 +797,19 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
             ).join(', ')}
           </div>
         )}
+      </div>
+      {/* 1. Dans ProjectMainForm, au-dessus du champ 'Lien vers le projet' : */}
+      <div className="flex flex-col mb-4">
+        <label className="text-gray-700 font-medium mb-2">Titre du promoteur</label>
+        <input
+          type="text"
+          maxLength={50}
+          value={formData.TitrePromo || ""}
+          onChange={e => updateFormData('TitrePromo', e.target.value)}
+          className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Titre du promoteur (max 50 caractères)"
+        />
+        <span className="text-xs text-gray-400 mt-1">{(formData.TitrePromo || "").length}/50</span>
       </div>
     </div>
   );
@@ -1416,15 +1447,19 @@ function ProjectRecapCard({ formData, images }) {
       </div>
       <div>
       {/* Prénom + Nom promoteur */}
-      <h3 className="text-xl font-extrabold text-gray-700 mb-1 text-center tracking-tight leading-tight drop-shadow-sm">
-        {formData.promoter_first_name} {formData.promoter_last_name}
-      </h3>
+      {(formData.promoter_first_name || formData.promoter_last_name) && (
+        <h3 className="text-xl font-extrabold text-gray-700 mb-1 text-center tracking-tight leading-tight drop-shadow-sm">
+          {[formData.promoter_first_name, formData.promoter_last_name].filter(Boolean).join(' ')}
+        </h3>
+      )}
       {/* Compagnie */}
-      <div className="text-gray-500 text-lg font-semibold italic mb-3 text-center">
-        {formData.compagny}
-      </div>
-      </div>
-      </div>
+      {formData.compagny && (
+        <div className="text-gray-500 text-lg font-semibold italic mb-3 text-center">
+          {formData.compagny}
+        </div>
+      )}
+      </div> {/* <-- fermeture du bloc infos promoteur */}
+      </div> {/* <-- fermeture du flex items-center justify-center gap-4 */}
       {/* Langues */}
       {langues.length > 0 && (
         <div className="flex flex-col items-center mb-4">
@@ -1436,6 +1471,12 @@ function ProjectRecapCard({ formData, images }) {
               </span>
             ))}
           </div>
+        </div>
+      )}
+      {/* Titre du promoteur au-dessus du lien du site web */}
+      {formData.TitrePromo && (
+        <div className="text-base text-gray-700 font-semibold mb-2 text-center">
+          {formData.TitrePromo}
         </div>
       )}
       {/* Bouton vers le site web promoteur */}
@@ -1451,14 +1492,20 @@ function ProjectRecapCard({ formData, images }) {
         </a>
       )}
       {/* Icônes email et téléphone premium */}
-      <div className="flex gap-6 justify-center mt-3 mb-1">
-        <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition">
-          <FiMail className="text-2xl text-white" title={t('Email') || "Email"} />
+      {(formData.promoter_email || formData.promoter_phone) && (
+        <div className="flex gap-6 justify-center mt-3 mb-1">
+          {formData.promoter_email && (
+            <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition">
+              <FiMail className="text-2xl text-white" title={t('Email') || "Email"} />
+            </div>
+          )}
+          {formData.promoter_phone && (
+            <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition">
+              <FiPhone className="text-2xl text-white" title={t('Telephone') || "Téléphone"} />
+            </div>
+          )}
         </div>
-        <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition">
-          <FiPhone className="text-2xl text-white" title={t('Telephone') || "Téléphone"} />
-        </div>
-      </div>
+      )}
     </div>
   );
 }
