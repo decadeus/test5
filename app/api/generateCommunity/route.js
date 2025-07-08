@@ -21,7 +21,7 @@ export async function POST(req) {
       listEquipement: "Liste des équipements",
       detail: "Informations supplémentaires",
       instruction: "Le texte doit être fluide, engageant et donner envie de découvrir le projet.",
-      limite: "Limite à 800-900 caractères maximum.",
+      limite: "Le texte doit faire entre 700 et 900 caractères, jamais moins de 700, jamais plus de 900 (tronque si besoin).",
     };
 
     if (langue === "en") {
@@ -30,7 +30,7 @@ export async function POST(req) {
         listEquipement: "List of amenities",
         detail: "Additional important information",
         instruction: "The text must be fluent, engaging, and encourage discovery of the project.",
-        limite: "Limit to 800-900 characters maximum.",
+        limite: "The text must be between 700 and 900 characters, never less than 700, never more than 900 (truncate if needed).",
       };
     } else if (langue === "pl") {
       labels = {
@@ -38,7 +38,7 @@ export async function POST(req) {
         listEquipement: "Lista udogodnień",
         detail: "Dodatkowe ważne informacje",
         instruction: "Tekst powinien być płynny, angażujący i zachęcający do zapoznania się z projektem.",
-        limite: "Ogranicz do 800-900 znaków.",
+        limite: "Tekst musi mieć od 700 do 900 znaków, nigdy mniej niż 700, nigdy więcej niż 900 (obciąć w razie potrzeby).",
       };
     } else if (langue === "uk") {
       labels = {
@@ -46,7 +46,7 @@ export async function POST(req) {
         listEquipement: "Список зручностей",
         detail: "Додаткові важливі відомості",
         instruction: "Текст повинен бути плавним, захоплюючим та заохочувати до знайомства з проектом.",
-        limite: "Обмежте до 800-900 символів максимум.",
+        limite: "Текст повинен містити від 700 до 900 символів, ніколи не менше 700, ніколи не більше 900 (обрізати за потреби).",
       };
     }
 

@@ -19,6 +19,12 @@ import {
 import { FiUpload, FiGlobe, FiMail, FiPhone } from "react-icons/fi";
 import { useLanguage } from "@/app/LanguageContext";
 
+// Fonction utilitaire pour nettoyer les guillemets en début/fin de chaîne
+function cleanQuotes(str) {
+  if (typeof str !== 'string') return str;
+  return str.replace(/^"+|"+$/g, '').trim();
+}
+
 // Types et constantes
 const FEATURES = {
   swim: "swim",
@@ -216,7 +222,6 @@ function useProjectData(project, onProjectUpdate) {
 
     // Utilise la langue de la navbar comme source
     const sourceLang = language || activeLang || "fr";
-    const supportedLangs = ["fr", "en", "pl", "de", "ru", "uk"];
     const fieldsToTranslate = ["name", "fulldescr", "coam", "des"];
     let updates = {
       compagny: formData.compagny,
@@ -241,9 +246,15 @@ function useProjectData(project, onProjectUpdate) {
     for (const field of fieldsToTranslate) {
       const sourceField = `${field}_${sourceLang}`;
       const sourceText = formData[sourceField];
+      // Vérifie si le texte a changé par rapport à l'initial
+      const initialText = initialFormData ? initialFormData[sourceField] : undefined;
       if (!sourceText || sourceText.trim() === "") continue;
       updates[`${field}_${sourceLang}`] = sourceText;
-      const targetLangs = supportedLangs.filter(l => l !== sourceLang);
+      // Ne lance la traduction que si le texte a changé
+      if (sourceText === initialText) continue;
+      const targetLangs = supportedLangs
+        .map(l => (typeof l === 'string' ? l : l.code))
+        .filter(l => typeof l === 'string' && l && l !== sourceLang && l.trim().length > 0);
       if (targetLangs.length > 0) {
         try {
           const res = await fetch('/api/translate', {
@@ -256,16 +267,14 @@ function useProjectData(project, onProjectUpdate) {
           console.log('Traductions reçues pour', field, ':', translations);
           targetLangs.forEach(l => {
             // Correction robuste pour l'anglais
+            let val = translations[l];
             if (l === 'en') {
-              if (translations['en']) {
-                updates[`${field}_en`] = translations['en'];
-              } else if (translations['en-gb']) {
-                updates[`${field}_en`] = translations['en-gb'];
-              } else if (translations['en-us']) {
-                updates[`${field}_en`] = translations['en-us'];
-              }
-            } else if (translations[l]) {
-              updates[`${field}_${l}`] = translations[l];
+              if (translations['en']) val = translations['en'];
+              else if (translations['en-gb']) val = translations['en-gb'];
+              else if (translations['en-us']) val = translations['en-us'];
+            }
+            if (val) {
+              updates[`${field}_${l}`] = cleanQuotes(val);
             }
           });
         } catch (e) {
@@ -326,7 +335,9 @@ function useProjectData(project, onProjectUpdate) {
     }
 
     setIsTranslating(true);
-    const targetLangs = supportedLangs.filter(l => l && l !== sourceLang && typeof l === "string" && l.trim().length > 0);
+    const targetLangs = supportedLangs
+      .map(l => (typeof l === 'string' ? l : l.code))
+      .filter(l => typeof l === 'string' && l && l !== sourceLang && l.trim().length > 0);
 
     if (targetLangs.length === 0) {
       setIsTranslating(false);
@@ -386,6 +397,8 @@ function useProjectData(project, onProjectUpdate) {
     setSelectedLanguages(langs);
   }, [formData.promoter_languages]);
 
+  const [keywords, setKeywords] = useState("");
+
   return {
     formData,
     features,
@@ -403,6 +416,8 @@ function useProjectData(project, onProjectUpdate) {
     buttonText,
     selectedLanguages,
     setSelectedLanguages,
+    keywords,
+    setKeywords,
   };
 }
 
@@ -885,7 +900,7 @@ function TextFieldWithAI({
             onClick={onAIGenerate}
           >
             <span role="img" aria-label="ia">🤖</span>
-            {f("GenerateWithAI")}
+            {aiButtonText}
           </Button>
         )}
       </div>
@@ -935,7 +950,7 @@ function IASEOShort({ projectData, formData, onResult, onClose }) {
       setGeneratedText(data.text);
       // Traduction automatique dans les autres langues
       const supportedLangs = ["fr", "en", "pl", "de", "ru", "uk"];
-      const targetLangs = supportedLangs.filter(l => l && l !== language && typeof l === "string" && l.trim().length > 0);
+      const targetLangs = supportedLangs.filter(l => typeof l === 'string' && l && l !== language && l.trim().length > 0);
       if (data.text && targetLangs.length > 0) {
         try {
           const translateRes = await fetch('/api/translate', {
@@ -947,6 +962,13 @@ function IASEOShort({ projectData, formData, onResult, onClose }) {
               targetLangs,
             }),
           });
+          if (!translateRes.ok) {
+            const errorText = await translateRes.text();
+            console.error('Erreur API /api/translate:', translateRes.status, errorText);
+            setError(`Erreur API /api/translate: ${translateRes.status} ${errorText}`);
+            if (onResult) onResult({ [`des_${language}`]: data.text });
+            return;
+          }
           const translateData = await translateRes.json();
           if (translateData.translations && onResult) {
             // Batch update: construit un objet avec toutes les traductions sauf la langue active
@@ -956,7 +978,7 @@ function IASEOShort({ projectData, formData, onResult, onClose }) {
                 Object.entries(translateData.translations)
                   .filter(([lang]) => lang !== language)
                   .map(([lang, translatedText]) => [
-                    `des_${lang}`, translatedText
+                    `des_${lang}`, cleanQuotes(translatedText)
                   ])
               )
             };
@@ -964,9 +986,9 @@ function IASEOShort({ projectData, formData, onResult, onClose }) {
           }
         } catch (err) {
           setError("Erreur lors de la traduction automatique: " + err.message);
+          if (onResult) onResult({ [`des_${language}`]: data.text });
         }
       } else if (onResult) {
-        // Si pas de traduction, on met à jour juste la langue active
         onResult({ [`des_${language}`]: data.text });
       }
     } catch (e) {
@@ -1030,10 +1052,12 @@ function IASEOShort({ projectData, formData, onResult, onClose }) {
   );
 }
 
-function IASEOFull({ projectData, formData, onResult, onClose }) {
+function IASEOFull({ projectData, formData, onResult, onClose, initialText }) {
   const { language } = useLanguage();
   const t = useTranslations("Projet");
   const [generatedText, setGeneratedText] = useState("");
+  const [editedText, setEditedText] = useState("");
+  const [userPrompt, setUserPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -1048,11 +1072,60 @@ function IASEOFull({ projectData, formData, onResult, onClose }) {
         body: JSON.stringify({
           projectName: projectData.name,
           language: language,
+          userPrompt: userPrompt.trim(),
         }),
       });
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
-      setGeneratedText(data.choices[0].message.content);
+      const mainText = data.choices[0].message.content;
+      setGeneratedText(mainText);
+      setEditedText(mainText);
+
+      // Traduction automatique dans les autres langues UNIQUEMENT si le texte a changé
+      const supportedLangs = ["fr", "en", "pl", "de", "uk"];
+      const targetLangs = supportedLangs.filter(l => typeof l === 'string' && l && l !== language && l.trim().length > 0);
+      if (mainText && targetLangs.length > 0 && (!initialText || mainText !== initialText)) {
+        try {
+          const translateRes = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              text: mainText,
+              sourceLang: language,
+              targetLangs,
+            }),
+          });
+          if (!translateRes.ok) {
+            const errorText = await translateRes.text();
+            console.error('Erreur API /api/translate:', translateRes.status, errorText);
+            setError(`Erreur API /api/translate: ${translateRes.status} ${errorText}`);
+            if (onResult) onResult({ [`fulldescr_${language}`]: cleanQuotes(mainText) });
+            return;
+          }
+          const translateData = await translateRes.json();
+          if (translateData.translations && onResult) {
+            // Batch update: construit un objet avec toutes les traductions sauf la langue active
+            const fields = {
+              [`fulldescr_${language}`]: cleanQuotes(mainText),
+              ...Object.fromEntries(
+                Object.entries(translateData.translations)
+                  .filter(([lang]) => lang !== language)
+                  .map(([lang, translatedText]) => [
+                    `fulldescr_${lang}`, cleanQuotes(translatedText)
+                  ])
+              )
+            };
+            onResult(fields);
+          } else if (onResult) {
+            onResult({ [`fulldescr_${language}`]: cleanQuotes(mainText) });
+          }
+        } catch (err) {
+          setError("Erreur lors de la traduction automatique: " + err.message);
+          if (onResult) onResult({ [`fulldescr_${language}`]: cleanQuotes(mainText) });
+        }
+      } else if (onResult) {
+        onResult({ [`fulldescr_${language}`]: cleanQuotes(mainText) });
+      }
     } catch (e) {
       setError("Failed to generate text. " + e.message);
     } finally {
@@ -1061,13 +1134,13 @@ function IASEOFull({ projectData, formData, onResult, onClose }) {
   };
 
   const handleCopy = async () => {
-    if (!generatedText) return;
-    await navigator.clipboard.writeText(generatedText);
+    if (!editedText) return;
+    await navigator.clipboard.writeText(editedText);
     alert("Copié !");
   };
 
   const handleApply = () => {
-    onResult(generatedText, language);
+    onResult(editedText, language);
     onClose();
   };
 
@@ -1076,6 +1149,17 @@ function IASEOFull({ projectData, formData, onResult, onClose }) {
       {/* <h3 className="text-xl font-bold text-gray-800">{t("IADESCRIPTION")} ({language.toUpperCase()})</h3> */}
       {/* <p className="text-sm text-gray-600 mb-4">{t("IADESCRIPTIONDetail")}</p> */}
       
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-2">
+          Indications ou mots-clés pour la génération
+        </label>
+        <textarea
+          className="border p-2 rounded w-full min-h-[60px]"
+          placeholder="Ex : résidence haut de gamme, vue mer, proche centre-ville, etc."
+          value={userPrompt}
+          onChange={e => setUserPrompt(e.target.value)}
+        />
+      </div>
       <Button onClick={handleGenerate} disabled={isLoading} className="w-full mb-4 flex items-center justify-center gap-2">
         <span role="img" aria-label="ia">🤖</span>
         {isLoading ? "Génération..." : "Générer avec l'IA"}
@@ -1084,7 +1168,12 @@ function IASEOFull({ projectData, formData, onResult, onClose }) {
       {generatedText && (
         <div className="mt-4">
           <h4 className="text-lg font-semibold mb-2">{t("GeneratedDescription")}</h4>
-          <p className="text-gray-700 whitespace-pre-line">{generatedText}</p>
+          <textarea
+            className="w-full border rounded p-2 text-gray-700 mb-2"
+            rows={6}
+            value={editedText}
+            onChange={e => setEditedText(e.target.value)}
+          />
           <Button onClick={handleCopy} className="w-full mt-4">
             {t("CopyText")}
           </Button>
@@ -1098,32 +1187,99 @@ function IASEOFull({ projectData, formData, onResult, onClose }) {
   );
 }
 
-function IACOMMUNITYEnhanced({ projectData, formData, onResult, onClose }) {
+function IACOMMUNITYEnhanced({ projectData, features, onResult, onClose }) {
   const { language } = useLanguage();
   const t = useTranslations("Projet");
   const [generatedText, setGeneratedText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [communityType, setCommunityType] = useState("calm");
+  const [keywords, setKeywords] = useState("");
+
+  // Liste des équipements sélectionnés (features)
+  const featureLabels = {
+    swim: "Piscine",
+    bike: "Parking Vélo",
+    fitness: "Salle de sport",
+    cctv: "Vidéosurveillance",
+    entrance: "Réception à l'entrée",
+    disabled: "Accès handicapé",
+    child: "Espace enfants"
+  };
+  const selectedFeatures = Object.keys(features)
+    .filter((key) => featureLabels[key] && features[key])
+    .map((key) => featureLabels[key]);
 
   const handleGenerate = async () => {
     setIsLoading(true);
     setError(null);
+
+    // Fusion des équipements sélectionnés et du textarea
+    const allEquipments = [...selectedFeatures];
+    if (keywords.trim()) {
+      allEquipments.push(keywords.trim());
+    }
+    const listEquipement = allEquipments.join(", ");
 
     try {
       const response = await fetch("/api/generateCommunity", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          projectName: projectData.name,
-          projectDescription: projectData.fulldescr,
-          communityType,
-          language: language,
+          listEquipement,
+          detail: "-",
+          langue: language,
         }),
       });
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
-      setGeneratedText(data.choices[0].message.content);
+      const mainText = data.choices ? data.choices[0].message.content : data.text;
+      setGeneratedText(mainText);
+
+      // Traduction automatique dans les autres langues
+      const supportedLangs = ["fr", "en", "pl", "de", "uk"];
+      const targetLangs = supportedLangs.filter(l => typeof l === 'string' && l && l !== language && l.trim().length > 0);
+      if (mainText && targetLangs.length > 0) {
+        try {
+          const translateRes = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              text: mainText,
+              sourceLang: language,
+              targetLangs,
+            }),
+          });
+          if (!translateRes.ok) {
+            const errorText = await translateRes.text();
+            console.error('Erreur API /api/translate:', translateRes.status, errorText);
+            setError(`Erreur API /api/translate: ${translateRes.status} ${errorText}`);
+            if (onResult) onResult({ [`coam_${language}`]: mainText });
+            return;
+          }
+          const translateData = await translateRes.json();
+          if (translateData.translations && onResult) {
+            // Batch update: construit un objet avec toutes les traductions sauf la langue active
+            const fields = {
+              [`coam_${language}`]: cleanQuotes(mainText),
+              ...Object.fromEntries(
+                Object.entries(translateData.translations)
+                  .filter(([lang]) => lang !== language)
+                  .map(([lang, translatedText]) => [
+                    `coam_${lang}`, cleanQuotes(translatedText)
+                  ])
+              )
+            };
+            onResult(fields);
+          } else if (onResult) {
+            onResult({ [`coam_${language}`]: mainText });
+          }
+        } catch (err) {
+          setError("Erreur lors de la traduction automatique: " + err.message);
+          if (onResult) onResult({ [`coam_${language}`]: mainText });
+        }
+      } else if (onResult) {
+        onResult({ [`coam_${language}`]: mainText });
+      }
     } catch (e) {
       setError("Failed to generate text. " + e.message);
     } finally {
@@ -1152,23 +1308,25 @@ function IACOMMUNITYEnhanced({ projectData, formData, onResult, onClose }) {
       {/* <p className="text-sm text-gray-600 mb-4">{t("CommunityDescription")}</p> */}
       <div className="mb-4">
         <label className="block text-sm font-medium mb-2">
-          {t("CommunityType")}
+          Liste des équipements ou mots-clés
         </label>
-        <select
-          className="border p-2 rounded"
-          value={communityType}
-          onChange={(e) => setCommunityType(e.target.value)}
-        >
-          <option value="calm">{t("CommunityTypeCalm")}</option>
-          <option value="active">{t("CommunityTypeActive")}</option>
-        </select>
+        <textarea
+          className="border p-2 rounded w-full min-h-[60px]"
+          placeholder="Ex : piscine, salle de sport, aire de jeux, sécurité, parking, jardin"
+          value={keywords}
+          onChange={e => setKeywords(e.target.value)}
+        />
+        <p className="text-xs text-gray-500 mt-2">
+          La génération du texte prend aussi en compte les équipements sélectionnés dans le projet (ex : Piscine, parking vélo, etc.).
+        </p>
       </div>
       <Button
         className="flex items-center gap-2 bg-transparent min-w-fit"
-        onClick={() => handleOpenAI("community")}
+        onClick={handleGenerate}
+        disabled={isLoading}
       >
         <span role="img" aria-label="ia">🤖</span>
-        {t("GenerateWithAI")}
+        {isLoading ? t("Generating") : t("GenerateWithAI")}
       </Button>
 
       {generatedText && (
@@ -1324,6 +1482,8 @@ export default function Maindata({ project, onProjectUpdate }) {
     buttonText,
     selectedLanguages,
     setSelectedLanguages,
+    keywords,
+    setKeywords,
   } = useProjectData(project, onProjectUpdate);
 
   const t = useTranslations("Projet");
@@ -1470,7 +1630,7 @@ export default function Maindata({ project, onProjectUpdate }) {
       >
         <IACOMMUNITYEnhanced
           projectData={project}
-          formData={formData}
+          features={features}
           onResult={(text, lang) => updateFormData(`coam_${lang}`, text)}
           onClose={handleCloseAI}
         />
@@ -1529,6 +1689,7 @@ export default function Maindata({ project, onProjectUpdate }) {
           formData={formData}
           onResult={(text, lang) => updateFormData(`fulldescr_${lang}`, text)}
           onClose={handleCloseAI}
+          initialText={formData.fulldescr}
         />
       </AIModal>
     </div>
