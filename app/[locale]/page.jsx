@@ -1,6 +1,6 @@
 "use client";
 
-import ApartmentList from "./DesignTest/List/page";
+import ApartmentList from "./Projet/List/page";
 
 export default function Page() {
   return <ApartmentList />;

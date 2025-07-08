@@ -132,6 +132,10 @@ function ProjectRecapCard({ formData, images }) {
         {formData.compagny}
       </div>
       </div>
+      
+      </div>
+      <div className="text-gray-500 text-lg font-semibold italic mb-3 text-center">
+        {formData.TitrePromo}
       </div>
       {/* Langues */}
       {langues.length > 0 && (

@@ -48,14 +48,14 @@ export async function generateMetadata({ params }) {
   const alternates = {};
   
   supportedLocales.forEach(loc => {
-    alternates[`${loc}`] = `${baseUrl}/${loc}/DesignTest/Detail/${id}`;
+    alternates[`${loc}`] = `${baseUrl}/${loc}/Projet/Detail/${id}`;
   });
 
   return {
     title,
     description,
     alternates: {
-      canonical: `${baseUrl}/${lang}/DesignTest/Detail/${id}`,
+      canonical: `${baseUrl}/${lang}/Projet/Detail/${id}`,
       languages: alternates,
     },
   };

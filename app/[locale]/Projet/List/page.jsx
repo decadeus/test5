@@ -126,7 +126,7 @@ function ApartmentCard({
         </div>
         {/* Bouton détail discret en bas à droite */}
         <div className="flex justify-end px-4 pb-2">
-          <Link href={`/${locale}/DesignTest/Detail/${apt.id}`} className="inline-flex items-center gap-1 bg-green-50 hover:bg-green-100 text-green-700 rounded-full px-3 py-1 transition-all duration-200 text-xs font-semibold border border-green-200">
+          <Link href={`/${locale}/Projet/Detail/${apt.id}`} className="inline-flex items-center gap-1 bg-green-50 hover:bg-green-100 text-green-700 rounded-full px-3 py-1 transition-all duration-200 text-xs font-semibold border border-green-200">
             {t('Voir le détail')}
             <PlusIcon className="w-3 h-3" />
           </Link>

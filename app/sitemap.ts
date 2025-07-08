@@ -34,7 +34,7 @@ export default async function sitemap() {
   // Pages de projets (à référencer)
   const projectUrls = projects?.flatMap(project => 
     supportedLocales.map(locale => ({
-      url: `${baseUrl}/${locale}/DesignTest/Detail/${project.id}`,
+      url: `${baseUrl}/${locale}/Projet/Detail/${project.id}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.9,
