@@ -760,6 +760,19 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
           />
         </div>
       </div>
+       {/* 1. Dans ProjectMainForm, au-dessus du champ 'Lien vers le projet' : */}
+       <div className="flex flex-col mb-4 pt-8">
+        <label className="text-gray-700 font-medium mb-2">Informations supplémentaires</label>
+        <input
+          type="text"
+          maxLength={50}
+          value={formData.TitrePromo || ""}
+          onChange={e => updateFormData('TitrePromo', e.target.value)}
+          className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Titre du promoteur (max 50 caractères)"
+        />
+        <span className="text-xs text-gray-400 mt-1">{(formData.TitrePromo || "").length}/50</span>
+      </div>
       {/* Langues parlées */}
       <div className="mt-6">
         <label className="text-gray-700 font-medium mb-3 block">Langues parlées</label>
@@ -798,19 +811,7 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
           </div>
         )}
       </div>
-      {/* 1. Dans ProjectMainForm, au-dessus du champ 'Lien vers le projet' : */}
-      <div className="flex flex-col mb-4">
-        <label className="text-gray-700 font-medium mb-2">Titre du promoteur</label>
-        <input
-          type="text"
-          maxLength={50}
-          value={formData.TitrePromo || ""}
-          onChange={e => updateFormData('TitrePromo', e.target.value)}
-          className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Titre du promoteur (max 50 caractères)"
-        />
-        <span className="text-xs text-gray-400 mt-1">{(formData.TitrePromo || "").length}/50</span>
-      </div>
+     
     </div>
   );
 }
@@ -1460,6 +1461,12 @@ function ProjectRecapCard({ formData, images }) {
       )}
       </div> {/* <-- fermeture du bloc infos promoteur */}
       </div> {/* <-- fermeture du flex items-center justify-center gap-4 */}
+      {/* Titre du promoteur au-dessus du lien du site web */}
+      {formData.TitrePromo && (
+        <div className="text-base text-gray-700 mb-2 text-center">
+          {formData.TitrePromo}
+        </div>
+      )}
       {/* Langues */}
       {langues.length > 0 && (
         <div className="flex flex-col items-center mb-4">
@@ -1473,12 +1480,7 @@ function ProjectRecapCard({ formData, images }) {
           </div>
         </div>
       )}
-      {/* Titre du promoteur au-dessus du lien du site web */}
-      {formData.TitrePromo && (
-        <div className="text-base text-gray-700 font-semibold mb-2 text-center">
-          {formData.TitrePromo}
-        </div>
-      )}
+      
       {/* Bouton vers le site web promoteur */}
       {formData.link && (
         <a
