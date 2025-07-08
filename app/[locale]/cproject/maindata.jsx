@@ -669,12 +669,12 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
         </div>
-        <h3 className="text-xl font-semibold text-gray-800">Informations du Promoteur</h3>
+        <h3 className="text-xl font-semibold text-gray-800">{f('InformationsPromoteur', { default: 'Informations du Promoteur' })}</h3>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Compagnie */}
         <div className="flex flex-col mb-4">
-          <label className="text-black mb-1">Compagnie</label>
+          <label className="text-black mb-1">{f('Compagnie', { default: 'Compagnie' })}</label>
           <select
             value={isOtherCompany ? "__other__" : formData.compagny}
             onChange={e => {
@@ -688,17 +688,17 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
             }}
             className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="" disabled>Compagnie</option>
+            <option value="" disabled>{f('Compagnie', { default: 'Compagnie' })}</option>
             {companies.map((company) => (
               <option key={company.id} value={company.name}>{company.name}</option>
             ))}
-            <option value="__other__">Autre...</option>
+            <option value="__other__">{f('Autre', { default: 'Autre...' })}</option>
           </select>
           {isOtherCompany && (
             <input
               type="text"
               className="border rounded px-3 py-2 mt-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Nom de la compagnie"
+              placeholder={f('NomCompagnie', { default: 'Nom de la compagnie' })}
               value={formData.compagny}
               onChange={e => updateFormData('compagny', e.target.value)}
             />
@@ -706,76 +706,76 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
         </div>
         {/* Lien vers le projet */}
         <div className="flex flex-col mb-4">
-          <label className="text-gray-700 font-medium mb-2">Lien vers le projet</label>
+          <label className="text-gray-700 font-medium mb-2">{f('LienProjet', { default: 'Lien vers le projet' })}</label>
           <input
             type="text"
             value={formData.link || ""}
             onChange={(e) => updateFormData('link', e.target.value)}
             className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="https://..."
+            placeholder={f('LienProjetPlaceholder', { default: 'https://...' })}
           />
         </div>
         {/* Nom */}
         <div className="flex flex-col">
-          <label className="text-gray-700 font-medium mb-2">Nom</label>
+          <label className="text-gray-700 font-medium mb-2">{f('Nom', { default: 'Nom' })}</label>
           <input
             type="text"
             value={formData.promoter_last_name || ""}
             onChange={(e) => updateFormData('promoter_last_name', e.target.value)}
             className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Nom du promoteur"
+            placeholder={f('NomPromoteur', { default: 'Nom du promoteur' })}
           />
         </div>
         {/* Prénom */}
         <div className="flex flex-col">
-          <label className="text-gray-700 font-medium mb-2">Prénom</label>
+          <label className="text-gray-700 font-medium mb-2">{f('Prenom', { default: 'Prénom' })}</label>
           <input
             type="text"
             value={formData.promoter_first_name || ""}
             onChange={(e) => updateFormData('promoter_first_name', e.target.value)}
             className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Prénom du promoteur"
+            placeholder={f('PrenomPromoteur', { default: 'Prénom du promoteur' })}
           />
         </div>
         {/* Téléphone */}
         <div className="flex flex-col">
-          <label className="text-gray-700 font-medium mb-2">Téléphone</label>
+          <label className="text-gray-700 font-medium mb-2">{f('Telephone', { default: 'Téléphone' })}</label>
           <input
             type="tel"
             value={formData.promoter_phone || ""}
             onChange={(e) => updateFormData('promoter_phone', e.target.value)}
             className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Téléphone du promoteur"
+            placeholder={f('TelephonePromoteur', { default: 'Téléphone du promoteur' })}
           />
         </div>
         {/* Email */}
         <div className="flex flex-col">
-          <label className="text-gray-700 font-medium mb-2">Email</label>
+          <label className="text-gray-700 font-medium mb-2">{f('Email', { default: 'Email' })}</label>
           <input
             type="email"
             value={formData.promoter_email || ""}
             onChange={(e) => updateFormData('promoter_email', e.target.value)}
             className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Email du promoteur"
+            placeholder={f('EmailPromoteur', { default: 'Email du promoteur' })}
           />
         </div>
       </div>
        {/* 1. Dans ProjectMainForm, au-dessus du champ 'Lien vers le projet' : */}
        <div className="flex flex-col mb-4 pt-8">
-        <label className="text-gray-700 font-medium mb-2">Informations supplémentaires</label>
+        <label className="text-gray-700 font-medium mb-2">{f('InformationsSupplementaires', { default: 'Informations supplémentaires' })}</label>
         <input
           type="text"
           maxLength={50}
           value={formData.TitrePromo || ""}
           onChange={e => updateFormData('TitrePromo', e.target.value)}
           className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Titre du promoteur (max 50 caractères)"
+          placeholder={f('TitrePromoPlaceholder', { default: 'Titre du promoteur (max 50 caractères)' })}
         />
         <span className="text-xs text-gray-400 mt-1">{(formData.TitrePromo || "").length}/50</span>
       </div>
       {/* Langues parlées */}
       <div className="mt-6">
-        <label className="text-gray-700 font-medium mb-3 block">Langues parlées</label>
+        <label className="text-gray-700 font-medium mb-3 block">{f('LanguesParlees', { default: 'Langues parlées' })}</label>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
           {availableLanguages.map((lang) => (
             <button
@@ -1667,7 +1667,7 @@ export default function Maindata({ project, onProjectUpdate }) {
       <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-100 mb-16" ref={tableRef}>
         <h2 className="text-2xl font-bold text-gray-700 mb-6 flex items-center gap-2">
           <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 7h2l.4 2M7 7h10l1 2h2a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg>
-          Images du projet
+          {t('ImagesProjet')}
         </h2>
         <ProjectImages projectId={project.id} />
       </div>

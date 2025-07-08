@@ -133,7 +133,18 @@
         "LaunchGeneration": "Запустить генерацию",
         "GeneratedDescription": "Сгенерированное описание",
         "CopyText": "Скопировать текст",
-        "ApplyToField": "Применить к полю"
+        "ApplyToField": "Применить к полю",
+        "InformationsPromoteur": "Информация о застройщике",
+        "Autre": "Другое...",
+        "NomCompagnie": "Название компании",
+        "LienProjetPlaceholder": "https://...",
+        "NomPromoteur": "Фамилия застройщика",
+        "PrenomPromoteur": "Имя застройщика",
+        "TelephonePromoteur": "Телефон застройщика",
+        "EmailPromoteur": "Эл. почта застройщика",
+        "InformationsSupplementaires": "Дополнительная информация",
+        "TitrePromoPlaceholder": "Заголовок застройщика (макс. 50 символов)",
+        "LanguesParlees": "Разговорные языки"
     },
     "SEO": {
         "Title": "Каталог проектов недвижимости",
@@ -351,5 +362,6 @@
     },
     "PromoteurSlogan": "Hoomge: платформа для продвижения ваших проектов недвижимости",
     "PromoteurSubtitle": "Охватите международную аудиторию с помощью автоматического перевода",
-    "PublierUnProjet": "Опубликовать проект"
+    "PublierUnProjet": "Опубликовать проект",
+    "ImagesProjet": "Изображения проекта"
 }

@@ -132,7 +132,22 @@
         "LaunchGeneration": "Запустити генерацію",
         "GeneratedDescription": "Згенерований опис",
         "CopyText": "Копіювати текст",
-        "ApplyToField": "Застосувати до поля"
+        "ApplyToField": "Застосувати до поля",
+        "InformationsPromoteur": "Інформація про забудовника",
+        "Autre": "Інше...",
+        "NomCompagnie": "Назва компанії",
+        "LienProjetPlaceholder": "https://...",
+        "Nom": "Прізвище",
+        "NomPromoteur": "Прізвище забудовника",
+        "Prenom": "Ім'я",
+        "PrenomPromoteur": "Ім'я забудовника",
+        "Telephone": "Телефон",
+        "TelephonePromoteur": "Телефон забудовника",
+        "Email": "Ел. пошта",
+        "EmailPromoteur": "Ел. пошта забудовника",
+        "InformationsSupplementaires": "Додаткова інформація",
+        "TitrePromoPlaceholder": "Заголовок забудовника (макс. 50 символів)",
+        "LanguesParlees": "Розмовні мови"
     },
     "SEO": {
         "Title": "Каталог проектів нерухомості",
@@ -350,5 +365,6 @@
     },
     "PromoteurSlogan": "Hoomge: платформа для просування ваших проєктів нерухомості",
     "PromoteurSubtitle": "Охопіть міжнародну аудиторію завдяки автоматичному перекладу",
-    "PublierUnProjet": "Опублікувати проєкт"
+    "PublierUnProjet": "Опублікувати проєкт",
+    "ImagesProjet": "Зображення проєкту"
 } 

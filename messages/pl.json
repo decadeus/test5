@@ -149,7 +149,19 @@
         "es": "Hiszpański",
         "it": "Włoski",
         "pt": "Portugalski",
-        "nl": "Holenderski"
+        "nl": "Holenderski",
+        "InformationsPromoteur": "Informacje o deweloperze",
+        "Autre": "Inna...",
+        "NomCompagnie": "Nazwa firmy",
+        "LienProjetPlaceholder": "https://...",
+        "Nom": "Nazwisko",
+        "NomPromoteur": "Nazwisko dewelopera",
+        "Prenom": "Imię",
+        "PrenomPromoteur": "Imię dewelopera",
+        "TelephonePromoteur": "Telefon dewelopera",
+        "EmailPromoteur": "Email dewelopera",
+        "InformationsSupplementaires": "Dodatkowe informacje",
+        "TitrePromoPlaceholder": "Tytuł dewelopera (max 50 znaków)"
     },
     "SEO": {
         "Title": "Katalog projektów nieruchomości",
@@ -367,5 +379,6 @@
     },
     "PromoteurSlogan": "Hoomge: platforma do promowania Twoich projektów nieruchomości",
     "PromoteurSubtitle": "Dotrzyj do międzynarodowej publiczności dzięki automatycznemu tłumaczeniu",
-    "PublierUnProjet": "Opublikuj projekt"
+    "PublierUnProjet": "Opublikuj projekt",
+    "ImagesProjet": "Zdjęcia projektu"
 }

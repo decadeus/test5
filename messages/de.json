@@ -72,7 +72,7 @@
     },
     "Projet": {
         "Modifier": "Projektinformationen bearbeiten",
-        "Compagnie": "Unternehmen",
+        "Compagnie": "Firma",
         "NomProjet": "Projektname",
         "Pays": "Land",
         "Ville": "Stadt",
@@ -132,7 +132,21 @@
         "LaunchGeneration": "Generierung starten",
         "GeneratedDescription": "Generierte Beschreibung",
         "CopyText": "Text kopieren",
-        "ApplyToField": "Im Feld anwenden"
+        "ApplyToField": "Im Feld anwenden",
+        "InformationsPromoteur": "Informationen zum Bauträger",
+        "Autre": "Andere...",
+        "NomCompagnie": "Name der Firma",
+        "LienProjetPlaceholder": "https://...",
+        "NomPromoteur": "Nachname des Bauträgers",
+        "Prenom": "Vorname",
+        "PrenomPromoteur": "Vorname des Bauträgers",
+        "Telephone": "Telefon",
+        "TelephonePromoteur": "Telefon des Bauträgers",
+        "Email": "E-Mail",
+        "EmailPromoteur": "E-Mail des Bauträgers",
+        "InformationsSupplementaires": "Zusätzliche Informationen",
+        "TitrePromoPlaceholder": "Titel des Bauträgers (max. 50 Zeichen)",
+        "LanguesParlees": "Gesprochene Sprachen"
     },
     "SEO": {
         "Title": "Verzeichnis von Immobilienprojekten",
@@ -350,5 +364,6 @@
     },
     "PromoteurSlogan": "Hoomge: die Plattform zur Förderung Ihrer Immobilienprojekte",
     "PromoteurSubtitle": "Erreichen Sie ein internationales Publikum dank automatischer Übersetzung",
-    "PublierUnProjet": "Projekt veröffentlichen"
+    "PublierUnProjet": "Projekt veröffentlichen",
+    "ImagesProjet": "Projektbilder"
 }

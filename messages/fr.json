@@ -151,7 +151,19 @@
         "it": "Italien",
         "pt": "Portugais",
         "nl": "Néerlandais",
-        "Generating": "Génération en cours..."
+        "Generating": "Génération en cours...",
+        "InformationsPromoteur": "Informations du Promoteur",
+        "Autre": "Autre...",
+        "NomCompagnie": "Nom de la compagnie",
+        "LienProjetPlaceholder": "https://...",
+        "Nom": "Nom",
+        "NomPromoteur": "Nom du promoteur",
+        "Prenom": "Prénom",
+        "PrenomPromoteur": "Prénom du promoteur",
+        "TelephonePromoteur": "Téléphone du promoteur",
+        "EmailPromoteur": "Email du promoteur",
+        "InformationsSupplementaires": "Informations supplémentaires",
+        "TitrePromoPlaceholder": "Titre du promoteur (max 50 caractères)"
     },
     "SEO": {
         "Title": "Annuaire de projets immobiliers",
@@ -365,5 +377,6 @@
     },
     "PromoteurSlogan": "Hoomge : la plateforme pour promouvoir vos projets immobiliers",
     "PromoteurSubtitle": "Touchez une audience internationale en bénéficiant de la traduction automatique",
-    "PublierUnProjet": "Publier un projet"
+    "PublierUnProjet": "Publier un projet",
+    "ImagesProjet": "Images du projet"
 }

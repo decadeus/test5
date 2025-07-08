@@ -139,7 +139,19 @@
         "es": "Spanish",
         "it": "Italian",
         "pt": "Portuguese",
-        "nl": "Dutch"
+        "nl": "Dutch",
+        "InformationsPromoteur": "Promoter Information",
+        "Autre": "Other...",
+        "NomCompagnie": "Company name",
+        "LienProjetPlaceholder": "https://...",
+        "Nom": "Last name",
+        "NomPromoteur": "Promoter's last name",
+        "Prenom": "First name",
+        "PrenomPromoteur": "Promoter's first name",
+        "TelephonePromoteur": "Promoter's phone",
+        "EmailPromoteur": "Promoter's email",
+        "InformationsSupplementaires": "Additional information",
+        "TitrePromoPlaceholder": "Promoter title (max 50 characters)"
     },
     "SEO": {
         "Title": "Real estate project directory",
@@ -358,5 +370,6 @@
     },
     "PromoteurSlogan": "Hoomge: the platform to promote your real estate projects",
     "PromoteurSubtitle": "Reach an international audience with automatic translation",
-    "PublierUnProjet": "Publish a project"
+    "PublierUnProjet": "Publish a project",
+    "ImagesProjet": "Project images"
 }
