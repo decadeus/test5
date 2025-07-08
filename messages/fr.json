@@ -380,5 +380,30 @@
     "PublierUnProjet": "Publier un projet",
     "ImagesProjet": "Images du projet",
     "ErreurTel": "Format de téléphone invalide",
-    "ErreurEmail": "Format d'email invalide"
+    "ErreurEmail": "Format d'email invalide",
+    "Subscription": {
+        "manage": "Gérer votre abonnement",
+        "noSubscription": "Aucun abonnement actif",
+        "subscribe": "Souscrire un abonnement",
+        "fixStatus": "Corriger le statut",
+        "debugInfo": "Informations de débogage",
+        "foundSubscription": "Abonnement trouvé",
+        "status": "Statut",
+        "isActive": "Actif",
+        "plan": "Plan",
+        "subscriptionHistory": "Historique des abonnements",
+        "createdAt": "Créé le",
+        "currentPlan": "Plan actuel",
+        "expireAt": "Expire le:",
+        "nextRenewalAt": "Prochain renouvellement:",
+        "changePlan": "Changer de plan",
+        "updating": "Mise à jour...",
+        "upgradeToLarge": "Passer à Large (10 Projets)",
+        "upgradeToMedium": "Passer à Medium (5 Projets)",
+        "upgradeToMini": "Passer à Mini (1 Projet)",
+        "dangerZone": "Zone de danger",
+        "cancelNotice": "L'annulation prendra effet à la fin de votre période de facturation. Vous ne serez plus facturé.",
+        "canceling": "Annulation en cours...",
+        "cancelSubscription": "Annuler l'abonnement"
+    }
 }

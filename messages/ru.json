@@ -365,5 +365,30 @@
     "PublierUnProjet": "Опубликовать проект",
     "ImagesProjet": "Изображения проекта",
     "ErreurTel": "Неверный формат телефона",
-    "ErreurEmail": "Неверный формат электронной почты"
+    "ErreurEmail": "Неверный формат электронной почты",
+    "Subscription": {
+        "manage": "Управление подпиской",
+        "noSubscription": "Нет активной подписки",
+        "subscribe": "Подписаться",
+        "fixStatus": "Исправить статус",
+        "debugInfo": "Отладочная информация",
+        "foundSubscription": "Подписка найдена",
+        "status": "Статус",
+        "isActive": "Активна",
+        "plan": "Тариф",
+        "subscriptionHistory": "История подписок",
+        "createdAt": "Создано",
+        "currentPlan": "Текущий тариф",
+        "expireAt": "Истекает:",
+        "nextRenewalAt": "Следующее продление:",
+        "changePlan": "Сменить тариф",
+        "updating": "Обновление...",
+        "upgradeToLarge": "Перейти на Large (10 проектов)",
+        "upgradeToMedium": "Перейти на Medium (5 проектов)",
+        "upgradeToMini": "Перейти на Mini (1 проект)",
+        "dangerZone": "Зона риска",
+        "cancelNotice": "Отмена вступит в силу в конце текущего расчетного периода. С вас больше не будет взиматься плата.",
+        "canceling": "Отмена...",
+        "cancelSubscription": "Отменить подписку"
+    }
 }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { useTranslations } from "next-intl";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -31,6 +32,7 @@ export default function SubscriptionManager({ user }) {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [canceling, setCanceling] = useState(false);
+  const t = useTranslations("Subscription");
 
   useEffect(() => {
     if (user) {
@@ -200,7 +202,7 @@ export default function SubscriptionManager({ user }) {
     return (
       <div className="space-y-4">
         <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <h3 className="font-semibold text-yellow-800 mb-2">Aucun abonnement actif</h3>
+          <h3 className="font-semibold text-yellow-800 mb-2">{t('noSubscription')}</h3>
           <p className="text-yellow-700 text-sm mb-3">
             Vous n'avez pas d'abonnement actif. Souscrivez à un plan pour commencer.
           </p>
@@ -209,14 +211,14 @@ export default function SubscriptionManager({ user }) {
               href="/fr/abonnement" 
               className="inline-block bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition"
             >
-              Souscrire un abonnement
+              {t('subscribe')}
             </a>
             {allSubscriptions.length > 0 && (
               <button
                 onClick={handleFixStatus}
                 className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition"
               >
-                Corriger le statut
+                {t('fixStatus')}
               </button>
             )}
           </div>
@@ -224,19 +226,19 @@ export default function SubscriptionManager({ user }) {
 
         {directSubscription && (
           <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
-            <h4 className="font-medium text-orange-800 mb-2">Informations de débogage</h4>
+            <h4 className="font-medium text-orange-800 mb-2">{t('debugInfo')}</h4>
             <div className="text-sm text-orange-700">
-              <p><strong>Abonnement trouvé:</strong> {directSubscription.id}</p>
-              <p><strong>Statut:</strong> {directSubscription.status}</p>
-              <p><strong>is_active:</strong> {directSubscription.is_active ? 'true' : 'false'}</p>
-              <p><strong>Plan:</strong> {PLAN_NAMES[directSubscription.plan_id] || 'Inconnu'}</p>
+              <p><strong>{t('foundSubscription')}:</strong> {directSubscription.id}</p>
+              <p><strong>{t('status')}:</strong> {directSubscription.status}</p>
+              <p><strong>{t('isActive')}:</strong> {directSubscription.is_active ? 'true' : 'false'}</p>
+              <p><strong>{t('plan')}:</strong> {PLAN_NAMES[directSubscription.plan_id] || 'Inconnu'}</p>
             </div>
           </div>
         )}
 
         {allSubscriptions.length > 0 && (
           <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg">
-            <h4 className="font-medium text-gray-800 mb-3">Historique des abonnements</h4>
+            <h4 className="font-medium text-gray-800 mb-3">{t('subscriptionHistory')}</h4>
             <div className="space-y-2">
               {allSubscriptions.map((sub) => (
                 <div key={sub.id} className="flex justify-between items-center p-3 bg-white rounded border">
@@ -245,7 +247,7 @@ export default function SubscriptionManager({ user }) {
                       {PLAN_NAMES[sub.plan_id] || 'Plan inconnu'}
                     </div>
                     <div className="text-sm text-gray-600">
-                      Créé le {new Date(sub.created_at).toLocaleDateString('fr-FR')}
+                      {t('createdAt')} {new Date(sub.created_at).toLocaleDateString('fr-FR')}
                     </div>
                   </div>
                   <div className="text-right">
@@ -270,16 +272,16 @@ export default function SubscriptionManager({ user }) {
 
   return (
     <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm space-y-4">
-      <h3 className="font-semibold text-lg text-gray-800">Gérer votre abonnement</h3>
+      <h3 className="font-semibold text-lg text-gray-800">{t('manage')}</h3>
       
       <div className="space-y-6">
         <div>
           <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-600">Plan actuel:</span>
+            <span className="text-gray-600">{t('currentPlan')}:</span>
             <span className="font-medium text-gray-800">{PLAN_NAMES[activeSubscription.plan_id] || 'Plan inconnu'}</span>
           </div>
           <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-600">Statut:</span>
+            <span className="text-gray-600">{t('status')}:</span>
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
               activeSubscription.status === 'active' 
                 ? 'bg-green-100 text-green-800' 
@@ -291,8 +293,8 @@ export default function SubscriptionManager({ user }) {
           <div className="flex justify-between items-center text-gray-600">
             <span>
               {activeSubscription.cancel_at_period_end 
-                ? `Expire le:` 
-                : `Prochain renouvellement:`
+                ? t('expireAt') 
+                : t('nextRenewalAt')
               }
             </span>
             <span className="font-medium text-gray-800">
@@ -303,7 +305,7 @@ export default function SubscriptionManager({ user }) {
 
         {activeSubscription.status === 'active' && !activeSubscription.cancel_at_period_end && (
           <div>
-            <h4 className="font-semibold text-gray-700 mb-2">Changer de plan</h4>
+            <h4 className="font-semibold text-gray-700 mb-2">{t('changePlan')}</h4>
             <div className="flex gap-2">
               {/* Upgrade/Downgrade buttons */}
               {activeSubscription.plan_id !== PRICE_IDS.large && (
@@ -312,7 +314,7 @@ export default function SubscriptionManager({ user }) {
                       disabled={updating}
                       className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 disabled:bg-blue-300 transition"
                   >
-                      {updating ? 'Mise à jour...' : 'Passer à Large (10 Projets)'}
+                      {updating ? t('updating') : t('upgradeToLarge')}
                   </button>
               )}
               {activeSubscription.plan_id !== PRICE_IDS.medium && activeSubscription.plan_id === PRICE_IDS.mini && (
@@ -321,7 +323,7 @@ export default function SubscriptionManager({ user }) {
                       disabled={updating}
                       className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 disabled:bg-blue-300 transition"
                   >
-                      {updating ? 'Mise à jour...' : 'Passer à Medium (5 Projets)'}
+                      {updating ? t('updating') : t('upgradeToMedium')}
                   </button>
               )}
               {activeSubscription.plan_id !== PRICE_IDS.mini && (
@@ -330,7 +332,7 @@ export default function SubscriptionManager({ user }) {
                       disabled={updating}
                       className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 disabled:bg-gray-300 transition"
                   >
-                      {updating ? 'Mise à jour...' : 'Passer à Mini (1 Projet)'}
+                      {updating ? t('updating') : t('upgradeToMini')}
                   </button>
               )}
             </div>
@@ -340,16 +342,16 @@ export default function SubscriptionManager({ user }) {
         {/* Danger Zone */}
         {activeSubscription.status === 'active' && !activeSubscription.cancel_at_period_end && (
           <div className="mt-6 pt-4 border-t border-red-200">
-            <h4 className="font-semibold text-red-700 mb-2">Zone de danger</h4>
+            <h4 className="font-semibold text-red-700 mb-2">{t('dangerZone')}</h4>
             <p className="text-sm text-red-600 mb-3">
-              L'annulation prendra effet à la fin de votre période de facturation. Vous ne serez plus facturé.
+              {t('cancelNotice')}
             </p>
             <button
               onClick={handleCancelSubscription}
               disabled={canceling}
               className="w-full bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 disabled:bg-red-300 transition"
             >
-              {canceling ? "Annulation en cours..." : "Annuler l'abonnement"}
+              {canceling ? t('canceling') : t('cancelSubscription')}
             </button>
           </div>
         )}
@@ -357,7 +359,7 @@ export default function SubscriptionManager({ user }) {
         {activeSubscription.cancel_at_period_end && (
           <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-center">
             <p className="text-sm text-yellow-800">
-              Votre abonnement est configuré pour être annulé le {new Date(activeSubscription.current_period_end).toLocaleDateString('fr-FR')}. Vous pouvez continuer à utiliser le service jusqu'à cette date.
+              {t('cancelNotice')} {new Date(activeSubscription.current_period_end).toLocaleDateString('fr-FR')}
             </p>
           </div>
         )}

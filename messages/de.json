@@ -367,5 +367,30 @@
     "PublierUnProjet": "Projekt veröffentlichen",
     "ImagesProjet": "Projektbilder",
     "ErreurTel": "Ungültiges Telefonformat",
-    "ErreurEmail": "Ungültiges E-Mail-Format"
+    "ErreurEmail": "Ungültiges E-Mail-Format",
+    "Subscription": {
+        "manage": "Verwalten Sie Ihr Abonnement",
+        "noSubscription": "Kein aktives Abonnement",
+        "subscribe": "Abonnieren",
+        "fixStatus": "Status korrigieren",
+        "debugInfo": "Debug-Informationen",
+        "foundSubscription": "Abonnement gefunden",
+        "status": "Status",
+        "isActive": "Aktiv",
+        "plan": "Plan",
+        "subscriptionHistory": "Abonnementverlauf",
+        "createdAt": "Erstellt am",
+        "currentPlan": "Aktueller Plan",
+        "expireAt": "Läuft ab am:",
+        "nextRenewalAt": "Nächste Verlängerung:",
+        "changePlan": "Plan ändern",
+        "updating": "Aktualisierung...",
+        "upgradeToLarge": "Wechseln zu Large (10 Projekte)",
+        "upgradeToMedium": "Wechseln zu Medium (5 Projekte)",
+        "upgradeToMini": "Wechseln zu Mini (1 Projekt)",
+        "dangerZone": "Gefahrenzone",
+        "cancelNotice": "Die Kündigung wird am Ende Ihres Abrechnungszeitraums wirksam. Sie werden nicht weiter belastet.",
+        "canceling": "Wird gekündigt...",
+        "cancelSubscription": "Abonnement kündigen"
+    }
 }

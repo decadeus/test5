@@ -382,5 +382,30 @@
     "PublierUnProjet": "Opublikuj projekt",
     "ImagesProjet": "Zdjęcia projektu",
     "ErreurTel": "Nieprawidłowy format telefonu",
-    "ErreurEmail": "Nieprawidłowy format adresu e-mail"
+    "ErreurEmail": "Nieprawidłowy format adresu e-mail",
+    "Subscription": {
+        "manage": "Zarządzaj subskrypcją",
+        "noSubscription": "Brak aktywnej subskrypcji",
+        "subscribe": "Subskrybuj",
+        "fixStatus": "Napraw status",
+        "debugInfo": "Informacje debugowania",
+        "foundSubscription": "Znaleziono subskrypcję",
+        "status": "Status",
+        "isActive": "Aktywna",
+        "plan": "Plan",
+        "subscriptionHistory": "Historia subskrypcji",
+        "createdAt": "Utworzono",
+        "currentPlan": "Aktualny plan",
+        "expireAt": "Wygasa:",
+        "nextRenewalAt": "Następne odnowienie:",
+        "changePlan": "Zmień plan",
+        "updating": "Aktualizacja...",
+        "upgradeToLarge": "Przejdź na Large (10 projektów)",
+        "upgradeToMedium": "Przejdź na Medium (5 projektów)",
+        "upgradeToMini": "Przejdź na Mini (1 projekt)",
+        "dangerZone": "Strefa zagrożenia",
+        "cancelNotice": "Anulowanie nastąpi na koniec bieżącego okresu rozliczeniowego. Nie będziesz już obciążany.",
+        "canceling": "Anulowanie...",
+        "cancelSubscription": "Anuluj subskrypcję"
+    }
 }

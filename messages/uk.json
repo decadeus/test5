@@ -368,5 +368,30 @@
     "PublierUnProjet": "Опублікувати проєкт",
     "ImagesProjet": "Зображення проєкту",
     "ErreurTel": "Неправильний формат телефону",
-    "ErreurEmail": "Неправильний формат електронної пошти"
+    "ErreurEmail": "Неправильний формат електронної пошти",
+    "Subscription": {
+        "manage": "Керування підпискою",
+        "noSubscription": "Немає активної підписки",
+        "subscribe": "Підписатися",
+        "fixStatus": "Виправити статус",
+        "debugInfo": "Інформація для налагодження",
+        "foundSubscription": "Підписку знайдено",
+        "status": "Статус",
+        "isActive": "Активна",
+        "plan": "Тариф",
+        "subscriptionHistory": "Історія підписок",
+        "createdAt": "Створено",
+        "currentPlan": "Поточний тариф",
+        "expireAt": "Закінчується:",
+        "nextRenewalAt": "Наступне поновлення:",
+        "changePlan": "Змінити тариф",
+        "updating": "Оновлення...",
+        "upgradeToLarge": "Перейти на Large (10 проектів)",
+        "upgradeToMedium": "Перейти на Medium (5 проектів)",
+        "upgradeToMini": "Перейти на Mini (1 проект)",
+        "dangerZone": "Зона ризику",
+        "cancelNotice": "Скасування набуде чинності в кінці поточного розрахункового періоду. З вас більше не стягуватиметься плата.",
+        "canceling": "Скасування...",
+        "cancelSubscription": "Скасувати підписку"
+    }
 } 
