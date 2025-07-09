@@ -61,8 +61,8 @@
         "SearchPlaceholder": "Rechercher un nouvel appartement à...",
         "Réinitialiser les filtres": "Réinitialiser les filtres",
         "Vos Favoris": "Vos favoris",
-        "Chargement...": "Chargement...",
-        "Aucun favori enregistré.": "Aucun favori enregistré."
+        "Chargement": "Chargement...",
+        "AucunFavoriEnregistre": "Aucun favori enregistré."
     },
     "Nav": {
         "Ajouter": "Ajouter un projet",

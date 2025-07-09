@@ -50,7 +50,8 @@
         "Réinitialiser": "Reset",
         "Ouvrir les filtres": "Open filters",
         "Voir le détail": "View details",
-        "Réinitialiser les filtres": "Reset filters"
+        "Réinitialiser les filtres": "Reset filters",
+        "AucunFavoriEnregistre": "No favorite saved."
     },
     "Nav": {
         "Ajouter": "Add project",
