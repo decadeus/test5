@@ -144,7 +144,8 @@
         "EmailPromoteur": "Эл. почта застройщика",
         "InformationsSupplementaires": "Дополнительная информация",
         "TitrePromoPlaceholder": "Заголовок застройщика (макс. 50 символов)",
-        "LanguesParlees": "Разговорные языки"
+        "LanguesParlees": "Разговорные языки",
+        "ImagesProjet": "Изображения проекта"
     },
     "SEO": {
         "Title": "Каталог проектов недвижимости",

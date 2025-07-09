@@ -151,7 +151,8 @@
         "TelephonePromoteur": "Promoter's phone",
         "EmailPromoteur": "Promoter's email",
         "InformationsSupplementaires": "Additional information",
-        "TitrePromoPlaceholder": "Promoter title (max 50 characters)"
+        "TitrePromoPlaceholder": "Promoter title (max 50 characters)",
+        "ImagesProjet": "Project images"
     },
     "SEO": {
         "Title": "Real estate project directory",

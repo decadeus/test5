@@ -144,6 +144,7 @@ export const countryData = {
     "Maisons-Alfort",
     "Maisons-Laffitte",
     "Malakoff",
+    "Marquette-lez-Lille",
     "Marseille",
     "Marly",
     "Marly-le-Roi",

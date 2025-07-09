@@ -146,7 +146,8 @@
         "EmailPromoteur": "E-Mail des Bauträgers",
         "InformationsSupplementaires": "Zusätzliche Informationen",
         "TitrePromoPlaceholder": "Titel des Bauträgers (max. 50 Zeichen)",
-        "LanguesParlees": "Gesprochene Sprachen"
+        "LanguesParlees": "Gesprochene Sprachen",
+        "ImagesProjet": "Projektbilder"
     },
     "SEO": {
         "Title": "Verzeichnis von Immobilienprojekten",

@@ -147,7 +147,8 @@
         "EmailPromoteur": "Ел. пошта забудовника",
         "InformationsSupplementaires": "Додаткова інформація",
         "TitrePromoPlaceholder": "Заголовок забудовника (макс. 50 символів)",
-        "LanguesParlees": "Розмовні мови"
+        "LanguesParlees": "Розмовні мови",
+        "ImagesProjet": "Зображення проєкту"
     },
     "SEO": {
         "Title": "Каталог проектів нерухомості",

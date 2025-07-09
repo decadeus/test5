@@ -243,6 +243,10 @@ function useProjectData(project, onProjectUpdate) {
       ...features,
     };
 
+    // Conversion des champs numériques pour éviter l'erreur Postgres
+    updates.lat = updates.lat === "" ? null : Number(updates.lat);
+    updates.lng = updates.lng === "" ? null : Number(updates.lng);
+
     // Traduction automatique de tous les champs multilingues
     for (const field of fieldsToTranslate) {
       const sourceField = `${field}_${sourceLang}`;

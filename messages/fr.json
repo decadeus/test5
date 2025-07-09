@@ -163,7 +163,8 @@
         "TelephonePromoteur": "Téléphone du promoteur",
         "EmailPromoteur": "Email du promoteur",
         "InformationsSupplementaires": "Informations supplémentaires",
-        "TitrePromoPlaceholder": "Titre du promoteur (max 50 caractères)"
+        "TitrePromoPlaceholder": "Titre du promoteur (max 50 caractères)",
+        "ImagesProjet": "Images du projet"
     },
     "SEO": {
         "Title": "Annuaire de projets immobiliers",
