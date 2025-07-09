@@ -162,14 +162,18 @@ function ProjectRecapCard({ formData, images }) {
           {t('PlusInfosProjet') || "Plus d'infos sur le projet"}
         </a>
       )}
-      {/* Icônes email et téléphone premium */}
+      {/* Icônes email et téléphone premium, affichées seulement si data */}
       <div className="flex gap-6 justify-center mt-3 mb-1">
-        <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition group">
-          <FiMail className="text-2xl text-white group-hover:text-red-700 transition-colors" title={t('Email') || "Email"} />
-        </div>
-        <div className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition group">
-          <FiPhone className="text-2xl text-white group-hover:text-red-700 transition-colors" title={t('Telephone') || "Téléphone"} />
-        </div>
+        {formData.promoter_email && (
+          <a href={`mailto:${formData.promoter_email}`} className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition group" title={formData.promoter_email}>
+            <FiMail className="text-2xl text-white group-hover:text-red-700 transition-colors" title={t('Email') || "Email"} />
+          </a>
+        )}
+        {formData.promoter_phone && (
+          <a href={`tel:${formData.promoter_phone}`} className="rounded-full bg-gray-700 border border-gray-200 shadow p-3 flex items-center justify-center hover:bg-gray-100 transition group" title={formData.promoter_phone}>
+            <FiPhone className="text-2xl text-white group-hover:text-red-700 transition-colors" title={t('Telephone') || "Téléphone"} />
+          </a>
+        )}
       </div>
     </div>
   );
