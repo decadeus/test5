@@ -98,15 +98,15 @@ export default function Layout() {
             
           const { data: apartmentsData } = await supabase
             .from('projectlist')
-            .select('project_id')
-            .in('project_id', projectIds);
+            .select('ide')
+            .in('ide', projectIds);
 
           const projectsWithEditors = (projs || []).map((p) => {
             const editors = accessList?.filter(
               (a) => a.project_id === p.id && a.can_edit
             );
             const apartments = apartmentsData?.filter(
-              (a) => a.project_id === p.id
+              (a) => a.ide === p.id
             );
             return { 
                 ...p, 
