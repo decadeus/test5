@@ -143,6 +143,7 @@
         "InformationsPromoteur": "Promoter Information",
         "Autre": "Other...",
         "NomCompagnie": "Company name",
+        "NomCompagniePlaceholder": "Enter the company name",
         "LienProjetPlaceholder": "https://...",
         "Nom": "Last name",
         "NomPromoteur": "Promoter's last name",

@@ -406,5 +406,6 @@
         "cancelNotice": "L'annulation prendra effet à la fin de votre période de facturation. Vous ne serez plus facturé.",
         "canceling": "Annulation en cours...",
         "cancelSubscription": "Annuler l'abonnement"
-    }
+    },
+    "NomCompagniePlaceholder": "Entrez le nom de la compagnie"
 }

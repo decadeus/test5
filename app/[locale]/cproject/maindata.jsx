@@ -545,6 +545,40 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
   const [isOtherCompany, setIsOtherCompany] = useState(
     !!formData.compagny && !companies.some(c => c.name === formData.compagny)
   );
+  // --- NOUVEAU : Liste dynamique des compagnies ---
+  const [companyList, setCompanyList] = useState([]);
+  const [isLoadingCompanies, setIsLoadingCompanies] = useState(false);
+  const [companyError, setCompanyError] = useState("");
+
+  useEffect(() => {
+    async function fetchCompanies() {
+      setIsLoadingCompanies(true);
+      setCompanyError("");
+      try {
+        const { data, error } = await supabase
+          .from("project")
+          .select("compagny")
+          .neq("compagny", null);
+        if (error) throw error;
+        // Filtrer doublons, valeurs vides/nulles
+        const uniqueCompanies = Array.from(
+          new Set(
+            (data || [])
+              .map(row => (row.compagny || "").trim())
+              .filter(name => name && name !== "null" && name !== "undefined")
+          )
+        );
+        setCompanyList(uniqueCompanies);
+      } catch (e) {
+        setCompanyError("Erreur lors du chargement des compagnies");
+        setCompanyList([]);
+      } finally {
+        setIsLoadingCompanies(false);
+      }
+    }
+    fetchCompanies();
+  }, [projectId]);
+
   // Ajout ici : hooks d'erreur pour téléphone et email
   const [phoneError, setPhoneError] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -701,22 +735,25 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
               }
             }}
             className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+            disabled={isLoadingCompanies}
           >
-            <option value="" disabled>{f('Compagnie', { default: 'Compagnie' })}</option>
-            {companies.map((company) => (
-              <option key={company.id} value={company.name}>{company.name}</option>
+            <option value="" disabled>{isLoadingCompanies ? f('Chargement', { default: 'Chargement...' }) : f('Compagnie', { default: 'Compagnie' })}</option>
+            {/* Liste dynamique des compagnies */}
+            {companyList.map((company, idx) => (
+              <option key={company + idx} value={company}>{company}</option>
             ))}
             <option value="__other__">{f('Autre', { default: 'Autre...' })}</option>
           </select>
           {isOtherCompany && (
             <input
               type="text"
-              className="border rounded px-3 py-2 mt-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder={f('NomCompagnie', { default: 'Nom de la compagnie' })}
+              className="border rounded px-3 py-2 mt-2 focus:ring-blue-500 focus:border-blue-500 text-black placeholder-gray-400"
+              placeholder={f('NomCompagniePlaceholder', { default: 'Entrez le nom de la compagnie' })}
               value={formData.compagny}
               onChange={e => updateFormData('compagny', e.target.value)}
             />
           )}
+          {companyError && <span className="text-xs text-red-500 mt-1">{companyError}</span>}
         </div>
         {/* Lien vers le projet */}
         <div className="flex flex-col mb-4">

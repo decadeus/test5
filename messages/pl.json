@@ -407,5 +407,6 @@
         "cancelNotice": "Anulowanie nastąpi na koniec bieżącego okresu rozliczeniowego. Nie będziesz już obciążany.",
         "canceling": "Anulowanie...",
         "cancelSubscription": "Anuluj subskrypcję"
-    }
+    },
+    "NomCompagniePlaceholder": "Wpisz nazwę firmy"
 }

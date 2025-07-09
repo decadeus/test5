@@ -137,6 +137,7 @@
         "InformationsPromoteur": "Информация о застройщике",
         "Autre": "Другое...",
         "NomCompagnie": "Название компании",
+        "NomCompagniePlaceholder": "Введите название компании",
         "LienProjetPlaceholder": "https://...",
         "NomPromoteur": "Фамилия застройщика",
         "PrenomPromoteur": "Имя застройщика",

@@ -136,6 +136,7 @@
         "InformationsPromoteur": "Informationen zum Bauträger",
         "Autre": "Andere...",
         "NomCompagnie": "Name der Firma",
+        "NomCompagniePlaceholder": "Geben Sie den Firmennamen ein",
         "LienProjetPlaceholder": "https://...",
         "NomPromoteur": "Nachname des Bauträgers",
         "Prenom": "Vorname",
