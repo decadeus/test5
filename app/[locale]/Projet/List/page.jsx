@@ -167,6 +167,7 @@ export default function ApartmentList() {
   const params = useParams();
   const locale = params?.locale || 'fr';
   const defaultFilters = {
+    selectedCountry: "France", // Ajout du filtre pays par défaut
     selectedCity: t("Tous"),
     searchTerm: "",
     priceRange: [100000, 5000000],
@@ -182,6 +183,20 @@ export default function ApartmentList() {
   const [justUnselectedGarden, setJustUnselectedGarden] = useState(false);
   const [justUnselectedRooftop, setJustUnselectedRooftop] = useState(false);
   const [justUnselectedFavorites, setJustUnselectedFavorites] = useState(false);
+
+  // Ajout : liste des pays distincts
+  const countries = useMemo(() => {
+    return [
+      ...new Set(apartments.map((a) => a.country).filter(Boolean))
+    ].sort();
+  }, [apartments]);
+  // Ajout : liste des villes du pays sélectionné
+  const cities = useMemo(() => {
+    return [
+      t("Tous"),
+      ...[...new Set(apartments.filter(a => a.country === filters.selectedCountry).map(a => a.city))].sort()
+    ];
+  }, [apartments, filters.selectedCountry, t]);
 
   // 2. Initialiser les filtres depuis le localStorage au montage
   useEffect(() => {
@@ -214,10 +229,10 @@ export default function ApartmentList() {
     }
   }
 
-  // 5. Réinitialiser la ville à chaque changement de langue
+  // 5. Réinitialiser la ville à chaque changement de langue ou de pays
   useEffect(() => {
     updateFilter('selectedCity', t("Tous"));
-  }, [locale, t]);
+  }, [locale, t, filters.selectedCountry]);
 
   // 6. Utiliser les filtres dans le filtrage
   const getMinMaxValues = () => {
@@ -290,17 +305,18 @@ export default function ApartmentList() {
     });
   };
   const filteredApartments = apartments.filter((a) => {
+    const matchesCountry = a.country === filters.selectedCountry;
     const matchesCity = filters.selectedCity === t("Tous") || a.city === filters.selectedCity;
     const matchesSearch =
       a.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
       a.summary.toLowerCase().includes(filters.searchTerm.toLowerCase());
     const matchesRange = hasProjectListInRange(a);
     const matchesFavorite = !showOnlyFavorites || favorites.includes(a.id);
-    return matchesCity && matchesSearch && matchesRange && matchesFavorite;
+    return matchesCountry && matchesCity && matchesSearch && matchesRange && matchesFavorite;
   });
 
-  // Pour la carte : on veut tous les projets de la ville sélectionnée, sans filtrer sur les lots
-  const apartmentsForMap = apartments.filter(a => filters.selectedCity === t('Tous') || a.city === filters.selectedCity);
+  // Pour la carte : on veut tous les projets du pays et de la ville sélectionnée
+  const apartmentsForMap = apartments.filter(a => a.country === filters.selectedCountry && (filters.selectedCity === t('Tous') || a.city === filters.selectedCity));
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -431,10 +447,26 @@ export default function ApartmentList() {
             {/* Filtres ville + recherche */}
             <div className="flex flex-col gap-4">
               <div className="flex gap-3 whitespace-nowrap overflow-x-auto pb-2 w-full">
-                {[
-                  t("Tous"),
-                  ...[...new Set(apartments.map((a) => a.city))].sort(),
-                ].map((city) => (
+                {countries.map((country) => (
+                  <button
+                    key={country}
+                    onClick={() => {
+                      updateFilter('selectedCountry', country);
+                      updateFilter('selectedCity', t('Tous'));
+                    }}
+                    aria-pressed={filters.selectedCountry === country}
+                    className={`h-10 px-3 border-2 border-black rounded-full text-sm font-semibold transition-colors duration-200 whitespace-nowrap ${
+                      filters.selectedCountry === country
+                        ? "bg-green-600 text-white"
+                        : "bg-white text-black hover:bg-green-600 hover:text-white"
+                    }`}
+                  >
+                    {country}
+                  </button>
+                ))}
+              </div>
+              <div className="flex gap-3 whitespace-nowrap overflow-x-auto pb-2 w-full">
+                {cities.map((city) => (
                   <button
                     key={city}
                     onClick={() => updateFilter('selectedCity', city)}
@@ -669,10 +701,26 @@ export default function ApartmentList() {
             <div className="hidden sm:block w-fit px-4 mb-4 overflow-x-auto mx-auto">
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
                 <div className="flex gap-3 whitespace-nowrap overflow-x-auto pb-2 w-full sm:w-auto">
-                  {[
-                    t("Tous"),
-                    ...[...new Set(apartments.map((a) => a.city))].sort(),
-                  ].map((city) => (
+                  {countries.map((country) => (
+                    <button
+                      key={country}
+                      onClick={() => {
+                        updateFilter('selectedCountry', country);
+                        updateFilter('selectedCity', t('Tous'));
+                      }}
+                      aria-pressed={filters.selectedCountry === country}
+                      className={`h-10 sm:h-12 px-3 sm:px-6 border-2 border-black rounded-full text-sm sm:text-lg font-semibold transition-colors duration-200 whitespace-nowrap ${
+                        filters.selectedCountry === country
+                          ? "bg-green-600 text-white"
+                          : "bg-white text-black hover:bg-green-600 hover:text-white"
+                      }`}
+                    >
+                      {country}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex gap-3 whitespace-nowrap overflow-x-auto pb-2 w-full">
+                  {cities.map((city) => (
                     <button
                       key={city}
                       onClick={() => updateFilter('selectedCity', city)}
