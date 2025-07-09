@@ -11,7 +11,7 @@ export default function AbonnementPage() {
 
       <p className="text-gray-700 mb-6">
         Pour publier vos projets immobiliers sur notre plateforme, commencez par créer un compte promoteur
-        et choisissez la formule adaptée à vos besoins.
+        et choisissez la formule adaptée à vos besoins..
       </p>
 
       {/* Sélecteur de devise */}
