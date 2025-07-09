@@ -249,9 +249,7 @@ function Main() {
         !selectedEntrance || project.project.entrance === selectedEntrance;
 
       // New Filters for country and city
-      const isInCountry =
-        selectedCountries.length === 0 ||
-        selectedCountries.includes(project.project.country);
+      const isInCountry = project.project.country === 'France';
 
       const isInCity =
         selectedCity === "Select a city" ||
