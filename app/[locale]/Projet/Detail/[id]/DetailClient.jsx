@@ -134,7 +134,7 @@ function ProjectRecapCard({ formData, images }) {
       </div>
       
       </div>
-      <div className="text-gray-500 text-lg font-semibold italic mb-3 text-center">
+      <div className="text-gray-900 text-lg font-semibold italic mb-3 text-center">
         {formData.TitrePromo}
       </div>
       {/* Langues */}
