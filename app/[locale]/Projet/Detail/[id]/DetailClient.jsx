@@ -93,8 +93,18 @@ const LANG_LABELS = {
 
 function ProjectRecapCard({ formData, images }) {
   const t = useTranslations('Projet');
-  // Utilise images[0] (première image du tableau) comme source de l'avatar si dispo, sinon formData.avatar ou null
-  const avatarUrl = images && images.length > 0 ? images[0] : (formData.avatar || null);
+  // Affiche l'image dont le nom commence par 'image6-' si elle existe, sinon images[0], sinon formData.avatar
+  let avatarUrl = null;
+  if (images && images.length > 0) {
+    const img6 = images.find(img => img.name && img.name.startsWith('image6-'));
+    if (img6) {
+      avatarUrl = img6.url;
+    } else {
+      avatarUrl = images[0].url;
+    }
+  } else {
+    avatarUrl = formData.avatar || null;
+  }
   // Affichage lisible des langues
   let langues = [];
   if (Array.isArray(formData.promoter_languages)) {
@@ -128,13 +138,13 @@ function ProjectRecapCard({ formData, images }) {
         {formData.promoter_first_name} {formData.promoter_last_name}
       </h3>
       {/* Compagnie */}
-      <div className="text-gray-500 text-lg font-semibold italic mb-3 text-center">
+      <div className="text-gray-700 text-lg font-semibold italic mb-3 text-center">
         {formData.compagny}
       </div>
       </div>
       
       </div>
-      <div className="text-gray-900 text-lg font-semibold italic mb-3 text-center">
+      <div className="text-gray-500 text-lg font-semibold italic mb-3 text-center">
         {formData.TitrePromo}
       </div>
       {/* Langues */}
@@ -353,14 +363,14 @@ export default function DetailClient({ project, locale }) {
         .list(`${id}/`);
       if (!imageError && imageList) {
         const onlyFiles = imageList.filter(item => item.name && item.metadata);
-        const imageUrls = onlyFiles.map((image) => {
+        const imageObjs = onlyFiles.map((image) => {
           const { data: { publicUrl } } = supabase
             .storage
             .from('project')
             .getPublicUrl(`${id}/${image.name}`);
-          return publicUrl;
+          return { url: publicUrl, name: image.name };
         });
-        setImages(imageUrls);
+        setImages(imageObjs);
       }
       setLoading(false);
     };
@@ -379,6 +389,17 @@ export default function DetailClient({ project, locale }) {
       fetchDetails();
     }
   }, [project, locale]);
+
+  // Filtrer les images du slider pour n'afficher que image1- à image5-
+  const sliderImages = images.filter(img =>
+    img.name && (
+      img.name.startsWith('image1-') ||
+      img.name.startsWith('image2-') ||
+      img.name.startsWith('image3-') ||
+      img.name.startsWith('image4-') ||
+      img.name.startsWith('image5-')
+    )
+  );
 
   // Gère l'ouverture animée du modal
   useEffect(() => {
@@ -459,13 +480,13 @@ export default function DetailClient({ project, locale }) {
             <div className="flex justify-center items-center h-[220px]">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
             </div>
-          ) : images.length > 0 ? (
+          ) : sliderImages.length > 0 ? (
             <div className="max-w-3xl w-full mx-auto">
               <div className="relative w-full h-[340px] flex items-center justify-center">
                 {/* Image courante */}
                 <div className="w-full h-full flex items-center justify-center">
                   <Image
-                    src={images[currentSlide]}
+                    src={sliderImages[currentSlide].url}
                     alt={`${projectName} - Image ${currentSlide + 1}`}
                     fill
                     className="object-cover w-full h-full rounded-2xl select-none border-2 border-white shadow-lg"
@@ -474,7 +495,7 @@ export default function DetailClient({ project, locale }) {
                   />
                 </div>
                 {/* Flèches de navigation slider */}
-                {images.length > 1 && (
+                {sliderImages.length > 1 && (
                   <>
                     <button
                       onClick={() => setCurrentSlide((prev) => Math.max(prev - 1, 0))}
@@ -485,10 +506,10 @@ export default function DetailClient({ project, locale }) {
                       ◀
                     </button>
                     <button
-                      onClick={() => setCurrentSlide((prev) => Math.min(prev + 1, images.length - 1))}
-                      disabled={currentSlide === images.length - 1}
+                      onClick={() => setCurrentSlide((prev) => Math.min(prev + 1, sliderImages.length - 1))}
+                      disabled={currentSlide === sliderImages.length - 1}
                       aria-label="Image suivante"
-                      className={`absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-20 ${currentSlide === images.length - 1 ? 'opacity-40 cursor-not-allowed' : ''}`}
+                      className={`absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-20 ${currentSlide === sliderImages.length - 1 ? 'opacity-40 cursor-not-allowed' : ''}`}
                     >
                       ▶
                     </button>
@@ -496,11 +517,11 @@ export default function DetailClient({ project, locale }) {
                 )}
               </div>
               {/* Pagination X/Y */}
-              {images.length > 1 && (
+              {sliderImages.length > 1 && (
                 <div className="flex items-center justify-center gap-2 mt-4">
                   <span className="text-lg font-semibold text-blue-800">{currentSlide + 1}</span>
                   <span className="text-gray-400">/</span>
-                  <span className="text-gray-400">{images.length}</span>
+                  <span className="text-gray-400">{sliderImages.length}</span>
                 </div>
               )}
             </div>
@@ -563,9 +584,9 @@ export default function DetailClient({ project, locale }) {
                   <SortableHeader label={t('Bedrooms')} sortKey="bed" extraClass="px-4" />
                   <SortableHeader label={t('Floor')} sortKey="floor" extraClass="px-4" />
                   <SortableHeader label={t('Surface')} sortKey="surface" extraClass="px-4" />
+                  <SortableHeader label={t('Price')} sortKey="price" extraClass="px-4" />
                   <SortableHeader label={t('Garden')} sortKey="garden" extraClass="px-4" />
                   <SortableHeader label={t('Rooftop')} sortKey="rooftop" extraClass="px-4" />
-                  <SortableHeader label={t('Price')} sortKey="price" extraClass="px-4" />
                   <th className="w-32 font-normal px-4">{t('Description')}</th>
                 </tr>
               </thead>
@@ -575,14 +596,12 @@ export default function DetailClient({ project, locale }) {
                     <td className="text-center py-2 px-4">{lot.bed}</td>
                     <td className="text-center py-2 px-4">{lot.floor}</td>
                     <td className="text-center py-2 px-4">{lot.surface} m²</td>
+                    <td className="text-center py-2 px-4">{Number(lot.price)?.toLocaleString('fr-FR')}</td>
                     <td className="text-center py-2 px-4">
                       {lot.garden ? "🌸" : ""}
                     </td>
                     <td className="text-center py-2 px-4">
                       {lot.rooftop ? "🏙️" : ""}
-                    </td>
-                    <td className="text-center py-2 px-4">
-                      {Number(lot.price)?.toLocaleString('fr-FR')}
                     </td>
                     <td className="text-center py-2 px-4">{lot.des}</td>
                   </tr>
