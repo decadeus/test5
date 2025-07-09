@@ -19,12 +19,11 @@ const defaultCenter = {
   lng: 2.3522
 };
 
-const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, locale, inactiveMarker }) => {
+const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, locale, inactiveMarker, onMarkerClick }) => {
   const t = useTranslations("Filtre");
   const params = useParams();
   const currentLocale = params?.locale || 'fr';
   
-  const [selectedApartment, setSelectedApartment] = useState(null);
   const [map, setMap] = useState(null);
   const markersRef = useRef([]);
 
@@ -117,15 +116,18 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
         title: apt.title || '',
         // icon: tu peux personnaliser ici si besoin
       });
-      // Marker inactif : pas d'event
+      // Ajout du gestionnaire de clic pour ouvrir la fiche projet à droite
+      if (onMarkerClick) {
+        marker.addListener('click', () => onMarkerClick(apt));
+      }
       markersRef.current.push(marker);
     });
-    // Pas d'InfoWindow pour l'instant (marker inactif)
+    // Pas d'InfoWindow pour l'instant (fiche projet à droite)
     return () => {
       markersRef.current.forEach(marker => marker.setMap(null));
       markersRef.current = [];
     };
-  }, [map, apartments]);
+  }, [map, apartments, onMarkerClick]);
 
   if (!isLoaded) {
     return (

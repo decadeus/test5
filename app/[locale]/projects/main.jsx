@@ -39,6 +39,7 @@ import Gallery from "@/app/[locale]/projects/piclist";
 import { PiEyeThin } from "react-icons/pi";
 import Filter from "@/components/svg/filter";
 import generateMetadata from "./metadata";
+import { useRouter } from "next/navigation";
 
 const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
 const ITEMS_PER_PAGE = 12;
@@ -133,6 +134,26 @@ function ProjectCard({ item, isFavorite, handleToggleFavorite }) {
   );
 }
 
+function ProjectSidePanel({ project, onClose }) {
+  const router = useRouter();
+  if (!project) return null;
+  const p = project.project || project;
+  return (
+    <div className="bg-white shadow-xl rounded-xl p-6 w-full max-w-xs flex flex-col gap-4 border border-gray-200">
+      <button onClick={onClose} className="ml-auto text-gray-400 hover:text-gray-700">✕</button>
+      <img src={p.mainpic_url || "/placeholder.jpg"} alt={p.name} className="w-full h-40 object-cover rounded-lg" />
+      <h2 className="text-xl font-bold text-gray-900">{p.name}</h2>
+      <div className="text-gray-700 text-sm">{p.city} &middot; {p.compagny}</div>
+      <button
+        className="mt-2 bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-lg font-semibold"
+        onClick={() => router.push(`/${p.country ? p.country.toLowerCase() : "fr"}/detailproject/${p.codepro || p.id}`)}
+      >
+        Voir la fiche projet
+      </button>
+    </div>
+  );
+}
+
 function Main() {
   const [projects, setProjects] = useState([]);
   const [originalProjects, setOriginalProjects] = useState([]);
@@ -157,6 +178,7 @@ function Main() {
   const [sortKey, setSortKey] = useState("bed");
   const f = useTranslations("Filtre");
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [selectedProject, setSelectedProject] = useState(null);
 
   const sort = [
     { key: "surface", label: "surface" },
@@ -535,6 +557,7 @@ function Main() {
               minLng={latLngExtremes.minLng}
               mLng={latLngExtremes.mLng}
               mLat={latLngExtremes.mLat} // Passer minLng
+              onMarkerClick={setSelectedProject}
             />
           </div>
         </div>

@@ -148,6 +148,42 @@ function groupByCity(apartments) {
 // Ajout gestion favoris locale
 const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
 
+function ProjectSidePanel({ project, onClose, ...props }) {
+  if (!project) return null;
+  return (
+    <div className="relative bg-white shadow-xl rounded-xl p-2 w-full max-w-xs flex flex-col gap-2 border border-gray-200">
+      <button onClick={onClose} className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 z-10">✕</button>
+      <ApartmentCard
+        apt={project}
+        projectImages={props.projectImages}
+        currentImageIndexes={props.currentImageIndexes}
+        handleNextImage={props.handleNextImage}
+        handlePrevImage={props.handlePrevImage}
+        isChangingImage={props.isChangingImage}
+        setIsChangingImage={props.setIsChangingImage}
+        highlight={props.highlight}
+        debouncedSearchTerm={props.debouncedSearchTerm}
+        filterProjectListByRange={props.filterProjectListByRange}
+        formatPrice={props.formatPrice}
+        t={props.t}
+        showAllLots={props.showAllLots}
+        setShowAllLots={props.setShowAllLots}
+        locale={props.locale}
+        tGlobal={props.tGlobal}
+        showLotsTable={props.showLotsTable}
+        favorites={props.favorites}
+        handleToggleFavorite={props.handleToggleFavorite}
+        isFavorite={props.isFavorite}
+      />
+      <div className="flex justify-center mt-2">
+        <Link href={`/${project.locale || props.locale || 'fr'}/Projet/Detail/${project.id}`} className="inline-flex items-center gap-1 bg-green-700 hover:bg-green-800 text-white rounded-full px-4 py-2 transition-all duration-200 text-sm font-semibold">
+          Voir la fiche projet
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default function ApartmentList() {
   const supabase = createClient();
   const t = useTranslations("Filtre");
@@ -183,6 +219,7 @@ export default function ApartmentList() {
   const [justUnselectedGarden, setJustUnselectedGarden] = useState(false);
   const [justUnselectedRooftop, setJustUnselectedRooftop] = useState(false);
   const [justUnselectedFavorites, setJustUnselectedFavorites] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   // Ajout : liste des pays distincts
   const countries = useMemo(() => {
@@ -1045,13 +1082,45 @@ export default function ApartmentList() {
             })()}
           </div>
         ) : (
-          <div className="max-w-6xl mx-auto my-12">
-            <GoogleMapComponent
-              apartments={apartmentsForMap}
-              projectImages={projectImages}
-              currentImageIndexes={currentImageIndexes}
-              locale={locale}
-            />
+          <div className="flex flex-col lg:flex-row gap-6">
+            <div className="flex-1 min-w-0">
+              <div className="max-w-6xl mx-auto my-12">
+                <GoogleMapComponent
+                  apartments={filteredApartments}
+                  projectImages={projectImages}
+                  currentImageIndexes={currentImageIndexes}
+                  locale={locale}
+                  onMarkerClick={setSelectedProject}
+                />
+              </div>
+            </div>
+            <div className="w-full lg:w-[400px] mt-6 lg:mt-12">
+              {selectedProject && (
+                <ProjectSidePanel
+                  project={selectedProject}
+                  onClose={() => setSelectedProject(null)}
+                  projectImages={projectImages}
+                  currentImageIndexes={currentImageIndexes}
+                  handleNextImage={handleNextImage}
+                  handlePrevImage={handlePrevImage}
+                  isChangingImage={isChangingImage}
+                  setIsChangingImage={setIsChangingImage}
+                  highlight={highlight}
+                  debouncedSearchTerm={debouncedSearchTerm}
+                  filterProjectListByRange={filterProjectListByRange}
+                  formatPrice={formatPrice}
+                  t={t}
+                  showAllLots={showAllLots}
+                  setShowAllLots={setShowAllLots}
+                  locale={locale}
+                  tGlobal={tGlobal}
+                  showLotsTable={false}
+                  favorites={favorites}
+                  handleToggleFavorite={handleToggleFavorite}
+                  isFavorite={isFavorite}
+                />
+              )}
+            </div>
           </div>
         )}
       </div>

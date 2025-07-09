@@ -44,7 +44,7 @@ const AutoZoom = ({ bounds }) => {
   return null;
 };
 
-const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
+const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng, onMarkerClick }) => {
   const pathname = usePathname();
   const locale = pathname ? pathname.split("/")[1] : "en"; // Sécurise l'extraction du locale
 
@@ -93,7 +93,19 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
         }
       `}</style>
 
-      <MapContainer center={center} zoom={4} className={classN} minZoom={4}>
+      {/*
+        Styles essentiels pour garantir l'interactivité de la carte :
+        - h-[600px] : hauteur suffisante
+        - w-full : largeur 100%
+        - pointer-events-auto : interactions activées
+      */}
+      <MapContainer 
+        center={center} 
+        zoom={4} 
+        className={`h-[600px] w-full pointer-events-auto ${classN || ''}`}
+        minZoom={4}
+        style={{ minHeight: 400, minWidth: 300, pointerEvents: 'auto' }}
+      >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -108,6 +120,7 @@ const MapComponent = ({ classN, todos, maxLat, minLng, mLat, mLng }) => {
               icon={createTextIcon()}
               aria-label="Pointer sur map"
               title="Pointer sur map"
+              eventHandlers={onMarkerClick ? { click: () => onMarkerClick(todo) } : undefined}
             >
               <Popup>
                 <div className="bg-white shadow-xl overflow-hidden w-[300px] rounded-lg border-b-blue-700 border-b-5">

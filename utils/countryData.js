@@ -126,6 +126,7 @@ export const countryData = {
     "La Seyne-sur-Mer",
     "La Tour-du-Pin",
     "Laval",
+    "Le Portel",
     "Lille",
     "Limay",
     "Limoges",
