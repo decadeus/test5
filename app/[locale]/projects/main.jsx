@@ -866,6 +866,7 @@ function FilterB({
                 <ModalContent>
                   {(onClose) => (
                     <div className="flex flex-col gap-2 p-4">
+                      {/* Suppression du select pays dans le modal, ne garder que la ville et les autres filtres */}
                       {facilities.map(
                         ({ id, label, value, selected, onChange }) => (
                           <CheckboxGroup
