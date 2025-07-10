@@ -197,6 +197,7 @@ export const countryData = {
     "Pont-de-Chéruy",
     "Pont-à-Vendin",
     "Port-Louis",
+    "Pusignan",
     "Puteaux",
     "Quincy-sous-Sénart",
     "Ramonville-Saint-Agne",
