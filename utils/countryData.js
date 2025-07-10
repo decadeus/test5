@@ -10,6 +10,7 @@ export const countryData = {
     "Anglet",
     "Angoulême",
     "Annemasse",
+    "Annecy",
     "Anzin",
     "Arbonville-lès-Gonesse",
     "Arcueil",
