@@ -269,6 +269,7 @@ export const countryData = {
     "Vénissieux",
     "Vesoul",
     "Vichy",
+    "Villars",
     "Ville-d’Avray",
     "Villefranche-sur-Saône",
     "Villejuif",
