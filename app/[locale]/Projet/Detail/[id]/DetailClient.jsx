@@ -617,12 +617,12 @@ export default function DetailClient({ project, locale }) {
                     className="flex justify-between items-center py-6 cursor-pointer hover:bg-gray-50"
                     onClick={() => setOpenPieces(o => ({ ...o, [pieces]: !o[pieces] }))}
                   >
-                    <span className="font-bold text-lg">
-                      APPARTEMENT - {pieces} CHAMBRES
+                    <span className="font-bold text-md sm:text-lg">
+                      {pieces} Piéces
                     </span>
                     <span className="flex items-center gap-2">
                       <span className="text-gray-500 text-sm">À partir de</span>
-                      <span className="font-bold text-2xl">{prixMin.toLocaleString()} €</span>
+                      <span className="font-bold text-md sm:text-2xl">{prixMin.toLocaleString()} €</span>
                       <span className="ml-2">{isOpen ? "▲" : "▼"}</span>
                     </span>
                   </div>
@@ -643,12 +643,12 @@ export default function DetailClient({ project, locale }) {
                         <tbody>
                           {lots.map((lot, idx) => (
                             <tr key={idx} className="border-t">
-                              <td className="px-4 py-2">{lot.surface} m²</td>
-                              <td className="px-4 py-2">{lot.floor}</td>
-                              <td className="px-4 py-2">{Number(lot.price).toLocaleString()} €</td>
-                              <td className="px-4 py-2">{lot.garden ? "🌸" : ""}</td>
-                              <td className="px-4 py-2">{lot.rooftop ? "🏙️" : ""}</td>
-                              <td className="px-4 py-2">{lot.des}</td>
+                              <td className="px-4 py-2 text-sm sm:text-lg">{lot.surface} m²</td>
+                              <td className="px-4 py-2 text-sm sm:text-lg">{lot.floor}</td>
+                              <td className="px-4 py-2 text-sm sm:text-lg">{Number(lot.price).toLocaleString()}</td>
+                              <td className="px-4 py-2 text-sm sm:text-lg">{lot.garden ? "🌸" : ""}</td>
+                              <td className="px-4 py-2 text-sm sm:text-lg">{lot.rooftop ? "🏙️" : ""}</td>
+                              <td className="px-4 py-2 text-sm sm:text-lg">{lot.des}</td>
                             </tr>
                           ))}
                         </tbody>
