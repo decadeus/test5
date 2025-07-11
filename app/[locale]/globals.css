@@ -399,3 +399,12 @@ body, html {
   font-weight: 600;
 }
 
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    display: block;
+  }
+}
+

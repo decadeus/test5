@@ -629,30 +629,32 @@ export default function DetailClient({ project, locale }) {
                   {/* Liste déroulante */}
                   {isOpen && (
                     <div className="pb-6">
-                      <table className="min-w-full border border-gray-200 bg-gray-50 rounded">
-                        <thead>
-                          <tr>
-                            <th className="px-4 py-2 text-left">Surface</th>
-                            <th className="px-4 py-2 text-left">Étage</th>
-                            <th className="px-4 py-2 text-left">Prix</th>
-                            <th className="px-4 py-2 text-left">Jardin</th>
-                            <th className="px-4 py-2 text-left">Rooftop</th>
-                            <th className="px-4 py-2 text-left">Description</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {lots.map((lot, idx) => (
-                            <tr key={idx} className="border-t">
-                              <td className="px-4 py-2 text-sm sm:text-lg">{lot.surface} m²</td>
-                              <td className="px-4 py-2 text-sm sm:text-lg">{lot.floor}</td>
-                              <td className="px-4 py-2 text-sm sm:text-lg">{Number(lot.price).toLocaleString()}</td>
-                              <td className="px-4 py-2 text-sm sm:text-lg">{lot.garden ? "🌸" : ""}</td>
-                              <td className="px-4 py-2 text-sm sm:text-lg">{lot.rooftop ? "🏙️" : ""}</td>
-                              <td className="px-4 py-2 text-sm sm:text-lg">{lot.des}</td>
+                      <div className="table-responsive w-full overflow-x-auto">
+                        <table className="min-w-[900px] border border-gray-200 bg-gray-50 rounded">
+                          <thead>
+                            <tr>
+                              <th className="px-4 py-2 text-left">Surface</th>
+                              <th className="px-4 py-2 text-left">Étage</th>
+                              <th className="px-4 py-2 text-left">Prix</th>
+                              <th className="px-4 py-2 text-left">Jardin</th>
+                              <th className="px-4 py-2 text-left">Rooftop</th>
+                              <th className="px-4 py-2 text-left">Description</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody>
+                            {lots.map((lot, idx) => (
+                              <tr key={idx} className="border-t">
+                                <td className="px-4 py-2 text-sm sm:text-lg">{lot.surface} m²</td>
+                                <td className="px-4 py-2 text-sm sm:text-lg">{lot.floor}</td>
+                                <td className="px-4 py-2 text-sm sm:text-lg">{Number(lot.price).toLocaleString()}</td>
+                                <td className="px-4 py-2 text-sm sm:text-lg">{lot.garden ? "🌸" : ""}</td>
+                                <td className="px-4 py-2 text-sm sm:text-lg">{lot.rooftop ? "🏙️" : ""}</td>
+                                <td className="px-4 py-2 text-sm sm:text-lg">{lot.des}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   )}
                 </div>
