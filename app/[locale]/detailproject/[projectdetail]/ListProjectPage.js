@@ -336,6 +336,7 @@ export default function ListProjectPage() {
                           </div>
                         </th>
                         <th className="border p-3 text-center">Garden</th>
+                        <th className="border p-3 text-center">Rooftop</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -356,6 +357,11 @@ export default function ListProjectPage() {
                           <td className="border p-3 text-center">
                             {item.garden && (
                               <Flower className="w-6 h-6 mx-auto" />
+                            )}
+                          </td>
+                          <td className="border p-3 text-center">
+                            {item.rooftop && (
+                              <span role="img" aria-label="rooftop">🏙️</span>
                             )}
                           </td>
                         </tr>

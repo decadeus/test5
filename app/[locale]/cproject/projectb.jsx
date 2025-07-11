@@ -63,7 +63,7 @@ export default function Projectb({ project, onProjectUpdate }) {
   const handleChange = (e, index, field) => {
     const updated = { ...projectData };
     updated.projectlist[index][field] =
-      field === "garden" || field === "noprice"
+      field === "garden" || field === "noprice" || field === "rooftop"
         ? e.target.checked
         : e.target.value;
     if (field === "price") {
@@ -74,7 +74,7 @@ export default function Projectb({ project, onProjectUpdate }) {
 
   const handleNewChange = (e, field) => {
     const value =
-      field === "garden" || field === "noprice"
+      field === "garden" || field === "noprice" || field === "rooftop"
         ? e.target.checked
         : e.target.value;
     setNewItem((prev) => ({ ...prev, [field]: value }));
