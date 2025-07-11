@@ -93,6 +93,22 @@ const LANG_LABELS = {
 
 function ProjectRecapCard({ formData, images }) {
   const t = useTranslations('Projet');
+  const [companyName, setCompanyName] = useState("");
+
+  useEffect(() => {
+    async function fetchCompany() {
+      if (!formData.promoter_email) return;
+      const supabase = createClient();
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("compagnie")
+        .eq("email", formData.promoter_email)
+        .maybeSingle();
+      if (profile?.compagnie) setCompanyName(profile.compagnie);
+      else setCompanyName("");
+    }
+    fetchCompany();
+  }, [formData.promoter_email]);
   // Affiche l'image dont le nom commence par 'image6-' si elle existe, sinon images[0], sinon formData.avatar
   let avatarUrl = null;
   if (images && images.length > 0) {
@@ -137,9 +153,9 @@ function ProjectRecapCard({ formData, images }) {
       <h3 className="text-xl font-extrabold text-gray-700 mb-1 text-center tracking-tight leading-tight drop-shadow-sm">
         {formData.promoter_first_name} {formData.promoter_last_name}
       </h3>
-      {/* Compagnie */}
+      {/* Compagnie depuis profiles */}
       <div className="text-gray-700 text-lg font-semibold italic mb-3 text-center">
-        {formData.compagny}
+        {companyName}
       </div>
       </div>
       
@@ -207,6 +223,18 @@ export default function DetailClient({ project, locale }) {
   const [showPromoterModal, setShowPromoterModal] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalAnimation, setModalAnimation] = useState(false);
+
+  // AJOUT: Accordéon lots par nombre de pièces
+  const [openPieces, setOpenPieces] = useState({});
+
+  function groupLotsByPieces(lots) {
+    return lots.reduce((acc, lot) => {
+      const key = lot.bed || "Autre";
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(lot);
+      return acc;
+    }, {});
+  }
 
   // Mesure dynamique du conteneur
   useEffect(() => {
@@ -577,37 +605,59 @@ export default function DetailClient({ project, locale }) {
         {/* Tableau des lots */}
         <section className="max-w-6xl mx-auto bg-white rounded-xl shadow p-6  m-8">
           <h3 className="text-2xl font-bold mb-4">{t('Lots')}</h3>
-          <div className="overflow-x-auto">
-            <table className="min-w-full border border-gray-200">
-              <thead>
-                <tr className="bg-gray-100">
-                  <SortableHeader label={t('Bedrooms')} sortKey="bed" extraClass="px-4" />
-                  <SortableHeader label={t('Floor')} sortKey="floor" extraClass="px-4" />
-                  <SortableHeader label={t('Surface')} sortKey="surface" extraClass="px-4" />
-                  <SortableHeader label={t('Price')} sortKey="price" extraClass="px-4" />
-                  <SortableHeader label={t('Garden')} sortKey="garden" extraClass="px-4" />
-                  <SortableHeader label={t('Rooftop')} sortKey="rooftop" extraClass="px-4" />
-                  <th className="w-32 font-normal px-4">{t('Description')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {projectList.map((lot, idx) => (
-                  <tr key={idx} className="border-t">
-                    <td className="text-center py-2 px-4">{lot.bed}</td>
-                    <td className="text-center py-2 px-4">{lot.floor}</td>
-                    <td className="text-center py-2 px-4">{lot.surface} m²</td>
-                    <td className="text-center py-2 px-4">{Number(lot.price)?.toLocaleString('fr-FR')}</td>
-                    <td className="text-center py-2 px-4">
-                      {lot.garden ? "🌸" : ""}
-                    </td>
-                    <td className="text-center py-2 px-4">
-                      {lot.rooftop ? "🏙️" : ""}
-                    </td>
-                    <td className="text-center py-2 px-4">{lot.des}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {/* ACCORDÉON LOTS PAR NOMBRE DE PIÈCES */}
+          <div className="divide-y divide-gray-200">
+            {Object.entries(groupLotsByPieces(projectList)).map(([pieces, lots]) => {
+              const prixMin = Math.min(...lots.map(lot => Number(lot.price) || 0));
+              const isOpen = openPieces[pieces];
+              return (
+                <div key={pieces}>
+                  {/* Ligne principale */}
+                  <div
+                    className="flex justify-between items-center py-6 cursor-pointer hover:bg-gray-50"
+                    onClick={() => setOpenPieces(o => ({ ...o, [pieces]: !o[pieces] }))}
+                  >
+                    <span className="font-bold text-lg">
+                      APPARTEMENT - {pieces} CHAMBRES
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span className="text-gray-500 text-sm">À partir de</span>
+                      <span className="font-bold text-2xl">{prixMin.toLocaleString()} €</span>
+                      <span className="ml-2">{isOpen ? "▲" : "▼"}</span>
+                    </span>
+                  </div>
+                  {/* Liste déroulante */}
+                  {isOpen && (
+                    <div className="pb-6">
+                      <table className="min-w-full border border-gray-200 bg-gray-50 rounded">
+                        <thead>
+                          <tr>
+                            <th className="px-4 py-2 text-left">Surface</th>
+                            <th className="px-4 py-2 text-left">Étage</th>
+                            <th className="px-4 py-2 text-left">Prix</th>
+                            <th className="px-4 py-2 text-left">Jardin</th>
+                            <th className="px-4 py-2 text-left">Rooftop</th>
+                            <th className="px-4 py-2 text-left">Description</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {lots.map((lot, idx) => (
+                            <tr key={idx} className="border-t">
+                              <td className="px-4 py-2">{lot.surface} m²</td>
+                              <td className="px-4 py-2">{lot.floor}</td>
+                              <td className="px-4 py-2">{Number(lot.price).toLocaleString()} €</td>
+                              <td className="px-4 py-2">{lot.garden ? "🌸" : ""}</td>
+                              <td className="px-4 py-2">{lot.rooftop ? "🏙️" : ""}</td>
+                              <td className="px-4 py-2">{lot.des}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </section>
         {/* Bouton flottant pour ouvrir la modal sur mobile */}
