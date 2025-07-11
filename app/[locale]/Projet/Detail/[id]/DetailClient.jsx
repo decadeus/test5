@@ -631,19 +631,15 @@ export default function DetailClient({ project, locale }) {
                   {isOpen && (
                     <div className="pb-6">
                       <div className="table-responsive w-full overflow-x-auto">
-                        <table className="min-w-full border border-gray-200 bg-gray-50 rounded">
+                        <table className="table-fixed min-w-[1200px] border border-gray-200 bg-gray-50 rounded">
                           <thead>
-                            <tr >
-                              <th className="px-2 py-2 w-28 text-center">
-                                Surface <span className="text-xs text-gray-400 font-normal">(m²)</span>
-                              </th>
+                            <tr>
+                              <th className="px-2 py-2 w-28 text-center">Surface <span className="text-xs text-gray-400 font-normal">(m²)</span></th>
                               <th className="px-2 py-2 w-28 text-center">Étage</th>
-                              <th className="px-2 py-2 w-32 text-center">
-                                Prix <span className="text-xs text-gray-400 font-normal">({currencySymbol})</span>
-                              </th>
+                              <th className="px-2 py-2 w-32 text-center">Prix <span className="text-xs text-gray-400 font-normal">({currencySymbol})</span></th>
                               <th className="px-2 py-2 w-20 text-center">Jardin</th>
-                              <th className="px-2 py-2 w-24 text-center">Rooftop</th>
-                              <th className="px-2 py-2 text-center">Description</th>
+                              <th className="px-2 py-2 w-20 text-center">Rooftop</th>
+                              <th className="px-2 py-2 min-w-[300px] text-center">Description</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -653,8 +649,8 @@ export default function DetailClient({ project, locale }) {
                                 <td className="px-2 py-2 w-28 text-center">{lot.floor}</td>
                                 <td className="px-2 py-2 w-32 text-center">{Number(lot.price).toLocaleString()}</td>
                                 <td className="px-2 py-2 w-20 text-center">{lot.garden ? "🌸" : ""}</td>
-                                <td className="px-2 py-2 w-24 text-center">{lot.rooftop ? "🏙️" : ""}</td>
-                                <td className="px-2 py-2">{lot.des}</td>
+                                <td className="px-2 py-2 w-20 text-center">{lot.rooftop ? "🏙️" : ""}</td>
+                                <td className="px-2 py-2 min-w-[300px]">{lot.des}</td>
                               </tr>
                             ))}
                           </tbody>
