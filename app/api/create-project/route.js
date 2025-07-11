@@ -7,7 +7,7 @@ export async function POST(req) {
     process.env.SUPABASE_SERVICE_ROLE_KEY
   );
   const body = await req.json();
-  const { name, user_id } = body;
+  const { name, user_id, compagny } = body;
 
   if (!name || !user_id) {
     return NextResponse.json({ message: "Nom du projet et user_id requis." }, { status: 400 });
@@ -62,7 +62,7 @@ export async function POST(req) {
     // Ajouter le projet
     const { data, error: insertError } = await serviceSupabase
       .from('project')
-      .insert([{ name, user_id }])
+      .insert([{ name, user_id, compagny }])
       .select();
     if (insertError) {
       return NextResponse.json({ message: insertError.message || "Erreur lors de l'ajout." }, { status: 400 });

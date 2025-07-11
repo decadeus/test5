@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { FaCreditCard, FaUsers, FaShieldAlt, FaBuilding } from "react-icons/fa";
+import { FaCreditCard, FaUsers, FaShieldAlt, FaBuilding, FaUserCircle } from "react-icons/fa";
 import CollaboratorManager from "./ProjetManagement";
 import ProjectForm from "./ProjectForm";
 import PermissionMatrix from "./PermissionMatrix";
@@ -10,6 +10,7 @@ import Projectb from "./projectb";
 import Generale from "./generale";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useTranslations } from "next-intl";
+import PromoteurProfile from "./PromoteurProfile";
 
 export default function Layout() {
   const supabase = createClientComponentClient();
@@ -39,6 +40,7 @@ export default function Layout() {
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -51,16 +53,22 @@ export default function Layout() {
       }
 
       setUser(user);
-
+      // Récupère l'avatar_url si elle existe dans profiles
       const { data: profile, error: profileError } = await supabase
         .from("profiles")
-        .select("role")
+        .select("role, avatar_url")
         .eq("id", user.id)
         .maybeSingle();
+      if (profile?.avatar_url) {
+        setAvatarUrl(profile.avatar_url);
+      } else {
+        setAvatarUrl("");
+      }
+
       if (profile?.role === "promoteur") {
         setIsPromoteur(true);
-      } else {
-        setIsPromoteur(false);
+      } else if (profile?.role === "collaborateur") {
+        setIsCollaborator(true);
       }
 
       const { data: collabRecord } = await supabase
@@ -255,12 +263,12 @@ export default function Layout() {
       <aside className="w-64 bg-gray-900 shadow-lg flex flex-col border-r border-gray-800 h-full">
         {/* User info */}
         <div className="flex items-center gap-3 p-4 border-b border-gray-800">
-          <div className="w-10 h-10 rounded-full bg-blue-900 flex items-center justify-center text-blue-200 font-bold text-lg">
-            {user?.email ? user.email[0].toUpperCase() : "?"}
-          </div>
-          <div>
+          
+          <div className="flex items-center gap-2">
+            {avatarUrl && (
+              <img src={avatarUrl} alt="avatar" className="w-8 h-8 rounded-full border border-gray-300 object-cover" />
+            )}
             <div className="font-bold text-sm text-white truncate max-w-[120px]">{user ? user.email : t('guest')}</div>
-            <div className="text-xs text-gray-400">{isPromoteur ? 'Promoteur' : isCollaborator ? 'Collaborateur' : 'Utilisateur'}</div>
           </div>
         </div>
         {/* Navigation */}
@@ -287,6 +295,18 @@ export default function Layout() {
           {(!isCollaborator || isPromoteur) && (
             <div className="mb-2">
               <div className="text-xs font-semibold uppercase text-gray-400 px-2 mb-1 tracking-widest">{t('admin')}</div>
+              {/* Onglet Profil Promoteur en premier */}
+              <button
+                onClick={() => setActiveView("profile")}
+                className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg transition-all
+                  ${activeView === "profile" ? "bg-gray-800 border-l-4 border-blue-200 text-blue-200" : "hover:bg-gray-800 text-gray-200 hover:text-blue-200"}
+                `}
+                aria-label="Profil Promoteur"
+              >
+                <FaUserCircle className="text-xl" />
+                <span className="text-sm font-medium flex-1 text-left">Profil Promoteur</span>
+              </button>
+              {/* Les autres boutons admin suivent */}
               <button
                 onClick={() => setActiveView("collaborators")}
                 className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg transition-all
@@ -380,6 +400,12 @@ export default function Layout() {
               projects={projects}
               t={t}
             />
+          </div>
+        )}
+
+        {activeView === "profile" && (
+          <div className="flex-1 p-6 border-t overflow-auto">
+            <PromoteurProfile user={user} />
           </div>
         )}
 

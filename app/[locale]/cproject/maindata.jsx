@@ -542,18 +542,13 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const supabase = createClient();
   const f = useTranslations("Projet");
-  const [isOtherCompany, setIsOtherCompany] = useState(
-    !!formData.compagny && !companies.some(c => c.name === formData.compagny)
-  );
   // --- NOUVEAU : Liste dynamique des compagnies ---
   const [companyList, setCompanyList] = useState([]);
   const [isLoadingCompanies, setIsLoadingCompanies] = useState(false);
-  const [companyError, setCompanyError] = useState("");
 
   useEffect(() => {
     async function fetchCompanies() {
       setIsLoadingCompanies(true);
-      setCompanyError("");
       try {
         const { data, error } = await supabase
           .from("project")
@@ -570,7 +565,6 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
         );
         setCompanyList(uniqueCompanies);
       } catch (e) {
-        setCompanyError("Erreur lors du chargement des compagnies");
         setCompanyList([]);
       } finally {
         setIsLoadingCompanies(false);
@@ -720,41 +714,7 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
         <h3 className="text-xl font-semibold text-gray-800">{f('InformationsPromoteur', { default: 'Informations du Promoteur' })}</h3>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Compagnie */}
-        <div className="flex flex-col mb-4">
-          <label className="text-black mb-1">{f('Compagnie', { default: 'Compagnie' })}</label>
-          <select
-            value={isOtherCompany ? "__other__" : formData.compagny}
-            onChange={e => {
-              if (e.target.value === "__other__") {
-                setIsOtherCompany(true);
-                updateFormData('compagny', '');
-              } else {
-                setIsOtherCompany(false);
-                updateFormData('compagny', e.target.value);
-              }
-            }}
-            className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-            disabled={isLoadingCompanies}
-          >
-            <option value="" disabled>{isLoadingCompanies ? f('Chargement', { default: 'Chargement...' }) : f('Compagnie', { default: 'Compagnie' })}</option>
-            {/* Liste dynamique des compagnies */}
-            {companyList.map((company, idx) => (
-              <option key={company + idx} value={company}>{company}</option>
-            ))}
-            <option value="__other__">{f('Autre', { default: 'Autre...' })}</option>
-          </select>
-          {isOtherCompany && (
-            <input
-              type="text"
-              className="border rounded px-3 py-2 mt-2 focus:ring-blue-500 focus:border-blue-500 text-black placeholder-gray-400"
-              placeholder={f('NomCompagniePlaceholder', { default: 'Entrez le nom de la compagnie' })}
-              value={formData.compagny}
-              onChange={e => updateFormData('compagny', e.target.value)}
-            />
-          )}
-          {companyError && <span className="text-xs text-red-500 mt-1">{companyError}</span>}
-        </div>
+       
         {/* Lien vers le projet */}
         <div className="flex flex-col mb-4">
           <label className="text-gray-700 font-medium mb-2">{f('LienProjet', { default: 'Lien vers le projet' })}</label>
@@ -1489,6 +1449,22 @@ function AIModal({ isOpen, onClose, children }) {
 // Remettre ProjectRecapCard comme fonction interne non exportée
 function ProjectRecapCard({ formData, images }) {
   const t = useTranslations('Projet');
+  const [companyName, setCompanyName] = useState("");
+  useEffect(() => {
+    async function fetchCompany() {
+      if (!formData.promoter_email) return;
+      const supabase = createClient();
+      // On suppose que l'email promoteur correspond à un profil
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("compagnie")
+        .eq("email", formData.promoter_email)
+        .maybeSingle();
+      if (profile?.compagnie) setCompanyName(profile.compagnie);
+      else setCompanyName("");
+    }
+    fetchCompany();
+  }, [formData.promoter_email]);
   // Utilise images[6] comme source de l'avatar
   const avatarUrl = images && images[6] ? images[6] : null;
   // Affichage lisible des langues
@@ -1525,10 +1501,9 @@ function ProjectRecapCard({ formData, images }) {
         </h3>
       )}
       {/* Compagnie */}
-      {formData.compagny && (
-        <div className="text-gray-500 text-lg font-semibold italic mb-3 text-center">
-          {formData.compagny}
-        </div>
+     
+      {companyName && (
+        <div className="text-gray-500 text-lg font-semibold italic mb-3 text-center ml-4">{companyName}</div>
       )}
       </div> {/* <-- fermeture du bloc infos promoteur */}
       </div> {/* <-- fermeture du flex items-center justify-center gap-4 */}
