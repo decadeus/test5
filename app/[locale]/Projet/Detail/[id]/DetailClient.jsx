@@ -448,6 +448,7 @@ export default function DetailClient({ project, locale }) {
   // Champs projet multilingues
   const projectName = project.name;
   const projectCity = project[`city_${lang}`] || project.city_fr || project.city;
+  const currencySymbol = project.cur === 'EUR' ? '€' : project.cur === 'PLN' ? 'zł' : project.cur || '';
 
   return (
     <>
@@ -617,7 +618,7 @@ export default function DetailClient({ project, locale }) {
                     className="flex justify-between items-center py-6 cursor-pointer hover:bg-gray-50"
                     onClick={() => setOpenPieces(o => ({ ...o, [pieces]: !o[pieces] }))}
                   >
-                    <span className="font-bold text-md sm:text-lg">
+                    <span className="font-bold text-md sm:text-lg pl-4">
                       {pieces} Piéces
                     </span>
                     <span className="flex items-center gap-2">
@@ -630,26 +631,30 @@ export default function DetailClient({ project, locale }) {
                   {isOpen && (
                     <div className="pb-6">
                       <div className="table-responsive w-full overflow-x-auto">
-                        <table className="min-w-[900px] border border-gray-200 bg-gray-50 rounded">
+                        <table className="min-w-full border border-gray-200 bg-gray-50 rounded">
                           <thead>
-                            <tr>
-                              <th className="px-4 py-2 text-left">Surface</th>
-                              <th className="px-4 py-2 text-left">Étage</th>
-                              <th className="px-4 py-2 text-left">Prix</th>
-                              <th className="px-4 py-2 text-left">Jardin</th>
-                              <th className="px-4 py-2 text-left">Rooftop</th>
-                              <th className="px-4 py-2 text-left">Description</th>
+                            <tr >
+                              <th className="px-2 py-2 w-28 text-center">
+                                Surface <span className="text-xs text-gray-400 font-normal">(m²)</span>
+                              </th>
+                              <th className="px-2 py-2 w-28 text-center">Étage</th>
+                              <th className="px-2 py-2 w-32 text-center">
+                                Prix <span className="text-xs text-gray-400 font-normal">({currencySymbol})</span>
+                              </th>
+                              <th className="px-2 py-2 w-20 text-center">Jardin</th>
+                              <th className="px-2 py-2 w-24 text-center">Rooftop</th>
+                              <th className="px-2 py-2 text-center">Description</th>
                             </tr>
                           </thead>
                           <tbody>
                             {lots.map((lot, idx) => (
-                              <tr key={idx} className="border-t">
-                                <td className="px-4 py-2 text-sm sm:text-lg">{lot.surface} m²</td>
-                                <td className="px-4 py-2 text-sm sm:text-lg">{lot.floor}</td>
-                                <td className="px-4 py-2 text-sm sm:text-lg">{Number(lot.price).toLocaleString()}</td>
-                                <td className="px-4 py-2 text-sm sm:text-lg">{lot.garden ? "🌸" : ""}</td>
-                                <td className="px-4 py-2 text-sm sm:text-lg">{lot.rooftop ? "🏙️" : ""}</td>
-                                <td className="px-4 py-2 text-sm sm:text-lg">{lot.des}</td>
+                              <tr key={idx} className={`border-t ${idx % 2 === 1 ? 'bg-green-50/50' : 'bg-white'}`}>
+                                <td className="px-2 py-2 w-28 text-center">{lot.surface}</td>
+                                <td className="px-2 py-2 w-28 text-center">{lot.floor}</td>
+                                <td className="px-2 py-2 w-32 text-center">{Number(lot.price).toLocaleString()}</td>
+                                <td className="px-2 py-2 w-20 text-center">{lot.garden ? "🌸" : ""}</td>
+                                <td className="px-2 py-2 w-24 text-center">{lot.rooftop ? "🏙️" : ""}</td>
+                                <td className="px-2 py-2">{lot.des}</td>
                               </tr>
                             ))}
                           </tbody>
