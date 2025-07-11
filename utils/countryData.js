@@ -243,6 +243,7 @@ export const countryData = {
     "Saint-Sébastien-sur-Loire",
     "Saint-Étienne-du-Rouvray",
     "Sarcelles",
+    "Sartrouville",
     "Sète",
     "Sevran",
     "Sèvres",
