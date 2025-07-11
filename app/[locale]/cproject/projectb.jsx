@@ -152,8 +152,9 @@ export default function Projectb({ project, onProjectUpdate }) {
             </p>
           </div>
 
-          <div className="overflow-x-auto shadow-md rounded-lg border border-gray-300">
-            <table className="min-w-full table-auto text-sm border-collapse">
+          {/* Tableau des lots/appartements */}
+          <div className="w-full overflow-x-auto shadow-md rounded-lg border border-gray-300">
+            <table className="min-w-[900px] table-auto text-sm border-collapse">
               <thead className="bg-gray-100 text-xs uppercase">
                 <tr>
                   <th className={colClasses + " w-20"}>{t('ref')}</th>
