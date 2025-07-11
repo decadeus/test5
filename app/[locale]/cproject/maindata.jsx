@@ -140,7 +140,6 @@ function useProjectData(project, onProjectUpdate) {
     disabled: project?.disabled || false,
     child: project?.child || false,
     fitness: project?.fitness || false,
-    rooftop: project?.rooftop || false, // <-- AJOUT
   });
 
   const [isSaving, setIsSaving] = useState(false);
@@ -179,7 +178,6 @@ function useProjectData(project, onProjectUpdate) {
       disabled: project?.disabled || false,
       child: project?.child || false,
       fitness: project?.fitness || false,
-      rooftop: project?.rooftop || false, // <-- AJOUT
     });
   }, [project]);
 
