@@ -29,6 +29,7 @@ export const countryData = {
     "Bellevue",
     "Béthune",
     "Biarritz",
+    "Blagnac",
     "Bordeaux",
     "Boulogne-Billancourt",
     "Boulogne-sur-Mer",
