@@ -110,7 +110,7 @@ function ApartmentCard({
           )}
         </button>
       </div>
-      <div className="p-5 flex flex-col gap-2 flex-1">
+      <div className="p-5 flex flex-col h-full gap-2 flex-1">
         <h3 className="text-lg font-bold text-gray-900">{highlight(apt.title, debouncedSearchTerm)}</h3>
         <div className="flex items-center gap-2 text-green-700 text-sm">
           <MapPin className="w-4 h-4" />
@@ -118,7 +118,7 @@ function ApartmentCard({
         </div>
         <span className="text-xs text-gray-400 italic">by {apt.compagny && apt.compagny !== 'null' ? apt.compagny : 'Non renseigné'}</span>
         {showProjectButton && (
-          <button className="mt-3 w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl flex items-center justify-center gap-2 transition">
+          <button className="mt-auto w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl flex items-center justify-center gap-2 transition">
             <Link href={`/${locale}/Projet/Detail/${apt.id}`} className="flex items-center gap-2 w-full h-full justify-center">
               {t('Voir le détail')}
               <PlusIcon className="w-4 h-4" />
