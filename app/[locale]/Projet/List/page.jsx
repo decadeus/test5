@@ -788,241 +788,235 @@ export default function ApartmentList() {
             </button>
           </div>
         </Dialog>
-        {/* Filtres inline desktop */}
-        <div
-          className="hidden sm:block w-full h-[400px] bg-cover bg-center mb-8 shadow-md relative"
-          style={{ backgroundImage: 'url(/newheader.png)' }}
-        >
+        {/* Filtres inline desktop - version pro épurée avec fond d'écran */}
+        <div className="hidden sm:block w-full h-[440px] bg-cover bg-center mb-8 shadow-md relative" style={{ backgroundImage: 'url(/newheader.png)' }}>
           <div className="absolute inset-0 backdrop-blur-sm bg-black/10 z-0"></div>
-          <div className="absolute top-2/3 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center gap-4 w-full z-10 lg:mt-0 mt-10">
-           
-            {/* Sliders en colonne sur mobile, en ligne sur desktop */}
-            <div className="hidden sm:flex flex-col gap-4 justify-center items-center w-full max-w-5xl mx-auto px-4 mb-6">
-              <div className="w-full flex flex-col sm:flex-row gap-4 sm:gap-16 justify-center items-stretch max-w-5xl mx-auto">
-                <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 flex-1 items-center">
-                  {/* Champ de recherche de ville à gauche des sliders */}
-                  <div className="relative city-autocomplete flex flex-col items-center justify-center min-w-[220px] max-w-xs w-full">
-                    <input
-                      type="text"
-                      value={cityInput}
-                      onChange={handleCityInputChange}
-                      onFocus={() => setShowCityDropdown(true)}
-                      placeholder={t("SelectionnezUneVille")}
-                      className="h-10 sm:h-12 w-full pl-3 sm:pl-4 text-left border-2 border-black rounded-full text-sm sm:text-lg font-semibold text-gray-500 placeholder:text-black/50 placeholder:font-semibold"
-                    />
-                    {shouldShowCityDropdown && (
-                      <ul className="z-10 bg-white border border-gray-300 rounded-2xl mt-1 w-full max-h-48 overflow-y-auto shadow-lg">
-                        {filteredCities.map((city, index) => (
-                          <li
-                            key={index}
-                            className={`flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-100 ${city === filters.selectedCity ? "bg-gray-200 font-bold" : ""}`}
-                            onClick={() => handleCitySelect(city)}
-                          >
-                            <MdLocationOn className="text-green-600 text-lg min-w-[20px]" />
-                            <span className="font-bold text-black">{city}</span>
-                            {getCountryForCity(city) && (
-                              <span className="ml-1 text-gray-400 text-sm">{getCountryForCity(city)}</span>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                  {/* Price Slider */}
-                  <div className="flex flex-col items-center w-full sm:w-80">
-                    <div className="w-full bg-white/90 p-1.5 sm:p-2 shadow-lg px-3 sm:px-4 border-2 border-black rounded-full flex flex-row justify-between items-center mb-1">
-                      <span className="text-xs sm:text-sm font-semibold">{t("Prix")}</span>
-                      <span className="text-xs sm:text-sm font-semibold text-black">
-                        {formatPrice(filters.priceRange[0])} - {formatPrice(filters.priceRange[1])}
-                      </span>
-                    </div>
-                    <Slider
-                      value={filters.priceRange}
-                      onChange={(_, v) => updateFilter('priceRange', v)}
-                      valueLabelDisplay="off"
-                      min={minMaxValues.minPrice}
-                      max={minMaxValues.maxPrice}
-                      step={10000}
-                      sx={{
-                        color: '#16a34a',
-                        height: { xs: 4, sm: 8 },
-                        px: 1,
-                        borderRadius: '9999px',
-                        background: 'transparent',
-                        boxShadow: 'none',
-                        border: 'none',
-                        '& .MuiSlider-thumb': {
-                          width: { xs: 16, sm: 24 },
-                          height: { xs: 16, sm: 24 },
-                          borderRadius: '50%',
-                          backgroundColor: '#16a34a',
-                          border: '2.5px solid #111',
-                          boxShadow: '0 2px 4px rgba(0,0,0,0.10)',
-                        },
-                        '& .MuiSlider-track': {
-                          border: 'none',
-                          background: '#16a34a',
-                          height: { xs: 4, sm: 8 },
-                          borderRadius: '9999px',
-                        },
-                        '& .MuiSlider-rail': {
-                          backgroundColor: 'white',
-                          border: '2px solid #111',
-                          opacity: 1,
-                          height: { xs: 4, sm: 8 },
-                          borderRadius: '9999px',
-                        },
-                      }}
-                    />
-                  </div>
-                  {/* Bed Slider */}
-                  <div className="flex flex-col items-center w-full sm:w-56">
-                    <div className="w-full bg-white/90 p-1.5 sm:p-2 shadow-lg px-3 sm:px-4 border-2 border-black rounded-full flex flex-row justify-between items-center mb-1">
-                      <span className="text-xs sm:text-sm font-semibold">{t("Chambres")}</span>
-                      <span className="text-xs sm:text-sm font-semibold text-black">
-                        {filters.bedRange[0]} - {filters.bedRange[1]}
-                      </span>
-                    </div>
-                    <Slider
-                      value={filters.bedRange}
-                      onChange={(_, v) => updateFilter('bedRange', v)}
-                      valueLabelDisplay="off"
-                      min={minMaxValues.minBed}
-                      max={minMaxValues.maxBed}
-                      step={1}
-                      sx={{
-                        color: '#16a34a',
-                        height: { xs: 4, sm: 8 },
-                        px: 1,
-                        borderRadius: '9999px',
-                        background: 'transparent',
-                        boxShadow: 'none',
-                        border: 'none',
-                        '& .MuiSlider-thumb': {
-                          width: { xs: 16, sm: 24 },
-                          height: { xs: 16, sm: 24 },
-                          borderRadius: '50%',
-                          backgroundColor: '#16a34a',
-                          border: '2.5px solid #111',
-                          boxShadow: '0 2px 4px rgba(0,0,0,0.10)',
-                        },
-                        '& .MuiSlider-track': {
-                          border: 'none',
-                          background: '#16a34a',
-                          height: { xs: 4, sm: 8 },
-                          borderRadius: '9999px',
-                        },
-                        '& .MuiSlider-rail': {
-                          backgroundColor: 'white',
-                          border: '2px solid #111',
-                          opacity: 1,
-                          height: { xs: 4, sm: 8 },
-                          borderRadius: '9999px',
-                        },
-                      }}
-                    />
-                  </div>
-                  {/* Surface Slider */}
-                  <div className="flex flex-col items-center w-full sm:w-64">
-                    <div className="w-full bg-white/90 p-1.5 sm:p-2 shadow-lg px-3 sm:px-4 border-2 border-black rounded-full flex flex-row justify-between items-center mb-1">
-                      <span className="text-xs sm:text-sm font-semibold">{t("Surface")}</span>
-                      <span className="text-xs sm:text-sm font-semibold text-black">
-                        {filters.surfaceRange[0]} - {filters.surfaceRange[1]}
-                      </span>
-                    </div>
-                    <Slider
-                      value={filters.surfaceRange}
-                      onChange={(_, v) => updateFilter('surfaceRange', v)}
-                      valueLabelDisplay="off"
-                      min={minMaxValues.minSurface}
-                      max={minMaxValues.maxSurface}
-                      step={1}
-                      sx={{
-                        color: '#16a34a',
-                        height: { xs: 4, sm: 8 },
-                        px: 1,
-                        borderRadius: '9999px',
-                        background: 'transparent',
-                        boxShadow: 'none',
-                        border: 'none',
-                        '& .MuiSlider-thumb': {
-                          width: { xs: 16, sm: 24 },
-                          height: { xs: 16, sm: 24 },
-                          borderRadius: '50%',
-                          backgroundColor: '#16a34a',
-                          border: '2.5px solid #111',
-                          boxShadow: '0 2px 4px rgba(0,0,0,0.10)',
-                        },
-                        '& .MuiSlider-track': {
-                          border: 'none',
-                          background: '#16a34a',
-                          height: { xs: 4, sm: 8 },
-                          borderRadius: '9999px',
-                        },
-                        '& .MuiSlider-rail': {
-                          backgroundColor: 'white',
-                          border: '2px solid #111',
-                          opacity: 1,
-                          height: { xs: 4, sm: 8 },
-                          borderRadius: '9999px',
-                        },
-                      }}
-                    />
-                  </div>
-                </div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-6xl px-6">
+            <div className="flex items-center gap-8 w-full py-8 border-b-2 border-black bg-white/60 rounded-xl shadow-sm backdrop-blur-md relative z-10 min-h-[100px]">
+              {/* Ville */}
+              <div className="relative city-autocomplete flex items-center min-w-[180px] pl-4">
+                <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input
+                  type="text"
+                  value={cityInput}
+                  onChange={handleCityInputChange}
+                  onFocus={() => setShowCityDropdown(true)}
+                  placeholder={t("Ville")}
+                  className="bg-transparent border-none outline-none text-lg font-normal w-32 focus:w-48 transition-all duration-200 pl-3"
+                />
+                {shouldShowCityDropdown && (
+                  <ul className="z-30 bg-white border border-gray-300 rounded-2xl mt-1 w-48 max-h-48 overflow-y-auto shadow-lg absolute top-24 left-0">
+                    {filteredCities.map((city, index) => (
+                      <li
+                        key={index}
+                        className={`flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-100 ${city === filters.selectedCity ? "bg-gray-200 font-bold" : ""}`}
+                        onClick={() => handleCitySelect(city)}
+                      >
+                        <MdLocationOn className="text-green-600 text-lg min-w-[20px]" />
+                        <span className="font-bold text-black">{city}</span>
+                        {getCountryForCity(city) && (
+                          <span className="ml-1 text-gray-400 text-sm">{getCountryForCity(city)}</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
-              {/* Filtres Jardin, Rooftop, Favoris */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-4 w-full">
-                <div className="flex flex-row gap-4 w-full justify-center items-center">
-                  <button
-                    onClick={e => {
-                      updateFilter('onlyGarden', v => {
-                        if (v) setJustUnselectedGarden(true);
-                        return !v;
-                      });
-                      e.currentTarget.blur();
-                    }}
-                    onMouseLeave={() => setJustUnselectedGarden(false)}
-                    aria-pressed={filters.onlyGarden}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${filters.onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black'} ${!filters.onlyGarden && !justUnselectedGarden ? 'hover:bg-green-600 hover:text-white' : ''}`}
-                  >
-                    <span>{t("AvecJardin")}</span>
-                    <span>🌸</span>
-                  </button>
-                  <button
-                    onClick={e => {
-                      updateFilter('onlyRooftop', v => {
-                        if (v) setJustUnselectedRooftop(true);
-                        return !v;
-                      });
-                      e.currentTarget.blur();
-                    }}
-                    onMouseLeave={() => setJustUnselectedRooftop(false)}
-                    aria-pressed={filters.onlyRooftop}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${filters.onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black'} ${!filters.onlyRooftop && !justUnselectedRooftop ? 'hover:bg-green-600 hover:text-white' : ''}`}
-                  >
-                    <span>{t("Rooftop")}</span>
-                    <span>🏙️</span>
-                  </button>
+              {/* Prix */}
+              <div className="flex flex-col items-start min-w-[180px]">
+                <span className="text-sm text-gray-700 font-normal mb-1">{t("Prix")}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-base font-semibold">{formatPrice(filters.priceRange[0])}</span>
+                  <span className="text-gray-400">-</span>
+                  <span className="text-base font-semibold">{formatPrice(filters.priceRange[1])}</span>
                 </div>
-                <div className="w-full flex justify-center items-center mt-2 sm:mt-0">
-                  <button
-                    onClick={e => {
-                      setShowOnlyFavorites(v => {
-                        if (v) setJustUnselectedFavorites(true);
-                        return !v;
-                      });
-                      e.currentTarget.blur();
-                    }}
-                    onMouseLeave={() => setJustUnselectedFavorites(false)}
-                    aria-pressed={showOnlyFavorites}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${showOnlyFavorites ? 'bg-green-600 text-white' : 'bg-white text-black'} ${!showOnlyFavorites && !justUnselectedFavorites ? 'hover:bg-green-600 hover:text-white' : ''}`}
-                  >
-                    {showOnlyFavorites ? <FaHeart className="text-red-600" /> : <FaRegHeart className="text-gray-400" />}
-                    <span>{t("MesFavoris")}</span>
-                  </button>
-                </div>
+                <Slider
+                  value={filters.priceRange}
+                  onChange={(_, v) => updateFilter('priceRange', v)}
+                  valueLabelDisplay="off"
+                  min={minMaxValues.minPrice}
+                  max={minMaxValues.maxPrice}
+                  step={10000}
+                  sx={{
+                    color: '#111',
+                    height: 2,
+                    px: 0,
+                    borderRadius: 0,
+                    background: 'transparent',
+                    boxShadow: 'none',
+                    border: 'none',
+                    '& .MuiSlider-thumb': {
+                      width: 12,
+                      height: 12,
+                      borderRadius: '50%',
+                      backgroundColor: '#111',
+                      border: '2px solid #fff',
+                      boxShadow: 'none',
+                    },
+                    '& .MuiSlider-track': {
+                      border: 'none',
+                      background: '#111',
+                      height: 2,
+                      borderRadius: 0,
+                    },
+                    '& .MuiSlider-rail': {
+                      backgroundColor: '#e5e7eb',
+                      border: 'none',
+                      opacity: 1,
+                      height: 2,
+                      borderRadius: 0,
+                    },
+                  }}
+                />
               </div>
+              {/* Chambres */}
+              <div className="flex flex-col items-start min-w-[120px]">
+                <span className="text-sm text-gray-700 font-normal mb-1">{t("Chambres")}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-base font-semibold">{filters.bedRange[0]}</span>
+                  <span className="text-gray-400">-</span>
+                  <span className="text-base font-semibold">{filters.bedRange[1]}</span>
+                </div>
+                <Slider
+                  value={filters.bedRange}
+                  onChange={(_, v) => updateFilter('bedRange', v)}
+                  valueLabelDisplay="off"
+                  min={minMaxValues.minBed}
+                  max={minMaxValues.maxBed}
+                  step={1}
+                  sx={{
+                    color: '#111',
+                    height: 2,
+                    px: 0,
+                    borderRadius: 0,
+                    background: 'transparent',
+                    boxShadow: 'none',
+                    border: 'none',
+                    '& .MuiSlider-thumb': {
+                      width: 12,
+                      height: 12,
+                      borderRadius: '50%',
+                      backgroundColor: '#111',
+                      border: '2px solid #fff',
+                      boxShadow: 'none',
+                    },
+                    '& .MuiSlider-track': {
+                      border: 'none',
+                      background: '#111',
+                      height: 2,
+                      borderRadius: 0,
+                    },
+                    '& .MuiSlider-rail': {
+                      backgroundColor: '#e5e7eb',
+                      border: 'none',
+                      opacity: 1,
+                      height: 2,
+                      borderRadius: 0,
+                    },
+                  }}
+                />
+              </div>
+              {/* Surface */}
+              <div className="flex flex-col items-start min-w-[120px]">
+                <span className="text-sm text-gray-700 font-normal mb-1">{t("Surface")}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-base font-semibold">{filters.surfaceRange[0]}</span>
+                  <span className="text-gray-400">-</span>
+                  <span className="text-base font-semibold">{filters.surfaceRange[1]}</span>
+                </div>
+                <Slider
+                  value={filters.surfaceRange}
+                  onChange={(_, v) => updateFilter('surfaceRange', v)}
+                  valueLabelDisplay="off"
+                  min={minMaxValues.minSurface}
+                  max={minMaxValues.maxSurface}
+                  step={1}
+                  sx={{
+                    color: '#111',
+                    height: 2,
+                    px: 0,
+                    borderRadius: 0,
+                    background: 'transparent',
+                    boxShadow: 'none',
+                    border: 'none',
+                    '& .MuiSlider-thumb': {
+                      width: 12,
+                      height: 12,
+                      borderRadius: '50%',
+                      backgroundColor: '#111',
+                      border: '2px solid #fff',
+                      boxShadow: 'none',
+                    },
+                    '& .MuiSlider-track': {
+                      border: 'none',
+                      background: '#111',
+                      height: 2,
+                      borderRadius: 0,
+                    },
+                    '& .MuiSlider-rail': {
+                      backgroundColor: '#e5e7eb',
+                      border: 'none',
+                      opacity: 1,
+                      height: 2,
+                      borderRadius: 0,
+                    },
+                  }}
+                />
+              </div>
+              {/* Filtres secondaires */}
+              <button
+                onClick={e => {
+                  updateFilter('onlyGarden', v => {
+                    if (v) setJustUnselectedGarden(true);
+                    return !v;
+                  });
+                  e.currentTarget.blur();
+                }}
+                onMouseLeave={() => setJustUnselectedGarden(false)}
+                aria-pressed={filters.onlyGarden}
+                className={`flex items-center gap-1 px-3 py-2 rounded-full font-medium text-[15px] border transition-all duration-200 whitespace-nowrap
+                  ${filters.onlyGarden
+                    ? 'bg-green-600 text-white border-green-700 shadow-md'
+                    : 'bg-white/60 text-black border-gray-300 hover:bg-green-100'}
+                `}
+              >
+                <span>🌸</span>
+                <span>{t("AvecJardin")}</span>
+              </button>
+              <button
+                onClick={e => {
+                  updateFilter('onlyRooftop', v => {
+                    if (v) setJustUnselectedRooftop(true);
+                    return !v;
+                  });
+                  e.currentTarget.blur();
+                }}
+                onMouseLeave={() => setJustUnselectedRooftop(false)}
+                aria-pressed={filters.onlyRooftop}
+                className={`flex items-center gap-1 px-3 py-2 rounded-full font-medium text-[15px] border transition-all duration-200 whitespace-nowrap
+                  ${filters.onlyRooftop
+                    ? 'bg-blue-600 text-white border-blue-700 shadow-md'
+                    : 'bg-white/60 text-black border-gray-300 hover:bg-blue-100'}
+                `}
+              >
+                <span>🏙️</span>
+                <span>{t("Rooftop")}</span>
+              </button>
+              <button
+                onClick={e => {
+                  setShowOnlyFavorites(v => {
+                    if (v) setJustUnselectedFavorites(true);
+                    return !v;
+                  });
+                  e.currentTarget.blur();
+                }}
+                onMouseLeave={() => setJustUnselectedFavorites(false)}
+                aria-pressed={showOnlyFavorites}
+                className={`flex items-center gap-1 px-3 py-1 rounded font-normal text-base border-none bg-transparent hover:underline transition-colors duration-200 ${showOnlyFavorites ? 'text-red-700' : 'text-black'}`}
+              >
+                {showOnlyFavorites ? <FaHeart className="text-red-600" /> : <FaRegHeart className="text-gray-400" />}
+                <span>{t("MesFavoris")}</span>
+              </button>
             </div>
           </div>
         </div>
