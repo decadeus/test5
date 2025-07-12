@@ -51,7 +51,8 @@
         "Ouvrir les filtres": "Open filters",
         "Voir le détail": "View details",
         "Réinitialiser les filtres": "Reset filters",
-        "AucunFavoriEnregistre": "No favorite saved."
+        "AucunFavoriEnregistre": "No favorite saved.",
+        "Ville": "City"
     },
     "Nav": {
         "Ajouter": "Add project",

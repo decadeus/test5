@@ -60,7 +60,8 @@
             "SearchPlaceholder": "Пошук нової квартири в..."
         },
         "SearchPlaceholder": "Пошук нової квартири в...",
-        "Réinitialiser les filtres": "Скинути фільтри"
+        "Réinitialiser les filtres": "Скинути фільтри",
+        "Ville": "Місто"
     },
     "Nav": {
         "Ajouter": "Додати проект",

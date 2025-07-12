@@ -60,7 +60,8 @@
         },
         "SearchPlaceholder": "Поиск новой квартиры в...",
         "Voir le détail": "Подробнее",
-        "Réinitialiser les filtres": "Сбросить фильтры"
+        "Réinitialiser les filtres": "Сбросить фильтры",
+        "Ville": "Город"
     },
     "Nav": {
         "Ajouter": "Добавить проект",

@@ -58,7 +58,8 @@
             "link": "E-Mail senden"
         },
         "SearchPlaceholder": "Neue Wohnung suchen in...",
-        "Voir le détail": "Details anzeigen"
+        "Voir le détail": "Details anzeigen",
+        "Ville": "Stadt"
     },
     "Nav": {
         "Ajouter": "Ein Projekt hinzufügen",

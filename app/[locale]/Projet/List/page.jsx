@@ -565,7 +565,7 @@ export default function ApartmentList() {
                   value={cityInput}
                   onChange={handleCityInputChange}
                   onFocus={() => setShowCityDropdown(true)}
-                  placeholder={t("SelectionnezUneVille")}
+                  placeholder={t("Ville")}
                   className="h-10 w-full pl-3 text-left border-2 border-black rounded-full text-sm font-semibold text-gray-500 placeholder:text-black/50 placeholder:font-semibold"
                 />
                 {shouldShowCityDropdown && (
@@ -792,7 +792,7 @@ export default function ApartmentList() {
         {/* Filtres inline desktop - version pro épurée avec fond d'écran */}
         <div className="hidden sm:block w-full h-[440px] bg-cover bg-center mb-8 shadow-md relative" style={{ backgroundImage: 'url(/newheader.png)' }}>
           <div className="absolute inset-0 backdrop-blur-sm bg-black/10 z-0"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-6xl px-6">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl px-6">
             <div className="flex items-center gap-8 w-full py-8 border-b-2 border-black bg-white/60 rounded-xl shadow-sm backdrop-blur-md relative z-10 min-h-[100px]">
               {/* Ville */}
               <div className="relative city-autocomplete flex items-center min-w-[180px] pl-4">
