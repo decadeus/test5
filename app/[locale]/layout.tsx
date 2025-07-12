@@ -15,6 +15,7 @@ import { LanguageProvider } from "@/app/LanguageContext";
 import HreflangTags from "./components/HreflangTags";
 import { headers } from 'next/headers';
 import Chatbot from "../components/Chatbot";
+import CookieConsentBanner from "./components/CookieConsentBanner";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -118,6 +119,7 @@ export default async function RootLayout({
           </Providers>
         </LanguageProvider>
         </NextIntlClientProvider>
+        <CookieConsentBanner />
       </body>
     </html>
   );
