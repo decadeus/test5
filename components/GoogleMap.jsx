@@ -159,15 +159,12 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
         map,
         position: { lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) },
         title: apt.title || '',
-        // icon: tu peux personnaliser ici si besoin
       });
-      // Ajout du gestionnaire de clic pour ouvrir la fiche projet à droite
       if (onMarkerClick) {
         marker.addListener('click', () => onMarkerClick(apt));
       }
       markersRef.current.push(marker);
     });
-    // Pas d'InfoWindow pour l'instant (fiche projet à droite)
     return () => {
       markersRef.current.forEach(marker => marker.setMap(null));
       markersRef.current = [];
