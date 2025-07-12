@@ -247,6 +247,42 @@ export default function ApartmentList() {
     ];
   }, [apartments, filters.selectedCountry, t]);
 
+  // --- RESTORE PATCH : min/max initiaux stockés au premier fetch, sliders stables ---
+  const [minMaxValuesInitial, setMinMaxValuesInitial] = useState(null);
+
+  function getMinMaxValuesFromList(list) {
+    let minPrice = Infinity, maxPrice = -Infinity;
+    let minBed = Infinity, maxBed = -Infinity;
+    let minSurface = Infinity, maxSurface = -Infinity;
+    list.forEach(apt => {
+      apt.projectlist?.forEach(lot => {
+        const price = parseFloat(lot.price);
+        const bed = parseInt(lot.bed);
+        const surface = parseFloat(lot.surface);
+        if (!isNaN(price)) {
+          minPrice = Math.min(minPrice, price);
+          maxPrice = Math.max(maxPrice, price);
+        }
+        if (!isNaN(bed)) {
+          minBed = Math.min(minBed, bed);
+          maxBed = Math.max(maxBed, bed);
+        }
+        if (!isNaN(surface)) {
+          minSurface = Math.min(minSurface, surface);
+          maxSurface = Math.max(maxSurface, surface);
+        }
+      });
+    });
+    return {
+      minPrice: minPrice === Infinity ? 100000 : minPrice,
+      maxPrice: maxPrice === -Infinity ? 5000000 : maxPrice,
+      minBed: minBed === Infinity ? 1 : minBed,
+      maxBed: maxBed === -Infinity ? 5 : maxBed,
+      minSurface: minSurface === Infinity ? 10 : minSurface,
+      maxSurface: maxSurface === -Infinity ? 200 : maxSurface
+    };
+  }
+
   useEffect(() => {
     setFilteredCities(cities);
   }, [cities]);
@@ -426,6 +462,10 @@ export default function ApartmentList() {
           lat: item.lat,
           lng: item.lng,
         }));
+        // --- RESTORE PATCH : min/max initiaux stockés au premier fetch, sliders stables ---
+        if (!minMaxValuesInitial && apartmentsWithList.length > 0) {
+          setMinMaxValuesInitial(getMinMaxValuesFromList(apartmentsWithList));
+        }
         setApartments(prev => pageIndex === 0 ? apartmentsWithList : [...prev, ...apartmentsWithList]);
         // Images (optionnel, tu peux optimiser pour ne charger que les images des nouveaux projets)
         const imagesObj = {};
@@ -555,6 +595,170 @@ export default function ApartmentList() {
   // Dans le render, avant le return
   console.log('[ApartmentList] apartments in render:', apartments);
 
+  // --- RESTORE PATCH : min/max initiaux stockés au premier fetch, sliders stables ---
+  // 1. Récupérer tous les lots du pays/ville sélectionnés (avant filtrage par sliders)
+  const allLotsForSliders = useMemo(() => {
+    let lots = [];
+    apartments.forEach(apt => {
+      lots = lots.concat(apt.projectlist || []);
+    });
+    return lots;
+  }, [apartments]);
+
+  // 2. Calculer les min/max globaux à partir de allLotsForSliders
+  const globalSliderBounds = useMemo(() => {
+    let minPrice = Infinity, maxPrice = -Infinity;
+    let minBed = Infinity, maxBed = -Infinity;
+    let minSurface = Infinity, maxSurface = -Infinity;
+    allLotsForSliders.forEach(lot => {
+      const price = parseFloat(lot.price);
+      const bed = parseInt(lot.bed);
+      const surface = parseFloat(lot.surface);
+      if (!isNaN(price)) {
+        minPrice = Math.min(minPrice, price);
+        maxPrice = Math.max(maxPrice, price);
+      }
+      if (!isNaN(bed)) {
+        minBed = Math.min(minBed, bed);
+        maxBed = Math.max(maxBed, bed);
+      }
+      if (!isNaN(surface)) {
+        minSurface = Math.min(minSurface, surface);
+        maxSurface = Math.max(maxSurface, surface);
+      }
+    });
+    return {
+      minPrice: minPrice === Infinity ? 100000 : minPrice,
+      maxPrice: maxPrice === -Infinity ? 5000000 : maxPrice,
+      minBed: minBed === Infinity ? 1 : minBed,
+      maxBed: maxBed === -Infinity ? 5 : maxBed,
+      minSurface: minSurface === Infinity ? 10 : minSurface,
+      maxSurface: maxSurface === -Infinity ? 200 : maxSurface,
+    };
+  }, [allLotsForSliders]);
+
+  // --- RESTORE PATCH : min/max initiaux stockés au premier fetch, sliders stables ---
+  // 1. Récupérer tous les lots filtrés selon les filtres actuels
+  const filteredLots = useMemo(() => {
+    let lots = [];
+    apartments.forEach(apt => {
+      lots = lots.concat(
+        apt.projectlist?.filter(lot => {
+          const lotPrice = parseFloat(lot.price);
+          const lotBed = parseInt(lot.bed);
+          const lotSurface = parseFloat(lot.surface);
+          const hasGarden = !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false';
+          const hasRooftop = !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false';
+          return (
+            lotPrice >= filters.priceRange[0] && lotPrice <= filters.priceRange[1] &&
+            lotBed >= filters.bedRange[0] && lotBed <= filters.bedRange[1] &&
+            lotSurface >= filters.surfaceRange[0] && lotSurface <= filters.surfaceRange[1] &&
+            (!filters.onlyGarden || hasGarden) &&
+            (!filters.onlyRooftop || hasRooftop)
+          );
+        }) || []
+      );
+    });
+    return lots;
+  }, [apartments, filters]);
+
+  // 2. Calculer les min/max à partir de filteredLots
+  const dynamicSliderBounds = useMemo(() => {
+    let minPrice = Infinity, maxPrice = -Infinity;
+    let minBed = Infinity, maxBed = -Infinity;
+    let minSurface = Infinity, maxSurface = -Infinity;
+    filteredLots.forEach(lot => {
+      const price = parseFloat(lot.price);
+      const bed = parseInt(lot.bed);
+      const surface = parseFloat(lot.surface);
+      if (!isNaN(price)) {
+        minPrice = Math.min(minPrice, price);
+        maxPrice = Math.max(maxPrice, price);
+      }
+      if (!isNaN(bed)) {
+        minBed = Math.min(minBed, bed);
+        maxBed = Math.max(maxBed, bed);
+      }
+      if (!isNaN(surface)) {
+        minSurface = Math.min(minSurface, surface);
+        maxSurface = Math.max(maxSurface, surface);
+      }
+    });
+    return {
+      minPrice: minPrice === Infinity ? filters.priceRange[0] : minPrice,
+      maxPrice: maxPrice === -Infinity ? filters.priceRange[1] : maxPrice,
+      minBed: minBed === Infinity ? filters.bedRange[0] : minBed,
+      maxBed: maxBed === -Infinity ? filters.bedRange[1] : maxBed,
+      minSurface: minSurface === Infinity ? filters.surfaceRange[0] : minSurface,
+      maxSurface: maxSurface === -Infinity ? filters.surfaceRange[1] : maxSurface,
+    };
+  }, [filteredLots, filters]);
+
+  // State pour tous les projets filtrés (non paginés, pour le résumé)
+  const [allFilteredProjects, setAllFilteredProjects] = useState([]);
+
+  // Fetch séparé pour tous les projets filtrés (pour le résumé)
+  useEffect(() => {
+    const fetchAllFilteredProjects = async () => {
+      let query = supabase
+        .from("project")
+        .select("id, name, compagny, country, city, lat, lng, online");
+      if (filters.selectedCountry) {
+        query = query.eq('country', filters.selectedCountry);
+      }
+      if (filters.selectedCity && filters.selectedCity !== t('Tous')) {
+        query = query.eq('city', filters.selectedCity);
+      }
+      if (filters.searchTerm && filters.searchTerm.length > 0) {
+        query = query.ilike('name', `%${filters.searchTerm}%`);
+      }
+      const { data: projects, error: errorProjects } = await query;
+      const onlineProjects = (projects || []).filter(item => item.online === true);
+      // Récupère les projectlists pour ces projets
+      const { data: projectlists, error: errorProjectlists } = await supabase
+        .from("projectlist")
+        .select("ide, ref, bed, floor, price, surface, garden, rooftop, des");
+      if (errorProjects || errorProjectlists) {
+        setAllFilteredProjects([]);
+        return;
+      }
+      // Associe les projectlists à leur projet parent
+      const projectsWithList = (onlineProjects || []).map((item) => ({
+        id: item.id,
+        title: item.name,
+        compagny: item.compagny,
+        summary: item.compagny,
+        price: item.country,
+        city: item.city,
+        imageUrl: "/images/placeholder.jpg",
+        projectlist: (projectlists || []).filter((pl) => pl.ide === item.id),
+        lat: item.lat,
+        lng: item.lng,
+      }));
+      setAllFilteredProjects(projectsWithList);
+    };
+    fetchAllFilteredProjects();
+    // eslint-disable-next-line
+  }, [filters]);
+
+  // Calcul du total projets (projets avec au moins un lot filtré)
+  const totalFilteredProjects = allFilteredProjects.filter(
+    apt => filterProjectListByRange(apt.projectlist).length > 0
+  ).length;
+  // Calcul du nombre de compagnies (compagnies avec au moins un projet affiché)
+  const totalFilteredCompanies = useMemo(() => {
+    const set = new Set(
+      allFilteredProjects
+        .filter(apt => filterProjectListByRange(apt.projectlist).length > 0)
+        .map(apt => apt.compagny)
+        .filter(Boolean)
+    );
+    return set.size;
+  }, [allFilteredProjects, filterProjectListByRange]);
+  const totalFilteredAppartments = useMemo(() => {
+    return allFilteredProjects.reduce((acc, apt) => acc + filterProjectListByRange(apt.projectlist).length, 0);
+  }, [allFilteredProjects, filterProjectListByRange]);
+
   if (!isHydrated) return null;
   return (
     <>
@@ -642,8 +846,8 @@ export default function ApartmentList() {
                   value={filters.priceRange}
                   onChange={(_, v) => updateFilter('priceRange', v)}
                   valueLabelDisplay="off"
-                  min={minMaxValues.minPrice}
-                  max={minMaxValues.maxPrice}
+                  min={minMaxValuesInitial?.minPrice ?? minMaxValues.minPrice}
+                  max={minMaxValuesInitial?.maxPrice ?? minMaxValues.maxPrice}
                   step={10000}
                   sx={{
                     color: '#16a34a',
@@ -688,8 +892,8 @@ export default function ApartmentList() {
                   value={filters.bedRange}
                   onChange={(_, v) => updateFilter('bedRange', v)}
                   valueLabelDisplay="off"
-                  min={minMaxValues.minBed}
-                  max={minMaxValues.maxBed}
+                  min={minMaxValuesInitial?.minBed ?? minMaxValues.minBed}
+                  max={minMaxValuesInitial?.maxBed ?? minMaxValues.maxBed}
                   step={1}
                   sx={{
                     color: '#16a34a',
@@ -734,8 +938,8 @@ export default function ApartmentList() {
                   value={filters.surfaceRange}
                   onChange={(_, v) => updateFilter('surfaceRange', v)}
                   valueLabelDisplay="off"
-                  min={minMaxValues.minSurface}
-                  max={minMaxValues.maxSurface}
+                  min={minMaxValuesInitial?.minSurface ?? minMaxValues.minSurface}
+                  max={minMaxValuesInitial?.maxSurface ?? minMaxValues.maxSurface}
                   step={1}
                   sx={{
                     color: '#16a34a',
@@ -877,8 +1081,8 @@ export default function ApartmentList() {
                   value={filters.priceRange}
                   onChange={(_, v) => updateFilter('priceRange', v)}
                   valueLabelDisplay="off"
-                  min={minMaxValues.minPrice}
-                  max={minMaxValues.maxPrice}
+                  min={minMaxValuesInitial?.minPrice ?? minMaxValues.minPrice}
+                  max={minMaxValuesInitial?.maxPrice ?? minMaxValues.maxPrice}
                   step={10000}
                   sx={{
                     color: '#111',
@@ -924,8 +1128,8 @@ export default function ApartmentList() {
                   value={filters.bedRange}
                   onChange={(_, v) => updateFilter('bedRange', v)}
                   valueLabelDisplay="off"
-                  min={minMaxValues.minBed}
-                  max={minMaxValues.maxBed}
+                  min={minMaxValuesInitial?.minBed ?? minMaxValues.minBed}
+                  max={minMaxValuesInitial?.maxBed ?? minMaxValues.maxBed}
                   step={1}
                   sx={{
                     color: '#111',
@@ -971,8 +1175,8 @@ export default function ApartmentList() {
                   value={filters.surfaceRange}
                   onChange={(_, v) => updateFilter('surfaceRange', v)}
                   valueLabelDisplay="off"
-                  min={minMaxValues.minSurface}
-                  max={minMaxValues.maxSurface}
+                  min={minMaxValuesInitial?.minSurface ?? minMaxValues.minSurface}
+                  max={minMaxValuesInitial?.maxSurface ?? minMaxValues.maxSurface}
                   step={1}
                   sx={{
                     color: '#111',
@@ -1061,8 +1265,21 @@ export default function ApartmentList() {
                 <span>{t("MesFavoris")}</span>
               </button>
             </div>
+            {/* Résumé dans la zone blanche */}
+            <div className="w-full flex flex-col items-center justify-center py-8 mt-4">
+              <span className="text-3xl font-extrabold text-gray-800">
+                {tGlobal('Compagnies')}: {totalFilteredCompanies} | {tGlobal('Projets')}: {totalFilteredProjects} | {tGlobal('Appartements')}: {totalFilteredAppartments}
+              </span>
+            </div>
           </div>
         </div>
+
+        {/* Affichage du total projets, appartements et compagnies filtrés (desktop uniquement) */}
+        {/* <div className="w-full flex flex-col items-center justify-center my-4">
+          <span className="text-base font-semibold text-gray-700">
+            {tGlobal('Projets')}: {totalFilteredProjects} | {tGlobal('Appartements')}: {totalFilteredAppartments} | {tGlobal('Compagnies')}: {totalFilteredCompanies}
+          </span>
+        </div> */}
 
         <div className="flex justify-center mb-8 mt-4">
           <div className="bg-white rounded-full p-1 shadow-lg border-2 border-gray-200 flex gap-2">
