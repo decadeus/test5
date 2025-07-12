@@ -542,6 +542,19 @@ export default function ApartmentList() {
   // Afficher la dropdown seulement si l'utilisateur a tapé au moins une lettre et qu'il y a des résultats
   const shouldShowCityDropdown = showCityDropdown && cityInput.length > 0 && filteredCities.length > 0;
 
+  // Ajout du log pour tracer le fetch
+  useEffect(() => {
+    console.log('[ApartmentList] Initial apartments:', apartments);
+  }, []);
+
+  // Ajout du log après chaque setApartments
+  useEffect(() => {
+    console.log('[ApartmentList] apartments updated:', apartments);
+  }, [apartments]);
+
+  // Dans le render, avant le return
+  console.log('[ApartmentList] apartments in render:', apartments);
+
   if (!isHydrated) return null;
   return (
     <>
@@ -1153,12 +1166,13 @@ export default function ApartmentList() {
             <div className="flex-1 min-w-0">
               <div className="md:max-w-7xl md:w-full w-[350px] mx-auto my-12">
                 <GoogleMapComponent
-                  apartments={filteredApartments}
+                  apartments={apartments}
                   projectImages={projectImages}
                   currentImageIndexes={currentImageIndexes}
                   locale={locale}
                   onMarkerClick={setSelectedProject}
                 />
+                {console.log('[ApartmentList] apartments passed to GoogleMapComponent:', apartments)}
               </div>
             </div>
             <div className="w-full lg:w-[400px] mt-6 lg:mt-12">

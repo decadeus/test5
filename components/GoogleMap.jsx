@@ -144,7 +144,17 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
 
   // Ajout des Advanced Markers après chargement de la carte
   useEffect(() => {
-    if (!map || !window.google || !window.google.maps || !window.google.maps.marker) return;
+    // Log à chaque render pour voir le contenu du prop apartments
+    console.log('[GoogleMapComponent] apartments prop:', apartments);
+    console.log('[GoogleMap] Marker debug', {
+      map,
+      apartments,
+      markerApi: window.google?.maps?.marker,
+      advancedMarker: window.google?.maps?.marker?.AdvancedMarkerElement,
+      classicMarker: window.google?.maps?.Marker,
+      apartmentsContent: apartments,
+    });
+    if (!map || !window.google || !window.google.maps) return;
     // Nettoyage des anciens markers
     markersRef.current.forEach(marker => marker.setMap(null));
     markersRef.current = [];
@@ -155,11 +165,21 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
       parseFloat(apt.lat) !== 0 && parseFloat(apt.lng) !== 0
     );
     valid.forEach((apt) => {
-      const marker = new window.google.maps.marker.AdvancedMarkerElement({
-        map,
-        position: { lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) },
-        title: apt.title || '',
-      });
+      let marker;
+      if (window.google.maps.marker && window.google.maps.marker.AdvancedMarkerElement) {
+        marker = new window.google.maps.marker.AdvancedMarkerElement({
+          map,
+          position: { lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) },
+          title: apt.title || '',
+        });
+      } else {
+        // Fallback marker classique
+        marker = new window.google.maps.Marker({
+          map,
+          position: { lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) },
+          title: apt.title || '',
+        });
+      }
       if (onMarkerClick) {
         marker.addListener('click', () => onMarkerClick(apt));
       }
