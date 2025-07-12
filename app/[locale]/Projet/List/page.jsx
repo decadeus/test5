@@ -74,7 +74,8 @@ function ApartmentCard({
   showLotsTable,
   favorites,
   handleToggleFavorite,
-  isFavorite
+  isFavorite,
+  showProjectButton = true
 }) {
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => handleNextImage(apt.id, (projectImages[apt.id]||[]).length),
@@ -116,12 +117,14 @@ function ApartmentCard({
           <span>{apt.city}</span>
         </div>
         <span className="text-xs text-gray-400 italic">by {apt.compagny && apt.compagny !== 'null' ? apt.compagny : 'Non renseigné'}</span>
-        <button className="mt-3 w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl flex items-center justify-center gap-2 transition">
-          <Link href={`/${locale}/Projet/Detail/${apt.id}`} className="flex items-center gap-2 w-full h-full justify-center">
-            {t('Voir le détail')}
-            <PlusIcon className="w-4 h-4" />
-          </Link>
-        </button>
+        {showProjectButton && (
+          <button className="mt-3 w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl flex items-center justify-center gap-2 transition">
+            <Link href={`/${locale}/Projet/Detail/${apt.id}`} className="flex items-center gap-2 w-full h-full justify-center">
+              {t('Voir le détail')}
+              <PlusIcon className="w-4 h-4" />
+            </Link>
+          </button>
+        )}
       </div>
     </div>
   );
@@ -142,8 +145,8 @@ const NEW_FAVORITE_APARTMENTS_KEY = "favoriteApartments";
 function ProjectSidePanel({ project, onClose, ...props }) {
   if (!project) return null;
   return (
-    <div className="relative bg-white shadow-xl rounded-xl p-2 w-full max-w-xs flex flex-col gap-2 border border-gray-200">
-      <button onClick={onClose} className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 z-10">✕</button>
+    <div className="relative bg-white  rounded-xl p-2 w-full max-w-xs flex flex-col gap-2 ">
+      
       <ApartmentCard
         apt={project}
         projectImages={props.projectImages}
@@ -165,12 +168,8 @@ function ProjectSidePanel({ project, onClose, ...props }) {
         favorites={props.favorites}
         handleToggleFavorite={props.handleToggleFavorite}
         isFavorite={props.isFavorite}
+        showProjectButton={true}
       />
-      <div className="flex justify-center mt-2">
-        <Link href={`/${project.locale || props.locale || 'fr'}/Projet/Detail/${project.id}`} className="inline-flex items-center gap-1 bg-green-700 hover:bg-green-800 text-white rounded-full px-4 py-2 transition-all duration-200 text-sm font-semibold">
-          Voir la fiche projet
-        </Link>
-      </div>
     </div>
   );
 }
@@ -1133,6 +1132,7 @@ export default function ApartmentList() {
                         favorites={favorites}
                         handleToggleFavorite={handleToggleFavorite}
                         isFavorite={isFavorite}
+                        showProjectButton={true}
                       />
                     ))
                 )}
@@ -1149,7 +1149,7 @@ export default function ApartmentList() {
             )}
           </div>
         ) : (
-          <div className="flex flex-col lg:flex-row gap-6">
+          <div className="flex flex-col lg:flex-row gap-6 max-w-7xl items-center mx-auto">
             <div className="flex-1 min-w-0">
               <div className="max-w-6xl mx-auto my-12">
                 <GoogleMapComponent
@@ -1185,6 +1185,7 @@ export default function ApartmentList() {
                   favorites={favorites}
                   handleToggleFavorite={handleToggleFavorite}
                   isFavorite={isFavorite}
+                  showProjectButton={true}
                 />
               )}
             </div>
