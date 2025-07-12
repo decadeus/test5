@@ -19,15 +19,37 @@ const defaultCenter = {
   lng: 2.3522
 };
 
-const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, locale, inactiveMarker, onMarkerClick }) => {
+const defaultFranceCenter = { lat: 46.603354, lng: 1.888334 };
+const defaultFranceZoom = 5;
+const singleProjectZoom = 13;
+
+// Wrapper pour forcer un reset à chaque rechargement
+const GoogleMapResetWrapper = (props) => {
+  // Utilise un timestamp pour forcer le reset à chaque montage
+  const [mapKey] = useState(() => Date.now().toString());
+  return <GoogleMapComponent {...props} mapKey={mapKey} />;
+};
+
+const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, locale, inactiveMarker, onMarkerClick, mapKey }) => {
   const t = useTranslations("Filtre");
   const params = useParams();
   const currentLocale = params?.locale || 'fr';
   
+  // Calculer le centre et le zoom dynamiquement (doit être avant les hooks qui l'utilisent)
+  const validApartments = useMemo(() => Array.isArray(apartments)
+    ? apartments.filter(apt =>
+        apt.lat && apt.lng &&
+        !isNaN(parseFloat(apt.lat)) && !isNaN(parseFloat(apt.lng)) &&
+        parseFloat(apt.lat) !== 0 && parseFloat(apt.lng) !== 0
+      )
+    : [], [apartments]);
+
   const [map, setMap] = useState(null);
   const markersRef = useRef([]);
   const [hasUserMovedMap, setHasUserMovedMap] = useState(false);
   const lastApartmentsHash = useRef(apartments.map(a => a.id).join(','));
+  const [shouldUpdateCenter, setShouldUpdateCenter] = useState(true);
+  const [lastCenter, setLastCenter] = useState(null);
   const [hasMapBeenInitialized, setHasMapBeenInitialized] = useState(false);
 
   // Reviens à l'appel direct
@@ -40,32 +62,41 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
   const onLoad = useCallback((map) => {
     setMap(map);
     setHasMapBeenInitialized(true);
-  }, []);
+    // Toujours réinitialiser le zoom/center au chargement
+    if (validApartments.length === 0) {
+      map.setCenter(defaultFranceCenter);
+      map.setZoom(defaultFranceZoom);
+    } else if (validApartments.length === 1) {
+      map.setCenter({ lat: parseFloat(validApartments[0].lat), lng: parseFloat(validApartments[0].lng) });
+      map.setZoom(singleProjectZoom);
+    } else {
+      // Plusieurs projets : fitBounds
+      const bounds = new window.google.maps.LatLngBounds();
+      validApartments.forEach(apt => bounds.extend({ lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) }));
+      map.fitBounds(bounds);
+    }
+  }, [validApartments]);
 
   const onUnmount = useCallback(() => {
     setMap(null);
   }, []);
 
-  // Calculer le centre de la carte basé sur les appartements
   const mapCenter = useMemo(() => {
-    if (!Array.isArray(apartments) || apartments.length === 0) return defaultCenter;
-    
-    const validApartments = apartments.filter(apt => 
-      apt.lat && apt.lng && 
-      !isNaN(parseFloat(apt.lat)) && !isNaN(parseFloat(apt.lng)) &&
-      parseFloat(apt.lat) !== 0 && parseFloat(apt.lng) !== 0
-    );
-    
-    if (validApartments.length === 0) return defaultCenter;
-    
+    if (validApartments.length === 0) return defaultFranceCenter;
+    if (validApartments.length === 1) return { lat: parseFloat(validApartments[0].lat), lng: parseFloat(validApartments[0].lng) };
     const totalLat = validApartments.reduce((sum, apt) => sum + parseFloat(apt.lat), 0);
     const totalLng = validApartments.reduce((sum, apt) => sum + parseFloat(apt.lng), 0);
-    
     return {
       lat: totalLat / validApartments.length,
       lng: totalLng / validApartments.length
     };
-  }, [apartments]);
+  }, [validApartments]);
+
+  const dynamicZoom = useMemo(() => {
+    if (validApartments.length === 0) return defaultFranceZoom;
+    if (validApartments.length === 1) return singleProjectZoom;
+    return 10; // valeur par défaut, sera ajustée par fitBounds
+  }, [validApartments]);
 
   // Fonction pour formater le prix
   const formatPrice = (price) => {
@@ -90,27 +121,31 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
     if (!map || !Array.isArray(apartments) || hasUserMovedMap) return;
     if (lastApartmentsHash.current === currentHash) return;
     lastApartmentsHash.current = currentHash;
-    const valid = apartments.filter(apt =>
-      apt.lat && apt.lng &&
-      !isNaN(parseFloat(apt.lat)) && !isNaN(parseFloat(apt.lng)) &&
-      parseFloat(apt.lat) !== 0 && parseFloat(apt.lng) !== 0
-    );
-    if (valid.length === 0) return;
-    if (valid.length === 1) {
-      map.setCenter({ lat: parseFloat(valid[0].lat), lng: parseFloat(valid[0].lng) });
-      map.setZoom(13);
-      return;
-    }
-    const bounds = new window.google.maps.LatLngBounds();
-    valid.forEach(apt => bounds.extend({ lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) }));
-    map.fitBounds(bounds);
-  }, [map, apartments, hasUserMovedMap]);
+    // Ne rien faire ici, tout est géré dans onLoad
+  }, [map, apartments, hasUserMovedMap, validApartments]);
 
   // Réinitialise hasUserMovedMap à false quand apartments change (nouvelle recherche, filtre, etc.)
   useEffect(() => {
     setHasUserMovedMap(false);
     lastApartmentsHash.current = apartments.map(a => a.id).join(',');
   }, [apartments]);
+
+  // Détecte un vrai changement de la liste d'appartements (hash des ids)
+  useEffect(() => {
+    const currentHash = apartments.map(a => a.id).join(',');
+    if (lastApartmentsHash.current !== currentHash) {
+      setShouldUpdateCenter(true);
+      lastApartmentsHash.current = currentHash;
+    }
+  }, [apartments]);
+
+  // Mémorise le dernier center utilisé
+  useEffect(() => {
+    if (shouldUpdateCenter) {
+      setLastCenter(mapCenter);
+      setShouldUpdateCenter(false);
+    }
+  }, [shouldUpdateCenter, mapCenter]);
 
   // Ajout des Advanced Markers après chargement de la carte
   useEffect(() => {
@@ -144,6 +179,9 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
     };
   }, [map, apartments, onMarkerClick]);
 
+  // Clé unique pour forcer la réinitialisation de la map à chaque changement de la liste
+  // const mapKey = useMemo(() => apartments.map(a => a.id).join(','), [apartments]);
+
   if (!isLoaded) {
     return (
       <div className="w-full h-[500px] bg-gray-200 flex items-center justify-center">
@@ -158,9 +196,10 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
   return (
     <div className="w-full">
       <GoogleMap
+        key={mapKey}
         mapContainerStyle={containerStyle}
-        center={!hasMapBeenInitialized ? mapCenter : undefined}
-        zoom={10}
+        center={shouldUpdateCenter || !lastCenter ? mapCenter : lastCenter}
+        zoom={dynamicZoom}
         onLoad={onLoad}
         onUnmount={onUnmount}
         onDrag={() => setHasUserMovedMap(true)}
@@ -179,4 +218,4 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
   );
 };
 
-export default GoogleMapComponent; 
+export default GoogleMapResetWrapper; 
