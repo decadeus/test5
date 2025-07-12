@@ -26,6 +26,9 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
   
   const [map, setMap] = useState(null);
   const markersRef = useRef([]);
+  const [hasUserMovedMap, setHasUserMovedMap] = useState(false);
+  const lastApartmentsHash = useRef(apartments.map(a => a.id).join(','));
+  const [hasMapBeenInitialized, setHasMapBeenInitialized] = useState(false);
 
   // Reviens à l'appel direct
   const { isLoaded } = useJsApiLoader({
@@ -36,6 +39,7 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
 
   const onLoad = useCallback((map) => {
     setMap(map);
+    setHasMapBeenInitialized(true);
   }, []);
 
   const onUnmount = useCallback(() => {
@@ -80,7 +84,12 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
 
   // Fit bounds automatique pour englober tous les repères
   useEffect(() => {
-    if (!map || !Array.isArray(apartments)) return;
+    const currentHash = apartments.map(a => a.id).join(',');
+    console.log('[GoogleMap] fitBounds effect', { hasUserMovedMap, apartmentsHash: currentHash });
+    // Ne fait le fitBounds que si la liste d'appartements (ids) a vraiment changé
+    if (!map || !Array.isArray(apartments) || hasUserMovedMap) return;
+    if (lastApartmentsHash.current === currentHash) return;
+    lastApartmentsHash.current = currentHash;
     const valid = apartments.filter(apt =>
       apt.lat && apt.lng &&
       !isNaN(parseFloat(apt.lat)) && !isNaN(parseFloat(apt.lng)) &&
@@ -95,7 +104,13 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
     const bounds = new window.google.maps.LatLngBounds();
     valid.forEach(apt => bounds.extend({ lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) }));
     map.fitBounds(bounds);
-  }, [map, apartments]);
+  }, [map, apartments, hasUserMovedMap]);
+
+  // Réinitialise hasUserMovedMap à false quand apartments change (nouvelle recherche, filtre, etc.)
+  useEffect(() => {
+    setHasUserMovedMap(false);
+    lastApartmentsHash.current = apartments.map(a => a.id).join(',');
+  }, [apartments]);
 
   // Ajout des Advanced Markers après chargement de la carte
   useEffect(() => {
@@ -144,10 +159,12 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
     <div className="w-full">
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={mapCenter}
+        center={!hasMapBeenInitialized ? mapCenter : undefined}
         zoom={10}
         onLoad={onLoad}
         onUnmount={onUnmount}
+        onDrag={() => setHasUserMovedMap(true)}
+        onZoomChanged={() => setHasUserMovedMap(true)}
         options={{
           mapId: 'DEMO_MAP_ID', // <-- à remplacer par ton vrai mapId si tu en as un
           zoomControl: true,
