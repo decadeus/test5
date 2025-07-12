@@ -469,7 +469,8 @@ export default function ApartmentList() {
     const value = e.target.value;
     setCityInput(value);
     setShowCityDropdown(true);
-    if (value === "" || value === t("Tous")) {
+    if (value === "") {
+      updateFilter('selectedCity', t("Tous"));
       setFilteredCities(cities);
     } else {
       setFilteredCities(
