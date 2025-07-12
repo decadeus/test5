@@ -97,8 +97,10 @@ function ProjectCard({ item, isFavorite, handleToggleFavorite }) {
           <div className="flex items-center justify-between">
             <h3 className="font-semibold text-sm truncate"> {item.project.name}</h3>
           </div>
+          <p className="text-xs text-gray-500 truncate mt-1 mb-1">{item.project.city}</p>
         </div>
-        <p className="text-sm text-gray-600 truncate mt-0 mb-1">{item.project.city}</p>
+        {/* On retire l'ancien affichage de la ville ici */}
+        {/* <p className="text-sm text-gray-600 truncate mt-0 mb-1">{item.project.city}</p> */}
         <div className="flex items-center text-gray-600 gap-4 mt-2 mb-1 text-xs w-full">
           <div className="w-1/2 flex flex-col gap-1">
             <div className="flex items-center gap-1">

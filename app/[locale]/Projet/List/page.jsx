@@ -11,6 +11,7 @@ import { useRouter, useParams } from 'next/navigation';
 import Image from "next/image";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
+import { MapPin } from "lucide-react";
 
 import React from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -82,56 +83,45 @@ function ApartmentCard({
   return (
     <div
       key={apt.id}
-      className="bg-white/90 border border-gray-200 text-gray-900 shadow-sm rounded-3xl overflow-hidden hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-[340px] min-h-[340px] relative group card fade-in min-w-[260px] max-w-[340px] w-full p-0"
+      className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden group flex flex-col min-w-[260px] max-w-[340px] w-full"
     >
-      {/* Badges en haut */}
-      <div className="flex-1 flex flex-col justify-between">
-        <div className="flex items-center justify-between px-4 pt-3 pb-1">
-          <span className="bg-green-600 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">
-            {filterProjectListByRange(apt.projectlist).length} {tGlobal(filterProjectListByRange(apt.projectlist).length > 1 ? 'Appartements' : 'Appartement')}
-          </span>
-          <div className="flex gap-1">
-            {apt.projectlist.some(lot => !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false') && (
-              <span className="bg-green-100 border border-green-400 text-green-700 rounded-full px-2 py-0.5 text-[10px] font-bold">🌸 {t("jardin")}</span>
-            )}
-            {apt.projectlist.some(lot => !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false') && (
-              <span className="bg-blue-100 border border-blue-400 text-blue-700 rounded-full px-2 py-0.5 text-[10px] font-bold">🏙️ {t("rooftop")}</span>
-            )}
-          </div>
+      <div className="relative">
+        <Image
+          src={(projectImages[apt.id] && projectImages[apt.id].length > 0 ? projectImages[apt.id] : ["/components/image/placeholder.jpg"])[currentImageIndexes[apt.id] || 0]}
+          alt={apt.title}
+          width={320}
+          height={180}
+          priority
+          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        <span className="absolute top-3 left-3 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+          {filterProjectListByRange(apt.projectlist).length} {tGlobal(filterProjectListByRange(apt.projectlist).length > 1 ? 'Appartements' : 'Appartement')}
+        </span>
+        <button
+          onClick={() => handleToggleFavorite(apt)}
+          className="absolute top-3 right-3 bg-white/80 rounded-full p-2 shadow hover:bg-white transition border-2 border-green-200"
+          aria-label="favorite"
+        >
+          {isFavorite(apt) ? (
+            <FaHeart className="text-green-600" size={22} />
+          ) : (
+            <FaRegHeart className="text-green-600" size={22} />
+          )}
+        </button>
+      </div>
+      <div className="p-5 flex flex-col gap-2 flex-1">
+        <h3 className="text-lg font-bold text-gray-900">{highlight(apt.title, debouncedSearchTerm)}</h3>
+        <div className="flex items-center gap-2 text-green-700 text-sm">
+          <MapPin className="w-4 h-4" />
+          <span>{apt.city}</span>
         </div>
-        <div className="relative overflow-hidden">
-          <Image
-            src={(projectImages[apt.id] && projectImages[apt.id].length > 0 ? projectImages[apt.id] : ["/components/image/placeholder.jpg"])[currentImageIndexes[apt.id] || 0]}
-            alt={apt.title}
-            width={320}
-            height={180}
-            priority
-            className="w-full aspect-[16/9] object-cover group-hover:scale-105 transition-transform duration-300 img-fade"
-          />
-          <button
-            onClick={() => handleToggleFavorite(apt)}
-            className={`absolute top-2 right-2 bg-white/80 rounded-full p-1 shadow hover:bg-white transition border-2 ${isFavorite(apt) ? 'border-red-600' : 'border-gray-300'}`}
-            aria-label="favorite"
-          >
-            {isFavorite(apt) ? (
-              <FaHeart className="text-red-600" size={22} />
-            ) : (
-              <FaRegHeart className="text-gray-400" size={22} />
-            )}
-          </button>
-        </div>
-        {/* Ligne nom projet à gauche, promoteur à droite */}
-        <div className="flex flex-row items-center justify-between px-4 pt-2 pb-1">
-          <span className="text-base font-bold text-gray-900 truncate text-left max-w-[60%]">{highlight(apt.title, debouncedSearchTerm)}</span>
-          <span className="text-xs text-gray-500 font-medium text-right truncate max-w-[38%]">by {apt.compagny && apt.compagny !== 'null' ? apt.compagny : 'Non renseigné'}</span>
-        </div>
-        {/* Bouton détail discret en bas à droite */}
-        <div className="flex justify-end px-4 pb-2">
-          <Link href={`/${locale}/Projet/Detail/${apt.id}`} className="inline-flex items-center gap-1 bg-green-50 hover:bg-green-100 text-green-700 rounded-full px-3 py-1 transition-all duration-200 text-xs font-semibold border border-green-200">
+        <span className="text-xs text-gray-400 italic">by {apt.compagny && apt.compagny !== 'null' ? apt.compagny : 'Non renseigné'}</span>
+        <button className="mt-3 w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl flex items-center justify-center gap-2 transition">
+          <Link href={`/${locale}/Projet/Detail/${apt.id}`} className="flex items-center gap-2 w-full h-full justify-center">
             {t('Voir le détail')}
-            <PlusIcon className="w-3 h-3" />
+            <PlusIcon className="w-4 h-4" />
           </Link>
-        </div>
+        </button>
       </div>
     </div>
   );
@@ -185,6 +175,20 @@ function ProjectSidePanel({ project, onClose, ...props }) {
   );
 }
 
+function ApartmentCardSkeleton() {
+  return (
+    <div className="bg-white rounded-3xl shadow-lg animate-pulse flex flex-col min-w-[260px] max-w-[340px] w-full overflow-hidden">
+      <div className="h-48 bg-gray-200" />
+      <div className="p-5 flex flex-col gap-3 flex-1">
+        <div className="h-5 w-2/3 bg-gray-200 rounded" />
+        <div className="h-4 w-1/3 bg-gray-100 rounded" />
+        <div className="h-3 w-1/2 bg-gray-100 rounded" />
+        <div className="h-8 w-full bg-gray-200 rounded-xl mt-2" />
+      </div>
+    </div>
+  );
+}
+
 export default function ApartmentList() {
   const supabase = createClient();
   const t = useTranslations("Filtre");
@@ -224,6 +228,11 @@ export default function ApartmentList() {
   const [cityInput, setCityInput] = useState("");
   const [showCityDropdown, setShowCityDropdown] = useState(false);
   const [filteredCities, setFilteredCities] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(12);
+  const PAGE_SIZE = 12;
+  const [pageIndex, setPageIndex] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Ajout : liste des pays distincts
   const countries = useMemo(() => {
@@ -363,28 +372,48 @@ export default function ApartmentList() {
   // Pour la carte : on veut tous les projets du pays et de la ville sélectionnée
   const apartmentsForMap = apartments.filter(a => a.country === filters.selectedCountry && (filters.selectedCity === t('Tous') || a.city === filters.selectedCity));
 
+  // Ajout un effet pour reset la pagination à chaque changement de filtre
+  useEffect(() => {
+    setPageIndex(0);
+    setApartments([]);
+    setHasMore(true);
+  }, [filters]);
+
+  // Remplace le useEffect de fetchProjects par une version paginée
   useEffect(() => {
     const fetchProjects = async () => {
       setError(null);
+      setIsLoading(true);
       try {
-        // Récupère les projets
-        const { data: projects, error: errorProjects } = await supabase
+        const from = pageIndex * PAGE_SIZE;
+        const to = from + PAGE_SIZE - 1;
+        let query = supabase
           .from("project")
           .select("id, name, compagny, country, city, lat, lng, online");
-
+        // Filtres côté serveur
+        if (filters.selectedCountry) {
+          query = query.eq('country', filters.selectedCountry);
+        }
+        if (filters.selectedCity && filters.selectedCity !== t('Tous')) {
+          query = query.eq('city', filters.selectedCity);
+        }
+        if (filters.searchTerm && filters.searchTerm.length > 0) {
+          query = query.ilike('name', `%${filters.searchTerm}%`);
+        }
+        query = query.range(from, to);
+        const { data: projects, error: errorProjects } = await query;
         // Filtre pour ne garder que les projets en ligne
         const onlineProjects = (projects || []).filter(item => item.online === true);
-
-        // Récupère les projectlists
+        // Récupère les projectlists pour ces projets
+        const projectIds = onlineProjects.map(p => p.id);
         const { data: projectlists, error: errorProjectlists } = await supabase
           .from("projectlist")
           .select("ide, ref, bed, floor, price, surface, garden, rooftop, des");
-
         if (errorProjects || errorProjectlists) {
           setError(errorProjects || errorProjectlists);
+          setIsLoading(false);
           return;
         }
-
         // Associe les projectlists à leur projet parent
         const apartmentsWithList = (onlineProjects || []).map((item) => ({
           id: item.id,
@@ -398,10 +427,8 @@ export default function ApartmentList() {
           lat: item.lat,
           lng: item.lng,
         }));
-
-        setApartments(apartmentsWithList);
-
-        // Récupère toutes les images image1- à image5- pour chaque projet
+        setApartments(prev => pageIndex === 0 ? apartmentsWithList : [...prev, ...apartmentsWithList]);
+        // Images (optionnel, tu peux optimiser pour ne charger que les images des nouveaux projets)
         const imagesObj = {};
         await Promise.all(
           apartmentsWithList.map(async (apt) => {
@@ -409,13 +436,16 @@ export default function ApartmentList() {
             if (urls.length > 0) imagesObj[apt.id] = urls;
           })
         );
-        setProjectImages(imagesObj);
+        setProjectImages(prev => ({ ...prev, ...imagesObj }));
+        if ((projects || []).length < PAGE_SIZE) setHasMore(false);
       } catch (e) {
         setError(e.message || 'Erreur inconnue');
       }
+      setIsLoading(false);
     };
     fetchProjects();
-  }, []);
+    // eslint-disable-next-line
+  }, [pageIndex, filters]);
 
   // Chargement favoris au montage
   useEffect(() => {
@@ -1048,7 +1078,7 @@ export default function ApartmentList() {
         </div>
 
         {/* Sticky filters desktop */}
-        <div className="sticky top-0 z-20 bg-white/90 shadow-md py-2 fade-in">
+        <div className="sticky top-0 z-20 py-2 fade-in">
           {/* Filtres actifs (chips) */}
           {/* ... */}
         </div>
@@ -1068,56 +1098,55 @@ export default function ApartmentList() {
 
         {/* Grille des appartements avec animation d'apparition - remplacée par slider par ville */}
         {viewMode === 'list' ? (
-          <div className="flex flex-col gap-8 fade-in max-w-7xl mx-auto">
-            {(() => {
-              // On groupe les appartements filtrés par ville
-              const grouped = groupByCity(filteredApartments);
-              const cityNames = Object.keys(grouped).sort();
-              if (cityNames.length === 0) {
-                return (
+          <div className="fade-in max-w-7xl mx-auto pt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {isLoading
+                ? Array.from({ length: PAGE_SIZE }).map((_, i) => <ApartmentCardSkeleton key={i} />)
+                : !isLoading && apartments.length === 0 ? (
                   <p className="text-center text-gray-500 col-span-full">
                     {t("Aucun résultat")}
                   </p>
-                );
-              }
-              return cityNames.map(city => (
-                <div key={city} className="bg-white rounded-3xl shadow-sm p-4 sm:p-6">
-                  <div className="flex items-center justify-center mb-4">
-                    <span className="text-2xl font-bold text-black">{city}</span>
-                  </div>
-                  <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-green-200 scrollbar-track-white">
-                    <div className="flex flex-row gap-4 min-w-[260px]">
-                      {grouped[city].map((apt, idx) => (
-                        <div key={apt.id} className="min-w-[260px] max-w-[340px] w-full">
-                          <ApartmentCard
-                            apt={apt}
-                            projectImages={projectImages}
-                            currentImageIndexes={currentImageIndexes}
-                            handleNextImage={handleNextImage}
-                            handlePrevImage={handlePrevImage}
-                            isChangingImage={isChangingImage}
-                            setIsChangingImage={setIsChangingImage}
-                            highlight={highlight}
-                            debouncedSearchTerm={debouncedSearchTerm}
-                            filterProjectListByRange={filterProjectListByRange}
-                            formatPrice={formatPrice}
-                            t={t}
-                            showAllLots={showAllLots}
-                            setShowAllLots={setShowAllLots}
-                            locale={locale}
-                            tGlobal={tGlobal}
-                            showLotsTable={false}
-                            favorites={favorites}
-                            handleToggleFavorite={handleToggleFavorite}
-                            isFavorite={isFavorite}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ));
-            })()}
+                ) : (
+                  apartments
+                    .filter(apt => !showOnlyFavorites || favorites.includes(apt.id))
+                    .filter(apt => filterProjectListByRange(apt.projectlist).length > 0)
+                    .map((apt) => (
+                      <ApartmentCard
+                        key={apt.id}
+                        apt={apt}
+                        projectImages={projectImages}
+                        currentImageIndexes={currentImageIndexes}
+                        handleNextImage={handleNextImage}
+                        handlePrevImage={handlePrevImage}
+                        isChangingImage={isChangingImage}
+                        setIsChangingImage={setIsChangingImage}
+                        highlight={highlight}
+                        debouncedSearchTerm={debouncedSearchTerm}
+                        filterProjectListByRange={filterProjectListByRange}
+                        formatPrice={formatPrice}
+                        t={t}
+                        showAllLots={showAllLots}
+                        setShowAllLots={setShowAllLots}
+                        locale={locale}
+                        tGlobal={tGlobal}
+                        showLotsTable={false}
+                        favorites={favorites}
+                        handleToggleFavorite={handleToggleFavorite}
+                        isFavorite={isFavorite}
+                      />
+                    ))
+                )}
+            </div>
+            {hasMore && !isLoading && (
+              <div className="flex justify-center mt-8 mb-8">
+                <button
+                  className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full shadow transition"
+                  onClick={() => setPageIndex((c) => c + 1)}
+                >
+                  Montrez plus
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <div className="flex flex-col lg:flex-row gap-6">
