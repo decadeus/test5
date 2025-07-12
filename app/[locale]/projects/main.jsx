@@ -618,6 +618,9 @@ function FilterB({
   const [editableCountry, setEditableCountry] = useState("");
   const [editableCity, setEditableCity] = useState("Select city");
   const [countryData, setCountryData] = useState({});
+  const [cityInput, setCityInput] = useState("");
+  const [filteredCities, setFilteredCities] = useState([]);
+  const [showCityDropdown, setShowCityDropdown] = useState(false);
 
   const colorfilter = "text-sm  text-gray-800";
 
@@ -662,6 +665,7 @@ function FilterB({
       if (storedCountry && countryData[storedCountry]) {
         const availableCities = countryData[storedCountry];
         setCities(availableCities);
+        setFilteredCities(availableCities);
 
         const defaultCity = availableCities.includes(storedCity)
           ? storedCity
@@ -670,6 +674,7 @@ function FilterB({
           : "";
 
         setEditableCity(defaultCity);
+        setCityInput(defaultCity);
         onCityChange(defaultCity); // Met à jour la ville sélectionnée
       }
     }
@@ -697,12 +702,45 @@ function FilterB({
     }
   };
 
-  const handleCityChange = (e) => {
-    const selectedCity = e.target.value;
-    setEditableCity(selectedCity);
-    onCityChange(selectedCity);
-    localStorage.setItem("selectedCity", selectedCity); // Sauvegarde dans localStorage
+  const handleCityInputChange = (e) => {
+    const value = e.target.value;
+    setCityInput(value);
+    setShowCityDropdown(true);
+    if (value === "") {
+      setFilteredCities(cities);
+    } else {
+      setFilteredCities(
+        cities.filter((city) =>
+          city.toLowerCase().startsWith(value.toLowerCase())
+        )
+      );
+    }
   };
+
+  const handleCitySelect = (city) => {
+    setEditableCity(city);
+    setCityInput(city);
+    setShowCityDropdown(false);
+    onCityChange(city);
+    localStorage.setItem("selectedCity", city);
+  };
+
+  // Fermer la dropdown si on clique en dehors
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (!event.target.closest(".city-autocomplete")) {
+        setShowCityDropdown(false);
+      }
+    }
+    if (showCityDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showCityDropdown]);
 
   const facilities = [
     {
@@ -829,17 +867,30 @@ function FilterB({
             </div>
 
             <div className="">
-              <select
-                value={editableCity}
-                onChange={handleCityChange}
-                className="w-[150px] bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 "
-              >
-                {cities.map((city, index) => (
-                  <option key={index} value={city} className="text-black">
-                    {city}
-                  </option>
-                ))}
-              </select>
+              {/* Remplacement du select par un input de recherche avec autocomplétion */}
+              <div className="relative city-autocomplete">
+                <input
+                  type="text"
+                  value={cityInput}
+                  onChange={handleCityInputChange}
+                  onFocus={() => setShowCityDropdown(true)}
+                  placeholder={f("SelectionnezUneVille")}
+                  className="w-[150px] bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 "
+                />
+                {showCityDropdown && filteredCities.length > 0 && (
+                  <ul className="absolute z-10 bg-white border border-gray-300 rounded-2xl mt-1 w-full max-h-48 overflow-y-auto shadow-lg">
+                    {filteredCities.map((city, index) => (
+                      <li
+                        key={index}
+                        className={`px-3 py-2 cursor-pointer hover:bg-gray-100 ${city === editableCity ? "bg-gray-200 font-bold" : ""}`}
+                        onClick={() => handleCitySelect(city)}
+                      >
+                        {city}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
 
             <div className="">

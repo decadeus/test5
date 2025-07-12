@@ -10,6 +10,7 @@ import { useSwipeable } from 'react-swipeable';
 import { useRouter, useParams } from 'next/navigation';
 import Image from "next/image";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { MdLocationOn } from "react-icons/md";
 
 import React from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -220,6 +221,9 @@ export default function ApartmentList() {
   const [justUnselectedRooftop, setJustUnselectedRooftop] = useState(false);
   const [justUnselectedFavorites, setJustUnselectedFavorites] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [cityInput, setCityInput] = useState("");
+  const [showCityDropdown, setShowCityDropdown] = useState(false);
+  const [filteredCities, setFilteredCities] = useState([]);
 
   // Ajout : liste des pays distincts
   const countries = useMemo(() => {
@@ -234,6 +238,10 @@ export default function ApartmentList() {
       ...[...new Set(apartments.filter(a => a.country === filters.selectedCountry).map(a => a.city))].sort()
     ];
   }, [apartments, filters.selectedCountry, t]);
+
+  useEffect(() => {
+    setFilteredCities(cities);
+  }, [cities]);
 
   // 2. Initialiser les filtres depuis le localStorage au montage
   useEffect(() => {
@@ -457,6 +465,53 @@ export default function ApartmentList() {
     }));
   };
 
+  const handleCityInputChange = (e) => {
+    const value = e.target.value;
+    setCityInput(value);
+    setShowCityDropdown(true);
+    if (value === "" || value === t("Tous")) {
+      setFilteredCities(cities);
+    } else {
+      setFilteredCities(
+        cities.filter((city) =>
+          city.toLowerCase().startsWith(value.toLowerCase())
+        )
+      );
+    }
+  };
+  const handleCitySelect = (city) => {
+    updateFilter('selectedCity', city);
+    setCityInput(city);
+    setShowCityDropdown(false);
+  };
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (!event.target.closest('.city-autocomplete')) {
+        setShowCityDropdown(false);
+      }
+    }
+    if (showCityDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showCityDropdown]);
+
+  // Helper pour trouver le pays d'une ville
+  const getCountryForCity = (city) => {
+    if (city === t("Tous")) return "";
+    const found = apartments.find(
+      (a) => a.city === city && a.country === filters.selectedCountry
+    );
+    return found ? found.country : "";
+  };
+
+  // Afficher la dropdown seulement si l'utilisateur a tapé au moins une lettre et qu'il y a des résultats
+  const shouldShowCityDropdown = showCityDropdown && cityInput.length > 0 && filteredCities.length > 0;
+
   if (!isHydrated) return null;
   return (
     <>
@@ -502,29 +557,34 @@ export default function ApartmentList() {
                   </button>
                 ))}
               </div>
-              <div className="flex gap-3 whitespace-nowrap overflow-x-auto pb-2 w-full">
-                {cities.map((city) => (
-                  <button
-                    key={city}
-                    onClick={() => updateFilter('selectedCity', city)}
-                    aria-pressed={filters.selectedCity === city}
-                    className={`h-10 px-3 border-2 border-black rounded-full text-sm font-semibold transition-colors duration-200 whitespace-nowrap ${
-                      filters.selectedCity === city
-                        ? "bg-green-600 text-white"
-                        : "bg-white text-black hover:bg-green-600 hover:text-white"
-                    }`}
-                  >
-                    {city}
-                  </button>
-                ))}
+              {/* --- VERSION MOBILE (dans le Dialog) --- */}
+              <div className="relative city-autocomplete">
+                <input
+                  type="text"
+                  value={cityInput}
+                  onChange={handleCityInputChange}
+                  onFocus={() => setShowCityDropdown(true)}
+                  placeholder={t("SelectionnezUneVille")}
+                  className="h-10 w-full pl-3 text-left border-2 border-black rounded-full text-sm font-semibold text-gray-500 placeholder:text-black/50 placeholder:font-semibold"
+                />
+                {shouldShowCityDropdown && (
+                  <ul className="z-10 bg-white border border-gray-300 rounded-2xl mt-1 w-full max-h-48 overflow-y-auto shadow-lg">
+                    {filteredCities.map((city, index) => (
+                      <li
+                        key={index}
+                        className={`flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-100 ${city === filters.selectedCity ? "bg-gray-200 font-bold" : ""}`}
+                        onClick={() => handleCitySelect(city)}
+                      >
+                        <MdLocationOn className="text-green-600 text-lg min-w-[20px]" />
+                        <span className="font-bold text-black">{city}</span>
+                        {getCountryForCity(city) && (
+                          <span className="ml-1 text-gray-400 text-sm">{getCountryForCity(city)}</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
-              <input
-                type="text"
-                value={filters.searchTerm}
-                onChange={(e) => updateFilter('searchTerm', e.target.value)}
-                placeholder={t("Rechercher:")}
-                className="h-10 w-full pl-3 text-left border-2 border-black rounded-full text-sm font-semibold text-gray-500 placeholder:text-black/50 placeholder:font-semibold"
-              />
             </div>
             {/* Sliders */}
             <div className="flex flex-col gap-6">
@@ -735,56 +795,39 @@ export default function ApartmentList() {
         >
           <div className="absolute inset-0 backdrop-blur-sm bg-black/10 z-0"></div>
           <div className="absolute top-2/3 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center gap-4 w-full z-10 lg:mt-0 mt-10">
-            <div className="hidden sm:block w-fit px-4 mb-4 overflow-x-auto mx-auto">
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
-                <div className="flex gap-3 whitespace-nowrap overflow-x-auto pb-2 w-full sm:w-auto">
-                  {countries.map((country) => (
-                    <button
-                      key={country}
-                      onClick={() => {
-                        updateFilter('selectedCountry', country);
-                        updateFilter('selectedCity', t('Tous'));
-                      }}
-                      aria-pressed={filters.selectedCountry === country}
-                      className={`h-10 sm:h-12 px-3 sm:px-6 border-2 border-black rounded-full text-sm sm:text-lg font-semibold transition-colors duration-200 whitespace-nowrap ${
-                        filters.selectedCountry === country
-                          ? "bg-green-600 text-white"
-                          : "bg-white text-black hover:bg-green-600 hover:text-white"
-                      }`}
-                    >
-                      {country}
-                    </button>
-                  ))}
-                </div>
-                <div className="flex gap-3 whitespace-nowrap overflow-x-auto pb-2 w-full">
-                  {cities.map((city) => (
-                    <button
-                      key={city}
-                      onClick={() => updateFilter('selectedCity', city)}
-                      aria-pressed={filters.selectedCity === city}
-                      className={`h-10 sm:h-12 px-3 sm:px-6 border-2 border-black rounded-full text-sm sm:text-lg font-semibold transition-colors duration-200 whitespace-nowrap ${
-                        filters.selectedCity === city
-                          ? "bg-green-600 text-white"
-                          : "bg-white text-black hover:bg-green-600 hover:text-white"
-                      }`}
-                    >
-                      {city}
-                    </button>
-                  ))}
-                </div>
-                <input
-                  type="text"
-                  value={filters.searchTerm}
-                  onChange={(e) => updateFilter('searchTerm', e.target.value)}
-                  placeholder={t("Rechercher:")}
-                  className="h-10 sm:h-12 w-full sm:w-96 ml-0 sm:ml-8 pl-3 sm:pl-4 text-left border-2 border-black rounded-full text-sm sm:text-lg font-semibold text-gray-500 placeholder:text-black/50 placeholder:font-semibold"
-                />
-              </div>
-            </div>
+           
             {/* Sliders en colonne sur mobile, en ligne sur desktop */}
             <div className="hidden sm:flex flex-col gap-4 justify-center items-center w-full max-w-5xl mx-auto px-4 mb-6">
               <div className="w-full flex flex-col sm:flex-row gap-4 sm:gap-16 justify-center items-stretch max-w-5xl mx-auto">
-                <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 flex-1">
+                <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 flex-1 items-center">
+                  {/* Champ de recherche de ville à gauche des sliders */}
+                  <div className="relative city-autocomplete flex flex-col items-center justify-center min-w-[220px] max-w-xs w-full">
+                    <input
+                      type="text"
+                      value={cityInput}
+                      onChange={handleCityInputChange}
+                      onFocus={() => setShowCityDropdown(true)}
+                      placeholder={t("SelectionnezUneVille")}
+                      className="h-10 sm:h-12 w-full pl-3 sm:pl-4 text-left border-2 border-black rounded-full text-sm sm:text-lg font-semibold text-gray-500 placeholder:text-black/50 placeholder:font-semibold"
+                    />
+                    {shouldShowCityDropdown && (
+                      <ul className="z-10 bg-white border border-gray-300 rounded-2xl mt-1 w-full max-h-48 overflow-y-auto shadow-lg">
+                        {filteredCities.map((city, index) => (
+                          <li
+                            key={index}
+                            className={`flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-100 ${city === filters.selectedCity ? "bg-gray-200 font-bold" : ""}`}
+                            onClick={() => handleCitySelect(city)}
+                          >
+                            <MdLocationOn className="text-green-600 text-lg min-w-[20px]" />
+                            <span className="font-bold text-black">{city}</span>
+                            {getCountryForCity(city) && (
+                              <span className="ml-1 text-gray-400 text-sm">{getCountryForCity(city)}</span>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                   {/* Price Slider */}
                   <div className="flex flex-col items-center w-full sm:w-80">
                     <div className="w-full bg-white/90 p-1.5 sm:p-2 shadow-lg px-3 sm:px-4 border-2 border-black rounded-full flex flex-row justify-between items-center mb-1">
