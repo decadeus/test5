@@ -89,6 +89,18 @@ export default async function RootLayout({
         <link rel="preload" href="/fonts/roboto/roboto-v48-latin-italic.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         {/* Balises hreflang pour le SEO multilingue */}
         <HreflangTags pathname={pathname} />
+        {/* Google Analytics 4 */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-V561ZR7520"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-V561ZR7520');
+            `,
+          }}
+        />
       </head>
       <body>
         <NextIntlClientProvider messages={messages}>
@@ -107,7 +119,6 @@ export default async function RootLayout({
         </LanguageProvider>
         </NextIntlClientProvider>
       </body>
-      <GoogleAnalytics gaId="G-ML122J0N9C" />
     </html>
   );
 }
