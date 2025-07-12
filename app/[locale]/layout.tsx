@@ -46,9 +46,10 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   return {
     title: f("Title"),
     description: f("Description"),
-    alternates: {
-      canonical: `${defaultUrl}/${locale}`,
-    },
+    // Suppression de la canonical ici pour éviter d'écraser celle des pages enfants
+    // alternates: {
+    //   canonical: `${defaultUrl}/${locale}`,
+    // },
   };
 }
 
