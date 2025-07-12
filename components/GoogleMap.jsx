@@ -9,11 +9,6 @@ import { useParams } from 'next/navigation';
 // Préparation migration Advanced Marker
 const libraries = ['places', 'marker']; // <-- à garder en dehors du composant
 
-const containerStyle = {
-  width: '100%',
-  height: '500px'
-};
-
 const defaultCenter = {
   lat: 48.8566,
   lng: 2.3522
@@ -182,9 +177,34 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
   // Clé unique pour forcer la réinitialisation de la map à chaque changement de la liste
   // const mapKey = useMemo(() => apartments.map(a => a.id).join(','), [apartments]);
 
+  // Déclarer le style du conteneur AVANT tout return ou condition
+  const [containerStyle, setContainerStyle] = useState({ width: '100%', height: '220px' });
+
+  useEffect(() => {
+    // Cette partie ne s'exécutera que côté client
+    const getResponsiveContainerStyle = () => {
+      let height = 220;
+      if (typeof window !== 'undefined') {
+        if (window.innerWidth >= 1024) height = 500;
+        else if (window.innerWidth >= 640) height = 350;
+      }
+      return { width: '100%', height: `${height}px` };
+    };
+    setContainerStyle(getResponsiveContainerStyle());
+    const handleResize = () => {
+      setContainerStyle(getResponsiveContainerStyle());
+      // Forcer le resize de la map Google si elle existe
+      if (window.google && window.google.maps && map) {
+        window.google.maps.event.trigger(map, 'resize');
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [map]);
+
   if (!isLoaded) {
     return (
-      <div className="w-full h-[500px] bg-gray-200 flex items-center justify-center">
+      <div style={{ width: '100%', height: 220 }} className="w-full bg-gray-200 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
           <p className="text-gray-600">{t("ChargementCarte")}</p>
@@ -205,7 +225,7 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
         onDrag={() => setHasUserMovedMap(true)}
         onZoomChanged={() => setHasUserMovedMap(true)}
         options={{
-          mapId: 'DEMO_MAP_ID', // <-- à remplacer par ton vrai mapId si tu en as un
+          mapId: 'DEMO_MAP_ID',
           zoomControl: true,
           streetViewControl: false,
           mapTypeControl: true,

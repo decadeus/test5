@@ -1151,7 +1151,7 @@ export default function ApartmentList() {
         ) : (
           <div className="flex flex-col lg:flex-row gap-6 max-w-7xl items-center mx-auto">
             <div className="flex-1 min-w-0">
-              <div className="max-w-6xl mx-auto my-12">
+              <div className="md:max-w-7xl md:w-full w-[350px] mx-auto my-12">
                 <GoogleMapComponent
                   apartments={filteredApartments}
                   projectImages={projectImages}
