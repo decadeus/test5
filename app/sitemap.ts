@@ -9,9 +9,8 @@ export default async function sitemap() {
     .select('id, name, city')
     .eq('online', true);
 
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
-    : 'http://localhost:3000';
+  // Remplace la logique baseUrl par le domaine de production
+  const baseUrl = "https://www.hoomge.com";
 
   const supportedLocales = ['fr', 'en', 'pl', 'de', 'ru', 'uk'];
   
