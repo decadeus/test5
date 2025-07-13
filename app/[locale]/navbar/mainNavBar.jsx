@@ -105,10 +105,13 @@ export default function MainNavBar({ user }) {
       {/* Version Mobile */}
       <div className="md:hidden">
         {/* Bouton menu mobile flottant */}
-        <div className="fixed top-4 right-4 z-50">
+        <div className="fixed top-4 right-4 z-50 bg-black rounded-full px-3 py-2 flex items-center gap-2 shadow-lg">
+          {/* Drapeau langue courante */}
+          <span className="text-lg select-none bg-white rounded-full px-2 py-1" title={currentLang.label}>{currentLang.flag}</span>
+          {/* Bouton menu burger */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="inline-flex items-center justify-center p-3 rounded-full bg-black text-white shadow-lg hover:bg-gray-800 transition-colors"
+            className="inline-flex items-center justify-center p-2 rounded-full text-white hover:bg-gray-800 transition-colors focus:outline-none"
             aria-label="Ouvrir le menu principal"
           >
             {isMobileMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
