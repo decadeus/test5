@@ -868,7 +868,7 @@ export default function ApartmentList() {
   if (!isHydrated) return null;
   return (
     <>
-      <div className="bg-green-100/10 min-h-screen w-full">
+      <div className="bg-green-100/10 min-h-screen w-full pt-16">
         {/* Bouton Filtres mobile centré uniquement */}
         <div className="block sm:hidden w-full flex justify-center px-4 pt-3">
           <button

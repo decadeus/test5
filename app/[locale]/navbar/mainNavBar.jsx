@@ -105,7 +105,7 @@ export default function MainNavBar({ user }) {
       {/* Version Mobile */}
       <div className="md:hidden">
         {/* Bouton menu mobile flottant */}
-        <div className="fixed top-4 right-4 z-50 bg-black rounded-full px-3 py-2 flex items-center gap-2 shadow-lg">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-black rounded-full px-3 py-2 flex items-center gap-2 shadow-lg">
           {/* Drapeau langue courante */}
           <span className="text-lg select-none bg-white rounded-full px-2 py-1" title={currentLang.label}>{currentLang.flag}</span>
           {/* Bouton menu burger */}
