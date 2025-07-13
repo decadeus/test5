@@ -1534,7 +1534,7 @@ export default function ApartmentList() {
         {/* Grille des appartements avec animation d'apparition - remplacée par slider par ville */}
         {viewMode === "list" ? (
           <div className="fade-in max-w-7xl mx-auto pt-8 px-4">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {isLoading ? (
                 Array.from({ length: PAGE_SIZE }).map((_, i) => (
                   <ApartmentCardSkeleton key={i} />
