@@ -136,6 +136,32 @@ function ProjectCard({ item, isFavorite, handleToggleFavorite }) {
   );
 }
 
+function ProjectCardSkeleton() {
+  return (
+    <div className="bg-white rounded-2xl shadow p-2 animate-pulse">
+      <div className="flex flex-col w-full px-1">
+        <div className="relative w-full h-40 mb-2 rounded-xl overflow-hidden bg-gray-200" />
+        <div className="pt-1 w-full h-1/4">
+          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
+          <div className="h-3 bg-gray-100 rounded w-1/2 mb-1" />
+        </div>
+        <div className="flex items-center text-gray-600 gap-4 mt-2 mb-1 text-xs w-full">
+          <div className="w-1/2 flex flex-col gap-1">
+            <div className="h-3 bg-gray-100 rounded w-1/2 mb-1" />
+            <div className="h-3 bg-gray-100 rounded w-1/3" />
+          </div>
+          <div className="flex-1 h-3 bg-gray-100 rounded" />
+        </div>
+        <div className="flex items-center pt-2">
+          <div className="h-4 bg-gray-200 rounded w-1/3" />
+          <div className="flex-grow" />
+          <div className="h-4 bg-gray-100 rounded w-1/4" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ProjectSidePanel({ project, onClose }) {
   const router = useRouter();
   if (!project) return null;
@@ -181,6 +207,7 @@ function Main() {
   const f = useTranslations("Filtre");
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedRooftop, setSelectedRooftop] = useState(false);
 
   const sort = [
     { key: "surface", label: "surface" },
@@ -393,7 +420,13 @@ function Main() {
   const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
 
   if (loading) {
-    return <Loading />;
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <ProjectCardSkeleton key={i} />
+        ))}
+      </div>
+    );
   }
 
   if (error) {
@@ -469,6 +502,8 @@ function Main() {
           showFavorites={showFavorites}
           onFavoritesChange={setShowFavorites}
           f={f}
+          selectedRooftop={selectedRooftop}
+          onRooftopChange={setSelectedRooftop}
         />
       </div>
       <div className=" w-full flex lg:flex-row flex-col gap-4 lg:justify-between mt-4">
@@ -610,6 +645,8 @@ function FilterB({
   showFavorites,
   onFavoritesChange,
   f,
+  selectedRooftop,
+  onRooftopChange,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isSurfaceModalOpen, setIsSurfaceModalOpen] = useState(false);
@@ -848,9 +885,9 @@ function FilterB({
         {showFavorites ? <FaHeart /> : <FaRegHeart />}
         {showFavorites ? f('Voir tous les projets') : f('Afficher mes favoris')}
       </button>
-      <div className="hidden lg:block  py-4 w-full">
-        <div className="flex justify-between">
-          <div className="flex gap-2  w-1/2">
+      <div className="hidden lg:block py-4 w-full">
+        <div className="flex justify-between flex-wrap md:flex-col lg:flex-row">
+          <div className="flex gap-2 w-1/2 flex-wrap md:w-full md:mb-4">
             <div className="">
               <select
                 value={editableCountry}
@@ -895,31 +932,6 @@ function FilterB({
               </div>
             </div>
 
-            <div className="">
-              <div className="w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 ">
-                <Checkbox
-                  isChecked={selectedGarden}
-                  onChange={(e) => onGardenChange(e.target.checked)}
-                  aria-label="Garden"
-                  size="sm"
-                  radius="full"
-                  className="flex justify-center items-center"
-                  color="success"
-                >
-                  <p className={colorfilter}>{f("AvecJardin")}</p>
-                </Checkbox>
-              </div>
-            </div>
-            <div className="w-fit bg-white border border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 flex items-center cursor-pointer ml-2"
-                 onClick={() => onFavoritesChange(!showFavorites)}
-                 aria-label="favorite">
-              <span className="pr-2 text-sm text-gray-800">Mes favoris</span>
-              {showFavorites ? (
-                <FaHeart size={20} color="#bfae9b" />
-              ) : (
-                <FaRegHeart size={20} color="#bfae9b" />
-              )}
-            </div>
             <div className="">
               <Button
                 onClick={() => onOpenChange(true)}
@@ -967,10 +979,10 @@ function FilterB({
             </div>
           </div>
 
-          <div className=" flex justify-end items-end w-1/2">
+          <div className=" flex justify-end items-end w-1/2 md:w-full md:justify-center">
             <div className="flex flex-col gap-2 w-full ">
               <div className="flex w-full justify-center items-end ">
-                <div className="flex w-3/4  gap-3">
+                <div className="flex w-3/4 gap-3 flex-col md:flex-row">
                   {modalData.map(
                     ({ label, range, onRangeChange, min, max, step, id }) => (
                       <div key={id} className="w-full">
@@ -1006,6 +1018,43 @@ function FilterB({
                         </div>
                       </div>
                     )
+                  )}
+                </div>
+              </div>
+              {/* Bloc filtres tablette sous les sliders */}
+              <div className="hidden md:flex lg:hidden w-full justify-center gap-4 mt-4">
+                <div className="w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 flex items-center">
+                  <Checkbox
+                    isChecked={selectedGarden}
+                    onChange={(e) => onGardenChange(e.target.checked)}
+                    aria-label="Garden"
+                    size="sm"
+                    radius="full"
+                    color="success"
+                  >
+                    <p className={colorfilter}>{f("AvecJardin")}</p>
+                  </Checkbox>
+                </div>
+                <div className="w-fit bg-white border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 flex items-center">
+                  <Checkbox
+                    isChecked={selectedRooftop}
+                    onChange={(e) => onRooftopChange(e.target.checked)}
+                    aria-label="Rooftop"
+                    size="sm"
+                    radius="full"
+                    color="success"
+                  >
+                    <p className={colorfilter}>{f("AvecRooftop")}</p>
+                  </Checkbox>
+                </div>
+                <div className="w-fit bg-white border border-gray-300 border-1 rounded-2xl text-sm px-2 py-2 flex items-center cursor-pointer"
+                     onClick={() => onFavoritesChange(!showFavorites)}
+                     aria-label="favorite">
+                  <span className="pr-2 text-sm text-gray-800">Mes favoris</span>
+                  {showFavorites ? (
+                    <FaHeart size={20} color="#bfae9b" />
+                  ) : (
+                    <FaRegHeart size={20} color="#bfae9b" />
                   )}
                 </div>
               </div>

@@ -3,11 +3,11 @@
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { Slider, Dialog } from '@mui/material';
+import { Slider, Dialog } from "@mui/material";
 import { useTranslations } from "next-intl";
-import { useDebounce } from 'use-debounce';
-import { useSwipeable } from 'react-swipeable';
-import { useRouter, useParams } from 'next/navigation';
+import { useDebounce } from "use-debounce";
+import { useSwipeable } from "react-swipeable";
+import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
@@ -27,29 +27,32 @@ function formatPrice(price) {
 
 // Fonction utilitaire pour récupérer la première image d'un projet
 async function getFirstProjectImageUrl(supabase, projectId) {
-  const { data, error } = await supabase
-    .storage
-    .from('project')
+  const { data, error } = await supabase.storage
+    .from("project")
     .list(`${projectId}/`, { limit: 1, offset: 0 });
   if (error || !data || data.length === 0) return null;
   // Prend la première image trouvée
   const file = data[0];
-  return supabase.storage.from('project').getPublicUrl(`${projectId}/${file.name}`).data.publicUrl;
+  return supabase.storage
+    .from("project")
+    .getPublicUrl(`${projectId}/${file.name}`).data.publicUrl;
 }
 
 // Fonction utilitaire pour récupérer toutes les images image1- à image5- d'un projet
 async function getProjectImages(supabase, projectId) {
-  const { data, error } = await supabase
-    .storage
-    .from('project')
+  const { data, error } = await supabase.storage
+    .from("project")
     .list(`${projectId}/`, { limit: 20, offset: 0 });
   if (error || !data) return [];
   // Filtre les images image1- à image5-
-  const wanted = ['image1-', 'image2-', 'image3-', 'image4-', 'image5-'];
+  const wanted = ["image1-", "image2-", "image3-", "image4-", "image5-"];
   return data
-    .filter(file => wanted.some(prefix => file.name.startsWith(prefix)))
-    .map(file =>
-      supabase.storage.from('project').getPublicUrl(`${projectId}/${file.name}`).data.publicUrl
+    .filter((file) => wanted.some((prefix) => file.name.startsWith(prefix)))
+    .map(
+      (file) =>
+        supabase.storage
+          .from("project")
+          .getPublicUrl(`${projectId}/${file.name}`).data.publicUrl
     );
 }
 
@@ -75,11 +78,13 @@ function ApartmentCard({
   favorites,
   handleToggleFavorite,
   isFavorite,
-  showProjectButton = true
+  showProjectButton = true,
 }) {
   const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => handleNextImage(apt.id, (projectImages[apt.id]||[]).length),
-    onSwipedRight: () => handlePrevImage(apt.id, (projectImages[apt.id]||[]).length),
+    onSwipedLeft: () =>
+      handleNextImage(apt.id, (projectImages[apt.id] || []).length),
+    onSwipedRight: () =>
+      handlePrevImage(apt.id, (projectImages[apt.id] || []).length),
   });
   return (
     <div
@@ -88,7 +93,13 @@ function ApartmentCard({
     >
       <div className="relative">
         <Image
-          src={(projectImages[apt.id] && projectImages[apt.id].length > 0 ? projectImages[apt.id] : ["/components/image/placeholder.jpg"])[currentImageIndexes[apt.id] || 0]}
+          src={
+            (projectImages[apt.id] && projectImages[apt.id].length > 0
+              ? projectImages[apt.id]
+              : ["/components/image/placeholder.jpg"])[
+              currentImageIndexes[apt.id] || 0
+            ]
+          }
           alt={apt.title}
           width={320}
           height={180}
@@ -96,7 +107,12 @@ function ApartmentCard({
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <span className="absolute top-3 left-3 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow">
-          {filterProjectListByRange(apt.projectlist).length} {tGlobal(filterProjectListByRange(apt.projectlist).length > 1 ? 'Appartements' : 'Appartement')}
+          {filterProjectListByRange(apt.projectlist).length}{" "}
+          {tGlobal(
+            filterProjectListByRange(apt.projectlist).length > 1
+              ? "Appartements"
+              : "Appartement"
+          )}
         </span>
         <button
           onClick={() => handleToggleFavorite(apt)}
@@ -111,16 +127,26 @@ function ApartmentCard({
         </button>
       </div>
       <div className="p-5 flex flex-col h-full gap-2 flex-1">
-        <h3 className="text-lg font-bold text-gray-900">{highlight(apt.title, debouncedSearchTerm)}</h3>
+        <h3 className="text-lg font-bold text-gray-900">
+          {highlight(apt.title, debouncedSearchTerm)}
+        </h3>
         <div className="flex items-center gap-2 text-green-700 text-sm">
           <MapPin className="w-4 h-4" />
           <span>{apt.city}</span>
         </div>
-        <span className="text-xs text-gray-400 italic">by {apt.compagny && apt.compagny !== 'null' ? apt.compagny : 'Non renseigné'}</span>
+        <span className="text-xs text-gray-400 italic">
+          by{" "}
+          {apt.compagny && apt.compagny !== "null"
+            ? apt.compagny
+            : "Non renseigné"}
+        </span>
         {showProjectButton && (
           <button className="mt-auto w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl flex items-center justify-center gap-2 transition">
-            <Link href={`/${locale}/Projet/Detail/${apt.id}`} className="flex items-center gap-2 w-full h-full justify-center">
-              {t('Voir le détail')}
+            <Link
+              href={`/${locale}/Projet/Detail/${apt.id}`}
+              className="flex items-center gap-2 w-full h-full justify-center"
+            >
+              {t("Voir le détail")}
               <PlusIcon className="w-4 h-4" />
             </Link>
           </button>
@@ -146,7 +172,6 @@ function ProjectSidePanel({ project, onClose, ...props }) {
   if (!project) return null;
   return (
     <div className="relative bg-white  rounded-xl p-2 w-full max-w-xs flex flex-col gap-2 ">
-      
       <ApartmentCard
         apt={project}
         projectImages={props.projectImages}
@@ -202,10 +227,10 @@ export default function ApartmentList() {
   const itemsPerPage = 8;
   const [showAllLots, setShowAllLots] = useState(null);
   const [isChangingImage, setIsChangingImage] = useState({});
-  const [viewMode, setViewMode] = useState('list');
+  const [viewMode, setViewMode] = useState("list");
   const router = useRouter();
   const params = useParams();
-  const locale = params?.locale || 'fr';
+  const locale = params?.locale || "fr";
   const defaultFilters = {
     selectedCountry: "France", // Ajout du filtre pays par défaut
     selectedCity: t("Tous"),
@@ -236,14 +261,20 @@ export default function ApartmentList() {
   // Ajout : liste des pays distincts
   const countries = useMemo(() => {
     return [
-      ...new Set(apartments.map((a) => a.country).filter(Boolean))
+      ...new Set(apartments.map((a) => a.country).filter(Boolean)),
     ].sort();
   }, [apartments]);
   // Ajout : liste des villes du pays sélectionné
   const cities = useMemo(() => {
     return [
       t("Tous"),
-      ...[...new Set(apartments.filter(a => a.country === filters.selectedCountry).map(a => a.city))].sort()
+      ...[
+        ...new Set(
+          apartments
+            .filter((a) => a.country === filters.selectedCountry)
+            .map((a) => a.city)
+        ),
+      ].sort(),
     ];
   }, [apartments, filters.selectedCountry, t]);
 
@@ -251,11 +282,14 @@ export default function ApartmentList() {
   const [minMaxValuesInitial, setMinMaxValuesInitial] = useState(null);
 
   function getMinMaxValuesFromList(list) {
-    let minPrice = Infinity, maxPrice = -Infinity;
-    let minBed = Infinity, maxBed = -Infinity;
-    let minSurface = Infinity, maxSurface = -Infinity;
-    list.forEach(apt => {
-      apt.projectlist?.forEach(lot => {
+    let minPrice = Infinity,
+      maxPrice = -Infinity;
+    let minBed = Infinity,
+      maxBed = -Infinity;
+    let minSurface = Infinity,
+      maxSurface = -Infinity;
+    list.forEach((apt) => {
+      apt.projectlist?.forEach((lot) => {
         const price = parseFloat(lot.price);
         const bed = parseInt(lot.bed);
         const surface = parseFloat(lot.surface);
@@ -279,7 +313,7 @@ export default function ApartmentList() {
       minBed: minBed === Infinity ? 1 : minBed,
       maxBed: maxBed === -Infinity ? 5 : maxBed,
       minSurface: minSurface === Infinity ? 10 : minSurface,
-      maxSurface: maxSurface === -Infinity ? 200 : maxSurface
+      maxSurface: maxSurface === -Infinity ? 200 : maxSurface,
     };
   }
 
@@ -290,8 +324,8 @@ export default function ApartmentList() {
   // 2. Initialiser les filtres depuis le localStorage au montage
   useEffect(() => {
     setIsHydrated(true);
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('filters');
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("filters");
       if (saved) {
         setFilters(JSON.parse(saved));
       }
@@ -300,11 +334,11 @@ export default function ApartmentList() {
 
   // 3. Fonction générique pour modifier les filtres
   function updateFilter(key, value) {
-    setFilters(prev => {
-      const newValue = typeof value === 'function' ? value(prev[key]) : value;
+    setFilters((prev) => {
+      const newValue = typeof value === "function" ? value(prev[key]) : value;
       const updated = { ...prev, [key]: newValue };
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('filters', JSON.stringify(updated));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("filters", JSON.stringify(updated));
       }
       return updated;
     });
@@ -313,23 +347,26 @@ export default function ApartmentList() {
   // 4. Réinitialiser tous les filtres proprement
   function resetFilters() {
     setFilters(defaultFilters);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('filters', JSON.stringify(defaultFilters));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("filters", JSON.stringify(defaultFilters));
     }
   }
 
   // 5. Réinitialiser la ville à chaque changement de langue ou de pays
   useEffect(() => {
-    updateFilter('selectedCity', t("Tous"));
+    updateFilter("selectedCity", t("Tous"));
   }, [locale, t, filters.selectedCountry]);
 
   // 6. Utiliser les filtres dans le filtrage
   const getMinMaxValues = () => {
-    let minPrice = Infinity, maxPrice = -Infinity;
-    let minBed = Infinity, maxBed = -Infinity;
-    let minSurface = Infinity, maxSurface = -Infinity;
-    apartments.forEach(apt => {
-      apt.projectlist?.forEach(lot => {
+    let minPrice = Infinity,
+      maxPrice = -Infinity;
+    let minBed = Infinity,
+      maxBed = -Infinity;
+    let minSurface = Infinity,
+      maxSurface = -Infinity;
+    apartments.forEach((apt) => {
+      apt.projectlist?.forEach((lot) => {
         const price = parseFloat(lot.price);
         const bed = parseInt(lot.bed);
         const surface = parseFloat(lot.surface);
@@ -353,7 +390,7 @@ export default function ApartmentList() {
       minBed: minBed === Infinity ? 1 : minBed,
       maxBed: maxBed === -Infinity ? 5 : maxBed,
       minSurface: minSurface === Infinity ? 10 : minSurface,
-      maxSurface: maxSurface === -Infinity ? 200 : maxSurface
+      maxSurface: maxSurface === -Infinity ? 200 : maxSurface,
     };
   };
   const minMaxValues = useMemo(() => getMinMaxValues(), [apartments]);
@@ -361,16 +398,25 @@ export default function ApartmentList() {
   // 7. Utiliser les filtres dans le filtrage
   const hasProjectListInRange = (project) => {
     if (!project.projectlist || project.projectlist.length === 0) return false;
-    return project.projectlist.some(lot => {
+    return project.projectlist.some((lot) => {
       const lotPrice = parseFloat(lot.price);
       const lotBed = parseInt(lot.bed);
       const lotSurface = parseFloat(lot.surface);
-      const hasGarden = !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false';
-      const hasRooftop = !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false';
+      const hasGarden =
+        !!lot.garden &&
+        String(lot.garden) !== "0" &&
+        String(lot.garden).toLowerCase() !== "false";
+      const hasRooftop =
+        !!lot.rooftop &&
+        String(lot.rooftop) !== "0" &&
+        String(lot.rooftop).toLowerCase() !== "false";
       return (
-        lotPrice >= filters.priceRange[0] && lotPrice <= filters.priceRange[1] &&
-        lotBed >= filters.bedRange[0] && lotBed <= filters.bedRange[1] &&
-        lotSurface >= filters.surfaceRange[0] && lotSurface <= filters.surfaceRange[1] &&
+        lotPrice >= filters.priceRange[0] &&
+        lotPrice <= filters.priceRange[1] &&
+        lotBed >= filters.bedRange[0] &&
+        lotBed <= filters.bedRange[1] &&
+        lotSurface >= filters.surfaceRange[0] &&
+        lotSurface <= filters.surfaceRange[1] &&
         (!filters.onlyGarden || hasGarden) &&
         (!filters.onlyRooftop || hasRooftop)
       );
@@ -378,16 +424,25 @@ export default function ApartmentList() {
   };
   const filterProjectListByRange = (projectlist) => {
     if (!projectlist) return [];
-    return projectlist.filter(lot => {
+    return projectlist.filter((lot) => {
       const lotPrice = parseFloat(lot.price);
       const lotBed = parseInt(lot.bed);
       const lotSurface = parseFloat(lot.surface);
-      const hasGarden = !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false';
-      const hasRooftop = !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false';
+      const hasGarden =
+        !!lot.garden &&
+        String(lot.garden) !== "0" &&
+        String(lot.garden).toLowerCase() !== "false";
+      const hasRooftop =
+        !!lot.rooftop &&
+        String(lot.rooftop) !== "0" &&
+        String(lot.rooftop).toLowerCase() !== "false";
       return (
-        lotPrice >= filters.priceRange[0] && lotPrice <= filters.priceRange[1] &&
-        lotBed >= filters.bedRange[0] && lotBed <= filters.bedRange[1] &&
-        lotSurface >= filters.surfaceRange[0] && lotSurface <= filters.surfaceRange[1] &&
+        lotPrice >= filters.priceRange[0] &&
+        lotPrice <= filters.priceRange[1] &&
+        lotBed >= filters.bedRange[0] &&
+        lotBed <= filters.bedRange[1] &&
+        lotSurface >= filters.surfaceRange[0] &&
+        lotSurface <= filters.surfaceRange[1] &&
         (!filters.onlyGarden || hasGarden) &&
         (!filters.onlyRooftop || hasRooftop)
       );
@@ -395,17 +450,28 @@ export default function ApartmentList() {
   };
   const filteredApartments = apartments.filter((a) => {
     const matchesCountry = a.country === filters.selectedCountry;
-    const matchesCity = filters.selectedCity === t("Tous") || a.city === filters.selectedCity;
+    const matchesCity =
+      filters.selectedCity === t("Tous") || a.city === filters.selectedCity;
     const matchesSearch =
       a.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
       a.summary.toLowerCase().includes(filters.searchTerm.toLowerCase());
     const matchesRange = hasProjectListInRange(a);
     const matchesFavorite = !showOnlyFavorites || favorites.includes(a.id);
-    return matchesCountry && matchesCity && matchesSearch && matchesRange && matchesFavorite;
+    return (
+      matchesCountry &&
+      matchesCity &&
+      matchesSearch &&
+      matchesRange &&
+      matchesFavorite
+    );
   });
 
   // Pour la carte : on veut tous les projets du pays et de la ville sélectionnée
-  const apartmentsForMap = apartments.filter(a => a.country === filters.selectedCountry && (filters.selectedCity === t('Tous') || a.city === filters.selectedCity));
+  const apartmentsForMap = apartments.filter(
+    (a) =>
+      a.country === filters.selectedCountry &&
+      (filters.selectedCity === t("Tous") || a.city === filters.selectedCity)
+  );
 
   // Ajout un effet pour reset la pagination à chaque changement de filtre
   useEffect(() => {
@@ -427,20 +493,22 @@ export default function ApartmentList() {
           .select("id, name, compagny, country, city, lat, lng, online");
         // Filtres côté serveur
         if (filters.selectedCountry) {
-          query = query.eq('country', filters.selectedCountry);
+          query = query.eq("country", filters.selectedCountry);
         }
-        if (filters.selectedCity && filters.selectedCity !== t('Tous')) {
-          query = query.eq('city', filters.selectedCity);
+        if (filters.selectedCity && filters.selectedCity !== t("Tous")) {
+          query = query.eq("city", filters.selectedCity);
         }
         if (filters.searchTerm && filters.searchTerm.length > 0) {
-          query = query.ilike('name', `%${filters.searchTerm}%`);
+          query = query.ilike("name", `%${filters.searchTerm}%`);
         }
         query = query.range(from, to);
         const { data: projects, error: errorProjects } = await query;
         // Filtre pour ne garder que les projets en ligne
-        const onlineProjects = (projects || []).filter(item => item.online === true);
+        const onlineProjects = (projects || []).filter(
+          (item) => item.online === true
+        );
         // Récupère les projectlists pour ces projets
-        const projectIds = onlineProjects.map(p => p.id);
+        const projectIds = onlineProjects.map((p) => p.id);
         const { data: projectlists, error: errorProjectlists } = await supabase
           .from("projectlist")
           .select("ide, ref, bed, floor, price, surface, garden, rooftop, des");
@@ -466,7 +534,11 @@ export default function ApartmentList() {
         if (!minMaxValuesInitial && apartmentsWithList.length > 0) {
           setMinMaxValuesInitial(getMinMaxValuesFromList(apartmentsWithList));
         }
-        setApartments(prev => pageIndex === 0 ? apartmentsWithList : [...prev, ...apartmentsWithList]);
+        setApartments((prev) =>
+          pageIndex === 0
+            ? apartmentsWithList
+            : [...prev, ...apartmentsWithList]
+        );
         // Images (optionnel, tu peux optimiser pour ne charger que les images des nouveaux projets)
         const imagesObj = {};
         await Promise.all(
@@ -475,10 +547,10 @@ export default function ApartmentList() {
             if (urls.length > 0) imagesObj[apt.id] = urls;
           })
         );
-        setProjectImages(prev => ({ ...prev, ...imagesObj }));
+        setProjectImages((prev) => ({ ...prev, ...imagesObj }));
         if ((projects || []).length < PAGE_SIZE) setHasMore(false);
       } catch (e) {
-        setError(e.message || 'Erreur inconnue');
+        setError(e.message || "Erreur inconnue");
       }
       setIsLoading(false);
     };
@@ -488,7 +560,8 @@ export default function ApartmentList() {
 
   // Chargement favoris au montage
   useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem(NEW_FAVORITE_APARTMENTS_KEY)) || [];
+    const storedFavorites =
+      JSON.parse(localStorage.getItem(NEW_FAVORITE_APARTMENTS_KEY)) || [];
     setFavorites(storedFavorites);
   }, []);
 
@@ -499,38 +572,48 @@ export default function ApartmentList() {
       ? favorites.filter((id) => id !== itemId)
       : [...favorites, itemId];
     setFavorites(newFavorites);
-    localStorage.setItem(NEW_FAVORITE_APARTMENTS_KEY, JSON.stringify(newFavorites));
+    localStorage.setItem(
+      NEW_FAVORITE_APARTMENTS_KEY,
+      JSON.stringify(newFavorites)
+    );
   };
   const isFavorite = (apt) => favorites.includes(apt.id);
 
   // Highlight du texte recherché
   function highlight(text, term) {
     if (!term) return text;
-    const parts = text.split(new RegExp(`(${term})`, 'gi'));
+    const parts = text.split(new RegExp(`(${term})`, "gi"));
     return parts.map((part, i) =>
-      part.toLowerCase() === term.toLowerCase()
-        ? <mark key={i} className="bg-yellow-200">{part}</mark>
-        : part
+      part.toLowerCase() === term.toLowerCase() ? (
+        <mark key={i} className="bg-yellow-200">
+          {part}
+        </mark>
+      ) : (
+        part
+      )
     );
   }
 
   // Pagination des résultats filtrés
-  const paginatedApartments = filteredApartments.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage);
+  const paginatedApartments = filteredApartments.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   const pageCount = Math.ceil(filteredApartments.length / itemsPerPage);
 
   // Fonction pour passer à l'image suivante d'un appartement
   const handleNextImage = (aptId, totalImages) => {
-    setCurrentImageIndexes(prev => ({
+    setCurrentImageIndexes((prev) => ({
       ...prev,
-      [aptId]: ((prev[aptId] || 0) + 1) % totalImages
+      [aptId]: ((prev[aptId] || 0) + 1) % totalImages,
     }));
   };
 
   // Fonction pour passer à l'image précédente d'un appartement
   const handlePrevImage = (aptId, totalImages) => {
-    setCurrentImageIndexes(prev => ({
+    setCurrentImageIndexes((prev) => ({
       ...prev,
-      [aptId]: ((prev[aptId] || 0) - 1 + totalImages) % totalImages
+      [aptId]: ((prev[aptId] || 0) - 1 + totalImages) % totalImages,
     }));
   };
 
@@ -539,7 +622,7 @@ export default function ApartmentList() {
     setCityInput(value);
     setShowCityDropdown(true);
     if (value === "") {
-      updateFilter('selectedCity', t("Tous"));
+      updateFilter("selectedCity", t("Tous"));
       setFilteredCities(cities);
     } else {
       setFilteredCities(
@@ -550,23 +633,23 @@ export default function ApartmentList() {
     }
   };
   const handleCitySelect = (city) => {
-    updateFilter('selectedCity', city);
+    updateFilter("selectedCity", city);
     setCityInput(city);
     setShowCityDropdown(false);
   };
   useEffect(() => {
     function handleClickOutside(event) {
-      if (!event.target.closest('.city-autocomplete')) {
+      if (!event.target.closest(".city-autocomplete")) {
         setShowCityDropdown(false);
       }
     }
     if (showCityDropdown) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     } else {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     }
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showCityDropdown]);
 
@@ -580,26 +663,27 @@ export default function ApartmentList() {
   };
 
   // Afficher la dropdown seulement si l'utilisateur a tapé au moins une lettre et qu'il y a des résultats
-  const shouldShowCityDropdown = showCityDropdown && cityInput.length > 0 && filteredCities.length > 0;
+  const shouldShowCityDropdown =
+    showCityDropdown && cityInput.length > 0 && filteredCities.length > 0;
 
   // Ajout du log pour tracer le fetch
   useEffect(() => {
-    console.log('[ApartmentList] Initial apartments:', apartments);
+    console.log("[ApartmentList] Initial apartments:", apartments);
   }, []);
 
   // Ajout du log après chaque setApartments
   useEffect(() => {
-    console.log('[ApartmentList] apartments updated:', apartments);
+    console.log("[ApartmentList] apartments updated:", apartments);
   }, [apartments]);
 
   // Dans le render, avant le return
-  console.log('[ApartmentList] apartments in render:', apartments);
+  console.log("[ApartmentList] apartments in render:", apartments);
 
   // --- RESTORE PATCH : min/max initiaux stockés au premier fetch, sliders stables ---
   // 1. Récupérer tous les lots du pays/ville sélectionnés (avant filtrage par sliders)
   const allLotsForSliders = useMemo(() => {
     let lots = [];
-    apartments.forEach(apt => {
+    apartments.forEach((apt) => {
       lots = lots.concat(apt.projectlist || []);
     });
     return lots;
@@ -607,10 +691,13 @@ export default function ApartmentList() {
 
   // 2. Calculer les min/max globaux à partir de allLotsForSliders
   const globalSliderBounds = useMemo(() => {
-    let minPrice = Infinity, maxPrice = -Infinity;
-    let minBed = Infinity, maxBed = -Infinity;
-    let minSurface = Infinity, maxSurface = -Infinity;
-    allLotsForSliders.forEach(lot => {
+    let minPrice = Infinity,
+      maxPrice = -Infinity;
+    let minBed = Infinity,
+      maxBed = -Infinity;
+    let minSurface = Infinity,
+      maxSurface = -Infinity;
+    allLotsForSliders.forEach((lot) => {
       const price = parseFloat(lot.price);
       const bed = parseInt(lot.bed);
       const surface = parseFloat(lot.surface);
@@ -641,18 +728,27 @@ export default function ApartmentList() {
   // 1. Récupérer tous les lots filtrés selon les filtres actuels
   const filteredLots = useMemo(() => {
     let lots = [];
-    apartments.forEach(apt => {
+    apartments.forEach((apt) => {
       lots = lots.concat(
-        apt.projectlist?.filter(lot => {
+        apt.projectlist?.filter((lot) => {
           const lotPrice = parseFloat(lot.price);
           const lotBed = parseInt(lot.bed);
           const lotSurface = parseFloat(lot.surface);
-          const hasGarden = !!lot.garden && String(lot.garden) !== '0' && String(lot.garden).toLowerCase() !== 'false';
-          const hasRooftop = !!lot.rooftop && String(lot.rooftop) !== '0' && String(lot.rooftop).toLowerCase() !== 'false';
+          const hasGarden =
+            !!lot.garden &&
+            String(lot.garden) !== "0" &&
+            String(lot.garden).toLowerCase() !== "false";
+          const hasRooftop =
+            !!lot.rooftop &&
+            String(lot.rooftop) !== "0" &&
+            String(lot.rooftop).toLowerCase() !== "false";
           return (
-            lotPrice >= filters.priceRange[0] && lotPrice <= filters.priceRange[1] &&
-            lotBed >= filters.bedRange[0] && lotBed <= filters.bedRange[1] &&
-            lotSurface >= filters.surfaceRange[0] && lotSurface <= filters.surfaceRange[1] &&
+            lotPrice >= filters.priceRange[0] &&
+            lotPrice <= filters.priceRange[1] &&
+            lotBed >= filters.bedRange[0] &&
+            lotBed <= filters.bedRange[1] &&
+            lotSurface >= filters.surfaceRange[0] &&
+            lotSurface <= filters.surfaceRange[1] &&
             (!filters.onlyGarden || hasGarden) &&
             (!filters.onlyRooftop || hasRooftop)
           );
@@ -664,10 +760,13 @@ export default function ApartmentList() {
 
   // 2. Calculer les min/max à partir de filteredLots
   const dynamicSliderBounds = useMemo(() => {
-    let minPrice = Infinity, maxPrice = -Infinity;
-    let minBed = Infinity, maxBed = -Infinity;
-    let minSurface = Infinity, maxSurface = -Infinity;
-    filteredLots.forEach(lot => {
+    let minPrice = Infinity,
+      maxPrice = -Infinity;
+    let minBed = Infinity,
+      maxBed = -Infinity;
+    let minSurface = Infinity,
+      maxSurface = -Infinity;
+    filteredLots.forEach((lot) => {
       const price = parseFloat(lot.price);
       const bed = parseInt(lot.bed);
       const surface = parseFloat(lot.surface);
@@ -689,8 +788,10 @@ export default function ApartmentList() {
       maxPrice: maxPrice === -Infinity ? filters.priceRange[1] : maxPrice,
       minBed: minBed === Infinity ? filters.bedRange[0] : minBed,
       maxBed: maxBed === -Infinity ? filters.bedRange[1] : maxBed,
-      minSurface: minSurface === Infinity ? filters.surfaceRange[0] : minSurface,
-      maxSurface: maxSurface === -Infinity ? filters.surfaceRange[1] : maxSurface,
+      minSurface:
+        minSurface === Infinity ? filters.surfaceRange[0] : minSurface,
+      maxSurface:
+        maxSurface === -Infinity ? filters.surfaceRange[1] : maxSurface,
     };
   }, [filteredLots, filters]);
 
@@ -704,16 +805,18 @@ export default function ApartmentList() {
         .from("project")
         .select("id, name, compagny, country, city, lat, lng, online");
       if (filters.selectedCountry) {
-        query = query.eq('country', filters.selectedCountry);
+        query = query.eq("country", filters.selectedCountry);
       }
-      if (filters.selectedCity && filters.selectedCity !== t('Tous')) {
-        query = query.eq('city', filters.selectedCity);
+      if (filters.selectedCity && filters.selectedCity !== t("Tous")) {
+        query = query.eq("city", filters.selectedCity);
       }
       if (filters.searchTerm && filters.searchTerm.length > 0) {
-        query = query.ilike('name', `%${filters.searchTerm}%`);
+        query = query.ilike("name", `%${filters.searchTerm}%`);
       }
       const { data: projects, error: errorProjects } = await query;
-      const onlineProjects = (projects || []).filter(item => item.online === true);
+      const onlineProjects = (projects || []).filter(
+        (item) => item.online === true
+      );
       // Récupère les projectlists pour ces projets
       const { data: projectlists, error: errorProjectlists } = await supabase
         .from("projectlist")
@@ -743,20 +846,23 @@ export default function ApartmentList() {
 
   // Calcul du total projets (projets avec au moins un lot filtré)
   const totalFilteredProjects = allFilteredProjects.filter(
-    apt => filterProjectListByRange(apt.projectlist).length > 0
+    (apt) => filterProjectListByRange(apt.projectlist).length > 0
   ).length;
   // Calcul du nombre de compagnies (compagnies avec au moins un projet affiché)
   const totalFilteredCompanies = useMemo(() => {
     const set = new Set(
       allFilteredProjects
-        .filter(apt => filterProjectListByRange(apt.projectlist).length > 0)
-        .map(apt => apt.compagny)
+        .filter((apt) => filterProjectListByRange(apt.projectlist).length > 0)
+        .map((apt) => apt.compagny)
         .filter(Boolean)
     );
     return set.size;
   }, [allFilteredProjects, filterProjectListByRange]);
   const totalFilteredAppartments = useMemo(() => {
-    return allFilteredProjects.reduce((acc, apt) => acc + filterProjectListByRange(apt.projectlist).length, 0);
+    return allFilteredProjects.reduce(
+      (acc, apt) => acc + filterProjectListByRange(apt.projectlist).length,
+      0
+    );
   }, [allFilteredProjects, filterProjectListByRange]);
 
   if (!isHydrated) return null;
@@ -775,13 +881,29 @@ export default function ApartmentList() {
           </button>
         </div>
         {/* Modal Filtres mobile */}
-        <Dialog open={showFilters} onClose={() => setShowFilters(false)} fullWidth maxWidth="sm" PaperProps={{
-          style: { borderRadius: 24, padding: 0, background: 'white', minHeight: 'auto' }
-        }}>
+        <Dialog
+          open={showFilters}
+          onClose={() => setShowFilters(false)}
+          fullWidth
+          maxWidth="sm"
+          PaperProps={{
+            style: {
+              borderRadius: 24,
+              padding: 0,
+              background: "white",
+              minHeight: "auto",
+            },
+          }}
+        >
           <div className="p-6 flex flex-col gap-6">
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-bold">{t("Filtre")}</span>
-              <button onClick={() => setShowFilters(false)} className="text-green-600 font-bold text-lg">✕</button>
+              <button
+                onClick={() => setShowFilters(false)}
+                className="text-green-600 font-bold text-lg"
+              >
+                ✕
+              </button>
             </div>
             {/* Filtres ville + recherche */}
             <div className="flex flex-col gap-4">
@@ -790,8 +912,8 @@ export default function ApartmentList() {
                   <button
                     key={country}
                     onClick={() => {
-                      updateFilter('selectedCountry', country);
-                      updateFilter('selectedCity', t('Tous'));
+                      updateFilter("selectedCountry", country);
+                      updateFilter("selectedCity", t("Tous"));
                     }}
                     aria-pressed={filters.selectedCountry === country}
                     className={`h-10 px-3 border-2 border-black rounded-full text-sm font-semibold transition-colors duration-200 whitespace-nowrap ${
@@ -825,7 +947,9 @@ export default function ApartmentList() {
                         <MdLocationOn className="text-green-600 text-lg min-w-[20px]" />
                         <span className="font-bold text-black">{city}</span>
                         {getCountryForCity(city) && (
-                          <span className="ml-1 text-gray-400 text-sm">{getCountryForCity(city)}</span>
+                          <span className="ml-1 text-gray-400 text-sm">
+                            {getCountryForCity(city)}
+                          </span>
                         )}
                       </li>
                     ))}
@@ -839,44 +963,45 @@ export default function ApartmentList() {
                 <div className="w-full bg-white/90 p-1.5 shadow-lg px-3 border-2 border-black rounded-full flex flex-row justify-between items-center mb-1">
                   <span className="text-xs font-semibold">{t("Prix")}</span>
                   <span className="text-xs font-semibold text-black">
-                    {formatPrice(filters.priceRange[0])} - {formatPrice(filters.priceRange[1])}
+                    {formatPrice(filters.priceRange[0])} -{" "}
+                    {formatPrice(filters.priceRange[1])}
                   </span>
                 </div>
                 <Slider
                   value={filters.priceRange}
-                  onChange={(_, v) => updateFilter('priceRange', v)}
+                  onChange={(_, v) => updateFilter("priceRange", v)}
                   valueLabelDisplay="off"
                   min={minMaxValuesInitial?.minPrice ?? minMaxValues.minPrice}
                   max={minMaxValuesInitial?.maxPrice ?? minMaxValues.maxPrice}
                   step={10000}
                   sx={{
-                    color: '#16a34a',
+                    color: "#16a34a",
                     height: 4,
                     px: 1,
-                    borderRadius: '9999px',
-                    background: 'transparent',
-                    boxShadow: 'none',
-                    border: 'none',
-                    '& .MuiSlider-thumb': {
+                    borderRadius: "9999px",
+                    background: "transparent",
+                    boxShadow: "none",
+                    border: "none",
+                    "& .MuiSlider-thumb": {
                       width: 16,
                       height: 16,
-                      borderRadius: '50%',
-                      backgroundColor: '#16a34a',
-                      border: '2.5px solid #111',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.10)',
+                      borderRadius: "50%",
+                      backgroundColor: "#16a34a",
+                      border: "2.5px solid #111",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.10)",
                     },
-                    '& .MuiSlider-track': {
-                      border: 'none',
-                      background: '#16a34a',
+                    "& .MuiSlider-track": {
+                      border: "none",
+                      background: "#16a34a",
                       height: 4,
-                      borderRadius: '9999px',
+                      borderRadius: "9999px",
                     },
-                    '& .MuiSlider-rail': {
-                      backgroundColor: 'white',
-                      border: '2px solid #111',
+                    "& .MuiSlider-rail": {
+                      backgroundColor: "white",
+                      border: "2px solid #111",
                       opacity: 1,
                       height: 4,
-                      borderRadius: '9999px',
+                      borderRadius: "9999px",
                     },
                   }}
                 />
@@ -890,39 +1015,39 @@ export default function ApartmentList() {
                 </div>
                 <Slider
                   value={filters.bedRange}
-                  onChange={(_, v) => updateFilter('bedRange', v)}
+                  onChange={(_, v) => updateFilter("bedRange", v)}
                   valueLabelDisplay="off"
                   min={minMaxValuesInitial?.minBed ?? minMaxValues.minBed}
                   max={minMaxValuesInitial?.maxBed ?? minMaxValues.maxBed}
                   step={1}
                   sx={{
-                    color: '#16a34a',
+                    color: "#16a34a",
                     height: 4,
                     px: 1,
-                    borderRadius: '9999px',
-                    background: 'transparent',
-                    boxShadow: 'none',
-                    border: 'none',
-                    '& .MuiSlider-thumb': {
+                    borderRadius: "9999px",
+                    background: "transparent",
+                    boxShadow: "none",
+                    border: "none",
+                    "& .MuiSlider-thumb": {
                       width: 16,
                       height: 16,
-                      borderRadius: '50%',
-                      backgroundColor: '#16a34a',
-                      border: '2.5px solid #111',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.10)',
+                      borderRadius: "50%",
+                      backgroundColor: "#16a34a",
+                      border: "2.5px solid #111",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.10)",
                     },
-                    '& .MuiSlider-track': {
-                      border: 'none',
-                      background: '#16a34a',
+                    "& .MuiSlider-track": {
+                      border: "none",
+                      background: "#16a34a",
                       height: 4,
-                      borderRadius: '9999px',
+                      borderRadius: "9999px",
                     },
-                    '& .MuiSlider-rail': {
-                      backgroundColor: 'white',
-                      border: '2px solid #111',
+                    "& .MuiSlider-rail": {
+                      backgroundColor: "white",
+                      border: "2px solid #111",
                       opacity: 1,
                       height: 4,
-                      borderRadius: '9999px',
+                      borderRadius: "9999px",
                     },
                   }}
                 />
@@ -936,95 +1061,99 @@ export default function ApartmentList() {
                 </div>
                 <Slider
                   value={filters.surfaceRange}
-                  onChange={(_, v) => updateFilter('surfaceRange', v)}
+                  onChange={(_, v) => updateFilter("surfaceRange", v)}
                   valueLabelDisplay="off"
-                  min={minMaxValuesInitial?.minSurface ?? minMaxValues.minSurface}
-                  max={minMaxValuesInitial?.maxSurface ?? minMaxValues.maxSurface}
+                  min={
+                    minMaxValuesInitial?.minSurface ?? minMaxValues.minSurface
+                  }
+                  max={
+                    minMaxValuesInitial?.maxSurface ?? minMaxValues.maxSurface
+                  }
                   step={1}
                   sx={{
-                    color: '#16a34a',
+                    color: "#16a34a",
                     height: 4,
                     px: 1,
-                    borderRadius: '9999px',
-                    background: 'transparent',
-                    boxShadow: 'none',
-                    border: 'none',
-                    '& .MuiSlider-thumb': {
+                    borderRadius: "9999px",
+                    background: "transparent",
+                    boxShadow: "none",
+                    border: "none",
+                    "& .MuiSlider-thumb": {
                       width: 16,
                       height: 16,
-                      borderRadius: '50%',
-                      backgroundColor: '#16a34a',
-                      border: '2.5px solid #111',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.10)',
+                      borderRadius: "50%",
+                      backgroundColor: "#16a34a",
+                      border: "2.5px solid #111",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.10)",
                     },
-                    '& .MuiSlider-track': {
-                      border: 'none',
-                      background: '#16a34a',
+                    "& .MuiSlider-track": {
+                      border: "none",
+                      background: "#16a34a",
                       height: 4,
-                      borderRadius: '9999px',
+                      borderRadius: "9999px",
                     },
-                    '& .MuiSlider-rail': {
-                      backgroundColor: 'white',
-                      border: '2px solid #111',
+                    "& .MuiSlider-rail": {
+                      backgroundColor: "white",
+                      border: "2px solid #111",
                       opacity: 1,
                       height: 4,
-                      borderRadius: '9999px',
+                      borderRadius: "9999px",
                     },
                   }}
                 />
               </div>
             </div>
             {/* Filtres Jardin, Rooftop, Favoris */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-4 w-full">
-              <div className="flex flex-row gap-4 w-full justify-center items-center">
-                <button
-                  onClick={e => {
-                    updateFilter('onlyGarden', v => {
-                      if (v) setJustUnselectedGarden(true);
-                      return !v;
-                    });
-                    e.currentTarget.blur();
-                  }}
-                  onMouseLeave={() => setJustUnselectedGarden(false)}
-                  aria-pressed={filters.onlyGarden}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${filters.onlyGarden ? 'bg-green-600 text-white' : 'bg-white text-black'} ${!filters.onlyGarden && !justUnselectedGarden ? 'hover:bg-green-600 hover:text-white' : ''}`}
-                >
-                  <span>{t("AvecJardin")}</span>
-                  <span>🌸</span>
-                </button>
-                <button
-                  onClick={e => {
-                    updateFilter('onlyRooftop', v => {
-                      if (v) setJustUnselectedRooftop(true);
-                      return !v;
-                    });
-                    e.currentTarget.blur();
-                  }}
-                  onMouseLeave={() => setJustUnselectedRooftop(false)}
-                  aria-pressed={filters.onlyRooftop}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${filters.onlyRooftop ? 'bg-green-600 text-white' : 'bg-white text-black'} ${!filters.onlyRooftop && !justUnselectedRooftop ? 'hover:bg-green-600 hover:text-white' : ''}`}
-                >
-                  <span>{t("Rooftop")}</span>
-                  <span>🏙️</span>
-                </button>
-              </div>
-              <div className="w-full flex justify-center items-center mt-2 sm:mt-0">
-                <button
-                  onClick={e => {
-                    setShowOnlyFavorites(v => {
-                      if (v) setJustUnselectedFavorites(true);
-                      return !v;
-                    });
-                    e.currentTarget.blur();
-                  }}
-                  onMouseLeave={() => setJustUnselectedFavorites(false)}
-                  aria-pressed={showOnlyFavorites}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${showOnlyFavorites ? 'bg-green-600 text-white' : 'bg-white text-black'} ${!showOnlyFavorites && !justUnselectedFavorites ? 'hover:bg-green-600 hover:text-white' : ''}`}
-                >
-                  {showOnlyFavorites ? <FaHeart className="text-red-600" /> : <FaRegHeart className="text-gray-400" />}
-                  <span>{t("MesFavoris")}</span>
-                </button>
-              </div>
+            <div className="hidden md:flex lg:hidden w-full justify-center gap-4 mt-4">
+              <button
+                onClick={(e) => {
+                  updateFilter("onlyGarden", (v) => {
+                    if (v) setJustUnselectedGarden(true);
+                    return !v;
+                  });
+                  e.currentTarget.blur();
+                }}
+                onMouseLeave={() => setJustUnselectedGarden(false)}
+                aria-pressed={filters.onlyGarden}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${filters.onlyGarden ? "bg-green-600 text-white" : "bg-white text-black"} ${!filters.onlyGarden && !justUnselectedGarden ? "hover:bg-green-600 hover:text-white" : ""}`}
+              >
+                <span>{t("AvecJardin")}</span>
+                <span>🌸</span>
+              </button>
+              <button
+                onClick={(e) => {
+                  updateFilter("onlyRooftop", (v) => {
+                    if (v) setJustUnselectedRooftop(true);
+                    return !v;
+                  });
+                  e.currentTarget.blur();
+                }}
+                onMouseLeave={() => setJustUnselectedRooftop(false)}
+                aria-pressed={filters.onlyRooftop}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${filters.onlyRooftop ? "bg-green-600 text-white" : "bg-white text-black"} ${!filters.onlyRooftop && !justUnselectedRooftop ? "hover:bg-green-600 hover:text-white" : ""}`}
+              >
+                <span>{t("Rooftop")}</span>
+                <span>🏙️</span>
+              </button>
+              <button
+                onClick={(e) => {
+                  setShowOnlyFavorites((v) => {
+                    if (v) setJustUnselectedFavorites(true);
+                    return !v;
+                  });
+                  e.currentTarget.blur();
+                }}
+                onMouseLeave={() => setJustUnselectedFavorites(false)}
+                aria-pressed={showOnlyFavorites}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-black font-semibold transition-colors duration-200 text-sm ${showOnlyFavorites ? "bg-green-600 text-white" : "bg-white text-black"} ${!showOnlyFavorites && !justUnselectedFavorites ? "hover:bg-green-600 hover:text-white" : ""}`}
+              >
+                {showOnlyFavorites ? (
+                  <FaHeart className="text-red-600" />
+                ) : (
+                  <FaRegHeart className="text-gray-400" />
+                )}
+                <span>{t("MesFavoris")}</span>
+              </button>
             </div>
             <button
               onClick={resetFilters}
@@ -1036,13 +1165,26 @@ export default function ApartmentList() {
           </div>
         </Dialog>
         {/* Filtres inline desktop - version pro épurée avec fond d'écran */}
-        <div className="hidden sm:block w-full h-[440px] bg-cover bg-center mb-8 shadow-md relative" style={{ backgroundImage: 'url(/newheader.png)' }}>
+        <div
+          className="hidden sm:block w-full h-[440px] bg-cover bg-center mb-8 shadow-md relative"
+          style={{ backgroundImage: "url(/newheader.png)" }}
+        >
           <div className="absolute inset-0 backdrop-blur-sm bg-black/10 z-0"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl px-6">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl px-6 pt-16">
             <div className="flex items-center gap-8 w-full py-8 border-b-2 border-black bg-white/60 rounded-xl shadow-sm backdrop-blur-md relative z-10 min-h-[100px]">
               {/* Ville */}
               <div className="relative city-autocomplete flex items-center min-w-[180px] pl-4">
-                <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <svg
+                  width="22"
+                  height="22"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
                 <input
                   type="text"
                   value={cityInput}
@@ -1062,213 +1204,253 @@ export default function ApartmentList() {
                         <MdLocationOn className="text-green-600 text-lg min-w-[20px]" />
                         <span className="font-bold text-black">{city}</span>
                         {getCountryForCity(city) && (
-                          <span className="ml-1 text-gray-400 text-sm">{getCountryForCity(city)}</span>
+                          <span className="ml-1 text-gray-400 text-sm">
+                            {getCountryForCity(city)}
+                          </span>
                         )}
                       </li>
                     ))}
                   </ul>
                 )}
               </div>
-              {/* Prix */}
-              <div className="flex flex-col items-start min-w-[180px]">
-                <span className="text-sm text-gray-700 font-normal mb-1">{t("Prix")}</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-base font-semibold">{formatPrice(filters.priceRange[0])}</span>
-                  <span className="text-gray-400">-</span>
-                  <span className="text-base font-semibold">{formatPrice(filters.priceRange[1])}</span>
+              <div className="lg:flex lg:flex-row flex-col items-center gap-8">
+                <div className="flex items-center gap-4 w-full">
+                {/* Prix */}
+                <div className="flex flex-col items-start min-w-[180px]">
+                  <span className="text-sm text-gray-700 font-normal mb-1">
+                    {t("Prix")}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base font-semibold">
+                      {formatPrice(filters.priceRange[0])}
+                    </span>
+                    <span className="text-gray-400">-</span>
+                    <span className="text-base font-semibold">
+                      {formatPrice(filters.priceRange[1])}
+                    </span>
+                  </div>
+                  <Slider
+                    value={filters.priceRange}
+                    onChange={(_, v) => updateFilter("priceRange", v)}
+                    valueLabelDisplay="off"
+                    min={minMaxValuesInitial?.minPrice ?? minMaxValues.minPrice}
+                    max={minMaxValuesInitial?.maxPrice ?? minMaxValues.maxPrice}
+                    step={10000}
+                    sx={{
+                      color: "#111",
+                      height: 2,
+                      px: 0,
+                      borderRadius: 0,
+                      background: "transparent",
+                      boxShadow: "none",
+                      border: "none",
+                      "& .MuiSlider-thumb": {
+                        width: 12,
+                        height: 12,
+                        borderRadius: "50%",
+                        backgroundColor: "#111",
+                        border: "2px solid #fff",
+                        boxShadow: "none",
+                      },
+                      "& .MuiSlider-track": {
+                        border: "none",
+                        background: "#111",
+                        height: 2,
+                        borderRadius: 0,
+                      },
+                      "& .MuiSlider-rail": {
+                        backgroundColor: "#e5e7eb",
+                        border: "none",
+                        opacity: 1,
+                        height: 2,
+                        borderRadius: 0,
+                      },
+                    }}
+                  />
                 </div>
-                <Slider
-                  value={filters.priceRange}
-                  onChange={(_, v) => updateFilter('priceRange', v)}
-                  valueLabelDisplay="off"
-                  min={minMaxValuesInitial?.minPrice ?? minMaxValues.minPrice}
-                  max={minMaxValuesInitial?.maxPrice ?? minMaxValues.maxPrice}
-                  step={10000}
-                  sx={{
-                    color: '#111',
-                    height: 2,
-                    px: 0,
-                    borderRadius: 0,
-                    background: 'transparent',
-                    boxShadow: 'none',
-                    border: 'none',
-                    '& .MuiSlider-thumb': {
-                      width: 12,
-                      height: 12,
-                      borderRadius: '50%',
-                      backgroundColor: '#111',
-                      border: '2px solid #fff',
-                      boxShadow: 'none',
-                    },
-                    '& .MuiSlider-track': {
-                      border: 'none',
-                      background: '#111',
+                {/* Chambres */}
+                <div className="flex flex-col items-start min-w-[120px]">
+                  <span className="text-sm text-gray-700 font-normal mb-1">
+                    {t("Chambres")}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base font-semibold">
+                      {filters.bedRange[0]}
+                    </span>
+                    <span className="text-gray-400">-</span>
+                    <span className="text-base font-semibold">
+                      {filters.bedRange[1]}
+                    </span>
+                  </div>
+                  <Slider
+                    value={filters.bedRange}
+                    onChange={(_, v) => updateFilter("bedRange", v)}
+                    valueLabelDisplay="off"
+                    min={minMaxValuesInitial?.minBed ?? minMaxValues.minBed}
+                    max={minMaxValuesInitial?.maxBed ?? minMaxValues.maxBed}
+                    step={1}
+                    sx={{
+                      color: "#111",
                       height: 2,
+                      px: 0,
                       borderRadius: 0,
-                    },
-                    '& .MuiSlider-rail': {
-                      backgroundColor: '#e5e7eb',
-                      border: 'none',
-                      opacity: 1,
-                      height: 2,
-                      borderRadius: 0,
-                    },
-                  }}
-                />
-              </div>
-              {/* Chambres */}
-              <div className="flex flex-col items-start min-w-[120px]">
-                <span className="text-sm text-gray-700 font-normal mb-1">{t("Chambres")}</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-base font-semibold">{filters.bedRange[0]}</span>
-                  <span className="text-gray-400">-</span>
-                  <span className="text-base font-semibold">{filters.bedRange[1]}</span>
+                      background: "transparent",
+                      boxShadow: "none",
+                      border: "none",
+                      "& .MuiSlider-thumb": {
+                        width: 12,
+                        height: 12,
+                        borderRadius: "50%",
+                        backgroundColor: "#111",
+                        border: "2px solid #fff",
+                        boxShadow: "none",
+                      },
+                      "& .MuiSlider-track": {
+                        border: "none",
+                        background: "#111",
+                        height: 2,
+                        borderRadius: 0,
+                      },
+                      "& .MuiSlider-rail": {
+                        backgroundColor: "#e5e7eb",
+                        border: "none",
+                        opacity: 1,
+                        height: 2,
+                        borderRadius: 0,
+                      },
+                    }}
+                  />
                 </div>
-                <Slider
-                  value={filters.bedRange}
-                  onChange={(_, v) => updateFilter('bedRange', v)}
-                  valueLabelDisplay="off"
-                  min={minMaxValuesInitial?.minBed ?? minMaxValues.minBed}
-                  max={minMaxValuesInitial?.maxBed ?? minMaxValues.maxBed}
-                  step={1}
-                  sx={{
-                    color: '#111',
-                    height: 2,
-                    px: 0,
-                    borderRadius: 0,
-                    background: 'transparent',
-                    boxShadow: 'none',
-                    border: 'none',
-                    '& .MuiSlider-thumb': {
-                      width: 12,
-                      height: 12,
-                      borderRadius: '50%',
-                      backgroundColor: '#111',
-                      border: '2px solid #fff',
-                      boxShadow: 'none',
-                    },
-                    '& .MuiSlider-track': {
-                      border: 'none',
-                      background: '#111',
+                {/* Surface */}
+                <div className="flex flex-col items-start min-w-[120px]">
+                  <span className="text-sm text-gray-700 font-normal mb-1">
+                    {t("Surface")}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base font-semibold">
+                      {filters.surfaceRange[0]}
+                    </span>
+                    <span className="text-gray-400">-</span>
+                    <span className="text-base font-semibold">
+                      {filters.surfaceRange[1]}
+                    </span>
+                  </div>
+                  <Slider
+                    value={filters.surfaceRange}
+                    onChange={(_, v) => updateFilter("surfaceRange", v)}
+                    valueLabelDisplay="off"
+                    min={
+                      minMaxValuesInitial?.minSurface ?? minMaxValues.minSurface
+                    }
+                    max={
+                      minMaxValuesInitial?.maxSurface ?? minMaxValues.maxSurface
+                    }
+                    step={1}
+                    sx={{
+                      color: "#111",
                       height: 2,
+                      px: 0,
                       borderRadius: 0,
-                    },
-                    '& .MuiSlider-rail': {
-                      backgroundColor: '#e5e7eb',
-                      border: 'none',
-                      opacity: 1,
-                      height: 2,
-                      borderRadius: 0,
-                    },
-                  }}
-                />
-              </div>
-              {/* Surface */}
-              <div className="flex flex-col items-start min-w-[120px]">
-                <span className="text-sm text-gray-700 font-normal mb-1">{t("Surface")}</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-base font-semibold">{filters.surfaceRange[0]}</span>
-                  <span className="text-gray-400">-</span>
-                  <span className="text-base font-semibold">{filters.surfaceRange[1]}</span>
+                      background: "transparent",
+                      boxShadow: "none",
+                      border: "none",
+                      "& .MuiSlider-thumb": {
+                        width: 12,
+                        height: 12,
+                        borderRadius: "50%",
+                        backgroundColor: "#111",
+                        border: "2px solid #fff",
+                        boxShadow: "none",
+                      },
+                      "& .MuiSlider-track": {
+                        border: "none",
+                        background: "#111",
+                        height: 2,
+                        borderRadius: 0,
+                      },
+                      "& .MuiSlider-rail": {
+                        backgroundColor: "#e5e7eb",
+                        border: "none",
+                        opacity: 1,
+                        height: 2,
+                        borderRadius: 0,
+                      },
+                    }}
+                  />
                 </div>
-                <Slider
-                  value={filters.surfaceRange}
-                  onChange={(_, v) => updateFilter('surfaceRange', v)}
-                  valueLabelDisplay="off"
-                  min={minMaxValuesInitial?.minSurface ?? minMaxValues.minSurface}
-                  max={minMaxValuesInitial?.maxSurface ?? minMaxValues.maxSurface}
-                  step={1}
-                  sx={{
-                    color: '#111',
-                    height: 2,
-                    px: 0,
-                    borderRadius: 0,
-                    background: 'transparent',
-                    boxShadow: 'none',
-                    border: 'none',
-                    '& .MuiSlider-thumb': {
-                      width: 12,
-                      height: 12,
-                      borderRadius: '50%',
-                      backgroundColor: '#111',
-                      border: '2px solid #fff',
-                      boxShadow: 'none',
-                    },
-                    '& .MuiSlider-track': {
-                      border: 'none',
-                      background: '#111',
-                      height: 2,
-                      borderRadius: 0,
-                    },
-                    '& .MuiSlider-rail': {
-                      backgroundColor: '#e5e7eb',
-                      border: 'none',
-                      opacity: 1,
-                      height: 2,
-                      borderRadius: 0,
-                    },
+                </div>
+                {/* Filtres secondaires */}
+                <div className="flex items-center justify-center gap-4 w-full">
+                <button
+                  onClick={(e) => {
+                    updateFilter("onlyGarden", (v) => {
+                      if (v) setJustUnselectedGarden(true);
+                      return !v;
+                    });
+                    e.currentTarget.blur();
                   }}
-                />
-              </div>
-              {/* Filtres secondaires */}
-              <button
-                onClick={e => {
-                  updateFilter('onlyGarden', v => {
-                    if (v) setJustUnselectedGarden(true);
-                    return !v;
-                  });
-                  e.currentTarget.blur();
-                }}
-                onMouseLeave={() => setJustUnselectedGarden(false)}
-                aria-pressed={filters.onlyGarden}
-                className={`flex items-center gap-1 px-3 py-2 rounded-full font-medium text-[15px] border transition-all duration-200 whitespace-nowrap
-                  ${filters.onlyGarden
-                    ? 'bg-green-600 text-white border-green-700 shadow-md'
-                    : 'bg-white/60 text-black border-gray-300 hover:bg-green-100'}
+                  onMouseLeave={() => setJustUnselectedGarden(false)}
+                  aria-pressed={filters.onlyGarden}
+                  className={`flex items-center gap-1 px-3 py-2 rounded-full font-medium text-[15px] border transition-all duration-200 whitespace-nowrap
+                  ${
+                    filters.onlyGarden
+                      ? "bg-green-600 text-white border-green-700 shadow-md"
+                      : "bg-white/60 text-black border-gray-300 hover:bg-green-100"
+                  }
                 `}
-              >
-                <span>🌸</span>
-                <span>{t("AvecJardin")}</span>
-              </button>
-              <button
-                onClick={e => {
-                  updateFilter('onlyRooftop', v => {
-                    if (v) setJustUnselectedRooftop(true);
-                    return !v;
-                  });
-                  e.currentTarget.blur();
-                }}
-                onMouseLeave={() => setJustUnselectedRooftop(false)}
-                aria-pressed={filters.onlyRooftop}
-                className={`flex items-center gap-1 px-3 py-2 rounded-full font-medium text-[15px] border transition-all duration-200 whitespace-nowrap
-                  ${filters.onlyRooftop
-                    ? 'bg-blue-600 text-white border-blue-700 shadow-md'
-                    : 'bg-white/60 text-black border-gray-300 hover:bg-blue-100'}
+                >
+                  <span>🌸</span>
+                  <span>{t("AvecJardin")}</span>
+                </button>
+                <button
+                  onClick={(e) => {
+                    updateFilter("onlyRooftop", (v) => {
+                      if (v) setJustUnselectedRooftop(true);
+                      return !v;
+                    });
+                    e.currentTarget.blur();
+                  }}
+                  onMouseLeave={() => setJustUnselectedRooftop(false)}
+                  aria-pressed={filters.onlyRooftop}
+                  className={`flex items-center gap-1 px-3 py-2 rounded-full font-medium text-[15px] border transition-all duration-200 whitespace-nowrap
+                  ${
+                    filters.onlyRooftop
+                      ? "bg-blue-600 text-white border-blue-700 shadow-md"
+                      : "bg-white/60 text-black border-gray-300 hover:bg-blue-100"
+                  }
                 `}
-              >
-                <span>🏙️</span>
-                <span>{t("Rooftop")}</span>
-              </button>
-              <button
-                onClick={e => {
-                  setShowOnlyFavorites(v => {
-                    if (v) setJustUnselectedFavorites(true);
-                    return !v;
-                  });
-                  e.currentTarget.blur();
-                }}
-                onMouseLeave={() => setJustUnselectedFavorites(false)}
-                aria-pressed={showOnlyFavorites}
-                className={`flex items-center gap-1 px-3 py-1 rounded font-normal text-base border-none bg-transparent hover:underline transition-colors duration-200 ${showOnlyFavorites ? 'text-red-700' : 'text-black'}`}
-              >
-                {showOnlyFavorites ? <FaHeart className="text-red-600" /> : <FaRegHeart className="text-gray-400" />}
-                <span>{t("MesFavoris")}</span>
-              </button>
+                >
+                  <span>🏙️</span>
+                  <span>{t("Rooftop")}</span>
+                </button>
+                <button
+                  onClick={(e) => {
+                    setShowOnlyFavorites((v) => {
+                      if (v) setJustUnselectedFavorites(true);
+                      return !v;
+                    });
+                    e.currentTarget.blur();
+                  }}
+                  onMouseLeave={() => setJustUnselectedFavorites(false)}
+                  aria-pressed={showOnlyFavorites}
+                  className={`flex items-center gap-1 px-3 py-1 rounded-full font-normal text-base border-none bg-white hover:underline transition-colors duration-200 ${showOnlyFavorites ? "text-red-700" : "text-black"}`}
+                >
+                  {showOnlyFavorites ? (
+                    <FaHeart className="text-red-600" />
+                  ) : (
+                    <FaRegHeart className="text-gray-400" />
+                  )}
+                  <span>{t("MesFavoris")}</span>
+                </button>
+                </div>
+              </div>
             </div>
             {/* Résumé dans la zone blanche */}
             <div className="w-full flex flex-col items-center justify-center py-8 mt-4">
               <span className="text-3xl font-extrabold text-gray-800">
-                {tGlobal('Compagnies')}: {totalFilteredCompanies} | {tGlobal('Projets')}: {totalFilteredProjects} | {tGlobal('Appartements')}: {totalFilteredAppartments}
+                {tGlobal("Compagnies")}: {totalFilteredCompanies} |{" "}
+                {tGlobal("Projets")}: {totalFilteredProjects} |{" "}
+                {tGlobal("Appartements")}: {totalFilteredAppartments}
               </span>
             </div>
           </div>
@@ -1284,24 +1466,24 @@ export default function ApartmentList() {
         <div className="flex justify-center mb-8 mt-4">
           <div className="bg-white rounded-full p-1 shadow-lg border-2 border-gray-200 flex gap-2">
             <button
-              onClick={() => setViewMode('list')}
+              onClick={() => setViewMode("list")}
               className={`px-6 py-2 rounded-full font-semibold transition-all duration-200 ${
-                viewMode === 'list'
-                  ? 'bg-green-600 text-white shadow-md'
-                  : 'bg-white text-gray-600 hover:bg-gray-100'
+                viewMode === "list"
+                  ? "bg-green-600 text-white shadow-md"
+                  : "bg-white text-gray-600 hover:bg-gray-100"
               }`}
             >
-              📋 {t('Vue Liste')}
+              📋 {t("Vue Liste")}
             </button>
             <button
-              onClick={() => setViewMode('map')}
+              onClick={() => setViewMode("map")}
               className={`px-6 py-2 rounded-full font-semibold transition-all duration-200 ${
-                viewMode === 'map'
-                  ? 'bg-green-600 text-white shadow-md'
-                  : 'bg-white text-gray-600 hover:bg-gray-100'
+                viewMode === "map"
+                  ? "bg-green-600 text-white shadow-md"
+                  : "bg-white text-gray-600 hover:bg-gray-100"
               }`}
             >
-              🗺️ {t('Vue Carte')}
+              🗺️ {t("Vue Carte")}
             </button>
           </div>
         </div>
@@ -1315,57 +1497,88 @@ export default function ApartmentList() {
         {/* Loader animé */}
         {apartments.length === 0 && !error && (
           <div className="flex justify-center items-center h-32">
-            <svg className="animate-spin h-8 w-8 text-green-600" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="4" fill="none"/></svg>
+            <svg
+              className="animate-spin h-8 w-8 text-green-600"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+                fill="none"
+              />
+              <path
+                d="M4 12a8 8 0 018-8"
+                stroke="currentColor"
+                strokeWidth="4"
+                fill="none"
+              />
+            </svg>
           </div>
         )}
         {/* Message d'erreur */}
         {error && (
           <div className="text-center text-red-600 font-semibold my-4">
-            {t('Erreur de chargement.')} <button onClick={() => window.location.reload()} className="underline">{t('Réessayer')}</button>
+            {t("Erreur de chargement.")}{" "}
+            <button
+              onClick={() => window.location.reload()}
+              className="underline"
+            >
+              {t("Réessayer")}
+            </button>
           </div>
         )}
 
         {/* Grille des appartements avec animation d'apparition - remplacée par slider par ville */}
-        {viewMode === 'list' ? (
+        {viewMode === "list" ? (
           <div className="fade-in max-w-7xl mx-auto pt-8 px-4">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {isLoading
-                ? Array.from({ length: PAGE_SIZE }).map((_, i) => <ApartmentCardSkeleton key={i} />)
-                : !isLoading && apartments.length === 0 ? (
-                  <p className="text-center text-gray-500 col-span-full">
-                    {t("Aucun résultat")}
-                  </p>
-                ) : (
-                  apartments
-                    .filter(apt => !showOnlyFavorites || favorites.includes(apt.id))
-                    .filter(apt => filterProjectListByRange(apt.projectlist).length > 0)
-                    .map((apt) => (
-                      <ApartmentCard
-                        key={apt.id}
-                        apt={apt}
-                        projectImages={projectImages}
-                        currentImageIndexes={currentImageIndexes}
-                        handleNextImage={handleNextImage}
-                        handlePrevImage={handlePrevImage}
-                        isChangingImage={isChangingImage}
-                        setIsChangingImage={setIsChangingImage}
-                        highlight={highlight}
-                        debouncedSearchTerm={debouncedSearchTerm}
-                        filterProjectListByRange={filterProjectListByRange}
-                        formatPrice={formatPrice}
-                        t={t}
-                        showAllLots={showAllLots}
-                        setShowAllLots={setShowAllLots}
-                        locale={locale}
-                        tGlobal={tGlobal}
-                        showLotsTable={false}
-                        favorites={favorites}
-                        handleToggleFavorite={handleToggleFavorite}
-                        isFavorite={isFavorite}
-                        showProjectButton={true}
-                      />
-                    ))
-                )}
+              {isLoading ? (
+                Array.from({ length: PAGE_SIZE }).map((_, i) => (
+                  <ApartmentCardSkeleton key={i} />
+                ))
+              ) : !isLoading && apartments.length === 0 ? (
+                <p className="text-center text-gray-500 col-span-full">
+                  {t("Aucun résultat")}
+                </p>
+              ) : (
+                apartments
+                  .filter(
+                    (apt) => !showOnlyFavorites || favorites.includes(apt.id)
+                  )
+                  .filter(
+                    (apt) =>
+                      filterProjectListByRange(apt.projectlist).length > 0
+                  )
+                  .map((apt) => (
+                    <ApartmentCard
+                      key={apt.id}
+                      apt={apt}
+                      projectImages={projectImages}
+                      currentImageIndexes={currentImageIndexes}
+                      handleNextImage={handleNextImage}
+                      handlePrevImage={handlePrevImage}
+                      isChangingImage={isChangingImage}
+                      setIsChangingImage={setIsChangingImage}
+                      highlight={highlight}
+                      debouncedSearchTerm={debouncedSearchTerm}
+                      filterProjectListByRange={filterProjectListByRange}
+                      formatPrice={formatPrice}
+                      t={t}
+                      showAllLots={showAllLots}
+                      setShowAllLots={setShowAllLots}
+                      locale={locale}
+                      tGlobal={tGlobal}
+                      showLotsTable={false}
+                      favorites={favorites}
+                      handleToggleFavorite={handleToggleFavorite}
+                      isFavorite={isFavorite}
+                      showProjectButton={true}
+                    />
+                  ))
+              )}
             </div>
             {hasMore && !isLoading && (
               <div className="flex justify-center mt-8 mb-8">
@@ -1389,7 +1602,10 @@ export default function ApartmentList() {
                   locale={locale}
                   onMarkerClick={setSelectedProject}
                 />
-                {console.log('[ApartmentList] apartments passed to GoogleMapComponent:', apartments)}
+                {console.log(
+                  "[ApartmentList] apartments passed to GoogleMapComponent:",
+                  apartments
+                )}
               </div>
             </div>
             <div className="w-full lg:w-[400px] mt-6 lg:mt-12">
@@ -1426,7 +1642,8 @@ export default function ApartmentList() {
 
       {/* Styles pour focus visible, fade-in, img-fade */}
       <style jsx global>{`
-        button:focus, a:focus {
+        button:focus,
+        a:focus {
           outline: 2px solid #16a34a;
           outline-offset: 2px;
         }
@@ -1434,8 +1651,14 @@ export default function ApartmentList() {
           animation: fadeIn 0.5s;
         }
         @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px);}
-          to { opacity: 1; transform: none;}
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
         }
         .img-fade {
           transition: opacity 0.4s;
