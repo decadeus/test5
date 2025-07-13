@@ -496,9 +496,12 @@ export default function DetailClient({ project, locale }) {
               blurDataURL="/appart.webp"
             />
             <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
-            <div className="flex flex-col justify-center items-center relative z-10">
-              <h1 className="text-5xl font-bold mb-2">{projectName}</h1>
-              <h2 className="text-xl text-black mb-2">{projectCity}</h2>
+            <div className="flex flex-col justify-center items-center relative z-10 w-full px-4">
+              <h1 className="text-5xl font-bold mb-2 w-full text-center break-words leading-tight" style={{wordBreak: 'break-word', hyphens: 'auto'}}>{projectName}</h1>
+              <h2 className="text-xl text-black mb-2 w-full text-center">{projectCity}</h2>
+              <div className="w-full text-center text-gray-700 text-base italic mb-2">
+                by {project.compagny && project.compagny !== 'null' ? project.compagny : 'Non renseigné'}
+              </div>
             </div>
           </div>
         </header>
@@ -634,12 +637,12 @@ export default function DetailClient({ project, locale }) {
                         <table className="table-fixed min-w-[1200px] border border-gray-200 bg-gray-50 rounded">
                           <thead>
                             <tr>
-                              <th className="px-2 py-2 w-28 text-center">Surface <span className="text-xs text-gray-400 font-normal">(m²)</span></th>
-                              <th className="px-2 py-2 w-28 text-center">Étage</th>
-                              <th className="px-2 py-2 w-32 text-center">Prix <span className="text-xs text-gray-400 font-normal">({currencySymbol})</span></th>
-                              <th className="px-2 py-2 w-20 text-center">Jardin</th>
-                              <th className="px-2 py-2 w-20 text-center">Rooftop</th>
-                              <th className="px-2 py-2 min-w-[300px] text-center">Description</th>
+                              <th className="px-2 py-2 w-28 text-left">Surface <span className="text-xs text-gray-400 font-normal">(m²)</span></th>
+                              <th className="px-2 py-2 w-28 text-left">Étage</th>
+                              <th className="px-2 py-2 w-32 text-left">Prix <span className="text-xs text-gray-400 font-normal">({currencySymbol})</span></th>
+                              <th className="px-2 py-2 w-20 text-left">Jardin</th>
+                              <th className="px-2 py-2 w-20 text-left">Rooftop</th>
+                              <th className="px-2 py-2 min-w-[300px] text-left">Description</th>
                             </tr>
                           </thead>
                           <tbody>
