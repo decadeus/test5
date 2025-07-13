@@ -1592,7 +1592,7 @@ export default function ApartmentList() {
             )}
           </div>
         ) : (
-          <div className="flex flex-col lg:flex-row gap-6 max-w-7xl items-center mx-auto">
+          <div className="flex flex-col lg:flex-row  max-w-7xl items-center mx-auto">
             <div className="flex-1 min-w-0">
               <div className="md:max-w-7xl md:w-full w-[350px] mx-auto my-12">
                 <GoogleMapComponent
@@ -1608,7 +1608,7 @@ export default function ApartmentList() {
                 )}
               </div>
             </div>
-            <div className="w-full lg:w-[400px] mt-6 lg:mt-12">
+            <div className="w-full lg:w-[400px] lg:mt-12 flex items-center justify-center">
               {selectedProject && (
                 <ProjectSidePanel
                   project={selectedProject}
