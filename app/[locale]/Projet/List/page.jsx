@@ -144,7 +144,7 @@ function ApartmentCard({
           <button className="mt-auto w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl flex items-center justify-center gap-2 transition">
             <Link
               href={`/${locale}/Projet/Detail/${apt.id}`}
-              className="flex items-center gap-2 w-full h-full justify-center"
+              className="flex items-center gap-2 w-full h-full justify-center px-2"
             >
               {t("Voir le détail")}
               <PlusIcon className="w-4 h-4" />
