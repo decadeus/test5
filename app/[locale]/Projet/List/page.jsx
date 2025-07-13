@@ -1463,7 +1463,7 @@ export default function ApartmentList() {
           </span>
         </div> */}
 
-        <div className="flex justify-center mb-8 mt-4">
+        <div className="flex justify-center mt-4">
           <div className="bg-white rounded-full p-1 shadow-lg border-2 border-gray-200 flex gap-2">
             <button
               onClick={() => setViewMode("list")}
@@ -1581,7 +1581,7 @@ export default function ApartmentList() {
               )}
             </div>
             {hasMore && !isLoading && (
-              <div className="flex justify-center mt-8 mb-8">
+              <div className="flex justify-center mt-8">
                 <button
                   className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full shadow transition"
                   onClick={() => setPageIndex((c) => c + 1)}
@@ -1594,7 +1594,7 @@ export default function ApartmentList() {
         ) : (
           <div className="flex flex-col lg:flex-row  max-w-7xl items-center mx-auto">
             <div className="flex-1 min-w-0">
-              <div className="md:max-w-7xl md:w-full w-[350px] mx-auto my-12">
+              <div className="md:max-w-7xl md:w-full w-[350px] mx-auto my-6">
                 <GoogleMapComponent
                   apartments={apartments}
                   projectImages={projectImages}
