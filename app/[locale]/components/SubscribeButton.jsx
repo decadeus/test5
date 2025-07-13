@@ -109,7 +109,7 @@ export default function SubscribeButton({ subtitle, paragraphe }) {
               {item.title}
             </p>
             <p className="text-lg font-bold text-gray-900 mb-6">
-              S'abonner - {prices[item.key][currency]} {currency} / mois
+              {t(`${item.key}.price`, { price: prices[item.key][currency], currency })}
             </p>
             <p className="text-sm">{item.users}</p>
             <button

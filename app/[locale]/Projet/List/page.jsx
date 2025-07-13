@@ -1586,7 +1586,7 @@ export default function ApartmentList() {
                   className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow transition"
                   onClick={() => setPageIndex((c) => c + 1)}
                 >
-                  Montrez plus
+                  {t('VoirPlus')}
                 </button>
               </div>
             )}
