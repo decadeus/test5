@@ -89,7 +89,7 @@ function ApartmentCard({
   return (
     <div
       key={apt.id}
-      className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden group flex flex-col w-full"
+      className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden group flex flex-col w-full"
     >
       <div className="relative">
         <Image
@@ -1533,7 +1533,7 @@ export default function ApartmentList() {
 
         {/* Grille des appartements avec animation d'apparition - remplacée par slider par ville */}
         {viewMode === "list" ? (
-          <div className="fade-in max-w-7xl mx-auto pt-8 px-4">
+          <div className="fade-in max-w-7xl mx-auto pt-8 px-4 mb-8">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {isLoading ? (
                 Array.from({ length: PAGE_SIZE }).map((_, i) => (
@@ -1581,9 +1581,9 @@ export default function ApartmentList() {
               )}
             </div>
             {hasMore && !isLoading && (
-              <div className="flex justify-center mt-8">
+              <div className="flex justify-center mt-8 mb-2">
                 <button
-                  className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full shadow transition"
+                  className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow transition"
                   onClick={() => setPageIndex((c) => c + 1)}
                 >
                   Montrez plus
