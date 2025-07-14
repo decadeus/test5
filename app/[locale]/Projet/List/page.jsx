@@ -278,6 +278,20 @@ export default function ApartmentList() {
     ];
   }, [apartments, filters.selectedCountry, t]);
 
+  // DEBUG LOGS
+  useEffect(() => {
+    console.log('[DEBUG] apartments:', apartments);
+    if (apartments.length > 0) {
+      console.log('[DEBUG] first apartment:', apartments[0]);
+      console.log('[DEBUG] all countries:', apartments.map(a => a.country));
+      console.log('[DEBUG] all cities:', apartments.map(a => a.city));
+    }
+    console.log('[DEBUG] filters.selectedCountry:', filters.selectedCountry);
+    console.log('[DEBUG] cities:', cities);
+    console.log('[DEBUG] filters.selectedCity:', filters.selectedCity);
+    console.log('[DEBUG] filteredCities:', filteredCities);
+  }, [apartments, filters.selectedCountry, cities, filters.selectedCity, filteredCities]);
+
   // --- RESTORE PATCH : min/max initiaux stockés au premier fetch, sliders stables ---
   const [minMaxValuesInitial, setMinMaxValuesInitial] = useState(null);
 
@@ -523,12 +537,13 @@ export default function ApartmentList() {
           title: item.name,
           compagny: item.compagny,
           summary: item.compagny,
-          price: item.country,
+          country: item.country, // FIX: map country from item.country
           city: item.city,
           imageUrl: "/images/placeholder.jpg",
           projectlist: (projectlists || []).filter((pl) => pl.ide === item.id),
           lat: item.lat,
           lng: item.lng,
+          // price: item.country, // REMOVE this line, price should not be country
         }));
         // --- RESTORE PATCH : min/max initiaux stockés au premier fetch, sliders stables ---
         if (!minMaxValuesInitial && apartmentsWithList.length > 0) {

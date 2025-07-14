@@ -648,6 +648,8 @@ function FilterB({
   selectedRooftop,
   onRooftopChange,
 }) {
+  // TOP-LEVEL DEBUG LOG
+  console.log('HELLO DEBUG FilterB');
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isSurfaceModalOpen, setIsSurfaceModalOpen] = useState(false);
   const [isBedsModalOpen, setIsBedsModalOpen] = useState(false);
@@ -688,6 +690,8 @@ function FilterB({
   }, []);
 
   useEffect(() => {
+    // Debug: log countryData and editableCountry after countryData is set
+    console.log('[DEBUG] useEffect countryData:', { countryData, editableCountry, editableCity });
     // Si aucun pays sélectionné, prendre le premier disponible
     let initialCountry = editableCountry;
     if (!initialCountry || !countryData[initialCountry]) {
@@ -712,6 +716,11 @@ function FilterB({
       }
     }
   }, [countryData, editableCountry]);
+
+  // Debug: log on every render
+  React.useEffect(() => {
+    console.log('[DEBUG] Render FilterB:', { countryData, editableCountry, cities, filteredCities });
+  });
 
   // Lors d'un changement de pays
   const handleCountryChange = (e) => {
