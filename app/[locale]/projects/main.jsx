@@ -1111,7 +1111,7 @@ function FilterB({
                       <select
                         value={editableCity}
                         onChange={handleCityChange}
-                        className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-sm w-36 max-h-48 overflow-y-auto w-full"
+                        className="w-full border border-gray-300 rounded-2xl p-2 text-gray-800 text-sm max-w-full max-h-48 overflow-y-auto"
                       >
                         <option value="" className="text-red-300 text-sm">
                           {f("SelectionnezUneVille")}
