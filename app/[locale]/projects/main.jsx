@@ -1086,13 +1086,13 @@ function FilterB({
             {(onClose) => (
               <>
                 <ModalBody>
-                  <div className="flex flex-col gap-6 pt-10">
+                  <div className="flex flex-col gap-6 pt-10 max-h-[80vh] overflow-y-auto max-w-full w-[95vw]">
                     {/* Country and City Selectors */}
                     <div className="flex justify-center gap-6">
                       <select
                         value={editableCountry}
                         onChange={handleCountryChange}
-                        className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-sm w-36"
+                        className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-sm w-36 w-full"
                       >
                         <option value="" className="text-red-300 text-sm">
                           {f("SelectionnezUnPays")}
@@ -1111,7 +1111,7 @@ function FilterB({
                       <select
                         value={editableCity}
                         onChange={handleCityChange}
-                        className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-sm w-36"
+                        className="border border-gray-300 rounded-2xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 text-sm w-36 max-h-48 overflow-y-auto w-full"
                       >
                         <option value="" className="text-red-300 text-sm">
                           {f("SelectionnezUneVille")}
