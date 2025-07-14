@@ -688,74 +688,58 @@ function FilterB({
   }, []);
 
   useEffect(() => {
-    // Récupération des données depuis localStorage
-    const storedCountry = localStorage.getItem("selectedCountry") || "";
-    const storedCity = localStorage.getItem("selectedCity") || "";
-    if (storedCity) {
-      setEditableCity(storedCity);
-      onCityChange(storedCity);
-    }
-
-    // Vérifie si les données du pays ont été chargées avant de définir la ville
-    if (Object.keys(countryData).length > 0) {
-      setEditableCountry(storedCountry);
-      onCountryChange([storedCountry]); // Met à jour le state du parent
-
-      if (storedCountry && countryData[storedCountry]) {
-        const availableCities = countryData[storedCountry];
-        setCities(availableCities);
-        setFilteredCities(availableCities);
-
-        const defaultCity = availableCities.includes(storedCity)
-          ? storedCity
-          : availableCities.length > 0
-          ? availableCities[0]
-          : "";
-
-        setEditableCity(defaultCity);
-        setCityInput(defaultCity);
-        onCityChange(defaultCity); // Met à jour la ville sélectionnée
+    // Si aucun pays sélectionné, prendre le premier disponible
+    let initialCountry = editableCountry;
+    if (!initialCountry || !countryData[initialCountry]) {
+      const countryList = Object.keys(countryData);
+      if (countryList.length > 0) {
+        initialCountry = countryList[0];
+        setEditableCountry(initialCountry);
+        onCountryChange([initialCountry]);
       }
     }
-  }, [countryData]);
+
+    // Mettre à jour la liste des villes pour le pays sélectionné
+    if (initialCountry && countryData[initialCountry]) {
+      setCities(countryData[initialCountry]);
+      setFilteredCities(countryData[initialCountry]);
+      // Si aucune ville sélectionnée, prendre la première
+      if (!editableCity || !countryData[initialCountry].includes(editableCity)) {
+        const defaultCity = countryData[initialCountry][0] || "";
+        setEditableCity(defaultCity);
+        setCityInput(defaultCity);
+        onCityChange(defaultCity);
+      }
+    }
+  }, [countryData, editableCountry]);
+
+  // Lors d'un changement de pays
   const handleCountryChange = (e) => {
     const selectedCountry = e.target.value;
     setEditableCountry(selectedCountry);
     onCountryChange([selectedCountry]);
-    localStorage.setItem("selectedCountry", selectedCountry); // Sauvegarde dans localStorage
-
-    // 🔹 Mettre à jour la liste des villes avec "Select city" comme première option
+    localStorage.setItem("selectedCountry", selectedCountry);
+    // Mettre à jour la liste des villes
     if (selectedCountry && countryData[selectedCountry]) {
-      const availableCities = ["Select city", ...countryData[selectedCountry]];
-      setCities(availableCities);
-
-      // 🔹 Sélectionner par défaut "Select city"
-      setEditableCity("Select city");
-      onCityChange("Select city");
-      localStorage.setItem("selectedCity", "Select city"); // Sauvegarde l'option par défaut
+      setCities(countryData[selectedCountry]);
+      setFilteredCities(countryData[selectedCountry]);
+      // Sélectionner la première ville par défaut
+      const defaultCity = countryData[selectedCountry][0] || "";
+      setEditableCity(defaultCity);
+      setCityInput(defaultCity);
+      onCityChange(defaultCity);
+      localStorage.setItem("selectedCity", defaultCity);
     } else {
-      setCities(["Select city"]);
-      setEditableCity("Select city");
-      onCityChange("Select city");
-      localStorage.setItem("selectedCity", "Select city"); // Réinitialiser si aucun pays valide
+      setCities([]);
+      setFilteredCities([]);
+      setEditableCity("");
+      setCityInput("");
+      onCityChange("");
+      localStorage.setItem("selectedCity", "");
     }
   };
 
-  const handleCityInputChange = (e) => {
-    const value = e.target.value;
-    setCityInput(value);
-    setShowCityDropdown(true);
-    if (value === "") {
-      setFilteredCities(cities);
-    } else {
-      setFilteredCities(
-        cities.filter((city) =>
-          city.toLowerCase().startsWith(value.toLowerCase())
-        )
-      );
-    }
-  };
-
+  // Lors d'un changement de ville
   const handleCitySelect = (city) => {
     setEditableCity(city);
     setCityInput(city);
