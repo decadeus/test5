@@ -13,11 +13,11 @@ export default function MentionLegal() {
       <h1 className="text-2xl font-bold mb-4">Mentions légales</h1>
       <h2 className="text-lg font-semibold mt-6 mb-2">Éditeur du site</h2>
       <p>
-        Nom de l'entreprise : <b>DECADEUS</b><br />
+        Nom de l'entreprise : <b>DECADEUS</b> (auto-entrepreneur enregistré en Pologne)<br />
         Adresse du siège social : <b>ul. Emilii Plater 1a/60, 05-500 Piaseczno, Pologne</b><br />
         NIP : <b>1231580469</b><br />
         REGON : <b>54168875</b><br />
-        E-mail : <b>debeaumont@decadeus.com</b>
+        E-mail : <b>hoomge@decadeus.com</b>
       </p>
       <h2 className="text-lg font-semibold mt-6 mb-2">Directeur de la publication</h2>
       <p>
@@ -44,6 +44,10 @@ export default function MentionLegal() {
       <h2 className="text-lg font-semibold mt-6 mb-2">Avertissement</h2>
       <p>
         Les informations présentées sur les projets immobiliers proviennent directement des promoteurs. DECADEUS ne saurait garantir l'exactitude, l'exhaustivité ou l'actualité de ces informations et décline toute responsabilité en cas d'erreur ou d'omission. Nous invitons les utilisateurs à vérifier les données auprès des promoteurs concernés avant toute décision.
+      </p>
+      <p className="mt-6 text-sm text-gray-600">
+        Pour en savoir plus sur la gestion de vos données personnelles, consultez notre{' '}
+        <a href="/fr/GDPR" className="underline hover:text-blue-600">politique de confidentialité</a>.
       </p>
     </div>
   );

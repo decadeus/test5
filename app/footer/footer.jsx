@@ -16,10 +16,7 @@ export default function Foot() {
         {/* Middle Section */}
         <div className="flex flex-col items-center sm:items-start">
           <LinK
-            href="/en/GDPR">GDPR
-          </LinK>
-          <LinK
-            href="/en/privacy">Privacy Policy
+            href="/fr/GDPR">Politique de confidentialité
           </LinK>
           <LinK
             href="/en/mentionlegal">Mentions légales

@@ -112,7 +112,7 @@ export default async function RootLayout({
               {children}
               <Analytics />
               <SpeedInsights />
-              <Chatbot />
+              {/* <Chatbot /> Masqué temporairement */}
             </main>
             <Foot />
             <ConditionalDownloadButtons />
