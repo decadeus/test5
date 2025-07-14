@@ -149,7 +149,11 @@
         "InformationsSupplementaires": "Додаткова інформація",
         "TitrePromoPlaceholder": "Заголовок забудовника (макс. 50 символів)",
         "LanguesParlees": "Розмовні мови",
-        "ImagesProjet": "Зображення проєкту"
+        "ImagesProjet": "Зображення проєкту",
+        "Jardin": "Сад",
+        "Rooftop": "Дах",
+        "Pieces": "Кімнати",
+        "APartirDe": "Від"
     },
     "SEO": {
         "Title": "Каталог проектів нерухомості",

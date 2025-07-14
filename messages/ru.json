@@ -147,7 +147,12 @@
         "InformationsSupplementaires": "Дополнительная информация",
         "TitrePromoPlaceholder": "Заголовок застройщика (макс. 50 символов)",
         "LanguesParlees": "Разговорные языки",
-        "ImagesProjet": "Изображения проекта"
+        "PlusInfosProjet": "Больше информации о проекте",
+        "ImagesProjet": "Изображения проекта",
+        "Jardin": "Сад",
+        "Rooftop": "Крыша",
+        "Pieces": "Комнаты",
+        "APartirDe": "От"
     },
     "SEO": {
         "Title": "Каталог проектов недвижимости",

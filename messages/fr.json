@@ -165,7 +165,11 @@
         "EmailPromoteur": "Email du promoteur",
         "InformationsSupplementaires": "Informations supplémentaires",
         "TitrePromoPlaceholder": "Titre du promoteur (max 50 caractères)",
-        "ImagesProjet": "Images du projet"
+        "ImagesProjet": "Images du projet",
+        "Jardin": "Jardin",
+        "Rooftop": "Rooftop",
+        "Pieces": "Pièces",
+        "APartirDe": "À partir de"
     },
     "SEO": {
         "Title": "Annuaire de projets immobiliers",

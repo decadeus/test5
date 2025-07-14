@@ -95,7 +95,7 @@
         "Sauvegarder": "Zapisz",
         "EnregistrerModifications": "Zapisz zmiany",
         "Chambres": "Sypialnie",
-        "Etages": "Piętra",
+        "Etages": "Piętro",
         "Surface": "Powierzchnia",
         "Prix": "Cena",
         "CacherLePrix": "Ukryj cenę",
@@ -131,6 +131,8 @@
         "Saving": "Zapisywanie...",
         "FormTitle": "Szczegóły projektu",
         "Pokoje": "Pokoje",
+        "Pieces": "Pokoje",
+        "APartirDe": "Od",
         "IASEODescription": "Kliknij przycisk, aby wygenerować zoptymalizowany pod SEO opis tego projektu.",
         "LaunchGeneration": "Rozpocznij generowanie",
         "GeneratedDescription": "Wygenerowany opis",
@@ -162,7 +164,9 @@
         "TelephonePromoteur": "Telefon dewelopera",
         "EmailPromoteur": "Email dewelopera",
         "InformationsSupplementaires": "Dodatkowe informacje",
-        "TitrePromoPlaceholder": "Tytuł dewelopera (max 50 znaków)"
+        "TitrePromoPlaceholder": "Tytuł dewelopera (max 50 znaków)",
+        "Jardin": "Ogród",
+        "Rooftop": "Taras na dachu"
     },
     "SEO": {
         "Title": "Katalog projektów nieruchomości",

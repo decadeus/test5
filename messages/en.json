@@ -155,7 +155,11 @@
         "EmailPromoteur": "Promoter's email",
         "InformationsSupplementaires": "Additional information",
         "TitrePromoPlaceholder": "Promoter title (max 50 characters)",
-        "ImagesProjet": "Project images"
+        "ImagesProjet": "Project images",
+        "Jardin": "Garden",
+        "Rooftop": "Rooftop",
+        "Pieces": "Rooms",
+        "APartirDe": "From"
     },
     "SEO": {
         "Title": "Real estate project directory",

@@ -94,9 +94,11 @@
         "EnregistrerModifications": "Änderungen speichern",
         "Saving": "Speichern...",
         "Chambres": "Schlafzimmer",
-        "Etages": "Stockwerke",
+        "Etages": "Stockwerk",
         "Surface": "Oberfläche",
         "Prix": "Preis",
+        "Jardin": "Garten",
+        "Rooftop": "Dachterrasse",
         "CacherLePrix": "Preis verbergen",
         "InfoSpecial": "Besondere Informationen",
         "Ajouter": "Hinzufügen",
@@ -149,7 +151,9 @@
         "InformationsSupplementaires": "Zusätzliche Informationen",
         "TitrePromoPlaceholder": "Titel des Bauträgers (max. 50 Zeichen)",
         "LanguesParlees": "Gesprochene Sprachen",
-        "ImagesProjet": "Projektbilder"
+        "ImagesProjet": "Projektbilder",
+        "Pieces": "Zimmer",
+        "APartirDe": "Ab"
     },
     "SEO": {
         "Title": "Verzeichnis von Immobilienprojekten",
