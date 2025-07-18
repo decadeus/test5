@@ -174,6 +174,7 @@ export const countryData = {
     "Mulhouse",
     "Nancy",
     "Nanterre",
+    "Nantes",
     "Nevers",
     "Neuilly-Plaisance",
     "Neuilly-sur-Marne",
