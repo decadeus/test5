@@ -269,6 +269,7 @@ export const countryData = {
     "Valence",
     "Valenciennes",
     "Vallauris",
+    "Vannes",
     "Vauréal",
     "Vaux-en-Velin",
     "Vénissieux",
