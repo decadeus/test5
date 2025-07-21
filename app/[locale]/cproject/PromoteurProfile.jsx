@@ -48,7 +48,16 @@ export default function PromoteurProfile({ user }) {
     if (error) {
       setError("Erreur lors de la sauvegarde");
     } else {
-      setSuccess("Profil mis à jour !");
+      // Synchroniser le nom de la compagnie dans tous les projets de l'utilisateur
+      const { error: projectError } = await supabase
+        .from("project")
+        .update({ compagny: compagnie })
+        .eq("user_id", user.id);
+      if (projectError) {
+        setSuccess("Profil mis à jour, mais erreur lors de la synchronisation des projets.");
+      } else {
+        setSuccess("Profil et projets mis à jour !");
+      }
     }
     setLoading(false);
   }
