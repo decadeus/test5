@@ -64,6 +64,7 @@ export const countryData = {
     "Clermont-Ferrand",
     "Clichy",
     "Clichy-sous-Bois",
+    "Clohars-Carnoet",
     "Combs-la-Ville",
     "Conflans-Sainte-Honorine",
     "Courbevoie",
