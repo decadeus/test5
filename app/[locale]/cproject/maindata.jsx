@@ -126,6 +126,8 @@ function useProjectData(project, onProjectUpdate) {
     promoter_phone: project?.promoter_phone || "",
     promoter_email: project?.promoter_email || "",
     promoter_languages: project?.promoter_languages || [],
+    // Fallback sur toutes les variantes de TitrePromo
+    TitrePromo: project?.TitrePromo || project?.titrePromo || project?.titre_promo || project?.titrepromo || "",
     ...getTranslatableFields(project),
     name: project?.name || "",
     fulldescr: project?.fulldescr || "",
@@ -164,6 +166,8 @@ function useProjectData(project, onProjectUpdate) {
       promoter_phone: project?.promoter_phone || "",
       promoter_email: project?.promoter_email || "",
       promoter_languages: project?.promoter_languages || [],
+      // Fallback sur toutes les variantes de TitrePromo
+      TitrePromo: project?.TitrePromo || project?.titrePromo || project?.titre_promo || project?.titrepromo || "",
       ...getTranslatableFields(project),
       name: project?.name || "",
       fulldescr: project?.fulldescr || "",
@@ -197,6 +201,8 @@ function useProjectData(project, onProjectUpdate) {
       promoter_phone: project?.promoter_phone || "",
       promoter_email: project?.promoter_email || "",
       promoter_languages: project?.promoter_languages || [],
+      // Fallback sur toutes les variantes de TitrePromo
+      TitrePromo: project?.TitrePromo || project?.titrePromo || project?.titre_promo || project?.titrepromo || "",
       ...Object.fromEntries(Object.entries(project || {}).filter(([k]) => k.startsWith('name_') || k.startsWith('fulldescr_') || k.startsWith('coam_') || k.startsWith('des_')))
     } : null);
   }, [project]);
@@ -239,7 +245,8 @@ function useProjectData(project, onProjectUpdate) {
       promoter_phone: formData.promoter_phone,
       promoter_email: formData.promoter_email,
       promoter_languages: formData.promoter_languages,
-      TitrePromo: formData.TitrePromo, // <-- Ajout ici
+      // Sauvegarde dans la clé Supabase TitrePromo
+      TitrePromo: formData.TitrePromo,
       ...features,
     };
 

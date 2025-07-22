@@ -150,9 +150,15 @@ function ProjectRecapCard({ formData, images }) {
       
       {/* Prénom + Nom promoteur */}
       <div>
-      <h3 className="text-xl font-extrabold text-gray-700 mb-1 text-center tracking-tight leading-tight drop-shadow-sm">
-        {formData.promoter_first_name} {formData.promoter_last_name}
-      </h3>
+        <div className="flex gap-2 items-center">
+        <p className="text-lg font-extrabold text-gray-700 mb-1 text-center tracking-tight leading-tight drop-shadow-sm">
+         {formData.promoter_last_name}
+      </p>
+      <p className="text-lg text-gray-700 mb-1 text-center tracking-tight leading-tight drop-shadow-sm">
+        {formData.promoter_first_name} 
+      </p>
+      
+      </div>
       {/* Compagnie depuis profiles */}
       <div className="text-gray-700 text-lg font-semibold italic mb-3 text-center">
         {companyName}
@@ -223,7 +229,8 @@ export default function DetailClient({ project, locale }) {
   const [showPromoterModal, setShowPromoterModal] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalAnimation, setModalAnimation] = useState(false);
-
+  // AJOUT: état pour la compagnie du promoteur
+  const [companyName, setCompanyName] = useState("");
   // AJOUT: Accordéon lots par nombre de pièces
   const [openPieces, setOpenPieces] = useState({});
 
@@ -235,6 +242,22 @@ export default function DetailClient({ project, locale }) {
       return acc;
     }, {});
   }
+
+  // Charger la compagnie du promoteur
+  useEffect(() => {
+    async function fetchCompany() {
+      if (!project.promoter_email) return;
+      const supabase = createClient();
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("compagnie")
+        .eq("email", project.promoter_email)
+        .maybeSingle();
+      if (profile?.compagnie) setCompanyName(profile.compagnie);
+      else setCompanyName("");
+    }
+    fetchCompany();
+  }, [project.promoter_email]);
 
   // Mesure dynamique du conteneur
   useEffect(() => {
@@ -500,7 +523,7 @@ export default function DetailClient({ project, locale }) {
               <h1 className="text-5xl font-bold mb-2 w-full text-center break-words leading-tight" style={{wordBreak: 'break-word', hyphens: 'auto'}}>{projectName}</h1>
               <h2 className="text-xl text-black mb-2 w-full text-center">{projectCity}</h2>
               <div className="w-full text-center text-gray-700 text-base italic mb-2">
-                by {project.compagny && project.compagny !== 'null' ? project.compagny : 'Non renseigné'}
+                by {companyName && companyName !== 'null' ? companyName : 'Non renseigné'}
               </div>
             </div>
           </div>

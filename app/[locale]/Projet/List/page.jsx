@@ -519,7 +519,7 @@ export default function ApartmentList() {
         const to = from + PAGE_SIZE - 1;
         let query = supabase
           .from("project")
-          .select("id, name, compagny, country, city, lat, lng, online");
+          .select("id, name, compagny, country, city, lat, lng, online, user_id, profiles:user_id(compagnie)");
         // Filtres côté serveur
         if (filters.selectedCountry) {
           query = query.eq("country", filters.selectedCountry);
@@ -550,7 +550,7 @@ export default function ApartmentList() {
         const apartmentsWithList = (onlineProjects || []).map((item) => ({
           id: item.id,
           title: item.name,
-          compagny: item.compagny,
+          compagny: item.profiles?.compagnie || item.compagny, // Priorité à profiles.compagnie
           summary: item.compagny,
           country: item.country, // FIX: map country from item.country
           city: item.city,
@@ -558,7 +558,6 @@ export default function ApartmentList() {
           projectlist: (projectlists || []).filter((pl) => pl.ide === item.id),
           lat: item.lat,
           lng: item.lng,
-          // price: item.country, // REMOVE this line, price should not be country
         }));
         // --- RESTORE PATCH : min/max initiaux stockés au premier fetch, sliders stables ---
         if (!minMaxValuesInitial && apartmentsWithList.length > 0) {
@@ -833,7 +832,7 @@ export default function ApartmentList() {
     const fetchAllFilteredProjects = async () => {
       let query = supabase
         .from("project")
-        .select("id, name, compagny, country, city, lat, lng, online");
+        .select("id, name, compagny, country, city, lat, lng, online, user_id, profiles:user_id(compagnie)");
       if (filters.selectedCountry) {
         query = query.eq("country", filters.selectedCountry);
       }
@@ -859,7 +858,7 @@ export default function ApartmentList() {
       const projectsWithList = (onlineProjects || []).map((item) => ({
         id: item.id,
         title: item.name,
-        compagny: item.compagny,
+        compagny: item.profiles?.compagnie || item.compagny, // Priorité à profiles.compagnie
         summary: item.compagny,
         price: item.country,
         city: item.city,
