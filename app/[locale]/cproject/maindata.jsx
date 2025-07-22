@@ -637,9 +637,9 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
     const files = e.target.files;
     if (!files.length) return;
     const file = files[0];
-    const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
-      alert("Seuls les fichiers PNG, JPG ou JPEG sont autorisés.");
+      alert("Seuls les fichiers PNG, JPG, JPEG ou WEBP sont autorisés.");
       return;
     }
     const maxSize = 3 * 1024 * 1024;
@@ -1829,9 +1829,9 @@ export function ProjectImages({ projectId, className = "" }) {
     const file = files[0];
 
     // 1. Vérifier le type de fichier
-    const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
-      alert("Seuls les fichiers PNG, JPG ou JPEG sont autorisés.");
+      alert("Seuls les fichiers PNG, JPG, JPEG ou WEBP sont autorisés.");
       return;
     }
 
