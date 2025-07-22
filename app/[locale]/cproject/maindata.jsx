@@ -803,7 +803,7 @@ export function ProjectMainForm({ projectId, formData, updateFormData, images, s
         <label className="text-gray-700 font-medium mb-2">{f('InformationsSupplementaires', { default: 'Informations supplémentaires' })}</label>
         <input
           type="text"
-          maxLength={50}
+          maxLength={100}
           value={formData.TitrePromo || ""}
           onChange={e => updateFormData('TitrePromo', e.target.value)}
           className="border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
