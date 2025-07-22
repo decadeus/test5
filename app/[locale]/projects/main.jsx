@@ -128,7 +128,9 @@ function ProjectCard({ item, isFavorite, handleToggleFavorite }) {
               <span className="flex">{item.price} <FaEuroSign size={10} /></span>
             )}
           </span>
-          <span className="flex-grow text-gray-500 text-sm text-center truncate">{item.project.compagny}</span>
+          <span className="flex-grow text-gray-500 text-sm text-center truncate">
+            {item.project.profiles?.compagnie || item.project.compagny}
+          </span>
           <ExternalLink className="ml-auto w-5 h-5 text-gray-500 hover:text-primary-600 cursor-pointer" />
         </div>
       </div>
@@ -219,7 +221,7 @@ function Main() {
     const { data, error } = await supabase
       .from("projectlist")
       .select(
-        "*, project(*, created_at, city, lat, lng, mainpic_url, swim, fitness, child, disabled, bike, cctv, entrance, country, compagny)"
+        "*, project(*, created_at, city, lat, lng, mainpic_url, swim, fitness, child, disabled, bike, cctv, entrance, country, compagny, user_id, profiles:profiles!project_user_id_fkey1(compagnie))"
       )
       .order(sortKey, { ascending: false });
     if (error) {
