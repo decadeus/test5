@@ -1934,7 +1934,7 @@ export function ProjectImages({ projectId, className = "" }) {
               )}
               <input
                 type="file"
-                accept="image/png, image/jpeg, image/jpg"
+                accept="image/png, image/jpeg, image/jpg, image/webp"
                 ref={el => (fileInputRefs.current[num - 1] = el)}
                 onChange={e => handleUpload(e, num)}
                 className="hidden"

@@ -38,6 +38,13 @@ export default function Avatar({ uid, url, id, size, onUpload, classn, width, he
       const fileExt = file.name.split('.').pop();
       const filePath = `${uid}-${Math.random()}.${fileExt}`;
 
+      const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
+      if (!allowedTypes.includes(file.type)) {
+        alert('Seuls les fichiers PNG, JPG, JPEG ou WEBP sont autorisés.');
+        setUploading(false);
+        return;
+      }
+
       const { error: uploadError } = await supabase.storage.from('project').upload(filePath, file);
 
       if (uploadError) throw uploadError;
@@ -81,7 +88,7 @@ export default function Avatar({ uid, url, id, size, onUpload, classn, width, he
           }}
           type="file"
           id={id}
-          accept="image/*"
+          accept="image/png, image/jpeg, image/jpg, image/webp"
           onChange={uploadAvatar}
           disabled={uploading}
         />

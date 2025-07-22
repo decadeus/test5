@@ -68,9 +68,9 @@ export default function PromoteurProfile({ user }) {
     if (!files.length || !user?.id) return;
     const file = files[0];
     // Vérification type
-    const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
-      setError("Seuls les fichiers PNG, JPG ou JPEG sont autorisés.");
+      setError("Seuls les fichiers PNG, JPG, JPEG ou WEBP sont autorisés.");
       return;
     }
     // Vérification taille
@@ -128,7 +128,7 @@ export default function PromoteurProfile({ user }) {
           )}
           <input
             type="file"
-            accept="image/png, image/jpeg, image/jpg"
+            accept="image/png, image/jpeg, image/jpg, image/webp"
             ref={avatarInputRef}
             onChange={handleAvatarUpload}
             className="hidden"
