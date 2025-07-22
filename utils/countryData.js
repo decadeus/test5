@@ -298,6 +298,7 @@ export const countryData = {
     "Wasquehal",
     "Wattignies",
     "Wattrelos",
+    "Wittelsheim",
     "Yvetot",
     "Yerres",
     "Zac",
