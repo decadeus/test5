@@ -129,7 +129,9 @@ function ProjectCard({ item, isFavorite, handleToggleFavorite }) {
             )}
           </span>
           <span className="flex-grow text-gray-500 text-sm text-center truncate">
-            {item.project.profiles?.compagnie || item.project.compagny}
+            {item.project.profiles?.compagnie?.trim() 
+              || item.project.compagny?.trim() 
+              || <span style={{fontStyle: "italic"}}>Non renseigné</span>}
           </span>
           <ExternalLink className="ml-auto w-5 h-5 text-gray-500 hover:text-primary-600 cursor-pointer" />
         </div>
