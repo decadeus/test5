@@ -257,6 +257,21 @@ export default function ApartmentList() {
   const [pageIndex, setPageIndex] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [realCompanyCount, setRealCompanyCount] = useState(null);
+
+  useEffect(() => {
+    const fetchCompanyCount = async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("compagnie");
+      if (!error && data) {
+        const uniqueCompanies = Array.from(new Set(data.map(p => p.compagnie).filter(Boolean)));
+        setRealCompanyCount(uniqueCompanies.length);
+      }
+    };
+    fetchCompanyCount();
+  }, []);
 
   // Ajout : liste des pays distincts
   const countries = useMemo(() => {
@@ -1463,7 +1478,7 @@ export default function ApartmentList() {
             {/* Résumé dans la zone blanche */}
             <div className="w-full flex flex-col items-center justify-center py-8 mt-4">
               <span className="text-3xl font-extrabold text-gray-800">
-                {tGlobal("Compagnies")}: {totalFilteredCompanies} |{" "}
+                {tGlobal("Compagnies")}: {realCompanyCount !== null ? realCompanyCount : "..."} |{" "}
                 {tGlobal("Projets")}: {totalFilteredProjects} |{" "}
                 {tGlobal("Appartements")}: {totalFilteredAppartments}
               </span>
