@@ -77,8 +77,8 @@ ${projectUrls}
   return new NextResponse(xml, {
     headers: {
       "Content-Type": "application/xml; charset=utf-8",
-      "Cache-Control": "public, max-age=0, s-maxage=3600",
-      "X-Content-Type-Options": "nosniff",
+    "Cache-Control": "no-store",            // temporaire
+    "X-From-Route": "sitemap-index-live"    // <— header de trace
     },
   });
 }
