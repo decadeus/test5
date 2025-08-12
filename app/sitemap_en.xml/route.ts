@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 
@@ -65,7 +67,7 @@ export async function GET() {
     headers: {
       'content-type': 'application/xml; charset=utf-8',
       'x-content-type-options': 'nosniff',
-      'cache-control': 'public, s-maxage=3600, stale-while-revalidate=600',
+      'cache-control': 'no-store',
     },
   });
 } 

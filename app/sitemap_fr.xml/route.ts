@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 
@@ -33,7 +35,6 @@ export async function GET() {
   };
 
   const urls = [
-    // Static pages
     ...staticPages.map((p) => (
       `<url>` +
         `<loc>${baseUrl}/${currentLocale}${p}</loc>` +
@@ -43,7 +44,6 @@ export async function GET() {
         buildAlternateLinks(p || '') +
       `</url>`
     )),
-    // Project detail pages
     ...((projects || []).map((proj: any) => {
       const path = `/Projet/Detail/${proj.id}`;
       const projLastmod = pickProjectLastmod(proj);
@@ -67,7 +67,7 @@ export async function GET() {
     headers: {
       'content-type': 'application/xml; charset=utf-8',
       'x-content-type-options': 'nosniff',
-      'cache-control': 'public, s-maxage=3600, stale-while-revalidate=600',
+      'cache-control': 'no-store',
     },
   });
 } 
