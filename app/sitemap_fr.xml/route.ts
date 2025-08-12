@@ -9,10 +9,11 @@ export async function GET() {
   const supabase = createClient();
   const { data: projects } = await supabase
     .from('project')
-    .select('id')
+    .select('*')
     .eq('online', true);
 
-  const lastmod = new Date().toISOString().slice(0, 10);
+  const today = new Date();
+  const lastmod = today.toISOString().slice(0, 10);
 
   const staticPages = ['', '/projects', '/abonnement'];
 
@@ -22,6 +23,13 @@ export async function GET() {
     ).join('');
     const xDefault = `<xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}/fr${pathNoLocale}"/>`;
     return links + xDefault;
+  };
+
+  const pickProjectLastmod = (p: any): string => {
+    const raw = p?.updated_at || p?.updatedAt || p?.modified_at || p?.created_at;
+    if (!raw) return lastmod;
+    const d = new Date(raw);
+    return isNaN(d.getTime()) ? lastmod : d.toISOString().slice(0, 10);
   };
 
   const urls = [
@@ -36,12 +44,13 @@ export async function GET() {
       `</url>`
     )),
     // Project detail pages
-    ...((projects || []).map((proj) => {
+    ...((projects || []).map((proj: any) => {
       const path = `/Projet/Detail/${proj.id}`;
+      const projLastmod = pickProjectLastmod(proj);
       return (
         `<url>` +
           `<loc>${baseUrl}/${currentLocale}${path}</loc>` +
-          `<lastmod>${lastmod}</lastmod>` +
+          `<lastmod>${projLastmod}</lastmod>` +
           `<changefreq>monthly</changefreq>` +
           `<priority>0.9</priority>` +
           buildAlternateLinks(path) +
