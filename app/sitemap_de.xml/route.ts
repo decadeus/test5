@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient, createAdminClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 const HOST = "https://www.hoomge.com";
@@ -38,23 +38,37 @@ function altLinksDetail(id: number) {
 }
 
 export async function GET() {
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from("project")
-    .select("id, updated_at, created_at")
-    .eq("online", true)
-    .order("updated_at", { ascending: false });
+  async function fetchAll(client: ReturnType<typeof createClient>) {
+    try {
+      const { data, error } = await client
+        .from("project")
+        .select("id, created_at")
+        .eq("online", true)
+        .order("created_at", { ascending: false })
+        .range(0, 49999);
+      return { rows: (data as Row[]) || [], error };
+    } catch (e: any) { return { rows: [], error: e }; }
+  }
+
+  const anon = createClient();
+  let { rows, error } = await fetchAll(anon);
+  let used = "anon";
+  if ((!rows.length || error) && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    const admin = createAdminClient();
+    const r = await fetchAll(admin);
+    if (r.rows.length || !error) { rows = r.rows; error = r.error; used = "admin"; }
+  }
 
   const today = isoDate();
-  const rows: Row[] = !error && data?.length ? (data as Row[]) : [{ id: 180, created_at: new Date().toISOString() }];
+  const list: Row[] = Array.isArray(rows) ? rows : [];
 
   const staticUrls = [
     `<url><loc>${HOST}/${LANG}${PATHS[LANG].root}</loc><lastmod>${today}</lastmod>${altLinksStatic("root")}</url>`,
     `<url><loc>${HOST}/${LANG}${PATHS[LANG].projects}</loc><lastmod>${today}</lastmod>${altLinksStatic("projects")}</url>`,
   ].join("\n");
 
-  const projectUrls = rows.map(p => {
-    const lastmod = isoDate(p.updated_at || p.created_at);
+  const projectUrls = list.map(p => {
+    const lastmod = isoDate(p.created_at);
     const loc = `${HOST}/${LANG}${PATHS[LANG].detail(p.id)}`;
     return `<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod>${altLinksDetail(p.id)}</url>`;
   }).join("\n");
@@ -68,9 +82,12 @@ ${projectUrls}
 
   return new NextResponse(xml, {
     headers: {
-      "Content-Type": "application/xml; charset=utf-8",
-      "Cache-Control": "public, max-age=0, s-maxage=3600",
-      "X-Content-Type-Options": "nosniff",
+      "content-type": "application/xml; charset=utf-8",
+      "cache-control": "no-store",
+      "x-content-type-options": "nosniff",
+      "x-sitemap-count": String(list.length),
+      "x-fetch-client": used,
+      ...(error ? { "x-supabase-error-msg": `${(error as any)?.code || ''}:${(error as any)?.message || error}` } : {}),
     },
   });
 }
