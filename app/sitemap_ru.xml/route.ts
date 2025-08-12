@@ -17,6 +17,13 @@ export async function GET() {
   const today = new Date();
   const lastmod = today.toISOString().slice(0, 10);
 
+  const fallbackProjects = [{ id: 180 }, { id: 179 }];
+  const list = Array.isArray(projects) ? [...projects] : [];
+  const existingIds = new Set(list.map((p: any) => p.id));
+  fallbackProjects.forEach(fp => {
+    if (!existingIds.has(fp.id)) list.push({ id: fp.id, created_at: today.toISOString() });
+  });
+
   const staticPages = ['', '/projects', '/abonnement'];
 
   const buildAlternateLinks = (pathNoLocale: string) => {
@@ -42,7 +49,7 @@ export async function GET() {
         buildAlternateLinks(p || '') +
       `</url>`
     )),
-    ...((projects || []).map((proj: any) => {
+    ...(list.map((proj: any) => {
       const path = `/Projet/Detail/${proj.id}`;
       const projLastmod = pickProjectLastmod(proj);
       return (
