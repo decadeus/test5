@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap pour toutes les langues
-Sitemap: https://tudomaine.com/sitemap.xml
+Sitemap: https://www.hoomge.com/sitemap.xml
 
 # Bloquer les pages d'administration et de test
 Disallow: /admin/

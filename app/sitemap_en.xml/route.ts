@@ -39,8 +39,6 @@ export async function GET() {
       `<url>` +
         `<loc>${baseUrl}/${currentLocale}${p}</loc>` +
         `<lastmod>${lastmod}</lastmod>` +
-        `<changefreq>weekly</changefreq>` +
-        `<priority>${p === '' ? '1' : '0.8'}</priority>` +
         buildAlternateLinks(p || '') +
       `</url>`
     )),
@@ -51,8 +49,6 @@ export async function GET() {
         `<url>` +
           `<loc>${baseUrl}/${currentLocale}${path}</loc>` +
           `<lastmod>${projLastmod}</lastmod>` +
-          `<changefreq>monthly</changefreq>` +
-          `<priority>0.9</priority>` +
           buildAlternateLinks(path) +
         `</url>`
       );
