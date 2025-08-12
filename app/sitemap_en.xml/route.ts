@@ -1,4 +1,4 @@
-import { createClient, createAdminClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 const HOST = "https://www.hoomge.com";
@@ -29,8 +29,7 @@ function altDetail(id:number){
 // no-op guard removed; we'll return the exact string we build below
 
 export async function GET() {
-  const useAdmin = true;
-  const supabase = useAdmin ? createAdminClient() : createClient();
+  const supabase = createClient();
   // Paginate to include all projects (up to 50k URLs per sitemap)
   const pageSize = 1000;
   let from = 0;
@@ -41,9 +40,9 @@ export async function GET() {
     const to = from + pageSize - 1;
     const { data: page, error } = await supabase
       .from("project")
-      .select("id,updated_at,updatedAt,created_at")
+      .select("id,updatedAt,created_at")
       .eq("online", true)
-      .order("updated_at", { ascending: false })
+      .order("updatedAt", { ascending: false })
       .range(from, to);
     if (error) { hadError = true; lastError = error; break; }
     const batch = Array.isArray(page) ? page : [];
@@ -62,7 +61,7 @@ export async function GET() {
   ].join("\n");
 
   const projectUrls = rows.map((p:any)=>{
-    const lastmod = isoDate(p.updated_at || p.created_at);
+    const lastmod = isoDate(p.updatedAt || p.created_at);
     return `<url><loc>${HOST}/en${PATHS.en.detail(p.id)}</loc><lastmod>${lastmod}</lastmod>${altDetail(p.id)}</url>`;
   }).join("\n");
 
@@ -80,8 +79,6 @@ ${projectUrls}
       "Cache-Control":"no-store",
       "X-Sitemap-Count": String(rows.length),
       "X-Supabase-Error": String(hadError),
-      "X-Using-Admin": String(useAdmin),
-      "X-Has-Service-Key": String(Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY)),
       ...(lastError ? { "X-Supabase-Error-Msg": `${lastError.code || ''}:${lastError.message || lastError}` } : {}),
     }
   });

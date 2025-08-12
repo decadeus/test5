@@ -50,9 +50,9 @@ export async function GET() {
     const to = from + pageSize - 1;
     const { data: page, error } = await supabase
       .from("project")
-      .select("id, updated_at, updatedAt, created_at")
+      .select("id, updatedAt, created_at")
       .eq("online", true)
-      .order("updated_at", { ascending: false })
+      .order("updatedAt", { ascending: false })
       .range(from, to);
     if (error) { hadError = true; break; }
     const batch = (page as Row[]) ?? [];
@@ -70,7 +70,7 @@ export async function GET() {
   ].join("\n");
 
   const projectUrls = rows.map(p => {
-    const lastmod = isoDate((p as any).updated_at || (p as any).updatedAt || p.created_at);
+    const lastmod = isoDate((p as any).updatedAt || p.created_at);
     const loc = `${HOST}/${LANG}${PATHS[LANG].detail(p.id)}`;
     return `<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod>${altLinksDetail(p.id)}</url>`;
   }).join("\n");

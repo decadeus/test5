@@ -45,9 +45,9 @@ export async function GET() {
 
   const { data, error } = await supabase
     .from("project")
-    .select("id, updated_at, updatedAt, created_at")
+    .select("id, updatedAt, created_at")
     .eq("online", true)
-    .order("updated_at", { ascending: false });
+    .order("updatedAt", { ascending: false });
 
   const today = isoDate();
   const rows: Row[] = Array.isArray(data) ? (data as Row[]) : [];
@@ -59,7 +59,7 @@ export async function GET() {
   ].join("\n");
 
   const projectUrls = rows.map(p => {
-    const lastmod = isoDate((p as any).updated_at || (p as any).updatedAt || p.created_at);
+    const lastmod = isoDate((p as any).updatedAt || p.created_at);
     const loc = `${HOST}/fr${PATHS.fr.detail(p.id)}`;
     return `<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod>${altLinksForDetail(p.id)}</url>`;
   }).join("\n");
