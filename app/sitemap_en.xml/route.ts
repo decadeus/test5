@@ -26,8 +26,7 @@ function altDetail(id:number){
   ].join("");
 }
 
-// coupe TOUT ce qui précéderait l'entête XML (ceinture + bretelles)
-function sanitize(out:string){ const m = out.match(/<\?xml[\s\S]*$/); return m?m[0]:out; }
+// no-op guard removed; we'll return the exact string we build below
 
 export async function GET() {
   const supabase = createClient();
@@ -49,15 +48,18 @@ export async function GET() {
     return `<url><loc>${HOST}/en${PATHS.en.detail(p.id)}</loc><lastmod>${lastmod}</lastmod>${altDetail(p.id)}</url>`;
   }).join("\n");
 
-  let xml =
+  const xml =
 `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${staticUrls}
 ${projectUrls}
 </urlset>`;
 
-  xml = sanitize(xml);                 // <-- enlève tout préfixe parasite
-  return new NextResponse(xml, {       // <-- on ne renvoie QUE ce string
-    headers: { "Content-Type":"application/xml; charset=utf-8", "Cache-Control":"no-store" }
+  return new Response(xml, {
+    headers: {
+      "Content-Type":"application/xml; charset=utf-8",
+      "X-Content-Type-Options":"nosniff",
+      "Cache-Control":"no-store",
+    }
   });
 }
