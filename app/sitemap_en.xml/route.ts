@@ -2,8 +2,6 @@ import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 const HOST = "https://www.hoomge.com";
-
-// on démarre simple : EN + FR
 const INDEXABLE_LOCALES = ["en", "fr"] as const;
 type Locale = typeof INDEXABLE_LOCALES[number];
 
@@ -17,7 +15,13 @@ function isoDate(input?: string | null) {
   return isNaN(d.getTime()) ? new Date().toISOString().slice(0, 10) : d.toISOString().slice(0, 10);
 }
 
-// Segments de routes (adapte `subscription` si besoin)
+// Nettoyage de sécurité : supprime tout ce qui précède l'entête XML
+function sanitizeXml(s: string) {
+  const m = s.match(/<\?xml[\s\S]*$/);
+  return m ? m[0] : s;
+}
+
+// Segments (adapte si besoin)
 const PATHS = {
   en: { root: "", projects: "/projects", subscription: "/subscription",  detail: (id: number) => `/Project/Detail/${id}` },
   fr: { root: "", projects: "/projects", subscription: "/abonnement",    detail: (id: number) => `/Projet/Detail/${id}` },
@@ -41,7 +45,8 @@ function altLinksForDetail(id: number) {
 
 export async function GET() {
   const supabase = createClient();
-  // ⚠️ remplace "online" par le vrai champ de publication
+
+  // ⚠️ remplace "online" par le vrai champ de publication si différent
   const { data, error } = await supabase
     .from("project")
     .select("id, updated_at, created_at")
@@ -66,12 +71,14 @@ export async function GET() {
     return `<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod>${altLinksForDetail(p.id)}</url>`;
   }).join("\n");
 
-  const xml =
+  let xml =
 `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${staticUrls}
 ${projectUrls}
 </urlset>`;
+
+  xml = sanitizeXml(xml); // ceinture+bretelles
 
   return new NextResponse(xml, {
     headers: {
