@@ -1,77 +1,93 @@
-export const dynamic = 'force-dynamic';
+import { createClient } from "@/utils/supabase/server";
+import { NextResponse } from "next/server";
+
+const HOST = "https://www.hoomge.com";
+
+const INDEXABLE_LOCALES = ["en", "fr"] as const; // en principal ici
+type Locale = typeof INDEXABLE_LOCALES[number];
+
+type Row = { id: number; updated_at?: string | null; created_at?: string | null };
+
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-import { createClient } from '@/utils/supabase/server';
-import { NextResponse } from 'next/server';
+function isoDate(input?: string | null) {
+  const d = input ? new Date(input) : new Date();
+  return isNaN(d.getTime()) ? new Date().toISOString().slice(0, 10) : d.toISOString().slice(0, 10);
+}
+
+const PATHS = {
+  en: {
+    root: "",
+    projects: "/projects",
+    subscription: "/subscription",
+    detail: (id: number) => `/Project/Detail/${id}`,
+  },
+  fr: {
+    root: "",
+    projects: "/projects",
+    subscription: "/abonnement",
+    detail: (id: number) => `/Projet/Detail/${id}`,
+  },
+} as const;
+
+function altLinksForStatic(pageKey: "root" | "projects" | "subscription") {
+  const links = (INDEXABLE_LOCALES as readonly Locale[])
+    .map((loc) => `<xhtml:link rel="alternate" hreflang="${loc}" href="${HOST}/${loc}${PATHS[loc][pageKey]}"/>`)
+    .join("");
+  const xdef = `<xhtml:link rel="alternate" hreflang="x-default" href="${HOST}/fr${PATHS.fr[pageKey]}"/>`;
+  return links + xdef;
+}
+
+function altLinksForDetail(id: number) {
+  const links = (INDEXABLE_LOCALES as readonly Locale[])
+    .map((loc) => `<xhtml:link rel="alternate" hreflang="${loc}" href="${HOST}/${loc}${PATHS[loc].detail(id)}"/>`)
+    .join("");
+  const xdef = `<xhtml:link rel="alternate" hreflang="x-default" href="${HOST}/fr${PATHS.fr.detail(id)}"/>`;
+  return links + xdef;
+}
 
 export async function GET() {
-  const baseUrl = 'https://www.hoomge.com';
-  const currentLocale = 'en';
-  const locales = ['fr', 'en', 'pl', 'de', 'ru', 'uk'];
-
   const supabase = createClient();
-  const { data: projects } = await supabase
-    .from('project')
-    .select('*')
-    .eq('online', true);
 
-  const today = new Date();
-  const lastmod = today.toISOString().slice(0, 10);
+  // ⚠️ Remplace "online" par ton vrai champ de publication
+  const { data, error } = await supabase
+    .from("project")
+    .select("id, updated_at, created_at")
+    .eq("online", true)
+    .order("updated_at", { ascending: false });
 
-  const fallbackProjects = [{ id: 180 }, { id: 179 }];
-  const list = Array.isArray(projects) ? [...projects] : [];
-  const existingIds = new Set(list.map((p: any) => p.id));
-  fallbackProjects.forEach(fp => {
-    if (!existingIds.has(fp.id)) list.push({ id: fp.id, created_at: today.toISOString() });
-  });
+  const today = isoDate();
 
-  const staticPages = ['', '/projects', '/abonnement'];
+  const rows: Row[] =
+    !error && Array.isArray(data) && data.length
+      ? data
+      : [{ id: 180, created_at: new Date().toISOString() }];
 
-  const buildAlternateLinks = (pathNoLocale: string) => {
-    const links = locales.map((loc) =>
-      `<xhtml:link rel="alternate" hreflang="${loc}" href="${baseUrl}/${loc}${pathNoLocale}"/>`
-    ).join('');
-    const xDefault = `<xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}/fr${pathNoLocale}"/>`;
-    return links + xDefault;
-  };
+  const staticUrls = [
+    `<url><loc>${HOST}/en${PATHS.en.root}</loc><lastmod>${today}</lastmod>${altLinksForStatic("root")}</url>`,
+    `<url><loc>${HOST}/en${PATHS.en.projects}</loc><lastmod>${today}</lastmod>${altLinksForStatic("projects")}</url>`,
+    `<url><loc>${HOST}/en${PATHS.en.subscription}</loc><lastmod>${today}</lastmod>${altLinksForStatic("subscription")}</url>`,
+  ].join("\n");
 
-  const pickProjectLastmod = (p: any): string => {
-    const raw = p?.updated_at || p?.updatedAt || p?.modified_at || p?.created_at;
-    if (!raw) return lastmod;
-    const d = new Date(raw);
-    return isNaN(d.getTime()) ? lastmod : d.toISOString().slice(0, 10);
-  };
+  const projectUrls = rows
+    .map((p) => {
+      const lastmod = isoDate(p.updated_at || p.created_at);
+      const loc = `${HOST}/en${PATHS.en.detail(p.id)}`;
+      return `<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod>${altLinksForDetail(p.id)}</url>`;
+    })
+    .join("\n");
 
-  const urls = [
-    ...staticPages.map((p) => (
-      `<url>` +
-        `<loc>${baseUrl}/${currentLocale}${p}</loc>` +
-        `<lastmod>${lastmod}</lastmod>` +
-        buildAlternateLinks(p || '') +
-      `</url>`
-    )),
-    ...(list.map((proj: any) => {
-      const path = `/Projet/Detail/${proj.id}`;
-      const projLastmod = pickProjectLastmod(proj);
-      return (
-        `<url>` +
-          `<loc>${baseUrl}/${currentLocale}${path}</loc>` +
-          `<lastmod>${projLastmod}</lastmod>` +
-          buildAlternateLinks(path) +
-        `</url>`
-      );
-    }))
-  ].join('\n');
-
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n` +
+  const xml =
+    `<?xml version="1.0" encoding="UTF-8"?>\n` +
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n` +
-    urls + `\n</urlset>`;
+    staticUrls + "\n" + projectUrls + `\n</urlset>`;
 
   return new NextResponse(xml, {
     headers: {
-      'content-type': 'application/xml; charset=utf-8',
-      'x-content-type-options': 'nosniff',
-      'cache-control': 'no-store',
+      "Content-Type": "application/xml; charset=utf-8",
+      "Cache-Control": "public, max-age=0, s-maxage=3600",
+      "X-Content-Type-Options": "nosniff",
     },
   });
 }
