@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient, createAdminClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 const HOST = "https://www.hoomge.com";
@@ -29,30 +29,37 @@ function altDetail(id:number){
 // no-op guard removed; we'll return the exact string we build below
 
 export async function GET() {
-  const supabase = createClient();
-  // Paginate to include all projects (up to 50k URLs per sitemap)
-  const pageSize = 1000;
-  let from = 0;
-  let all: any[] = [];
-  let hadError = false
-  let lastError: any = null;
-  for (let i = 0; i < 50; i++) {
-    const to = from + pageSize - 1;
-    const { data: page, error } = await supabase
-      .from("project")
-      .select("id,updatedAt,created_at")
-      .eq("online", true)
-      .order("updatedAt", { ascending: false })
-      .range(from, to);
-    if (error) { hadError = true; lastError = error; break; }
-    const batch = Array.isArray(page) ? page : [];
-    all = all.concat(batch);
-    if (batch.length < pageSize) break; // last page
-    from += pageSize;
+  // Helper to fetch all projects with a client (anon or admin)
+  async function fetchAll(client: ReturnType<typeof createClient>) {
+    try {
+      const { data, error } = await client
+        .from("project")
+        .select("id, created_at")
+        .eq("online", true)
+        .order("created_at", { ascending: false })
+        .range(0, 49999);
+      return { rows: (data as any[]) || [], error };
+    } catch (e: any) {
+      return { rows: [], error: e };
+    }
+  }
+
+  // Try anon first
+  const anon = createClient();
+  let { rows, error } = await fetchAll(anon);
+
+  // If empty or error and we have a service key, try admin
+  let used = "anon";
+  if ((!rows.length || error) && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    const admin = createAdminClient();
+    const r = await fetchAll(admin);
+    if (r.rows.length || !error) {
+      rows = r.rows; error = r.error; used = "admin";
+    }
   }
 
   const today = isoDate();
-  const rows = !hadError && Array.isArray(all) ? all : [];
+  const list = Array.isArray(rows) ? rows : [];
 
   const staticUrls = [
     `<url><loc>${HOST}/en</loc><lastmod>${today}</lastmod>${altStatic("root")}</url>`,
@@ -60,8 +67,8 @@ export async function GET() {
     `<url><loc>${HOST}/en${PATHS.en.subscription}</loc><lastmod>${today}</lastmod>${altStatic("subscription")}</url>`,
   ].join("\n");
 
-  const projectUrls = rows.map((p:any)=>{
-    const lastmod = isoDate(p.updatedAt || p.created_at);
+  const projectUrls = list.map((p:any)=>{
+    const lastmod = isoDate(p.created_at);
     return `<url><loc>${HOST}/en${PATHS.en.detail(p.id)}</loc><lastmod>${lastmod}</lastmod>${altDetail(p.id)}</url>`;
   }).join("\n");
 
@@ -77,9 +84,9 @@ ${projectUrls}
       "Content-Type":"application/xml; charset=utf-8",
       "X-Content-Type-Options":"nosniff",
       "Cache-Control":"no-store",
-      "X-Sitemap-Count": String(rows.length),
-      "X-Supabase-Error": String(hadError),
-      ...(lastError ? { "X-Supabase-Error-Msg": `${lastError.code || ''}:${lastError.message || lastError}` } : {}),
+      "X-Sitemap-Count": String(list.length),
+      "X-Fetch-Client": used,
+      ...(error ? { "X-Supabase-Error-Msg": `${(error as any)?.code || ''}:${(error as any)?.message || error}` } : {}),
     }
   });
 }

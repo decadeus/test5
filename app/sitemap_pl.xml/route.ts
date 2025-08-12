@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient, createAdminClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 const HOST = "https://www.hoomge.com";
@@ -40,37 +40,39 @@ function altLinksDetail(id: number) {
 }
 
 export async function GET() {
-  const supabase = createClient();
-  // Pagination to include many Detail pages
-  const pageSize = 1000;
-  let from = 0;
-  let all: Row[] = [];
-  let hadError = false;
-  for (let i = 0; i < 50; i++) {
-    const to = from + pageSize - 1;
-    const { data: page, error } = await supabase
-      .from("project")
-      .select("id, updatedAt, created_at")
-      .eq("online", true)
-      .order("updatedAt", { ascending: false })
-      .range(from, to);
-    if (error) { hadError = true; break; }
-    const batch = (page as Row[]) ?? [];
-    all = all.concat(batch);
-    if (batch.length < pageSize) break;
-    from += pageSize;
+  async function fetchAll(client: ReturnType<typeof createClient>) {
+    try {
+      const { data, error } = await client
+        .from("project")
+        .select("id, created_at")
+        .eq("online", true)
+        .order("created_at", { ascending: false })
+        .range(0, 49999);
+      return { rows: (data as Row[]) || [], error };
+    } catch (e: any) {
+      return { rows: [], error: e };
+    }
+  }
+
+  const anon = createClient();
+  let { rows, error } = await fetchAll(anon);
+  let used = "anon";
+  if ((!rows.length || error) && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    const admin = createAdminClient();
+    const r = await fetchAll(admin);
+    if (r.rows.length || !error) { rows = r.rows; error = r.error; used = "admin"; }
   }
 
   const today = isoDate();
-  const rows: Row[] = !hadError ? all : [];
+  const list: Row[] = Array.isArray(rows) ? rows : [];
 
   const staticUrls = [
     `<url><loc>${HOST}/${LANG}${PATHS[LANG].root}</loc><lastmod>${today}</lastmod>${altLinksStatic("root")}</url>`,
     `<url><loc>${HOST}/${LANG}${PATHS[LANG].projects}</loc><lastmod>${today}</lastmod>${altLinksStatic("projects")}</url>`,
   ].join("\n");
 
-  const projectUrls = rows.map(p => {
-    const lastmod = isoDate((p as any).updatedAt || p.created_at);
+  const projectUrls = list.map(p => {
+    const lastmod = isoDate(p.created_at);
     const loc = `${HOST}/${LANG}${PATHS[LANG].detail(p.id)}`;
     return `<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod>${altLinksDetail(p.id)}</url>`;
   }).join("\n");
@@ -87,8 +89,9 @@ ${projectUrls}
       "content-type": "application/xml; charset=utf-8",
       "x-content-type-options": "nosniff",
       "cache-control": "no-store",
-      "x-sitemap-count": String(rows.length),
-      "x-supabase-error": String(hadError),
+      "x-sitemap-count": String(list.length),
+      ...(error ? { "x-supabase-error-msg": `${(error as any)?.code || ''}:${(error as any)?.message || error}` } : {}),
+      "x-fetch-client": used,
     },
   });
 }
