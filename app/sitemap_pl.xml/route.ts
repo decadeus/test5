@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient, createAdminClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 const HOST = "https://www.hoomge.com";
@@ -40,7 +40,8 @@ function altLinksDetail(id: number) {
 }
 
 export async function GET() {
-  const supabase = createClient();
+  // Use admin client to avoid RLS blocking the sitemap
+  const supabase = createAdminClient();
   // Pagination to include many Detail pages
   const pageSize = 1000;
   let from = 0;
@@ -50,7 +51,7 @@ export async function GET() {
     const to = from + pageSize - 1;
     const { data: page, error } = await supabase
       .from("project")
-      .select("id, updated_at, created_at")
+      .select("id, updated_at, updatedAt, created_at")
       .eq("online", true)
       .order("updated_at", { ascending: false })
       .range(from, to);
@@ -62,10 +63,7 @@ export async function GET() {
   }
 
   const today = isoDate();
-  const rows: Row[] = !hadError && all.length ? all : [
-    { id: 180, created_at: new Date().toISOString() },
-    { id: 179, created_at: new Date().toISOString() },
-  ];
+  const rows: Row[] = !hadError ? all : [];
 
   const staticUrls = [
     `<url><loc>${HOST}/${LANG}${PATHS[LANG].root}</loc><lastmod>${today}</lastmod>${altLinksStatic("root")}</url>`,
@@ -73,7 +71,7 @@ export async function GET() {
   ].join("\n");
 
   const projectUrls = rows.map(p => {
-    const lastmod = isoDate(p.updated_at || p.created_at);
+    const lastmod = isoDate((p as any).updated_at || (p as any).updatedAt || p.created_at);
     const loc = `${HOST}/${LANG}${PATHS[LANG].detail(p.id)}`;
     return `<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod>${altLinksDetail(p.id)}</url>`;
   }).join("\n");
@@ -90,6 +88,8 @@ ${projectUrls}
       "content-type": "application/xml; charset=utf-8",
       "x-content-type-options": "nosniff",
       "cache-control": "no-store",
+      "x-sitemap-count": String(rows.length),
+      "x-supabase-error": String(hadError),
     },
   });
 }

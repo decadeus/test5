@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient, createAdminClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 const HOST = "https://www.hoomge.com";
@@ -29,17 +29,18 @@ function altDetail(id:number){
 // no-op guard removed; we'll return the exact string we build below
 
 export async function GET() {
-  const supabase = createClient();
+  // Use admin client to bypass any RLS/cookie issues for public sitemap generation
+  const supabase = createAdminClient();
   // Paginate to include all projects (up to 50k URLs per sitemap)
   const pageSize = 1000;
   let from = 0;
   let all: any[] = [];
-  let hadError = false;
+  let hadError = false
   for (let i = 0; i < 50; i++) {
     const to = from + pageSize - 1;
     const { data: page, error } = await supabase
       .from("project")
-      .select("id,updated_at,created_at")
+      .select("id,updated_at,updatedAt,created_at")
       .eq("online", true)
       .order("updated_at", { ascending: false })
       .range(from, to);
@@ -51,12 +52,7 @@ export async function GET() {
   }
 
   const today = isoDate();
-  const rows = !hadError && Array.isArray(all) && all.length
-    ? all
-    : [
-        { id:180, created_at:new Date().toISOString() },
-        { id:179, created_at:new Date().toISOString() },
-      ];
+  const rows = !hadError && Array.isArray(all) ? all : [];
 
   const staticUrls = [
     `<url><loc>${HOST}/en</loc><lastmod>${today}</lastmod>${altStatic("root")}</url>`,
@@ -81,6 +77,8 @@ ${projectUrls}
       "Content-Type":"application/xml; charset=utf-8",
       "X-Content-Type-Options":"nosniff",
       "Cache-Control":"no-store",
+      "X-Sitemap-Count": String(rows.length),
+      "X-Supabase-Error": String(hadError),
     }
   });
 }

@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient, createAdminClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 const HOST = "https://www.hoomge.com";
@@ -41,22 +41,16 @@ function altLinksForDetail(id: number) {
 }
 
 export async function GET() {
-  const supabase = createClient();
+  const supabase = createAdminClient();
 
   const { data, error } = await supabase
     .from("project")
-    .select("id, updated_at, created_at")
+    .select("id, updated_at, updatedAt, created_at")
     .eq("online", true)
     .order("updated_at", { ascending: false });
 
   const today = isoDate();
-  const rows: Row[] =
-    !error && Array.isArray(data) && data.length
-      ? data
-      : [
-          { id: 180, created_at: new Date().toISOString() },
-          { id: 179, created_at: new Date().toISOString() },
-        ];
+  const rows: Row[] = Array.isArray(data) ? (data as Row[]) : [];
 
   const staticUrls = [
     `<url><loc>${HOST}/fr${PATHS.fr.root}</loc><lastmod>${today}</lastmod>${altLinksForStatic("root")}</url>`,
@@ -65,25 +59,24 @@ export async function GET() {
   ].join("\n");
 
   const projectUrls = rows.map(p => {
-    const lastmod = isoDate(p.updated_at || p.created_at);
+    const lastmod = isoDate((p as any).updated_at || (p as any).updatedAt || p.created_at);
     const loc = `${HOST}/fr${PATHS.fr.detail(p.id)}`;
     return `<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod>${altLinksForDetail(p.id)}</url>`;
   }).join("\n");
 
-  let xml =
+  const xml =
 `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${staticUrls}
 ${projectUrls}
 </urlset>`;
 
-  xml = sanitizeXml(xml);
-
   return new NextResponse(xml, {
     headers: {
-      "Content-Type": "application/xml; charset=utf-8",
-      "Cache-Control": "public, max-age=0, s-maxage=3600",
-      "X-Content-Type-Options": "nosniff",
+      "content-type": "application/xml; charset=utf-8",
+      "cache-control": "no-store",
+      "x-content-type-options": "nosniff",
+      "x-sitemap-count": String(rows.length),
     },
   });
 }
