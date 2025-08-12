@@ -68,9 +68,9 @@ export async function GET() {
 
   return new NextResponse(xml, {
     headers: {
-      'content-type': 'application/xml; charset=utf-8',
-      'x-content-type-options': 'nosniff',
-      'cache-control': 'no-store',
+      'Content-Type': 'application/xml; charset=utf-8',
+      'X-Content-Type-Options': 'nosniff',
+      'Cache-Control': 'no-store',
     },
   });
 } 
