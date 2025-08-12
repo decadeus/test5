@@ -1,4 +1,4 @@
-import { createClient, createAdminClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 const HOST = "https://www.hoomge.com";
@@ -40,8 +40,7 @@ function altLinksDetail(id: number) {
 }
 
 export async function GET() {
-  // Use admin client to avoid RLS blocking the sitemap
-  const supabase = createAdminClient();
+  const supabase = createClient();
   // Pagination to include many Detail pages
   const pageSize = 1000;
   let from = 0;

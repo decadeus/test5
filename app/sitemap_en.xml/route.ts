@@ -29,13 +29,14 @@ function altDetail(id:number){
 // no-op guard removed; we'll return the exact string we build below
 
 export async function GET() {
-  // Use admin client to bypass any RLS/cookie issues for public sitemap generation
-  const supabase = createAdminClient();
+  const useAdmin = true;
+  const supabase = useAdmin ? createAdminClient() : createClient();
   // Paginate to include all projects (up to 50k URLs per sitemap)
   const pageSize = 1000;
   let from = 0;
   let all: any[] = [];
   let hadError = false
+  let lastError: any = null;
   for (let i = 0; i < 50; i++) {
     const to = from + pageSize - 1;
     const { data: page, error } = await supabase
@@ -44,7 +45,7 @@ export async function GET() {
       .eq("online", true)
       .order("updated_at", { ascending: false })
       .range(from, to);
-    if (error) { hadError = true; break; }
+    if (error) { hadError = true; lastError = error; break; }
     const batch = Array.isArray(page) ? page : [];
     all = all.concat(batch);
     if (batch.length < pageSize) break; // last page
@@ -79,6 +80,9 @@ ${projectUrls}
       "Cache-Control":"no-store",
       "X-Sitemap-Count": String(rows.length),
       "X-Supabase-Error": String(hadError),
+      "X-Using-Admin": String(useAdmin),
+      "X-Has-Service-Key": String(Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY)),
+      ...(lastError ? { "X-Supabase-Error-Msg": `${lastError.code || ''}:${lastError.message || lastError}` } : {}),
     }
   });
 }

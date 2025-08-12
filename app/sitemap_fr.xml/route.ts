@@ -1,4 +1,4 @@
-import { createClient, createAdminClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 const HOST = "https://www.hoomge.com";
@@ -41,7 +41,7 @@ function altLinksForDetail(id: number) {
 }
 
 export async function GET() {
-  const supabase = createAdminClient();
+  const supabase = createClient();
 
   const { data, error } = await supabase
     .from("project")
