@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 const PATHS = {
-  en: { root: "", projects: "/projects", subscription: "/subscription", detail: (id:number)=>`/Project/Detail/${id}` },
+  en: { root: "", projects: "/projects", subscription: "/subscription", detail: (id:number)=>`/Projet/Detail/${id}` },
   fr: { root: "", projects: "/projects", subscription: "/abonnement",   detail: (id:number)=>`/Projet/Detail/${id}` },
 } as const;
 
@@ -30,12 +30,33 @@ function altDetail(id:number){
 
 export async function GET() {
   const supabase = createClient();
-  const { data, error } = await supabase
-    .from("project").select("id,updated_at,created_at").eq("online", true)
-    .order("updated_at", { ascending:false });
+  // Paginate to include all projects (up to 50k URLs per sitemap)
+  const pageSize = 1000;
+  let from = 0;
+  let all: any[] = [];
+  let hadError = false;
+  for (let i = 0; i < 50; i++) {
+    const to = from + pageSize - 1;
+    const { data: page, error } = await supabase
+      .from("project")
+      .select("id,updated_at,created_at")
+      .eq("online", true)
+      .order("updated_at", { ascending: false })
+      .range(from, to);
+    if (error) { hadError = true; break; }
+    const batch = Array.isArray(page) ? page : [];
+    all = all.concat(batch);
+    if (batch.length < pageSize) break; // last page
+    from += pageSize;
+  }
 
   const today = isoDate();
-  const rows = !error && Array.isArray(data) && data.length ? data : [{ id:180, created_at:new Date().toISOString() }];
+  const rows = !hadError && Array.isArray(all) && all.length
+    ? all
+    : [
+        { id:180, created_at:new Date().toISOString() },
+        { id:179, created_at:new Date().toISOString() },
+      ];
 
   const staticUrls = [
     `<url><loc>${HOST}/en</loc><lastmod>${today}</lastmod>${altStatic("root")}</url>`,

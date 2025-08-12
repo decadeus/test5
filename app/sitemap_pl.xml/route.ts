@@ -41,14 +41,31 @@ function altLinksDetail(id: number) {
 
 export async function GET() {
   const supabase = createClient();
-  const { data, error } = await supabase
-    .from("project")
-    .select("id, updated_at, created_at")
-    .eq("online", true)             // ⬅️ adapte au vrai champ de publication
-    .order("updated_at", { ascending: false });
+  // Pagination to include many Detail pages
+  const pageSize = 1000;
+  let from = 0;
+  let all: Row[] = [];
+  let hadError = false;
+  for (let i = 0; i < 50; i++) {
+    const to = from + pageSize - 1;
+    const { data: page, error } = await supabase
+      .from("project")
+      .select("id, updated_at, created_at")
+      .eq("online", true)
+      .order("updated_at", { ascending: false })
+      .range(from, to);
+    if (error) { hadError = true; break; }
+    const batch = (page as Row[]) ?? [];
+    all = all.concat(batch);
+    if (batch.length < pageSize) break;
+    from += pageSize;
+  }
 
   const today = isoDate();
-  const rows: Row[] = !error && data?.length ? (data as Row[]) : [{ id: 180, created_at: new Date().toISOString() }];
+  const rows: Row[] = !hadError && all.length ? all : [
+    { id: 180, created_at: new Date().toISOString() },
+    { id: 179, created_at: new Date().toISOString() },
+  ];
 
   const staticUrls = [
     `<url><loc>${HOST}/${LANG}${PATHS[LANG].root}</loc><lastmod>${today}</lastmod>${altLinksStatic("root")}</url>`,
@@ -70,9 +87,9 @@ ${projectUrls}
 
   return new NextResponse(xml, {
     headers: {
-      "Content-Type": "application/xml; charset=utf-8",
-      "Cache-Control": "public, max-age=0, s-maxage=3600",
-      "X-Content-Type-Options": "nosniff",
+      "content-type": "application/xml; charset=utf-8",
+      "x-content-type-options": "nosniff",
+      "cache-control": "no-store",
     },
   });
 }
