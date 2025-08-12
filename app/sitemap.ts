@@ -13,6 +13,14 @@ export default async function sitemap() {
   const baseUrl = "https://www.hoomge.com";
 
   const supportedLocales = ['fr', 'en', 'pl', 'de', 'ru', 'uk'];
+
+  // Helper: construire les alternates hreflang pour un chemin sans locale
+  const buildAlternates = (pathNoLocale: string) => ({
+    languages: supportedLocales.reduce<Record<string, string>>((acc, loc) => {
+      acc[loc] = `${baseUrl}/${loc}${pathNoLocale}`;
+      return acc;
+    }, {}),
+  });
   
   // Pages statiques COMMERCIALES (à référencer)
   const staticPages = [
@@ -27,18 +35,20 @@ export default async function sitemap() {
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: page === '' ? 1 : 0.8,
+      alternates: buildAlternates(page || ''),
     }))
   );
 
   // Pages de projets (à référencer)
-  const projectUrls = projects?.flatMap(project => 
+  const projectUrls = (projects?.flatMap(project => 
     supportedLocales.map(locale => ({
       url: `${baseUrl}/${locale}/Projet/Detail/${project.id}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.9,
+      alternates: buildAlternates(`/Projet/Detail/${project.id}`),
     })) || []
-  ) || [];
+  )) || [];
 
   return [...staticUrls, ...projectUrls];
 } 
