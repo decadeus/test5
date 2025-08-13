@@ -9,6 +9,10 @@ export async function GET() {
     `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     `  <sitemap><loc>https://www.hoomge.com/sitemap_fr.xml</loc><lastmod>${today}</lastmod></sitemap>\n` +
     `  <sitemap><loc>https://www.hoomge.com/sitemap_en.xml</loc><lastmod>${today}</lastmod></sitemap>\n` +
+    `  <sitemap><loc>https://www.hoomge.com/sitemap_de.xml</loc><lastmod>${today}</lastmod></sitemap>\n` +
+    `  <sitemap><loc>https://www.hoomge.com/sitemap_pl.xml</loc><lastmod>${today}</lastmod></sitemap>\n` +
+    `  <sitemap><loc>https://www.hoomge.com/sitemap_ru.xml</loc><lastmod>${today}</lastmod></sitemap>\n` +
+    `  <sitemap><loc>https://www.hoomge.com/sitemap_uk.xml</loc><lastmod>${today}</lastmod></sitemap>\n` +
     `</sitemapindex>`;
 
   return new Response(xml, {

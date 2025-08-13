@@ -1,8 +1,24 @@
-User-agent: *
+Sitemap: https://www.hoomge.com/sitemap.xml
+
+# Autoriser explicitement les bots IA
+User-agent: GPTBot          # OpenAI (entraînement)
 Allow: /
 
-# Sitemap pour toutes les langues
-Sitemap: https://www.hoomge.com/sitemap.xml
+User-agent: ChatGPT-User    # Navigation temps réel de ChatGPT
+Allow: /
+
+User-agent: Google-Extended # Contrôle des accès de Google aux modèles IA
+Allow: /
+
+User-agent: CCBot           # CommonCrawl (beaucoup d’IA réutilisent leurs dumps)
+Allow: /
+
+User-agent: PerplexityBot   # Perplexity Search (si tu veux être cité chez eux)
+Allow: /
+
+# Règle générale pour les autres robots
+User-agent: *
+Allow: /
 
 # Bloquer les pages d'administration et de test
 Disallow: /admin/
@@ -31,4 +47,4 @@ Allow: /ru/DesignTest/Detail/
 Allow: /uk/DesignTest/Detail/
 
 # Crawl-delay pour éviter de surcharger le serveur
-Crawl-delay: 1 
+Crawl-delay: 1
