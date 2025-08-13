@@ -48,16 +48,24 @@ export async function generateMetadata({ params }) {
   const countryPart = localizedCountry ? ` ${localizedCountry}` : '';
   // === Fin pays dynamique ===
   
-  // Titre dynamique selon la langue (injection du pays localisé)
+  // Compter le nombre d'appartements (lots) associés au projet
+  const { count: projectlistCount } = await supabase
+    .from('projectlist')
+    .select('id', { count: 'exact', head: true })
+    .eq('ide', id);
+
+  const apartmentsCount = projectlistCount || 0;
+
+  // Titre dynamique selon la langue (injection du pays localisé + nb d'appartements)
   const titleTemplates = {
-    fr: `${project.name}, projet d'immeuble résidentiel à ${project.city}${countryPart}`,
-    en: `${project.name}, residential building project in ${project.city}${countryPart}`,
-    pl: `${project.name}, projekt budynku mieszkalnego w ${project.city}${countryPart}`,
-    de: `${project.name}, Wohngebäudeprojekt in ${project.city}${countryPart}`,
-    ru: `${project.name}, проект жилого здания в ${project.city}${countryPart}`,
-    uk: `${project.name}, проект житлового будинку в ${project.city}${countryPart}`
+    fr: `${apartmentsCount} ${apartmentsCount > 1 ? "appartements neufs" : "appartement neuf"} à ${project.city}${localizedCountry ? " (" + localizedCountry + ")" : ""} – ${project.name} | Hoomge`,
+    en: `${apartmentsCount} ${apartmentsCount === 1 ? "new apartment" : "new apartments"} in ${project.city}${localizedCountry ? " (" + localizedCountry + ")" : ""} – ${project.name} | Hoomge`,
+    pl: `${apartmentsCount} ${apartmentsCount === 1 ? "nowe mieszkanie" : "nowe mieszkania"} w ${project.city}${localizedCountry ? " (" + localizedCountry + ")" : ""} – ${project.name} | Hoomge`,
+    de: `${apartmentsCount} ${apartmentsCount === 1 ? "neue Wohnung" : "neue Wohnungen"} in ${project.city}${localizedCountry ? " (" + localizedCountry + ")" : ""} – ${project.name} | Hoomge`,
+    ru: `${apartmentsCount} ${apartmentsCount === 1 ? "новая квартира" : "новые квартиры"} в ${project.city}${localizedCountry ? " (" + localizedCountry + ")" : ""} – ${project.name} | Hoomge`,
+    uk: `${apartmentsCount} ${apartmentsCount === 1 ? "нова квартира" : "нові квартири"} у ${project.city}${localizedCountry ? " (" + localizedCountry + ")" : ""} – ${project.name} | Hoomge`
   };
-  
+
   const title = titleTemplates[lang] || titleTemplates.fr;
 
   // Générer les URLs alternatives pour hreflang
