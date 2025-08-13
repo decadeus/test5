@@ -28,7 +28,7 @@ function altDetail(id:number){
 
 // no-op guard removed; we'll return the exact string we build below
 
-export async function GET() {
+export async function GET(request: Request) {
   // Helper to fetch all projects with a client (anon or admin)
   async function fetchAll(client: ReturnType<typeof createClient>) {
     try {
@@ -68,7 +68,7 @@ export async function GET() {
   ].join("\n");
 
   const projectUrls = list.map((p:any)=>{
-    const lastmod = isoDate(p.created_at);
+    const lastmod = isoDate(p.updated_at || p.created_at);
     return `<url><loc>${HOST}/en${PATHS.en.detail(p.id)}</loc><lastmod>${lastmod}</lastmod>${altDetail(p.id)}</url>`;
   }).join("\n");
 
@@ -79,11 +79,26 @@ ${staticUrls}
 ${projectUrls}
 </urlset>`;
 
+  const lastModified = new Date().toUTCString();
+  const etag = '"' + Buffer.from(xml).toString('base64').slice(0, 27) + '"';
+  const ifNoneMatch = request.headers.get('if-none-match');
+  if (ifNoneMatch && ifNoneMatch === etag) {
+    return new Response(null, {
+      status: 304,
+      headers: {
+        "Cache-Control":"public, max-age=0, s-maxage=3600",
+        "Last-Modified": lastModified,
+        "ETag": etag,
+      }
+    });
+  }
   return new Response(xml, {
     headers: {
       "Content-Type":"application/xml; charset=utf-8",
       "X-Content-Type-Options":"nosniff",
-      "Cache-Control":"no-store",
+      "Cache-Control":"public, max-age=0, s-maxage=3600",
+      "Last-Modified": lastModified,
+      "ETag": etag,
       "X-Sitemap-Count": String(list.length),
       "X-Fetch-Client": used,
       ...(error ? { "X-Supabase-Error-Msg": `${(error as any)?.code || ''}:${(error as any)?.message || error}` } : {}),

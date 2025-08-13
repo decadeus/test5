@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export async function GET() {
+export async function GET(request: Request) {
   const today = new Date().toISOString().slice(0, 10);
 
   const xml =
@@ -15,11 +15,27 @@ export async function GET() {
     `  <sitemap><loc>https://www.hoomge.com/sitemap_uk.xml</loc><lastmod>${today}</lastmod></sitemap>\n` +
     `</sitemapindex>`;
 
+  const etag = '"' + Buffer.from(xml).toString('base64').slice(0, 27) + '"';
+  const ifNoneMatch = request.headers.get('if-none-match');
+
+  if (ifNoneMatch && ifNoneMatch === etag) {
+    return new Response(null, {
+      status: 304,
+      headers: {
+        "ETag": etag,
+        "Cache-Control": "public, max-age=0, s-maxage=3600",
+        "Last-Modified": new Date().toUTCString(),
+      },
+    });
+  }
+
   return new Response(xml, {
     headers: {
       "Content-Type": "application/xml; charset=utf-8",
       "Cache-Control": "public, max-age=0, s-maxage=3600",
       "X-Content-Type-Options": "nosniff",
+      "ETag": etag,
+      "Last-Modified": new Date().toUTCString(),
     },
   });
 }

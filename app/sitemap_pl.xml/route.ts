@@ -39,7 +39,7 @@ function altLinksDetail(id: number) {
   return links + xdef;
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   async function fetchAll(client: ReturnType<typeof createClient>) {
     try {
       const { data, error } = await client
@@ -72,7 +72,7 @@ export async function GET() {
   ].join("\n");
 
   const projectUrls = list.map(p => {
-    const lastmod = isoDate(p.created_at);
+    const lastmod = isoDate(p.updated_at || p.created_at);
     const loc = `${HOST}/${LANG}${PATHS[LANG].detail(p.id)}`;
     return `<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod>${altLinksDetail(p.id)}</url>`;
   }).join("\n");
@@ -84,11 +84,31 @@ ${staticUrls}
 ${projectUrls}
 </urlset>`;
 
+  const lastModified = new Date().toUTCString();
+  const etag = '"' + Buffer.from(xml).toString('base64').slice(0, 27) + '"';
+  const ifNoneMatch = request.headers.get('if-none-match');
+  if (ifNoneMatch && ifNoneMatch === etag) {
+    return new NextResponse(null, {
+      status: 304,
+      headers: {
+        "content-type": "application/xml; charset=utf-8",
+        "x-content-type-options": "nosniff",
+        "cache-control": "public, max-age=0, s-maxage=3600",
+        "last-modified": lastModified,
+        "etag": etag,
+        "x-sitemap-count": String(list.length),
+        ...(error ? { "x-supabase-error-msg": `${(error as any)?.code || ''}:${(error as any)?.message || error}` } : {}),
+        "x-fetch-client": used,
+      },
+    });
+  }
   return new NextResponse(xml, {
     headers: {
       "content-type": "application/xml; charset=utf-8",
       "x-content-type-options": "nosniff",
-      "cache-control": "no-store",
+      "cache-control": "public, max-age=0, s-maxage=3600",
+      "last-modified": lastModified,
+      "etag": etag,
       "x-sitemap-count": String(list.length),
       ...(error ? { "x-supabase-error-msg": `${(error as any)?.code || ''}:${(error as any)?.message || error}` } : {}),
       "x-fetch-client": used,
