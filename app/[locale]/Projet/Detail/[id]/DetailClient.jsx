@@ -472,6 +472,15 @@ export default function DetailClient({ project, locale }) {
   const projectName = project.name;
   const projectCity = project[`city_${lang}`] || project.city_fr || project.city;
   const currencySymbol = project.cur === 'EUR' ? '€' : project.cur === 'PLN' ? 'zł' : project.cur || '';
+  const headerAlt = (
+    lang === 'fr' ? `${projectName} – appartements neufs à ${projectCity}` :
+    lang === 'en' ? `${projectName} – new apartments in ${projectCity}` :
+    lang === 'de' ? `${projectName} – neue Wohnungen in ${projectCity}` :
+    lang === 'pl' ? `${projectName} – nowe mieszkania w ${projectCity}` :
+    lang === 'ru' ? `${projectName} – новые квартиры в ${projectCity}` :
+    lang === 'uk' ? `${projectName} – нові квартири у ${projectCity}` :
+    `${projectName} – apartments in ${projectCity}`
+  );
 
   return (
     <>
@@ -510,7 +519,7 @@ export default function DetailClient({ project, locale }) {
           <div className="w-full h-[340px] relative mb-8 shadow-md flex justify-center items-center overflow-hidden rounded-none">
             <Image
               src="/appart.webp"
-              alt={`${projectName} ${projectCity}`}
+              alt={headerAlt}
               fill
               className="object-cover z-0"
               priority

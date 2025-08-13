@@ -144,6 +144,21 @@ export default async function DetailPage({ params }) {
   const lotsData = lots || [];
   const apartmentsCountServer = lotsData.length;
 
+  // Compute aggregate facts for JSON-LD (prices, rooms)
+  const numericPrices = lotsData
+    .map(l => (typeof l.price === 'number' ? l.price : Number(l.price)))
+    .filter(v => Number.isFinite(v) && v > 0);
+  const lowPrice = numericPrices.length ? Math.min(...numericPrices) : undefined;
+  const highPrice = numericPrices.length ? Math.max(...numericPrices) : undefined;
+  const numericBeds = lotsData
+    .map(l => (typeof l.bed === 'number' ? l.bed : Number(l.bed)))
+    .filter(v => Number.isFinite(v) && v > 0);
+  const minBeds = numericBeds.length ? Math.min(...numericBeds) : undefined;
+  const maxBeds = numericBeds.length ? Math.max(...numericBeds) : undefined;
+  const numberOfRoomsRangeLabel = (minBeds != null && maxBeds != null)
+    ? `T${minBeds}T${maxBeds}`.replace('\u0013', '–')
+    : undefined;
+
   const headersListPage = headers();
   const hostPage = headersListPage.get('host') || 'localhost:3000';
   const protocolPage = process.env.NODE_ENV === 'production' ? 'https' : 'http';
@@ -166,6 +181,8 @@ export default async function DetailPage({ params }) {
       addressLocality: project.city,
       addressCountry: project.country || undefined,
     },
+    ...(minBeds != null && maxBeds != null ? { numberOfRooms: { '@type': 'QuantitativeValue', minValue: minBeds, maxValue: maxBeds } } : {}),
+    ...(numberOfRoomsRangeLabel ? { numberOfRoomsTotal: numberOfRoomsRangeLabel } : {}),
     itemOffered: {
       '@type': 'ApartmentComplex',
       name: project.name,
@@ -181,24 +198,32 @@ export default async function DetailPage({ params }) {
       } : undefined,
       numberOfUnits: apartmentsCountServer || undefined,
     },
-    offers: (lotsData || []).map((lot) => ({
-      '@type': 'Offer',
-      url: `${ogUrlPage}#lot-${lot.ref || ''}`,
-      price: typeof lot.price === 'number' ? lot.price : Number(lot.price) || undefined,
-      priceCurrency: project.cur || 'EUR',
-      availability: 'https://schema.org/InStock',
-      itemOffered: {
-        '@type': 'Apartment',
-        numberOfRooms: typeof lot.bed === 'number' ? lot.bed : Number(lot.bed) || undefined,
-        floorLevel: typeof lot.floor === 'number' ? lot.floor : Number(lot.floor) || undefined,
-        floorSize: (lot.surface != null) ? {
-          '@type': 'QuantitativeValue',
-          value: typeof lot.surface === 'number' ? lot.surface : Number(lot.surface) || undefined,
-          unitCode: 'MTR',
-        } : undefined,
-        name: `${project.name} - ${lot.ref || ''}`.trim(),
+    offers: [
+      {
+        '@type': 'AggregateOffer',
+        offerCount: apartmentsCountServer || undefined,
+        priceCurrency: project.cur || 'EUR',
+        ...(lowPrice != null && highPrice != null ? { lowPrice, highPrice } : {}),
       },
-    })),
+      ...(lotsData || []).map((lot) => ({
+        '@type': 'Offer',
+        url: `${ogUrlPage}#lot-${lot.ref || ''}`,
+        price: typeof lot.price === 'number' ? lot.price : Number(lot.price) || undefined,
+        priceCurrency: project.cur || 'EUR',
+        availability: 'https://schema.org/InStock',
+        itemOffered: {
+          '@type': 'Apartment',
+          numberOfRooms: typeof lot.bed === 'number' ? lot.bed : Number(lot.bed) || undefined,
+          floorLevel: typeof lot.floor === 'number' ? lot.floor : Number(lot.floor) || undefined,
+          floorSize: (lot.surface != null) ? {
+            '@type': 'QuantitativeValue',
+            value: typeof lot.surface === 'number' ? lot.surface : Number(lot.surface) || undefined,
+            unitCode: 'MTR',
+          } : undefined,
+          name: `${project.name} - ${lot.ref || ''}`.trim(),
+        },
+      }))
+    ],
   };
 
   return (
