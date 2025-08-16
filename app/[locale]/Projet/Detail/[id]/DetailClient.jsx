@@ -490,7 +490,8 @@ export default function DetailClient({ project, locale }) {
           as="image"
           href="/appart.webp"
           imagesrcset="/appart.webp 1x, /appart.webp 2x"
-          imagesizes="100vw"
+          imagesizes="(max-width: 768px) 100vw, 1200px"
+          fetchPriority="high"
         />
         <link
           rel="preload"
@@ -514,18 +515,20 @@ export default function DetailClient({ project, locale }) {
           crossOrigin="anonymous"
         />
       </Head>
-      <main className="bg-green-100/10 min-h-screen w-full">
+      <main className="bg-green-100/10 min-h-screen w-full" style={{contentVisibility: 'auto', containIntrinsicSize: '1px 5000px'}}>
         <header>
-          <div className="w-full h-[340px] relative mb-8 shadow-md flex justify-center items-center overflow-hidden rounded-none">
+          <div className="w-full h-[340px] relative mb-8 shadow-md flex justify-center items-center overflow-hidden rounded-none" style={{willChange: 'transform'}}>
             <Image
               src="/appart.webp"
               alt={headerAlt}
               fill
               className="object-cover z-0"
               priority
+              fetchPriority="high"
               draggable={false}
               placeholder="blur"
-              blurDataURL="/appart.webp"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkbHB0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+              sizes="(max-width: 768px) 100vw, 1200px"
             />
             <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
             <div className="flex flex-col justify-center items-center relative z-10 w-full px-4">
@@ -554,6 +557,8 @@ export default function DetailClient({ project, locale }) {
                     alt={`${projectName} - Image ${currentSlide + 1}`}
                     fill
                     className="object-cover w-full h-full rounded-2xl select-none border-2 border-white shadow-lg"
+                    priority={currentSlide === 0}
+                    loading={currentSlide === 0 ? "eager" : "lazy"}
                     draggable={false}
                     sizes="(max-width: 768px) 100vw, 700px"
                   />

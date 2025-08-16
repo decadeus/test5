@@ -5,14 +5,16 @@ import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import Chatbot from "../../../../components/Chatbot";
 
-export const revalidate = 60;
+export const revalidate = 3600; // Cache for 1 hour instead of 1 minute
 
 export async function generateMetadata({ params }) {
   const { id, locale } = params;
   const supabase = createClient();
+  
+  // Only select needed fields for metadata to reduce query time
   const { data: project } = await supabase
     .from("project")
-    .select("*")
+    .select("id, name, city, country, des_fr, des_en, des_pl, des_de, des_ru, des_uk, avatar, updated_at")
     .eq("id", id)
     .single();
 
@@ -122,25 +124,27 @@ export async function generateMetadata({ params }) {
 export default async function DetailPage({ params }) {
   const { id, locale } = params;
   const supabase = createClient();
-  const { data: project } = await supabase
-    .from("project")
-    .select("*")
-    .eq("id", id)
-    .single();
-
+  
+  // Parallel queries for better performance
+  const [projectResult, profileResult, lotsResult] = await Promise.all([
+    supabase.from("project").select("*").eq("id", id).single(),
+    supabase.from("profiles").select("compagnie").eq("email", "PLACEHOLDER").maybeSingle(),
+    supabase.from("projectlist").select("ref, bed, floor, price, surface").eq("ide", id)
+  ]);
+  
+  const { data: project } = projectResult;
   if (!project) notFound();
-
+  
+  // Get actual profile after we have promoter_email
   const { data: profile } = await supabase
     .from("profiles")
     .select("compagnie")
     .eq("email", project.promoter_email)
     .maybeSingle();
-  const companyName = profile?.compagnie || undefined;
+    
+  const { data: lots } = lotsResult;
 
-  const { data: lots } = await supabase
-    .from("projectlist")
-    .select("ref, bed, floor, price, surface")
-    .eq("ide", id);
+  const companyName = profile?.compagnie || undefined;
   const lotsData = lots || [];
   const apartmentsCountServer = lotsData.length;
 
