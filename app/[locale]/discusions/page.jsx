@@ -635,7 +635,7 @@ function CreatePost({ locale }) {
                     ? 'bg-gradient-to-r from-red-950/20 to-[#313338] border-red-800/50'
                     : 'bg-[#313338] border-[#3f4147] hover:border-[#5865F2]/30'
                 }`}>
-                  <div className="flex items-center gap-3 text-xs text-gray-400 mb-3">
+                  <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
                     <div className="flex items-center gap-2">
                       <span className={`text-lg ${
                         p.type === 'announcement' || p.type === 'admin_announcement' ? '📢' :
@@ -644,10 +644,10 @@ function CreatePost({ locale }) {
                         p.type === 'advice' ? '💡' :
                         '💬'
                       }`}></span>
-                      <span className="text-gray-300 font-medium">{new Date(p.created_at).toLocaleString()}</span>
+                      <span className="text-gray-400 font-normal">{new Date(p.created_at).toLocaleString()}</span>
                     </div>
                     <div className="h-1 w-1 bg-gray-600 rounded-full"></div>
-                    <span className={`px-2 py-1 rounded-lg text-xs font-medium ${
+                    <span className={`px-1.5 py-0.5 rounded text-xs font-normal ${
                       p.type === 'announcement' ? 'bg-amber-900/40 text-amber-200 border border-amber-700/50' :
                       p.type === 'admin_announcement' ? 'bg-amber-900/40 text-amber-200 border border-amber-700/50' :
                       p.type === 'rules' ? 'bg-red-900/40 text-red-200 border border-red-700/50' :
@@ -665,7 +665,7 @@ function CreatePost({ locale }) {
                       }
                     </span>
                     {p.tab_context && (
-                      <span className={`px-2 py-1 rounded-lg text-xs font-medium ${
+                      <span className={`px-1.5 py-0.5 rounded text-xs font-normal ${
                         p.tab_context === 'announcement' 
                           ? 'bg-orange-900/40 text-orange-200 border border-orange-700/50' 
                           : 'bg-purple-900/40 text-purple-200 border border-purple-700/50'
@@ -684,21 +684,21 @@ function CreatePost({ locale }) {
                       if (p.author_id) {
                         return (
                           <>
-                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#1e1f22] border border-[#3f4147]">
+                            <div className="flex items-center gap-2 px-2 py-1 rounded-lg bg-[#1e1f22] border border-[#3f4147]">
                               <div className={`w-3 h-3 rounded-full ${isVerified ? 'bg-green-500' : 'bg-gray-500'}`}></div>
-                              <span className="text-sm text-gray-300 font-medium">
+                              <span className="text-sm text-gray-400 font-normal">
                                 {company ? company : (isVerified ? 'Promoteur' : ((p.author_id || '').slice(0,8) + '…'))}
                               </span>
                               {isVerified && (
-                                <span className="text-xs bg-green-900/50 text-green-300 px-2 py-0.5 rounded-full border border-green-700/50">
+                                <span className="text-xs bg-green-900/50 text-green-300 px-1.5 py-0.5 rounded border border-green-700/50">
                                   ✓ Vérifié
                                 </span>
                               )}
                             </div>
                             {p.project_id && projectMap[p.project_id] && (
-                              <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-950/30 border border-blue-800/50">
+                              <div className="flex items-center gap-2 px-2 py-1 rounded-lg bg-blue-950/30 border border-blue-800/50">
                                 <span className="text-sm">🏢</span>
-                                <span className="text-sm text-blue-200 font-medium">
+                                <span className="text-sm text-blue-300 font-normal">
                                   {projectMap[p.project_id]?.name}{projectMap[p.project_id]?.city ? ' – ' + projectMap[p.project_id]?.city : ''}
                                 </span>
                               </div>
@@ -730,7 +730,7 @@ function CreatePost({ locale }) {
                         ) : null;
                       })()}
                       
-                      <div className="text-gray-200 whitespace-pre-line leading-relaxed bg-[#1e1f22]/50 rounded-xl p-4 border border-[#3f4147]/50">
+                      <div className="text-gray-100 whitespace-pre-line leading-relaxed bg-[#1e1f22] rounded-xl p-5 border border-[#3f4147] text-lg font-medium">
                         {p.body}
                       </div>
                     </div>
@@ -738,29 +738,29 @@ function CreatePost({ locale }) {
                   {/* Post actions */}
                   <div className="flex items-center justify-between mb-4 pt-3 border-t border-[#3f4147]/50">
                     <div className="flex items-center gap-3">
-                      <div className="flex items-center bg-[#1e1f22] rounded-xl border border-[#3f4147]">
+                                            <div className="flex items-center bg-[#1e1f22] rounded-lg border border-[#3f4147]">
                         <button 
-                          onClick={() => vote('post', p.id, 1)} 
-                          className="px-3 py-2 text-gray-300 hover:text-green-400 hover:bg-green-950/20 rounded-l-xl transition-all" 
-                          title="J'aime"
-                        >
-                          👍
-                        </button>
-                        <span className="px-3 py-2 text-gray-200 font-medium border-x border-[#3f4147]">
-                          {postVotes[p.id] || 0}
-                        </span>
-                        <button 
-                          onClick={() => vote('post', p.id, -1)} 
-                          className="px-3 py-2 text-gray-300 hover:text-red-400 hover:bg-red-950/20 rounded-r-xl transition-all" 
-                          title="Je n'aime pas"
-                        >
-                          👎
-                        </button>
+                        onClick={() => vote('post', p.id, 1)} 
+                        className="px-2 py-1.5 text-gray-300 hover:text-green-400 hover:bg-green-950/20 rounded-l-lg transition-all text-sm" 
+                        title="J'aime"
+                      >
+                        👍
+                      </button>
+                      <span className="px-2 py-1.5 text-gray-200 font-medium border-x border-[#3f4147] text-sm">
+                        {postVotes[p.id] || 0}
+                      </span>
+                      <button 
+                        onClick={() => vote('post', p.id, -1)} 
+                        className="px-2 py-1.5 text-gray-300 hover:text-red-400 hover:bg-red-950/20 rounded-r-lg transition-all text-sm" 
+                        title="Je n'aime pas"
+                      >
+                        👎
+                      </button>
                       </div>
                       
                       {/* Compteur de réponses */}
                       {p.type !== 'announcement' && p.type !== 'admin_announcement' && p.type !== 'rules' && (
-                        <div className="flex items-center gap-2 px-3 py-2 bg-[#1e1f22] rounded-xl border border-[#3f4147] text-gray-300">
+                        <div className="flex items-center gap-2 px-2 py-1.5 bg-[#1e1f22] rounded-lg border border-[#3f4147] text-gray-300">
                           <span>💬</span>
                           <span className="text-sm">{answers.length} réponse{answers.length > 1 ? 's' : ''}</span>
                         </div>
@@ -819,43 +819,43 @@ function CreatePost({ locale }) {
                                   </div>
                                   <div className="flex-1">
                                     <div className="flex flex-wrap items-center gap-2 mb-3">
-                                      <span className="text-xs text-gray-400">{new Date(a.created_at).toLocaleString()}</span>
-                                      <div className="flex items-center gap-2 px-3 py-1 rounded-xl bg-[#1e1f22] border border-[#3f4147]">
+                                      <span className="text-xs text-gray-500">{new Date(a.created_at).toLocaleString()}</span>
+                                      <div className="flex items-center gap-2 px-2 py-0.5 rounded-lg bg-[#1e1f22] border border-[#3f4147]">
                                         <div className={`w-2 h-2 rounded-full ${isVerified ? 'bg-green-500' : 'bg-gray-500'}`}></div>
-                                        <span className="text-sm text-gray-300 font-medium">{label}</span>
+                                        <span className="text-sm text-gray-400 font-normal">{label}</span>
                                       </div>
                                       {isVerified && (
-                                        <span className="text-xs bg-green-900/50 text-green-300 px-2 py-1 rounded-full border border-green-700/50">
+                                        <span className="text-xs bg-green-900/50 text-green-300 px-1.5 py-0.5 rounded border border-green-700/50">
                                           🏢 Promoteur vérifié
                                         </span>
                                       )}
                                       {isPostAuthor && (
-                                        <span className="text-xs bg-amber-900/50 text-amber-300 px-2 py-1 rounded-full border border-amber-700/50">
+                                        <span className="text-xs bg-amber-900/50 text-amber-300 px-1.5 py-0.5 rounded border border-amber-700/50">
                                           ✏️ Auteur du post
                                         </span>
                                       )}
                                       {a.is_accepted && (
-                                        <span className="text-xs bg-yellow-900/50 text-yellow-300 px-2 py-1 rounded-full border border-yellow-700/50">
+                                        <span className="text-xs bg-yellow-900/50 text-yellow-300 px-1.5 py-0.5 rounded border border-yellow-700/50">
                                           ⭐ Réponse acceptée
                                         </span>
                                       )}
                                     </div>
-                                    <div className="text-gray-200 whitespace-pre-line mb-3 leading-relaxed bg-[#1e1f22]/30 rounded-xl p-3 border border-[#3f4147]/30">{a.body}</div>
+                                    <div className="text-gray-100 whitespace-pre-line mb-3 leading-relaxed bg-[#1e1f22] rounded-xl p-4 border border-[#3f4147] text-base font-medium">{a.body}</div>
                                     <div className="flex items-center justify-between">
-                                      <div className="flex items-center bg-[#1e1f22] rounded-xl border border-[#3f4147]">
+                                      <div className="flex items-center bg-[#1e1f22] rounded-lg border border-[#3f4147]">
                                         <button 
                                           onClick={() => vote('answer', a.id, 1)} 
-                                          className="px-3 py-1.5 text-gray-300 hover:text-green-400 hover:bg-green-950/20 rounded-l-xl transition-all" 
+                                          className="px-2 py-1 text-gray-300 hover:text-green-400 hover:bg-green-950/20 rounded-l-lg transition-all text-sm" 
                                           title="J'aime"
                                         >
                                           👍
                                         </button>
-                                        <span className="px-3 py-1.5 text-gray-200 font-medium border-x border-[#3f4147]">
+                                        <span className="px-2 py-1 text-gray-200 font-medium border-x border-[#3f4147] text-sm">
                                           {answerVotes[a.id] || 0}
                                         </span>
                                         <button 
                                           onClick={() => vote('answer', a.id, -1)} 
-                                          className="px-3 py-1.5 text-gray-300 hover:text-red-400 hover:bg-red-950/20 rounded-r-xl transition-all" 
+                                          className="px-2 py-1 text-gray-300 hover:text-red-400 hover:bg-red-950/20 rounded-r-lg transition-all text-sm" 
                                           title="Je n'aime pas"
                                         >
                                           👎
