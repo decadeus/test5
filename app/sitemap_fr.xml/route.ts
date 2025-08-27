@@ -20,8 +20,8 @@ function sanitizeXml(s: string) {
 }
 
 const PATHS = {
-  fr: { root: "", projects: "/projects", subscription: "/abonnement",    detail: (id: number) => `/Projet/Detail/${id}` },
-  en: { root: "", projects: "/projects", subscription: "/subscription",  detail: (id: number) => `/Project/Detail/${id}` },
+  fr: { root: "", projects: "/Projet/List", subscription: "/abonnement",    detail: (id: number) => `/Projet/Detail/${id}` },
+  en: { root: "", projects: "/Projet/List", subscription: "/subscription",  detail: (id: number) => `/Projet/Detail/${id}` },
 } as const;
 
 function altLinksForStatic(pageKey: "root" | "projects" | "subscription") {
@@ -67,6 +67,21 @@ export async function GET(request: Request) {
   const today = isoDate();
   const list: Row[] = Array.isArray(rows) ? (rows as Row[]) : [];
 
+  // Articles de blog avec leurs dates de publication réelles
+  const blogArticles = [
+    { id: 5, title: "Installation Pologne", lastmod: "2024-01-20" },
+    { id: 6, title: "NFZ Santé", lastmod: "2024-01-25" },
+    { id: 7, title: "Immatriculation voiture", lastmod: "2024-01-30" },
+    { id: 8, title: "Micro-entreprise", lastmod: "2024-02-05" }
+  ];
+
+  const blogUrls = [
+    `<url><loc>${HOST}/fr/blog</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
+    ...blogArticles.map(article => 
+      `<url><loc>${HOST}/fr/blog/${article.id}</loc><lastmod>${article.lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>`
+    )
+  ].join("\n");
+
   const staticUrls = [
     `<url><loc>${HOST}/fr${PATHS.fr.root}</loc><lastmod>${today}</lastmod>${altLinksForStatic("root")}</url>`,
     `<url><loc>${HOST}/fr${PATHS.fr.projects}</loc><lastmod>${today}</lastmod>${altLinksForStatic("projects")}</url>`,
@@ -83,6 +98,7 @@ export async function GET(request: Request) {
 `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${staticUrls}
+${blogUrls}
 ${projectUrls}
 </urlset>`;
 

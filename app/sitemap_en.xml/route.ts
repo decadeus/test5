@@ -6,8 +6,8 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 const PATHS = {
-  en: { root: "", projects: "/projects", subscription: "/subscription", detail: (id:number)=>`/Projet/Detail/${id}` },
-  fr: { root: "", projects: "/projects", subscription: "/abonnement",   detail: (id:number)=>`/Projet/Detail/${id}` },
+  en: { root: "", projects: "/Projet/List", subscription: "/subscription", detail: (id:number)=>`/Projet/Detail/${id}` },
+  fr: { root: "", projects: "/Projet/List", subscription: "/abonnement",   detail: (id:number)=>`/Projet/Detail/${id}` },
 } as const;
 
 function isoDate(s?: string|null){ const d=s?new Date(s):new Date(); return isNaN(d.getTime())?new Date().toISOString().slice(0,10):d.toISOString().slice(0,10); }
@@ -61,6 +61,21 @@ export async function GET(request: Request) {
   const today = isoDate();
   const list = Array.isArray(rows) ? rows : [];
 
+  // Articles de blog (même contenu qu'en français mais URLs anglaises)
+  const blogArticles = [
+    { id: 5, title: "Installation Poland", lastmod: "2024-01-20" },
+    { id: 6, title: "NFZ Health", lastmod: "2024-01-25" },
+    { id: 7, title: "Car Registration", lastmod: "2024-01-30" },
+    { id: 8, title: "Micro-business", lastmod: "2024-02-05" }
+  ];
+
+  const blogUrls = [
+    `<url><loc>${HOST}/en/blog</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
+    ...blogArticles.map(article => 
+      `<url><loc>${HOST}/en/blog/${article.id}</loc><lastmod>${article.lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>`
+    )
+  ].join("\n");
+
   const staticUrls = [
     `<url><loc>${HOST}/en</loc><lastmod>${today}</lastmod>${altStatic("root")}</url>`,
     `<url><loc>${HOST}/en${PATHS.en.projects}</loc><lastmod>${today}</lastmod>${altStatic("projects")}</url>`,
@@ -76,6 +91,7 @@ export async function GET(request: Request) {
 `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${staticUrls}
+${blogUrls}
 ${projectUrls}
 </urlset>`;
 
