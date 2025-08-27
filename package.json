@@ -42,6 +42,7 @@
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "leaflet-geosearch": "^4.0.0",
     "lucide-react": "^0.418.0",
+    "mermaid": "^11.10.1",
     "moment": "^2.30.1",
     "next": "^14.2.13",
     "next-intl": "^3.22.0",
