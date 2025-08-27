@@ -54,6 +54,15 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
     libraries,
   });
 
+  // Debug: Log API key status
+  useEffect(() => {
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    console.log('Google Maps API Key status:', apiKey ? 'Present' : 'Missing');
+    if (!apiKey || apiKey === 'YOUR_API_KEY_HERE') {
+      console.warn('Google Maps API Key is missing or invalid. Please set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in your .env file');
+    }
+  }, []);
+
   const onLoad = useCallback((map) => {
     setMap(map);
     setHasMapBeenInitialized(true);
@@ -66,9 +75,11 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
       map.setZoom(singleProjectZoom);
     } else {
       // Plusieurs projets : fitBounds
-      const bounds = new window.google.maps.LatLngBounds();
-      validApartments.forEach(apt => bounds.extend({ lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) }));
-      map.fitBounds(bounds);
+      if (window.google && window.google.maps && window.google.maps.LatLngBounds) {
+        const bounds = new window.google.maps.LatLngBounds();
+        validApartments.forEach(apt => bounds.extend({ lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) }));
+        map.fitBounds(bounds);
+      }
     }
   }, [validApartments]);
 
@@ -154,7 +165,7 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
       classicMarker: window.google?.maps?.Marker,
       apartmentsContent: apartments,
     });
-    if (!map || !window.google || !window.google.maps) return;
+    if (!map || !window.google?.maps) return;
     // Nettoyage des anciens markers
     markersRef.current.forEach(marker => marker.setMap(null));
     markersRef.current = [];
@@ -165,25 +176,31 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
       parseFloat(apt.lat) !== 0 && parseFloat(apt.lng) !== 0
     );
     valid.forEach((apt) => {
-      let marker;
-      if (window.google.maps.marker && window.google.maps.marker.AdvancedMarkerElement) {
-        marker = new window.google.maps.marker.AdvancedMarkerElement({
-          map,
-          position: { lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) },
-          title: apt.title || '',
-        });
-      } else {
-        // Fallback marker classique
-        marker = new window.google.maps.Marker({
-          map,
-          position: { lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) },
-          title: apt.title || '',
-        });
+      try {
+        let marker;
+        if (window.google && window.google.maps && window.google.maps.marker && window.google.maps.marker.AdvancedMarkerElement) {
+          marker = new window.google.maps.marker.AdvancedMarkerElement({
+            map,
+            position: { lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) },
+            title: apt.title || '',
+          });
+        } else if (window.google && window.google.maps && window.google.maps.Marker) {
+          // Fallback marker classique
+          marker = new window.google.maps.Marker({
+            map,
+            position: { lat: parseFloat(apt.lat), lng: parseFloat(apt.lng) },
+            title: apt.title || '',
+          });
+        }
+        if (marker) {
+          if (onMarkerClick) {
+            marker.addListener('click', () => onMarkerClick(apt));
+          }
+          markersRef.current.push(marker);
+        }
+      } catch (error) {
+        console.warn('Error creating marker:', error);
       }
-      if (onMarkerClick) {
-        marker.addListener('click', () => onMarkerClick(apt));
-      }
-      markersRef.current.push(marker);
     });
     return () => {
       markersRef.current.forEach(marker => marker.setMap(null));
@@ -211,7 +228,7 @@ const GoogleMapComponent = ({ apartments, projectImages, currentImageIndexes, lo
     const handleResize = () => {
       setContainerStyle(getResponsiveContainerStyle());
       // Forcer le resize de la map Google si elle existe
-      if (window.google && window.google.maps && map) {
+      if (window.google?.maps && map) {
         window.google.maps.event.trigger(map, 'resize');
       }
     };

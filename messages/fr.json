@@ -74,7 +74,8 @@
         "EspacePromoteur": "Espace Promoteur",
         "Favoris": "Favoris",
         "MonAbonnement": "Mon Abonnement",
-        "Déconnexion": "Déconnexion"
+        "Déconnexion": "Déconnexion",
+        "Blog": "Blog"
     },
     "Projet": {
         "Modifier": "Modifier les informations du projet",
@@ -411,6 +412,14 @@
         "cancelNotice": "L'annulation prendra effet à la fin de votre période de facturation. Vous ne serez plus facturé.",
         "canceling": "Annulation en cours...",
         "cancelSubscription": "Annuler l'abonnement"
+    },
+    "Blog": {
+        "title": "Guide pratique",
+        "subtitle": "Retours d'expérience français en Pologne : démarches, astuces et conseils pratiques pour s'installer et vivre sereinement.",
+        "readMore": "Lire la suite",
+        "noArticles": "Aucun article disponible pour le moment.",
+        "backToBlog": "Retour au blog",
+        "otherArticles": "Autres articles"
     },
     "NomCompagniePlaceholder": "Entrez le nom de la compagnie"
 }
