@@ -1,8 +1,9 @@
 "use client";
-import { useTranslations } from "next-intl";
+
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { FaCalendarAlt, FaUser } from "react-icons/fa";
+import "./article-styles.css";
 
 // Articles data
 const articles = [
@@ -45,7 +46,6 @@ const articles = [
 ];
 
 export default function BlogPage() {
-  const t = useTranslations("Blog");
   const pathname = usePathname();
   const currentLocale = pathname.split('/')[1];
 
@@ -55,10 +55,10 @@ export default function BlogPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            {t("title")}
+            Guide pratique
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            {t("subtitle")}
+            Retours d'expérience français en Pologne : démarches, astuces et conseils pratiques pour s'installer et vivre sereinement.
           </p>
         </div>
 
@@ -104,11 +104,11 @@ export default function BlogPage() {
                       {article.excerpt}
                     </p>
 
-                    <Link
-                      href={`/${currentLocale}/blog/${article.id}`}
-                      className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
-                    >
-                      {t("readMore")}
+                                                    <Link
+                                  href={`/${currentLocale}/blog/${article.id}`}
+                                  className="blog-button"
+                                >
+                      Lire la suite
                       <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
@@ -119,7 +119,7 @@ export default function BlogPage() {
             ))
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">{t("noArticles")}</p>
+              <p className="text-gray-500 text-lg">Aucun article disponible pour le moment.</p>
             </div>
           )}
         </div>

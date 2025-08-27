@@ -1,15 +1,12 @@
-import { getTranslations } from 'next-intl/server';
-
 export async function generateMetadata({ params: { locale } }) {
-  const t = await getTranslations({ locale, namespace: 'Blog' });
 
   return {
-    title: t('title') + ' - Retours d\'expérience français',
-    description: t('subtitle'),
+    title: 'Guide pratique - Retours d\'expérience français en Pologne',
+    description: 'Retours d\'expérience français en Pologne : démarches, astuces et conseils pratiques pour s\'installer et vivre sereinement.',
     keywords: ['expatriation Pologne', 'vivre en Pologne', 'guide français Pologne', 'démarches Pologne', 'PESEL', 'NFZ', 'ZUS', 'Meldunek', 'logement Pologne', 'banque Pologne', 'micro-entreprise Pologne', 'immatriculation voiture Pologne'],
     openGraph: {
-      title: t('title') + ' - Retours d\'expérience français',
-      description: t('subtitle'),
+      title: 'Guide pratique - Retours d\'expérience français en Pologne',
+      description: 'Retours d\'expérience français en Pologne : démarches, astuces et conseils pratiques pour s\'installer et vivre sereinement.',
       url: `/${locale}/blog`,
       siteName: 'Hoomge Blog',
       images: [
@@ -25,8 +22,8 @@ export async function generateMetadata({ params: { locale } }) {
     },
     twitter: {
       card: 'summary_large_image',
-      title: t('title') + ' - Retours d\'expérience français',
-      description: t('subtitle'),
+      title: 'Guide pratique - Retours d\'expérience français en Pologne',
+      description: 'Retours d\'expérience français en Pologne : démarches, astuces et conseils pratiques pour s\'installer et vivre sereinement.',
       images: ['/Administration.png'],
     },
     alternates: {

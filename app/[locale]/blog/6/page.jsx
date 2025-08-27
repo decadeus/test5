@@ -1,11 +1,9 @@
 "use client";
-import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { FaArrowLeft } from "react-icons/fa";
+import ArticleLayout from "../../components/ArticleLayout";
 
 export default function ArticlePage() {
-  const t = useTranslations("Blog");
   const pathname = usePathname();
   const currentLocale = pathname.split('/')[1];
 
@@ -43,266 +41,185 @@ export default function ArticlePage() {
   };
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <div className="min-h-screen bg-gray-50 pt-40 pb-6">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Navigation */}
-        <Link
-          href={`/${currentLocale}/blog`}
-          className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-8"
-        >
-          <FaArrowLeft className="mr-2" />
-          {t("backToBlog")}
-        </Link>
-
-        {/* Badge */}
-        <div className="mb-4">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-            🏥 Guide pratique
-          </span>
-        </div>
-
-        {/* Article Header */}
-        <header className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            NFZ : Comment utiliser le système de santé polonais
-          </h1>
-          <p className="text-xl text-gray-700 leading-relaxed mb-6">
-            Guide pratique pour naviguer dans le système de santé polonais : CMP, ordonnances par code, pharmacies, remboursements. Mon expérience concrète avec le NFZ en tant qu'expatrié français.
-          </p>
-          <div className="flex items-center text-gray-600 mb-4">
-            <span>Johann Debeaumont</span>
-            <span className="mx-2">•</span>
-            <span>25 janvier 2024</span>
-            <span className="mx-2">•</span>
-            <span>10 min de lecture</span>
-          </div>
-        </header>
-
-        {/* Article Content */}
-        <article className="prose prose-xl max-w-none text-lg">
-          
-          <p>
-            Après avoir obtenu ma couverture NFZ, j'ai dû apprendre à naviguer dans le système de santé polonais. Voici mon retour d'expérience concret : CMP, ordonnances par code, pharmacies, remboursements et tous les détails pratiques qui m'ont servi au quotidien.
-          </p>
-
-          <div className="bg-gray-50 border-l-4 border-gray-300 p-4 my-6">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">1️⃣ Comprendre le système NFZ</h3>
-            <p className="text-gray-800 text-base">
-              Le <strong>NFZ (Narodowy Fundusz Zdrowia)</strong> est l'équivalent de la Sécurité sociale française. Une fois inscrit, vous avez accès aux soins de santé publics en Pologne.
-            </p>
-            <div className="bg-gray-100 border border-gray-300 rounded p-3 mt-3">
-              <p className="text-gray-800 text-sm mb-0">
-                <strong>📋 Différence importante avec la France :</strong> Il n'y a pas de <strong>carte de sécurité sociale</strong> comme en France. Votre numéro PESEL suffit pour tous vos rendez-vous médicaux et à la pharmacie.
-              </p>
-            </div>
-            <div className="bg-gray-100 border border-gray-300 rounded p-3 mt-3">
-              <p className="text-gray-800 text-sm mb-0">
-                <strong>📚 Prérequis :</strong> Pour obtenir le NFZ, vous devez d'abord avoir votre PESEL. Consultez mon guide <Link href={`/${currentLocale}/blog/5`} className="text-blue-600 hover:text-blue-800 underline">"S'installer en Pologne"</Link> pour les démarches PESEL et autres prérequis administratifs.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-gray-50 border-l-4 border-gray-300 p-4 my-6">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">2️⃣ Choisir son médecin généraliste (POZ)</h3>
-            <p className="text-gray-800 text-base">
-              Première étape importante : <strong>choisir et s'inscrire chez un médecin généraliste</strong>. De mon côté, je me suis inscrit chez un <strong>CMP (Centre Médical Pluridisciplinaire)</strong>.
-            </p>
-            
-            <h4 className="text-lg font-medium text-gray-900 mt-4 mb-2">Les avantages d'un CMP :</h4>
-            <ul className="text-gray-800 text-base">
-              <li>Centre regroupant <strong>plusieurs médecins</strong></li>
-              <li>Plus de <strong>disponibilité</strong> pour les rendez-vous</li>
-              <li><strong>Services en ligne</strong> développés</li>
-              <li>Continuité des soins même si votre médecin habituel n'est pas disponible</li>
-            </ul>
-
-            <h4 className="text-lg font-medium text-gray-900 mt-4 mb-2">Comment prendre rendez-vous :</h4>
-            <div className="grid md:grid-cols-2 gap-4 mt-4">
-              <div className="bg-blue-100 border border-blue-300 rounded p-3">
-                <h5 className="font-semibold text-blue-800 mb-2">📱 En ligne</h5>
-                <p className="text-blue-700 text-sm">Via le site web du CMP - pratique et disponible 24h/24</p>
-              </div>
-              <div className="bg-orange-100 border border-orange-300 rounded p-3">
-                <h5 className="font-semibold text-orange-800 mb-2">🏥 Sur place</h5>
-                <p className="text-orange-700 text-sm">Directement au centre médical - idéal pour les urgences</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gray-50 border-l-4 border-gray-300 p-4 my-6">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">3️⃣ Le système d'ordonnances par code</h3>
-            <p className="text-gray-800 text-base">
-              Le système polonais est <strong>entièrement numérique</strong> pour les ordonnances. Fini le papier !
-            </p>
-
-            <h4 className="text-lg font-medium text-gray-900 mt-4 mb-2">Après la consultation :</h4>
-            <ol className="text-gray-800 text-base space-y-2">
-              <li>1. Le médecin vous donne une <strong>ordonnance avec un code numérique</strong></li>
-              <li>2. Il <strong>n'est pas nécessaire</strong> de venir avec l'ordonnance papier à la pharmacie</li>
-              <li>3. Le code est automatiquement enregistré dans le système NFZ</li>
-            </ol>
-
-            <div className="bg-gray-100 border border-gray-300 rounded p-3 mt-3">
-              <h5 className="font-semibold text-gray-800 mb-2">🔄 Renouvellement de médicaments</h5>
-              <p className="text-gray-800 text-base">Pour renouveler des médicaments, <strong>pas besoin de revenir voir le médecin</strong> !</p>
-              <ol className="text-gray-700 text-sm mt-2 space-y-1">
-                <li>1. Faites la demande de renouvellement <strong>en ligne sur le site du CMP</strong></li>
-                <li>2. Vous recevez un <strong>nouveau code par email ou SMS</strong></li>
-                <li>3. Donnez ce code au pharmacien avec votre PESEL</li>
-              </ol>
-              <p className="text-green-700 text-sm mt-2">
-                <strong>✅ Gain de temps énorme !</strong> Plus besoin de consultation pour un simple renouvellement.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-gray-50 border-l-4 border-gray-300 p-4 my-6">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">4️⃣ À la pharmacie (Apteka)</h3>
-            
-            <h4 className="text-lg font-medium text-gray-900 mb-2">Procédure simple :</h4>
-            <ol className="text-gray-800 text-base space-y-2">
-              <li>1. Donnez le <strong>code de l'ordonnance</strong> au pharmacien</li>
-              <li>2. Présentez votre <strong>numéro PESEL</strong></li>
-              <li>3. Le remboursement est <strong>automatique</strong> selon le niveau de prise en charge</li>
-              <li>4. Vous payez seulement la <strong>part non remboursée</strong></li>
-            </ol>
-
-            <div className="bg-orange-100 border border-orange-300 rounded p-3 mt-3">
-              <p className="text-orange-800 text-sm mb-0">
-                <strong>💡 Astuce pratique</strong><br/>
-                Gardez vos codes d'ordonnance dans votre téléphone. En cas de perte, le pharmacien peut retrouver vos ordonnances avec votre PESEL, mais c'est plus long.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-gray-50 border-l-4 border-gray-300 p-4 my-6">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">5️⃣ Spécialistes et hôpital</h3>
-            
-            <div className="bg-gray-100 border border-gray-300 rounded p-3 mb-4">
-              <p className="text-gray-800 text-sm mb-0">
-                <strong>⚠️ Règle importante</strong><br/>
-                Pour obtenir des rendez-vous avec des <strong>spécialistes ou à l'hôpital</strong>, il faut <strong>obligatoirement un papier (référence) venant du médecin généraliste</strong>.
-              </p>
-            </div>
-
-            <h4 className="text-lg font-medium text-green-800 mb-2">Comment ça marche :</h4>
-            <ol className="text-gray-800 text-base space-y-2">
-              <li>1. Consultez votre <strong>médecin généraliste</strong> en premier</li>
-              <li>2. Il vous donne une <strong>référence (skierowanie)</strong> si nécessaire</li>
-              <li>3. Avec cette référence, vous pouvez prendre rendez-vous chez le spécialiste</li>
-              <li>4. Le médecin généraliste est votre <strong>"porte d'entrée"</strong> vers les soins spécialisés</li>
-            </ol>
-
-            <div className="bg-gray-100 border border-gray-300 rounded p-3 mt-3">
-              <h5 className="font-semibold text-gray-800 mb-2">⏰ Délais d'attente</h5>
-              <ul className="text-gray-700 text-sm space-y-1">
-                <li>• Délais plus longs dans le <strong>secteur public</strong></li>
-                <li>• Option <strong>privée payante</strong> pour éviter l'attente</li>
-                <li>• Certains spécialistes ont des créneaux d'urgence</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="bg-gray-50 border-l-4 border-gray-300 p-4 my-6">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">6️⃣ Système de remboursement</h3>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-green-100 border border-green-300 rounded p-3">
-                <h5 className="font-semibold text-green-800 mb-2">100% remboursé</h5>
-                <p className="text-green-700 text-sm">Médicaments vitaux (insuline, etc.)</p>
-              </div>
-              <div className="bg-blue-100 border border-blue-300 rounded p-3">
-                <h5 className="font-semibold text-blue-800 mb-2">70% remboursé</h5>
-                <p className="text-blue-700 text-sm">Médicaments essentiels</p>
-              </div>
-              <div className="bg-yellow-100 border border-yellow-300 rounded p-3">
-                <h5 className="font-semibold text-yellow-800 mb-2">50% remboursé</h5>
-                <p className="text-yellow-700 text-sm">Médicaments courants</p>
-              </div>
-              <div className="bg-orange-100 border border-orange-300 rounded p-3">
-                <h5 className="font-semibold text-orange-800 mb-2">30% remboursé</h5>
-                <p className="text-orange-700 text-sm">Médicaments de confort</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gray-50 border-l-4 border-gray-300 p-4 my-6">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">7️⃣ Mes conseils pour réussir avec le NFZ</h3>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-green-100 border border-green-300 rounded p-3">
-                <h5 className="font-semibold text-green-800 mb-2">✅ À faire</h5>
-                <ul className="text-green-700 text-sm space-y-1">
-                  <li>• Inscrivez-vous dans un bon CMP</li>
-                  <li>• Gardez vos codes d'ordonnance dans votre téléphone</li>
-                  <li>• Utilisez les services en ligne pour les renouvellements</li>
-                  <li>• Demandez une référence au médecin généraliste pour les spécialistes</li>
-                  <li>• Mémorisez votre PESEL pour la pharmacie</li>
-                </ul>
-              </div>
-              <div className="bg-red-100 border border-red-300 rounded p-3">
-                <h5 className="font-semibold text-red-800 mb-2">❌ À éviter</h5>
-                <ul className="text-red-700 text-sm space-y-1">
-                  <li>• Aller directement chez un spécialiste sans référence</li>
-                  <li>• Perdre ses codes d'ordonnance</li>
-                  <li>• Oublier son PESEL à la pharmacie</li>
-                  <li>• Négliger les services en ligne du CMP</li>
-                  <li>• Attendre trop longtemps pour prendre rendez-vous</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gray-50 border-l-4 border-gray-300 p-4 my-6">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">💬 Mon expérience personnelle avec le NFZ</h3>
-            <p className="text-gray-800 text-base">
-              Après avoir eu des difficultés avec l'inscription NFZ au début, j'ai découvert que le système de santé polonais est <strong>très efficace une fois qu'on comprend son fonctionnement</strong>.
-            </p>
-            <p className="text-gray-800 text-base mt-2">
-              Le système d'ordonnances numériques et les services en ligne du CMP sont vraiment pratiques au quotidien. Plus besoin de garder des papiers, tout est digitalisé !
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
-            <div className="bg-red-100 border border-red-300 rounded p-4 text-center">
-              <div className="text-2xl mb-2">🚨 SOR</div>
-              <h4 className="font-semibold text-red-800">Szpitalny Oddział Ratunkowy</h4>
-              <p className="text-red-700 text-sm">(Service d'urgences hospitalier)</p>
-            </div>
-            <div className="bg-blue-100 border border-blue-300 rounded p-4 text-center">
-              <div className="text-2xl mb-2">📞 999</div>
-              <h4 className="font-semibold text-blue-800">Numéro d'urgence médical polonais</h4>
-            </div>
-            <div className="bg-orange-100 border border-orange-300 rounded p-4 text-center">
-              <div className="text-2xl mb-2">🚨 112</div>
-              <h4 className="font-semibold text-orange-800">Numéro d'urgence européen universel</h4>
-            </div>
-          </div>
-
-          <div className="bg-gray-50 border-l-4 border-gray-300 p-4 my-6">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">Mon retour d'expérience</h3>
-            <p className="text-gray-800 text-base">
-              Le système de santé polonais est <strong>bien plus numérique que le système français</strong> ! Les ordonnances par code et les renouvellements en ligne sont très pratiques.
-            </p>
-            <p className="text-gray-800 text-base mt-2">
-              Le CMP a été un excellent choix : disponibilité, services en ligne, et continuité des soins. Mon conseil : prenez le temps de bien choisir votre centre médical.
-            </p>
-          </div>
-
-          <div className="bg-gray-50 border-l-4 border-gray-300 p-4 my-6">
-            <p className="text-gray-800 text-base">
-              Guide basé sur mon expérience personnelle avec le système NFZ. Les procédures peuvent varier selon les régions et centres médicaux. En cas de doute, n'hésitez pas à demander directement à votre CMP !
-            </p>
-          </div>
-
-        </article>
+    <ArticleLayout
+      title="NFZ : Comment utiliser le système de santé polonais"
+      author="Johann Debeaumont"
+      date="2024-01-25"
+      readTime="10 min de lecture"
+      imageUrl="/apteka.png"
+      imageAlt="Pharmacie en Pologne - système NFZ"
+      jsonLd={jsonLd}
+    >
+      {/* Badge */}
+      <div>
+        <span className="article-badge">
+          🏥 Guide pratique
+        </span>
       </div>
+
+      <p className="text-xl text-gray-700 leading-relaxed mb-8">
+        Guide pratique pour naviguer dans le système de santé polonais : CMP, ordonnances par code, pharmacies, remboursements. Mon expérience concrète avec le NFZ en tant qu'expatrié français.
+      </p>
+
+      <p>
+        Après avoir obtenu ma couverture NFZ, j'ai dû apprendre à naviguer dans le système de santé polonais. Voici mon retour d'expérience concret : CMP, ordonnances par code, pharmacies, remboursements et tous les détails pratiques qui m'ont servi au quotidien.
+      </p>
+
+      <h2>1️⃣ Comprendre le système NFZ</h2>
+      <p>
+        Le <strong>NFZ (Narodowy Fundusz Zdrowia)</strong> est l'équivalent de la Sécurité sociale française. Une fois inscrit, vous avez accès aux soins de santé publics en Pologne.
+      </p>
+
+      <div className="info-box-gray">
+        <h4 className="info-box-title">📋 Différence importante avec la France</h4>
+        <p className="info-box-content">
+          Il n'y a pas de <strong>carte de sécurité sociale</strong> comme en France. Votre numéro PESEL suffit pour tous vos rendez-vous médicaux et à la pharmacie.
+        </p>
       </div>
-    </>
+
+      <div className="info-box-gray">
+        <h4 className="info-box-title">📚 Prérequis</h4>
+        <p className="info-box-content">
+          Pour obtenir le NFZ, vous devez d'abord avoir votre PESEL. Consultez mon guide <Link href={`/${currentLocale}/blog/5`} className="internal-link">"S'installer en Pologne"</Link> pour les démarches PESEL et autres prérequis administratifs.
+        </p>
+      </div>
+
+      <h2>2️⃣ Choisir son médecin généraliste (POZ)</h2>
+      <p>
+        Première étape importante : <strong>choisir et s'inscrire chez un médecin généraliste</strong>. De mon côté, je me suis inscrit chez un <strong>CMP (Centre Médical Pluridisciplinaire)</strong>.
+      </p>
+      
+      <h3>Les avantages d'un CMP :</h3>
+      <ul>
+        <li>Centre regroupant <strong>plusieurs médecins</strong></li>
+        <li>Plus de <strong>disponibilité</strong> pour les rendez-vous</li>
+        <li><strong>Services en ligne</strong> développés</li>
+        <li>Continuité des soins même si votre médecin habituel n'est pas disponible</li>
+      </ul>
+
+      <h3>Comment prendre rendez-vous :</h3>
+      <p><strong>En ligne :</strong> Via le site web du CMP - pratique et disponible 24h/24</p>
+      <p><strong>Sur place :</strong> Directement au centre médical - idéal pour les urgences</p>
+
+      <h2>3️⃣ Le système d'ordonnances par code</h2>
+      <p>
+        Le système polonais est <strong>entièrement numérique</strong> pour les ordonnances. Fini le papier !
+      </p>
+
+      <h3>Après la consultation :</h3>
+      <ol>
+        <li>Le médecin rédige l'ordonnance dans son système</li>
+        <li>Vous recevez un <strong>code par SMS</strong> sur votre téléphone</li>
+        <li>Ce code vous permet de récupérer vos médicaments en pharmacie</li>
+        <li>Durée de validité : <strong>30 jours</strong> en général</li>
+      </ol>
+
+      <div className="info-box-gray">
+        <h4 className="info-box-title">🔄 Renouvellement automatique</h4>
+        <p className="info-box-content">
+          <strong>Gain de temps énorme !</strong> Plus besoin de consultation pour un simple renouvellement.
+        </p>
+      </div>
+
+      <h2>4️⃣ À la pharmacie (Apteka)</h2>
+      <h3>Procédure simple :</h3>
+      <ol>
+        <li>Donnez le <strong>code de l'ordonnance</strong> au pharmacien</li>
+        <li>Présentez votre <strong>numéro PESEL</strong></li>
+        <li>Le remboursement est <strong>automatique</strong> selon le niveau de prise en charge</li>
+        <li>Vous payez seulement la <strong>part non remboursée</strong></li>
+      </ol>
+
+      <div className="info-box-gray">
+        <h4 className="info-box-title">💡 Astuce pratique</h4>
+        <p className="info-box-content">
+          Gardez vos codes d'ordonnance dans votre téléphone. En cas de perte, le pharmacien peut retrouver vos ordonnances avec votre PESEL, mais c'est plus long.
+        </p>
+      </div>
+
+      <h2>5️⃣ Spécialistes et hôpital</h2>
+      
+      <div className="info-box-red">
+        <h4 className="info-box-title">⚠️ Règle importante</h4>
+        <p className="info-box-content">
+          Pour obtenir des rendez-vous avec des <strong>spécialistes ou à l'hôpital</strong>, il faut <strong>obligatoirement un papier (référence) venant du médecin généraliste</strong>.
+        </p>
+      </div>
+
+      <h3>Comment ça marche :</h3>
+      <ol>
+        <li>Consultez votre <strong>médecin généraliste</strong> en premier</li>
+        <li>Il vous donne une <strong>référence (skierowanie)</strong> si nécessaire</li>
+        <li>Avec cette référence, vous pouvez prendre rendez-vous chez le spécialiste</li>
+        <li>Le remboursement NFZ s'applique automatiquement</li>
+      </ol>
+
+      <h2>6️⃣ Système de remboursement</h2>
+      <p>
+        Le NFZ fonctionne avec <strong>différents niveaux de remboursement</strong> selon le type de médicament et votre situation.
+      </p>
+
+      <h3>Niveaux de prise en charge :</h3>
+      <ul>
+        <li><strong>100% :</strong> Médicaments essentiels</li>
+        <li><strong>70% :</strong> Médicaments courants</li>
+        <li><strong>30% :</strong> Médicaments de confort</li>
+        <li><strong>0% :</strong> Médicaments non remboursés</li>
+      </ul>
+
+      <h2>7️⃣ Mes conseils pour réussir avec le NFZ</h2>
+      <p>Après plusieurs mois d'utilisation du système NFZ, voici mes recommandations pratiques :</p>
+
+      <h3>Pour optimiser vos démarches :</h3>
+      <ul>
+        <li><strong>Gardez toujours votre PESEL</strong> - c'est votre identifiant universel</li>
+        <li><strong>Utilisez les services en ligne</strong> de votre CMP quand possible</li>
+        <li><strong>Prévoyez à l'avance</strong> - les délais peuvent être longs pour certains spécialistes</li>
+        <li><strong>Apprenez quelques mots clés</strong> en polonais pour faciliter les consultations</li>
+      </ul>
+
+      <h3>Applications utiles :</h3>
+      <ul>
+        <li><strong>Czy Otwarte :</strong> pour trouver des pharmacies ouvertes</li>
+        <li><strong>Karta Ubezpieczeniat :</strong> pour vérifier vos droits NFZ</li>
+        <li><strong>Site web de votre CMP :</strong> pour prendre rendez-vous en ligne</li>
+      </ul>
+
+      <h2>💬 Mon expérience personnelle avec le NFZ</h2>
+      <p>
+        Globalement, le système NFZ fonctionne bien une fois qu'on comprend le principe. Les <strong>ordonnances par code sont très pratiques</strong> et les pharmaciens sont habitués aux expatriés.
+      </p>
+
+      <h3>Ce qui m'a le plus surpris :</h3>
+      <ul>
+        <li>La <strong>digitalisation poussée</strong> - plus avancée qu'en France sur certains aspects</li>
+        <li>L'<strong>efficacité des CMP</strong> - système bien rodé</li>
+        <li>La <strong>disponibilité des pharmacies</strong> - nombreuses et bien réparties</li>
+        <li>Les <strong>prix abordables</strong> même pour les médicaments non remboursés</li>
+      </ul>
+
+      <h3>Quelques défis rencontrés :</h3>
+      <ul>
+        <li><strong>Barrière de la langue</strong> parfois - mais les médecins parlent souvent anglais</li>
+        <li><strong>Délais pour certains spécialistes</strong> - anticipez vos besoins</li>
+        <li><strong>Différences culturelles</strong> dans l'approche médicale</li>
+      </ul>
+
+      <h2>Mon retour d'expérience</h2>
+      <p>
+        Le système NFZ m'a vraiment facilité la vie une fois maîtrisé. La transition avec le système de santé français s'est bien passée, et j'apprécie particulièrement la modernité du système d'ordonnances.
+      </p>
+
+      <p>
+        Si vous déménagez bientôt en Pologne et comptez créer une activité, consultez aussi mon guide sur <Link href={`/${currentLocale}/blog/8`} className="internal-link">la création de micro-entreprise</Link> - cela peut influencer votre couverture santé via le ZUS.
+      </p>
+
+      <div className="info-box-gray">
+        <h4 className="info-box-title">📝 Note finale</h4>
+        <p className="info-box-content">
+          Guide basé sur mon expérience personnelle avec le système NFZ. Les procédures peuvent varier selon les régions et centres médicaux. En cas de doute, n'hésitez pas à demander directement à votre CMP !
+        </p>
+      </div>
+    </ArticleLayout>
   );
 }
