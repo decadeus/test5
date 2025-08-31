@@ -15,9 +15,9 @@ const SEG_FR = "Projet";
 const SEG_EN = "Project";
 
 const PATHS = {
-  [LANG]: { root: "", projects: "/projects", detail: (id: number) => `/${SEG_DE}/Detail/${id}` },
-  fr:     { root: "", projects: "/projects", detail: (id: number) => `/${SEG_FR}/Detail/${id}` },
-  en:     { root: "", projects: "/projects", detail: (id: number) => `/${SEG_EN}/Detail/${id}` },
+  [LANG]: { root: "", projects: "/Projet/List", detail: (id: number) => `/${SEG_DE}/Detail/${id}` },
+  fr:     { root: "", projects: "/Projet/List", detail: (id: number) => `/${SEG_FR}/Detail/${id}` },
+  en:     { root: "", projects: "/Projet/List", detail: (id: number) => `/${SEG_EN}/Detail/${id}` },
 } as const;
 
 function isoDate(s?: string | null) {
