@@ -103,7 +103,7 @@ export async function GET(request: Request) {
   const projectUrls = list.map(p => {
     const lastmod = isoDate(p.updated_at || p.created_at);
     const loc = `${HOST}/fr${PATHS.fr.detail(p.id)}`;
-    return `<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod>${altLinksForDetail(p.id)}</url>`;
+    return `<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>${altLinksForDetail(p.id)}</url>`;
   }).join("\n");
 
   const xml =

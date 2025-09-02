@@ -413,5 +413,17 @@
         "canceling": "Anulowanie...",
         "cancelSubscription": "Anuluj subskrypcję"
     },
+    "SimilarProjects": {
+        "title": "Podobne projekty, które mogą Cię zainteresować",
+        "apartments": "Mieszkania",
+        "apartment": "Mieszkanie",
+        "sameCity": "Również w",
+        "sameCountry": "Inne miasto w",
+        "similarSize": "Podobny rozmiar",
+        "recommended": "Polecany projekt",
+        "viewDetail": "Zobacz szczegóły",
+        "viewAllProjects": "Zobacz wszystkie projekty",
+        "by": "przez"
+    },
     "NomCompagniePlaceholder": "Wpisz nazwę firmy"
 }

@@ -421,5 +421,17 @@
         "backToBlog": "Retour au blog",
         "otherArticles": "Autres articles"
     },
+    "SimilarProjects": {
+        "title": "Projets similaires qui pourraient vous intéresser",
+        "apartments": "Appartements",
+        "apartment": "Appartement",
+        "sameCity": "Également à",
+        "sameCountry": "Autre ville en",
+        "similarSize": "Taille similaire",
+        "recommended": "Projet recommandé",
+        "viewDetail": "Voir le détail",
+        "viewAllProjects": "Voir tous les projets",
+        "by": "par"
+    },
     "NomCompagniePlaceholder": "Entrez le nom de la compagnie"
 }

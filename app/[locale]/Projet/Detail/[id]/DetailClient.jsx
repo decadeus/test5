@@ -16,6 +16,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useTranslations } from "next-intl";
+import SimilarProjects from "../../../components/SimilarProjects";
 
 const GoogleMapComponent = dynamic(() => import('@/components/GoogleMap'), { ssr: false, loading: () => <div>Chargement de la carte…</div> });
 
@@ -727,6 +728,14 @@ export default function DetailClient({ project, locale }) {
             </div>
           </div>
         )}
+        {/* Section projets similaires */}
+        <div className="max-w-6xl mx-auto px-4">
+          <SimilarProjects 
+            currentProject={project} 
+            locale={locale} 
+          />
+        </div>
+
         {/* Ajoute un padding-bottom sur mobile pour éviter que le bouton ne masque le contenu */}
         <style jsx>{`
           @media (max-width: 768px) {

@@ -24,10 +24,16 @@ export default function InternalLinking({ currentPage, locale }: InternalLinking
     { url: `/${locale}/blog/8`, title: "Créer une micro-entreprise", priority: "medium" },
   ];
 
+  // Projets similaires pour le maillage interne
+  const relatedProjects = [
+    { url: `/${locale}/Projet/Detail/193`, title: "Projet similaire - Découvrir", priority: "medium" },
+    { url: `/${locale}/Projet/Detail/192`, title: "Autre opportunité immobilière", priority: "medium" },
+  ];
+
   // Filtrer pour éviter le lien vers la page actuelle
-  const relevantLinks = [...importantPages, ...blogArticles]
+  const relevantLinks = [...importantPages, ...blogArticles, ...relatedProjects]
     .filter(link => link.url !== currentPage)
-    .slice(0, 6); // Limiter à 6 liens pour éviter le spam
+    .slice(0, 8); // Augmenter à 8 liens pour plus de maillage
 
   return (
     <div className="bg-gray-50 rounded-lg p-6 mt-8">

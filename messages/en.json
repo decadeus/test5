@@ -406,5 +406,17 @@
         "cancelNotice": "Cancellation will take effect at the end of your billing period. You will not be charged further.",
         "canceling": "Cancelling...",
         "cancelSubscription": "Cancel subscription"
+    },
+    "SimilarProjects": {
+        "title": "Similar projects that might interest you",
+        "apartments": "Apartments",
+        "apartment": "Apartment",
+        "sameCity": "Also in",
+        "sameCountry": "Other city in",
+        "similarSize": "Similar size",
+        "recommended": "Recommended project",
+        "viewDetail": "View details",
+        "viewAllProjects": "View all projects",
+        "by": "by"
     }
 }

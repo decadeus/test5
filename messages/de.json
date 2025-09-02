@@ -399,5 +399,17 @@
         "cancelNotice": "Die Kündigung wird am Ende Ihres Abrechnungszeitraums wirksam. Sie werden nicht weiter belastet.",
         "canceling": "Wird gekündigt...",
         "cancelSubscription": "Abonnement kündigen"
+    },
+    "SimilarProjects": {
+        "title": "Ähnliche Projekte, die Sie interessieren könnten",
+        "apartments": "Wohnungen",
+        "apartment": "Wohnung",
+        "sameCity": "Ebenfalls in",
+        "sameCountry": "Andere Stadt in",
+        "similarSize": "Ähnliche Größe",
+        "recommended": "Empfohlenes Projekt",
+        "viewDetail": "Details anzeigen",
+        "viewAllProjects": "Alle Projekte anzeigen",
+        "by": "von"
     }
 }

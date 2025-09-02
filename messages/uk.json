@@ -400,5 +400,17 @@
         "canceling": "Скасування...",
         "cancelSubscription": "Скасувати підписку"
     },
+    "SimilarProjects": {
+        "title": "Схожі проекти, які можуть вас зацікавити",
+        "apartments": "Квартири",
+        "apartment": "Квартира",
+        "sameCity": "Також у",
+        "sameCountry": "Інше місто в",
+        "similarSize": "Схожий розмір",
+        "recommended": "Рекомендований проект",
+        "viewDetail": "Переглянути деталі",
+        "viewAllProjects": "Переглянути всі проекти",
+        "by": "від"
+    },
     "NomCompagniePlaceholder": "Введіть назву компанії"
 } 
