@@ -21,9 +21,6 @@ interface Project {
   lng?: number;
   online?: boolean;
   user_id?: string;
-  profiles?: {
-    compagnie?: string;
-  };
 }
 
 interface SimilarProjectsProps {
@@ -47,7 +44,7 @@ export default function SimilarProjects({ currentProject, locale }: SimilarProje
       // Récupérer les projets depuis Supabase (même logique que List/page.jsx)
       const { data: projects, error } = await supabase
         .from('project')
-        .select('id, name, compagny, country, city, lat, lng, online, user_id, profiles:user_id(compagnie)')
+        .select('id, name, compagny, country, city, lat, lng, online, user_id')
         .eq('online', true)
         .neq('id', currentProject.id)
         .limit(20);
@@ -308,7 +305,7 @@ export default function SimilarProjects({ currentProject, locale }: SimilarProje
               
               <div className="text-gray-500 text-sm mb-4">
                 {t('by')} <span className="italic">
-                  {project.profiles?.compagnie || project.compagny || 'Promoteur'}
+                  {project.compagny || 'Promoteur'}
                 </span>
               </div>
               
