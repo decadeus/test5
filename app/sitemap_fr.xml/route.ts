@@ -82,10 +82,22 @@ export async function GET(request: Request) {
     )
   ].join("\n");
 
+  // Pages statiques principales
   const staticUrls = [
-    `<url><loc>${HOST}/fr${PATHS.fr.root}</loc><lastmod>${today}</lastmod>${altLinksForStatic("root")}</url>`,
-    `<url><loc>${HOST}/fr${PATHS.fr.projects}</loc><lastmod>${today}</lastmod>${altLinksForStatic("projects")}</url>`,
-    `<url><loc>${HOST}/fr${PATHS.fr.subscription}</loc><lastmod>${today}</lastmod>${altLinksForStatic("subscription")}</url>`,
+    `<url><loc>${HOST}/fr${PATHS.fr.root}</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>1.0</priority>${altLinksForStatic("root")}</url>`,
+    `<url><loc>${HOST}/fr${PATHS.fr.projects}</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>0.9</priority>${altLinksForStatic("projects")}</url>`,
+    `<url><loc>${HOST}/fr${PATHS.fr.subscription}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority>${altLinksForStatic("subscription")}</url>`,
+  ].join("\n");
+
+  // Pages additionnelles pour améliorer l'indexation
+  const additionalUrls = [
+    `<url><loc>${HOST}/fr/prix-m2</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
+    `<url><loc>${HOST}/fr/prix-m2/france</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`,
+    `<url><loc>${HOST}/fr/prix-m2/monaco</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`,
+    `<url><loc>${HOST}/fr/prix-m2/pologne</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`,
+    `<url><loc>${HOST}/fr/prix-m2/ukraine</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`,
+    `<url><loc>${HOST}/fr/prix-m2/allemagne</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`,
+    `<url><loc>${HOST}/fr/prix-m2/royaume-uni</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`,
   ].join("\n");
 
   const projectUrls = list.map(p => {
@@ -98,6 +110,7 @@ export async function GET(request: Request) {
 `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${staticUrls}
+${additionalUrls}
 ${blogUrls}
 ${projectUrls}
 </urlset>`;
