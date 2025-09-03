@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
-// Force redeploy - fix article content
 
-// Articles data - même structure que dans blog/page.jsx
-const articles = [
+// Configuration des articles - SEULE SOURCE DE VÉRITÉ
+const articlesConfig = [
   {
     id: 5,
     slug: "installer-pologne-parcours-francais-celibataire",
@@ -17,16 +16,15 @@ const articles = [
     draft: false,
     category: "Administration",
     tags: ["installation", "démarches", "expatriation", "pologne"],
-    language: "fr",
-    content: "Contenu complet de l'article sur l'installation en Pologne avec toutes les démarches détaillées : PESEL, compte bancaire, NFZ, ZUS, Meldunek..."
+    language: "fr"
   },
   {
     id: 6,
     slug: "nfz-systeme-sante-polonais-guide",
     title: "NFZ : Comment utiliser le système de santé polonais",
-    excerpt: "Guide pratique pour naviguer dans le système de santé polonais : médecins, pharmacies, remboursements. Mon expérience concrète avec le NFZ en tant qu'expatrié français.",
-    author: "Johann Debeaumont", 
-    date: "2025-07-25",
+    excerpt: "Guide pratique pour naviguer dans le système de santé polonais : CMP, ordonnances par code, pharmacies, remboursements. Mon expérience concrète avec le NFZ en tant qu'expatrié français.",
+    author: "Johann Debeaumont",
+    date: "2024-07-25",
     readTime: "10 min",
     imageUrl: "/apteka.png",
     draft: false,
@@ -40,26 +38,12 @@ const articles = [
     title: "Immatriculer sa voiture française en Pologne : le parcours du combattant",
     excerpt: "Guide complet et retour d'expérience sur l'immatriculation d'une voiture française en Pologne. Spoiler : c'est la démarche la plus longue et difficile de toutes ! Préparez-vous psychologiquement.",
     author: "Johann Debeaumont",
-    date: "2025-07-30", 
+    date: "2024-03-15",
     readTime: "12 min",
-    imageUrl: "/immatriculation.png",
+    imageUrl: "/Immatriculation.png",
     draft: false,
     category: "Transport",
-    tags: ["voiture", "immatriculation", "démarches", "transport"],
-    language: "fr"
-  },
-  {
-    id: 8,
-    slug: "creer-micro-entreprise-pologne-guide",
-    title: "Créer sa micro-entreprise en Pologne : simple et rapide !",
-    excerpt: "Bonne nouvelle après tous les galères administratives : créer une micro-entreprise en Pologne, c'est étonnamment simple ! Voici comment j'ai fait avec l'aide de ChatGPT.",
-    author: "Johann Debeaumont",
-    date: "2025-08-05",
-    readTime: "8 min", 
-    imageUrl: "/CEIDG.png",
-    draft: false,
-    category: "Entreprise",
-    tags: ["entreprise", "micro-entreprise", "business", "ceidg"],
+    tags: ["voiture", "immatriculation", "transport", "démarches"],
     language: "fr"
   },
   {
@@ -74,8 +58,7 @@ const articles = [
     draft: false,
     category: "Entrepreneuriat",
     tags: ["micro-entreprise", "CEIDG", "NIP", "REGON", "ZUS", "entrepreneur", "freelance"],
-    language: "fr",
-    content: "Contenu complet de l'article sur la création de micro-entreprise en Pologne avec toutes les démarches détaillées..."
+    language: "fr"
   },
   {
     id: 9,
@@ -86,9 +69,9 @@ const articles = [
     date: "2025-09-04",
     readTime: "12 min",
     imageUrl: "/Seloger.png",
-    draft: true,
+    draft: false,
     category: "Logement",
-    tags: ["logement", "transport", "meldunek", "budget", "2025"],
+    tags: ["logement", "transport", "budget", "pologne", "2025"],
     language: "fr"
   },
   {
@@ -100,9 +83,9 @@ const articles = [
     date: "2025-09-15",
     readTime: "10 min",
     imageUrl: "/Pecher-en-Pologne.png",
-    draft: true,
+    draft: false,
     category: "Loisirs",
-    tags: ["pêche", "permis", "loisirs", "sport", "nature"],
+    tags: ["pêche", "permis", "loisirs", "nature", "pologne"],
     language: "fr"
   }
 ];
@@ -110,111 +93,50 @@ const articles = [
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    
-    // Paramètres de requête
-    const includeContent = searchParams.get('includeContent') === 'true';
-    const includeDrafts = searchParams.get('includeDrafts') === 'true';
+    const limit = searchParams.get('limit');
     const category = searchParams.get('category');
-    const tag = searchParams.get('tag');
-    const limit = parseInt(searchParams.get('limit') || '10');
-    const offset = parseInt(searchParams.get('offset') || '0');
-    const search = searchParams.get('search');
-    
-    // Filtrer les articles
-    let filteredArticles = articles.filter(article => {
-      // Exclure les brouillons sauf si demandé
-      if (!includeDrafts && article.draft) {
-        return false;
-      }
-      
-      // Filtrer par catégorie
-      if (category && article.category !== category) {
-        return false;
-      }
-      
-      // Filtrer par tag
-      if (tag && !article.tags.includes(tag)) {
-        return false;
-      }
-      
-      // Recherche textuelle
-      if (search) {
-        const searchLower = search.toLowerCase();
-        return (
-          article.title.toLowerCase().includes(searchLower) ||
-          article.excerpt.toLowerCase().includes(searchLower) ||
-          article.tags.some(t => t.toLowerCase().includes(searchLower))
-        );
-      }
-      
-      return true;
-    });
-    
+    const draft = searchParams.get('draft');
+
+    let filteredArticles = [...articlesConfig];
+
+    // Filtrer par catégorie si spécifiée
+    if (category) {
+      filteredArticles = filteredArticles.filter(
+        article => article.category.toLowerCase() === category.toLowerCase()
+      );
+    }
+
+    // Filtrer par statut draft si spécifié
+    if (draft !== null) {
+      const isDraft = draft === 'true';
+      filteredArticles = filteredArticles.filter(
+        article => article.draft === isDraft
+      );
+    }
+
     // Trier par date (plus récent en premier)
     filteredArticles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-    
-    // Pagination
-    const total = filteredArticles.length;
-    const paginatedArticles = filteredArticles.slice(offset, offset + limit);
-    
-    // Préparer la réponse
-    const responseArticles = paginatedArticles.map(article => {
-      const baseArticle = {
-        id: article.id,
-        slug: article.slug,
-        title: article.title,
-        excerpt: article.excerpt,
-        author: article.author,
-        date: article.date,
-        readTime: article.readTime,
-        imageUrl: article.imageUrl,
-        category: article.category,
-        tags: article.tags,
-        language: article.language,
-        draft: article.draft
-      };
-      
-      // Ajouter le contenu complet si demandé
-      if (includeContent) {
-        // Ici vous pourriez charger le contenu depuis les fichiers
-        // Pour l'instant, on retourne juste l'excerpt étendu
-        return {
-          ...baseArticle,
-          content: `${article.excerpt}\n\n[Contenu complet à implémenter]`
-        };
+
+    // Limiter le nombre de résultats si spécifié
+    if (limit) {
+      const limitNum = parseInt(limit);
+      if (!isNaN(limitNum) && limitNum > 0) {
+        filteredArticles = filteredArticles.slice(0, limitNum);
       }
-      
-      return baseArticle;
-    });
-    
-    const response = {
+    }
+
+    return NextResponse.json({
       success: true,
       data: {
-        articles: responseArticles,
-        pagination: {
-          total,
-          limit,
-          offset,
-          hasMore: offset + limit < total
-        },
-        filters: {
-          category,
-          tag,
-          search,
-          includeDrafts
-        }
+        articles: filteredArticles,
+        total: filteredArticles.length
       }
-    };
-    
-    return NextResponse.json(response);
-    
+    });
+
   } catch (error) {
-    console.error('Erreur API articles:', error);
+    console.error('Error fetching articles:', error);
     return NextResponse.json(
-      { 
-        success: false, 
-        error: 'Erreur serveur lors de la récupération des articles' 
-      },
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     );
   }
