@@ -190,6 +190,11 @@ function convertJSXToMarkdown(jsxContent) {
   content = content.replace(/className="[^"]*"/g, '');
   content = content.replace(/\{[^}]*\}/g, '');
   
+  // Nettoyage final des éléments problématiques
+  content = content.replace(/###\s*/g, ''); // Supprimer ### orphelins
+  content = content.replace(/\*\*([^*]*)\*\*/g, '$1'); // **texte** -> texte
+  content = content.replace(/\*([^*]*)\*/g, '$1'); // *texte* -> texte
+  
   // Nettoyer les caractères spéciaux et espaces (plus conservateur)
   content = content.replace(/[ \t]+/g, ' '); // Espaces et tabs multiples -> un seul espace
   content = content.replace(/\n\s+/g, '\n'); // Supprimer espaces après saut de ligne
@@ -200,10 +205,10 @@ function convertJSXToMarkdown(jsxContent) {
 
 // Fonction pour traiter les éléments HTML de base
 function processBasicElements(content) {
-  // Convertir les titres
-  content = content.replace(/<h2[^>]*>([\s\S]*?)<\/h2>/g, (match, title) => '\n## ' + cleanText(title) + '\n');
-  content = content.replace(/<h3[^>]*>([\s\S]*?)<\/h3>/g, (match, title) => '\n### ' + cleanText(title) + '\n');
-  content = content.replace(/<h4[^>]*>([\s\S]*?)<\/h4>/g, (match, title) => '\n#### ' + cleanText(title) + '\n');
+  // Convertir les titres (sans markdown, juste le texte)
+  content = content.replace(/<h2[^>]*>([\s\S]*?)<\/h2>/g, (match, title) => '\n\n' + cleanText(title) + '\n');
+  content = content.replace(/<h3[^>]*>([\s\S]*?)<\/h3>/g, (match, title) => '\n\n' + cleanText(title) + '\n');
+  content = content.replace(/<h4[^>]*>([\s\S]*?)<\/h4>/g, (match, title) => '\n\n' + cleanText(title) + '\n');
   
   // Convertir les paragraphes
   content = content.replace(/<p[^>]*>([\s\S]*?)<\/p>/g, (match, text) => '\n' + cleanText(text) + '\n');
@@ -246,7 +251,17 @@ function cleanText(text) {
   
   // Supprimer les attributs JSX orphelins
   cleaned = cleaned.replace(/className="[^"]*"/g, '');
-  // NE PAS supprimer les ** - ils sont utiles pour la mise en forme
+  
+  // Nettoyer les icônes et émojis problématiques
+  cleaned = cleaned.replace(/⚠️/g, 'Attention :');
+  cleaned = cleaned.replace(/🚨/g, 'Important :');
+  cleaned = cleaned.replace(/💡/g, 'Conseil :');
+  cleaned = cleaned.replace(/✅/g, '');
+  cleaned = cleaned.replace(/❌/g, '');
+  
+  // Corriger le formatage markdown cassé
+  cleaned = cleaned.replace(/\*\*([^*]+)\*\*/g, '$1'); // **texte** -> texte
+  cleaned = cleaned.replace(/###\s*/g, ''); // Supprimer ### orphelins
   
   // Décoder les entités HTML
   cleaned = cleaned.replace(/&lt;/g, '<');
