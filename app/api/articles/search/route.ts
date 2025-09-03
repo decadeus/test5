@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 // Articles data pour la recherche
 const articles = [
   {
@@ -184,7 +186,9 @@ export async function GET(request: NextRequest) {
     
     // Suggestions basées sur les tags populaires
     const queryLower = query.toLowerCase();
-    const tagSuggestions = [...new Set(articles.flatMap(a => a.tags))]
+    const allTags = articles.flatMap(a => a.tags);
+    const uniqueTags = Array.from(new Set(allTags));
+    const tagSuggestions = uniqueTags
       .filter(tag => tag.toLowerCase().includes(queryLower) && tag.toLowerCase() !== queryLower)
       .slice(0, 3);
     
@@ -195,7 +199,9 @@ export async function GET(request: NextRequest) {
     })));
     
     // Suggestions basées sur les catégories
-    const categorySuggestions = [...new Set(articles.map(a => a.category))]
+    const allCategories = articles.map(a => a.category);
+    const uniqueCategories = Array.from(new Set(allCategories));
+    const categorySuggestions = uniqueCategories
       .filter(cat => cat.toLowerCase().includes(queryLower) && cat.toLowerCase() !== queryLower)
       .slice(0, 2);
     

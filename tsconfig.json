@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2017",
     "lib": [
       "dom",
       "dom.iterable",
@@ -13,7 +13,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -23,6 +23,7 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./*"
@@ -33,19 +34,9 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "app/[locale]/page.jsx",
-    "app/[locale]/layout.tsx",
-    "app/[locale]/login/page.jsx",
-    "utils/supabase/client.ts",
-    "utils/supabase/server.ts",
-    "app/(pages)/Vpdf/page.jsx",
-    "components/fullmap.jsx",
-    "app/map/index.jsx",
-    "app/[locale]/components/Button.jsx"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
-  ],
-  "extends": "expo/tsconfig.base"
+  ]
 }
