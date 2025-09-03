@@ -3,6 +3,7 @@ import { readFile } from 'fs/promises';
 import { join } from 'path';
 
 export const dynamic = 'force-dynamic';
+// Force redeploy - fix article content
 
 // Articles data - même structure que dans l'API principale
 const articles = [

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
+// Force redeploy - fix article content
 
 // Articles data - même structure que dans blog/page.jsx
 const articles = [
