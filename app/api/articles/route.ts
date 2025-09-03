@@ -16,7 +16,8 @@ const articles = [
     draft: false,
     category: "Administration",
     tags: ["installation", "démarches", "expatriation", "pologne"],
-    language: "fr"
+    language: "fr",
+    content: "Contenu complet de l'article sur l'installation en Pologne avec toutes les démarches détaillées..."
   },
   {
     id: 6,
