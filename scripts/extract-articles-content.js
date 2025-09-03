@@ -190,10 +190,9 @@ function convertJSXToMarkdown(jsxContent) {
   content = content.replace(/className="[^"]*"/g, '');
   content = content.replace(/\{[^}]*\}/g, '');
   
-  // Nettoyage final des éléments problématiques
-  content = content.replace(/###\s*/g, ''); // Supprimer ### orphelins
-  content = content.replace(/\*\*([^*]*)\*\*/g, '$1'); // **texte** -> texte
-  content = content.replace(/\*([^*]*)\*/g, '$1'); // *texte* -> texte
+  // Nettoyage final des éléments problématiques (mais préserver markdown valide)
+  content = content.replace(/#{4,}/g, '###'); // Limiter à max 3 niveaux de titre
+  // NE PAS supprimer ** et * - on les garde pour le style dans l'app mobile
   
   // Nettoyer les caractères spéciaux et espaces (plus conservateur)
   content = content.replace(/[ \t]+/g, ' '); // Espaces et tabs multiples -> un seul espace
@@ -205,10 +204,10 @@ function convertJSXToMarkdown(jsxContent) {
 
 // Fonction pour traiter les éléments HTML de base
 function processBasicElements(content) {
-  // Convertir les titres (sans markdown, juste le texte)
-  content = content.replace(/<h2[^>]*>([\s\S]*?)<\/h2>/g, (match, title) => '\n\n' + cleanText(title) + '\n');
-  content = content.replace(/<h3[^>]*>([\s\S]*?)<\/h3>/g, (match, title) => '\n\n' + cleanText(title) + '\n');
-  content = content.replace(/<h4[^>]*>([\s\S]*?)<\/h4>/g, (match, title) => '\n\n' + cleanText(title) + '\n');
+  // Convertir les titres avec markdown pour préserver la hiérarchie
+  content = content.replace(/<h2[^>]*>([\s\S]*?)<\/h2>/g, (match, title) => '\n\n## ' + cleanText(title) + '\n');
+  content = content.replace(/<h3[^>]*>([\s\S]*?)<\/h3>/g, (match, title) => '\n\n### ' + cleanText(title) + '\n');
+  content = content.replace(/<h4[^>]*>([\s\S]*?)<\/h4>/g, (match, title) => '\n\n#### ' + cleanText(title) + '\n');
   
   // Convertir les paragraphes
   content = content.replace(/<p[^>]*>([\s\S]*?)<\/p>/g, (match, text) => '\n' + cleanText(text) + '\n');
@@ -239,7 +238,7 @@ function cleanText(text) {
   cleaned = cleaned.replace(/<Link href=\{`\/\$\{currentLocale\}\/blog\/([^`]+)`\}[^>]*>([\s\S]*?)<\/Link>/g, '$2');
   cleaned = cleaned.replace(/<Link[^>]*>([\s\S]*?)<\/Link>/g, '$1');
   
-  // Convertir la mise en forme
+  // Convertir la mise en forme (préserver markdown)
   cleaned = cleaned.replace(/<strong[^>]*>([\s\S]*?)<\/strong>/g, '**$1**');
   cleaned = cleaned.replace(/<em[^>]*>([\s\S]*?)<\/em>/g, '*$1*');
   
@@ -259,9 +258,8 @@ function cleanText(text) {
   cleaned = cleaned.replace(/✅/g, '');
   cleaned = cleaned.replace(/❌/g, '');
   
-  // Corriger le formatage markdown cassé
-  cleaned = cleaned.replace(/\*\*([^*]+)\*\*/g, '$1'); // **texte** -> texte
-  cleaned = cleaned.replace(/###\s*/g, ''); // Supprimer ### orphelins
+  // Préserver le formatage markdown pour l'app mobile
+  // NE PAS supprimer ** et ### - l'app mobile peut les interpréter
   
   // Décoder les entités HTML
   cleaned = cleaned.replace(/&lt;/g, '<');
