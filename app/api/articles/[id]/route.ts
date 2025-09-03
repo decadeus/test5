@@ -206,7 +206,7 @@ function processBasicElements(content: string): string {
   // Convertir les listes
   content = content.replace(/<ul[^>]*>([\s\S]*?)<\/ul>/g, (match, listContent) => {
     const items = listContent.match(/<li[^>]*>([\s\S]*?)<\/li>/g) || [];
-    const cleanItems = items.map(item => {
+    const cleanItems = items.map((item: string) => {
       const itemText = item.replace(/<li[^>]*>([\s\S]*?)<\/li>/, '$1');
       return '- ' + cleanText(itemText);
     });
