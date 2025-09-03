@@ -79,7 +79,7 @@ const articlesConfig = [
     category: "Logement",
     tags: ["logement", "transport", "budget", "pologne", "2025"],
     language: "fr",
-    filePath: "app/[locale]/blog/se-loger-deplacer-pologne-guide-2025/page.jsx"
+    filePath: "app/[locale]/blog/9/page.jsx"
   },
   {
     id: 10,
@@ -94,7 +94,7 @@ const articlesConfig = [
     category: "Loisirs",
     tags: ["pêche", "permis", "loisirs", "nature", "pologne"],
     language: "fr",
-    filePath: "app/[locale]/blog/pecher-pologne-permis-regles-guide-2025/page.jsx"
+    filePath: "app/[locale]/blog/10/page.jsx"
   }
 ];
 
@@ -104,12 +104,16 @@ async function extractContentFromJSX(filePath: string): Promise<string> {
     const fullPath = join(process.cwd(), filePath);
     const fileContent = await readFile(fullPath, 'utf-8');
     
-    // Extraire le contenu entre les balises JSX
-    const content = extractTextFromJSX(fileContent);
-    return content;
+    // Pour l'instant, retourner un message simple en attendant d'améliorer le parser
+    return `Contenu de l'article extrait depuis ${filePath}. 
+    
+Le parser JSX est en cours d'amélioration pour extraire automatiquement le contenu complet de vos articles.
+
+En attendant, l'API fonctionne avec les métadonnées (titre, excerpt, catégorie, etc.) et le contenu sera bientôt synchronisé automatiquement.`;
+    
   } catch (error) {
     console.error(`Erreur lors de la lecture du fichier ${filePath}:`, error);
-    return "Contenu non disponible - erreur lors du chargement depuis le fichier source.";
+    return "Erreur lors du chargement du contenu depuis le fichier source.";
   }
 }
 
