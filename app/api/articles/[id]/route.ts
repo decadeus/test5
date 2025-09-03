@@ -102,35 +102,54 @@ const articlesConfig = [
 async function extractContentFromJSX(filePath: string): Promise<string> {
   try {
     const fullPath = join(process.cwd(), filePath);
+    console.log(`[DEBUG] Tentative de lecture du fichier: ${fullPath}`);
+    
     const fileContent = await readFile(fullPath, 'utf-8');
+    console.log(`[DEBUG] Fichier lu avec succès, taille: ${fileContent.length} caractères`);
+    
+    // Vérifier si ArticleLayout est présent
+    const hasArticleLayout = fileContent.includes('ArticleLayout');
+    console.log(`[DEBUG] ArticleLayout trouvé: ${hasArticleLayout}`);
     
     // Extraire le contenu entre les balises ArticleLayout
     const content = parseJSXContent(fileContent);
+    console.log(`[DEBUG] Contenu extrait, taille: ${content.length} caractères`);
+    
     return content;
     
   } catch (error) {
-    console.error(`Erreur lors de la lecture du fichier ${filePath}:`, error);
+    console.error(`[ERROR] Erreur lors de la lecture du fichier ${filePath}:`, error);
     return "Erreur lors du chargement du contenu depuis le fichier source.";
   }
 }
 
 // Fonction principale pour parser le contenu JSX
 function parseJSXContent(fileContent: string): string {
+  console.log(`[DEBUG] Début du parsing JSX`);
+  
   // Extraire le titre depuis ArticleLayout
   const titleMatch = fileContent.match(/title="([^"]+)"/);
   let content = '';
   
   if (titleMatch) {
     content += titleMatch[1] + '\n\n';
+    console.log(`[DEBUG] Titre trouvé: ${titleMatch[1]}`);
+  } else {
+    console.log(`[DEBUG] Aucun titre trouvé`);
   }
   
   // Extraire le contenu principal entre <ArticleLayout...> et </ArticleLayout>
   // Regex plus robuste pour gérer les props sur plusieurs lignes
   const layoutMatch = fileContent.match(/<ArticleLayout[\s\S]*?>([\s\S]*?)<\/ArticleLayout>/);
   if (!layoutMatch) {
+    console.log(`[DEBUG] Aucun match ArticleLayout trouvé`);
+    // Essayons de voir ce qu'il y a dans le fichier
+    const preview = fileContent.substring(0, 500);
+    console.log(`[DEBUG] Aperçu du fichier: ${preview}`);
     return content + "Contenu non trouvé dans ArticleLayout.";
   }
   
+  console.log(`[DEBUG] ArticleLayout match trouvé, contenu de ${layoutMatch[1].length} caractères`);
   let articleContent = layoutMatch[1];
   
   // Nettoyer et convertir le JSX en markdown
