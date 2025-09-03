@@ -124,8 +124,9 @@ function parseJSXContent(fileContent: string): string {
     content += titleMatch[1] + '\n\n';
   }
   
-  // Extraire le contenu principal entre <ArticleLayout> et </ArticleLayout>
-  const layoutMatch = fileContent.match(/<ArticleLayout[^>]*>([\s\S]*?)<\/ArticleLayout>/);
+  // Extraire le contenu principal entre <ArticleLayout...> et </ArticleLayout>
+  // Regex plus robuste pour gérer les props sur plusieurs lignes
+  const layoutMatch = fileContent.match(/<ArticleLayout[\s\S]*?>([\s\S]*?)<\/ArticleLayout>/);
   if (!layoutMatch) {
     return content + "Contenu non trouvé dans ArticleLayout.";
   }
