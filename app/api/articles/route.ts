@@ -17,7 +17,7 @@ const articles = [
     category: "Administration",
     tags: ["installation", "démarches", "expatriation", "pologne"],
     language: "fr",
-    content: "Contenu complet de l'article sur l'installation en Pologne avec toutes les démarches détaillées..."
+    content: "Contenu complet de l'article sur l'installation en Pologne avec toutes les démarches détaillées : PESEL, compte bancaire, NFZ, ZUS, Meldunek..."
   },
   {
     id: 6,
@@ -60,6 +60,21 @@ const articles = [
     category: "Entreprise",
     tags: ["entreprise", "micro-entreprise", "business", "ceidg"],
     language: "fr"
+  },
+  {
+    id: 8,
+    slug: "creer-micro-entreprise-pologne-simple-rapide",
+    title: "Créer sa micro-entreprise en Pologne : simple et rapide !",
+    excerpt: "Guide complet pour créer une micro-entreprise en Pologne : CEIDG, NIP, REGON, ZUS. Méthode ChatGPT et démarches simplifiées pour entrepreneurs français.",
+    author: "Johann Debeaumont",
+    date: "2024-02-05",
+    readTime: "8 min",
+    imageUrl: "/CEIDG.png",
+    draft: false,
+    category: "Entrepreneuriat",
+    tags: ["micro-entreprise", "CEIDG", "NIP", "REGON", "ZUS", "entrepreneur", "freelance"],
+    language: "fr",
+    content: "Contenu complet de l'article sur la création de micro-entreprise en Pologne avec toutes les démarches détaillées..."
   },
   {
     id: 9,
