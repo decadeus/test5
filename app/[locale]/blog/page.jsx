@@ -14,7 +14,8 @@ const articles = [
     author: "Johann Debeaumont",
     date: "2024-01-20",
     readTime: "8 min",
-    imageUrl: "/Administration.png"
+    imageUrl: "/Administration.png",
+    draft: false // Article publié
   },
   {
     id: 6,
@@ -23,7 +24,8 @@ const articles = [
     author: "Johann Debeaumont", 
     date: "2025-07-25",
     readTime: "10 min",
-    imageUrl: "/apteka.png"
+    imageUrl: "/apteka.png",
+    draft: false // Article publié
   },
   {
     id: 7,
@@ -32,7 +34,8 @@ const articles = [
     author: "Johann Debeaumont",
     date: "2025-07-30", 
     readTime: "12 min",
-    imageUrl: "/immatriculation.png"
+    imageUrl: "/immatriculation.png",
+    draft: false // Article publié
   },
   {
     id: 8,
@@ -41,13 +44,46 @@ const articles = [
     author: "Johann Debeaumont",
     date: "2025-08-05",
     readTime: "8 min", 
-    imageUrl: "/CEIDG.png"
-  }
+    imageUrl: "/CEIDG.png",
+    draft: false // Article publié
+  },
+      {
+      id: 9,
+      slug: "se-loger-deplacer-pologne-guide-2025",
+      title: "Se loger et se déplacer en Pologne — Guide pratique 2025",
+      excerpt: "Guide complet pour se loger et se déplacer en Pologne : loyers, charges, meldunek, transports. Conseils pratiques et budgets réels pour 2025.",
+      author: "Johann Debeaumont",
+      date: "2025-09-04",
+      readTime: "12 min",
+      imageUrl: "/Seloger.png",
+      draft: true // ← Article en brouillon (visible seulement en dev)
+    },
+    {
+      id: 10,
+      slug: "pecher-pologne-permis-regles-guide-2025",
+      title: "Pêcher en Pologne : permis, règles et spots — Guide 2025",
+      excerpt: "Guide complet pour obtenir son permis de pêche en Pologne : démarches, coûts, règles par région, spots recommandés. Tout pour les expatriés passionnés.",
+      author: "Johann Debeaumont",
+      date: "2025-09-15",
+      readTime: "10 min",
+      imageUrl: "/Pecher-en-Pologne.png",
+      draft: true // ← Article en brouillon (visible seulement en dev)
+    }
 ];
 
 export default function BlogPage() {
   const pathname = usePathname();
   const currentLocale = pathname.split('/')[1];
+
+  // Filtrer les articles selon l'environnement
+  const visibleArticles = articles.filter(article => {
+    // En développement, montrer tous les articles
+    if (process.env.NODE_ENV === 'development') {
+      return true;
+    }
+    // En production, masquer les brouillons
+    return !article.draft;
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 pt-40 pb-6">
@@ -64,8 +100,8 @@ export default function BlogPage() {
 
         {/* Articles Grid */}
         <div className="space-y-4 sm:space-y-6 lg:space-y-8">
-          {articles.length > 0 ? (
-            articles.map((article) => (
+          {visibleArticles.length > 0 ? (
+            visibleArticles.map((article) => (
               <div
                 key={article.id}
                 className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
@@ -105,7 +141,7 @@ export default function BlogPage() {
                     </p>
 
                                                     <Link
-                                  href={`/${currentLocale}/blog/${article.id}`}
+                                  href={`/${currentLocale}/blog/${article.slug || article.id}`}
                                   className="blog-button"
                                 >
                       Lire la suite

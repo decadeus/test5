@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,9 +24,28 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/[locale]/page.jsx", "app/[locale]/layout.tsx", "app/[locale]/login/page.jsx", "utils/supabase/client.ts", "utils/supabase/server.ts", "app/(pages)/Vpdf/page.jsx", "components/fullmap.jsx", "app/map/index.jsx", "app/[locale]/components/Button.jsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/[locale]/page.jsx",
+    "app/[locale]/layout.tsx",
+    "app/[locale]/login/page.jsx",
+    "utils/supabase/client.ts",
+    "utils/supabase/server.ts",
+    "app/(pages)/Vpdf/page.jsx",
+    "components/fullmap.jsx",
+    "app/map/index.jsx",
+    "app/[locale]/components/Button.jsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "extends": "expo/tsconfig.base"
 }
