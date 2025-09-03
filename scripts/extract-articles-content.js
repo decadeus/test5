@@ -134,6 +134,13 @@ function convertJSXToMarkdown(jsxContent) {
   content = content.replace(/<div className="diagram-container">[\s\S]*?<\/div>/g, ''); // Diagrammes
   content = content.replace(/<div ref=\{[^}]+\}><\/div>/g, ''); // Refs vides
   
+  // 1.5. Supprimer les divs avec classes CSS complexes (bg-yellow, border, etc.)
+  content = content.replace(/<div className="[^"]*bg-[^"]*"[^>]*>/g, ''); // Divs avec classes bg-*
+  content = content.replace(/<div className="[^"]*border-[^"]*"[^>]*>/g, ''); // Divs avec classes border-*
+  content = content.replace(/<div className="[^"]*flex[^"]*"[^>]*>/g, ''); // Divs avec classes flex
+  content = content.replace(/<span className="[^"]*"[^>]*>/g, ''); // Spans avec classes
+  content = content.replace(/<\/span>/g, ''); // Fermetures de span
+  
   // 2. Convertir les info-boxes avec leur contenu
   content = content.replace(/<div className="info-box-[^"]*"[^>]*>([\s\S]*?)<\/div>/g, (match, boxContent) => {
     let result = '\n';
@@ -172,9 +179,21 @@ function convertJSXToMarkdown(jsxContent) {
   // 4. Traiter les éléments de base
   content = processBasicElements(content);
   
-  // 5. Nettoyage final
+  // 5. Nettoyage final agressif
   content = content.replace(/\n\s*\n\s*\n/g, '\n\n'); // Réduire les sauts de ligne multiples
   content = content.replace(/^\s+|\s+$/gm, ''); // Supprimer espaces en début/fin de ligne
+  
+  // Supprimer toutes les balises HTML restantes (sécurité)
+  content = content.replace(/<\/?[^>]+>/g, '');
+  
+  // Supprimer les attributs JSX orphelins
+  content = content.replace(/className="[^"]*"/g, '');
+  content = content.replace(/\{[^}]*\}/g, '');
+  
+  // Nettoyer les caractères spéciaux et espaces (plus conservateur)
+  content = content.replace(/[ \t]+/g, ' '); // Espaces et tabs multiples -> un seul espace
+  content = content.replace(/\n\s+/g, '\n'); // Supprimer espaces après saut de ligne
+  content = content.replace(/\n{3,}/g, '\n\n'); // Max 2 sauts de ligne consécutifs
   
   return content;
 }
@@ -206,6 +225,11 @@ function processBasicElements(content) {
 function cleanText(text) {
   let cleaned = text;
   
+  // Supprimer d'abord toutes les balises ouvrantes avec classes CSS
+  cleaned = cleaned.replace(/<div className="[^"]*"[^>]*>/g, '');
+  cleaned = cleaned.replace(/<span className="[^"]*"[^>]*>/g, '');
+  cleaned = cleaned.replace(/<p className="[^"]*"[^>]*>/g, '');
+  
   // Convertir les liens internes
   cleaned = cleaned.replace(/<Link href=\{`\/\$\{currentLocale\}\/blog\/([^`]+)`\}[^>]*>([\s\S]*?)<\/Link>/g, '$2');
   cleaned = cleaned.replace(/<Link[^>]*>([\s\S]*?)<\/Link>/g, '$1');
@@ -214,11 +238,15 @@ function cleanText(text) {
   cleaned = cleaned.replace(/<strong[^>]*>([\s\S]*?)<\/strong>/g, '**$1**');
   cleaned = cleaned.replace(/<em[^>]*>([\s\S]*?)<\/em>/g, '*$1*');
   
-  // Supprimer les balises restantes
-  cleaned = cleaned.replace(/<[^>]+>/g, '');
+  // Supprimer TOUTES les balises HTML restantes (plus agressif)
+  cleaned = cleaned.replace(/<\/?[^>]+>/g, '');
   
   // Nettoyer les expressions JSX
   cleaned = cleaned.replace(/\{[^}]+\}/g, '');
+  
+  // Supprimer les attributs JSX orphelins
+  cleaned = cleaned.replace(/className="[^"]*"/g, '');
+  // NE PAS supprimer les ** - ils sont utiles pour la mise en forme
   
   // Décoder les entités HTML
   cleaned = cleaned.replace(/&lt;/g, '<');
@@ -226,8 +254,9 @@ function cleanText(text) {
   cleaned = cleaned.replace(/&amp;/g, '&');
   cleaned = cleaned.replace(/&quot;/g, '"');
   
-  // Nettoyer les espaces
+  // Nettoyer les espaces multiples et caractères spéciaux
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
+  cleaned = cleaned.replace(/^\s*[\*\-\+]\s*/, ''); // Supprimer les puces orphelines
   
   return cleaned;
 }
