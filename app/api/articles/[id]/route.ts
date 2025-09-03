@@ -98,173 +98,32 @@ const articlesConfig = [
   }
 ];
 
-// Fonction pour extraire le contenu d'un fichier JSX
-async function extractContentFromJSX(filePath: string): Promise<string> {
+// Fonction pour lire le contenu pré-extrait depuis le fichier JSON
+async function getPreExtractedContent(articleId: number): Promise<string> {
   try {
-    const fullPath = join(process.cwd(), filePath);
-    console.log(`[DEBUG] Tentative de lecture du fichier: ${fullPath}`);
+    const contentPath = join(process.cwd(), 'data', 'articles-content.json');
+    console.log(`[API] Lecture du contenu pré-extrait depuis: ${contentPath}`);
     
-    const fileContent = await readFile(fullPath, 'utf-8');
-    console.log(`[DEBUG] Fichier lu avec succès, taille: ${fileContent.length} caractères`);
+    const contentData = await readFile(contentPath, 'utf-8');
+    const articles = JSON.parse(contentData);
     
-    // Vérifier si ArticleLayout est présent
-    const hasArticleLayout = fileContent.includes('ArticleLayout');
-    console.log(`[DEBUG] ArticleLayout trouvé: ${hasArticleLayout}`);
+    const article = articles.find((a: any) => a.id === articleId);
+    if (!article) {
+      console.log(`[API] ❌ Article ${articleId} non trouvé dans le contenu pré-extrait`);
+      return "Article non trouvé dans le contenu pré-extrait.";
+    }
     
-    // Extraire le contenu entre les balises ArticleLayout
-    const content = parseJSXContent(fileContent);
-    console.log(`[DEBUG] Contenu extrait, taille: ${content.length} caractères`);
-    
-    return content;
+    console.log(`[API] ✅ Contenu trouvé pour l'article ${articleId}, taille: ${article.content.length} caractères`);
+    return article.content;
     
   } catch (error) {
-    console.error(`[ERROR] Erreur lors de la lecture du fichier ${filePath}:`, error);
-    return "Erreur lors du chargement du contenu depuis le fichier source.";
+    console.error(`[API] ❌ Erreur lors de la lecture du contenu pré-extrait:`, error);
+    return "Erreur lors du chargement du contenu pré-extrait. Assurez-vous que le build a été exécuté.";
   }
 }
 
-// Fonction principale pour parser le contenu JSX
-function parseJSXContent(fileContent: string): string {
-  console.log(`[DEBUG] Début du parsing JSX`);
-  
-  // Extraire le titre depuis ArticleLayout
-  const titleMatch = fileContent.match(/title="([^"]+)"/);
-  let content = '';
-  
-  if (titleMatch) {
-    content += titleMatch[1] + '\n\n';
-    console.log(`[DEBUG] Titre trouvé: ${titleMatch[1]}`);
-  } else {
-    console.log(`[DEBUG] Aucun titre trouvé`);
-  }
-  
-  // Extraire le contenu principal entre <ArticleLayout...> et </ArticleLayout>
-  // Regex plus robuste pour gérer les props sur plusieurs lignes
-  const layoutMatch = fileContent.match(/<ArticleLayout[\s\S]*?>([\s\S]*?)<\/ArticleLayout>/);
-  if (!layoutMatch) {
-    console.log(`[DEBUG] Aucun match ArticleLayout trouvé`);
-    // Essayons de voir ce qu'il y a dans le fichier
-    const preview = fileContent.substring(0, 500);
-    console.log(`[DEBUG] Aperçu du fichier: ${preview}`);
-    return content + "Contenu non trouvé dans ArticleLayout.";
-  }
-  
-  console.log(`[DEBUG] ArticleLayout match trouvé, contenu de ${layoutMatch[1].length} caractères`);
-  let articleContent = layoutMatch[1];
-  
-  // Nettoyer et convertir le JSX en markdown
-  content += convertJSXToMarkdown(articleContent);
-  
-  return content.trim();
-}
-
-// Fonction robuste pour convertir JSX en markdown
-function convertJSXToMarkdown(jsxContent: string): string {
-  let content = jsxContent;
-  
-  // 1. Supprimer les éléments non-textuels
-  content = content.replace(/\{\/\*[\s\S]*?\*\/\}/g, ''); // Commentaires JSX
-  content = content.replace(/<script[\s\S]*?<\/script>/g, ''); // Scripts
-  content = content.replace(/<div className="diagram-container">[\s\S]*?<\/div>/g, ''); // Diagrammes
-  content = content.replace(/<div ref=\{[^}]+\}><\/div>/g, ''); // Refs vides
-  
-  // 2. Convertir les info-boxes avec leur contenu
-  content = content.replace(/<div className="info-box-[^"]*"[^>]*>([\s\S]*?)<\/div>/g, (match, boxContent) => {
-    let result = '\n';
-    
-    // Extraire le titre de l'info-box
-    const titleMatch = boxContent.match(/<h4 className="info-box-title"[^>]*>([\s\S]*?)<\/h4>/);
-    if (titleMatch) {
-      result += '### ' + cleanText(titleMatch[1]) + '\n';
-    }
-    
-    // Extraire le contenu de l'info-box
-    const contentMatch = boxContent.match(/<p className="info-box-content"[^>]*>([\s\S]*?)<\/p>/);
-    if (contentMatch) {
-      result += cleanText(contentMatch[1]) + '\n';
-    }
-    
-    return result + '\n';
-  });
-  
-  // 3. Convertir les step-containers
-  content = content.replace(/<div className="step-container"[^>]*>([\s\S]*?)<\/div>/g, (match, stepContent) => {
-    let result = '\n';
-    
-    // Extraire le titre du step
-    const titleMatch = stepContent.match(/<h3 className="step-title"[^>]*>([\s\S]*?)<\/h3>/);
-    if (titleMatch) {
-      result += '### ' + cleanText(titleMatch[1]) + '\n';
-    }
-    
-    // Traiter le reste du contenu du step
-    result += processBasicElements(stepContent) + '\n';
-    
-    return result;
-  });
-  
-  // 4. Traiter les éléments de base
-  content = processBasicElements(content);
-  
-  // 5. Nettoyage final
-  content = content.replace(/\n\s*\n\s*\n/g, '\n\n'); // Réduire les sauts de ligne multiples
-  content = content.replace(/^\s+|\s+$/gm, ''); // Supprimer espaces en début/fin de ligne
-  
-  return content;
-}
-
-// Fonction pour traiter les éléments HTML de base
-function processBasicElements(content: string): string {
-  // Convertir les titres
-  content = content.replace(/<h2[^>]*>([\s\S]*?)<\/h2>/g, (match, title) => '\n## ' + cleanText(title) + '\n');
-  content = content.replace(/<h3[^>]*>([\s\S]*?)<\/h3>/g, (match, title) => '\n### ' + cleanText(title) + '\n');
-  content = content.replace(/<h4[^>]*>([\s\S]*?)<\/h4>/g, (match, title) => '\n#### ' + cleanText(title) + '\n');
-  
-  // Convertir les paragraphes
-  content = content.replace(/<p[^>]*>([\s\S]*?)<\/p>/g, (match, text) => '\n' + cleanText(text) + '\n');
-  
-  // Convertir les listes
-  content = content.replace(/<ul[^>]*>([\s\S]*?)<\/ul>/g, (match, listContent) => {
-    const items = listContent.match(/<li[^>]*>([\s\S]*?)<\/li>/g) || [];
-    const cleanItems = items.map((item: string) => {
-      const itemText = item.replace(/<li[^>]*>([\s\S]*?)<\/li>/, '$1');
-      return '- ' + cleanText(itemText);
-    });
-    return '\n' + cleanItems.join('\n') + '\n';
-  });
-  
-  return content;
-}
-
-// Fonction pour nettoyer le texte des balises et expressions JSX
-function cleanText(text: string): string {
-  let cleaned = text;
-  
-  // Convertir les liens internes
-  cleaned = cleaned.replace(/<Link href=\{`\/\$\{currentLocale\}\/blog\/([^`]+)`\}[^>]*>([\s\S]*?)<\/Link>/g, '$2');
-  cleaned = cleaned.replace(/<Link[^>]*>([\s\S]*?)<\/Link>/g, '$1');
-  
-  // Convertir la mise en forme
-  cleaned = cleaned.replace(/<strong[^>]*>([\s\S]*?)<\/strong>/g, '**$1**');
-  cleaned = cleaned.replace(/<em[^>]*>([\s\S]*?)<\/em>/g, '*$1*');
-  
-  // Supprimer les balises restantes
-  cleaned = cleaned.replace(/<[^>]+>/g, '');
-  
-  // Nettoyer les expressions JSX
-  cleaned = cleaned.replace(/\{[^}]+\}/g, '');
-  
-  // Décoder les entités HTML
-  cleaned = cleaned.replace(/&lt;/g, '<');
-  cleaned = cleaned.replace(/&gt;/g, '>');
-  cleaned = cleaned.replace(/&amp;/g, '&');
-  cleaned = cleaned.replace(/&quot;/g, '"');
-  
-  // Nettoyer les espaces
-  cleaned = cleaned.replace(/\s+/g, ' ').trim();
-  
-  return cleaned;
-}
+// Note: Les fonctions de parsing JSX ont été déplacées dans scripts/extract-articles-content.js
+// Le contenu est maintenant pré-extrait au build time et lu depuis data/articles-content.json
 
 export async function GET(
   request: NextRequest,
@@ -302,13 +161,8 @@ export async function GET(
 
     // Ajouter le contenu si demandé
     if (includeContent) {
-      try {
-        const content = await extractContentFromJSX(articleConfig.filePath);
-        responseArticle.content = content;
-      } catch (error) {
-        console.error('Erreur lors de l\'extraction du contenu:', error);
-        responseArticle.content = "Erreur lors du chargement du contenu depuis le fichier source.";
-      }
+      const content = await getPreExtractedContent(articleConfig.id);
+      responseArticle.content = content;
     }
 
     return NextResponse.json({
