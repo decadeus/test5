@@ -143,7 +143,7 @@ function ApartmentCard({
         {showProjectButton && (
           <button className="mt-auto w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl flex items-center justify-center gap-2 transition">
             <Link
-              href={`/${locale}/Projet/Detail/${apt.id}`}
+              href={`/${locale}/Projet/Detail/${apt.slug || apt.id}`}
               className="flex items-center gap-2 w-full h-full justify-center px-2"
             >
               {t("Voir le détail")}
@@ -519,7 +519,7 @@ export default function ApartmentList() {
         const to = from + PAGE_SIZE - 1;
         let query = supabase
           .from("project")
-          .select("id, name, compagny, country, city, lat, lng, online, user_id, profiles:user_id(compagnie)");
+          .select("id, name, compagny, country, city, lat, lng, online, user_id, slug, profiles:user_id(compagnie)");
         // Filtres côté serveur
         if (filters.selectedCountry) {
           query = query.eq("country", filters.selectedCountry);
@@ -832,7 +832,7 @@ export default function ApartmentList() {
     const fetchAllFilteredProjects = async () => {
       let query = supabase
         .from("project")
-        .select("id, name, compagny, country, city, lat, lng, online, user_id, profiles:user_id(compagnie)");
+        .select("id, name, compagny, country, city, lat, lng, online, user_id, slug, profiles:user_id(compagnie)");
       if (filters.selectedCountry) {
         query = query.eq("country", filters.selectedCountry);
       }

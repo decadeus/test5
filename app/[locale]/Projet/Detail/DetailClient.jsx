@@ -16,7 +16,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useTranslations } from "next-intl";
-import SimilarProjects from "../../../components/SimilarProjects";
+import SimilarProjects from "../../components/SimilarProjects";
 
 const GoogleMapComponent = dynamic(() => import('@/components/GoogleMap'), { ssr: false, loading: () => <div>Chargement de la carte…</div> });
 

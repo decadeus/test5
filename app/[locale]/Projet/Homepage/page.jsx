@@ -107,7 +107,7 @@ export default function Homepage() {
                   Créer un compte promoteur
                 </button>
               </Link>
-              <Link href="/fr/Projet/Detail/1">
+              <Link href="/fr/Projet/Detail/varsovie_arti">
                 <button className="bg-gray-200 hover:bg-gray-300 text-green-700 px-6 py-3 rounded-lg font-semibold">
                   Voir un exemple de fiche projet
                 </button>

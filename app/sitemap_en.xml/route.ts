@@ -6,8 +6,8 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 const PATHS = {
-  en: { root: "", projects: "/Projet/List", subscription: "/subscription", detail: (id:number)=>`/Projet/Detail/${id}` },
-  fr: { root: "", projects: "/Projet/List", subscription: "/abonnement",   detail: (id:number)=>`/Projet/Detail/${id}` },
+  en: { root: "", projects: "/Projet/List", subscription: "/subscription", detail: (slug:string)=>`/Projet/Detail/${slug}` },
+  fr: { root: "", projects: "/Projet/List", subscription: "/abonnement",   detail: (slug:string)=>`/Projet/Detail/${slug}` },
 } as const;
 
 function isoDate(s?: string|null){ const d=s?new Date(s):new Date(); return isNaN(d.getTime())?new Date().toISOString().slice(0,10):d.toISOString().slice(0,10); }
@@ -18,11 +18,11 @@ function altStatic(k:"root"|"projects"|"subscription"){
     `<xhtml:link rel="alternate" hreflang="x-default" href="${HOST}/fr${PATHS.fr[k]}"/>`,
   ].join("");
 }
-function altDetail(id:number){
+function altDetail(slug:string){
   return [
-    `<xhtml:link rel="alternate" hreflang="en" href="${HOST}/en${PATHS.en.detail(id)}"/>`,
-    `<xhtml:link rel="alternate" hreflang="fr" href="${HOST}/fr${PATHS.fr.detail(id)}"/>`,
-    `<xhtml:link rel="alternate" hreflang="x-default" href="${HOST}/fr${PATHS.fr.detail(id)}"/>`,
+    `<xhtml:link rel="alternate" hreflang="en" href="${HOST}/en${PATHS.en.detail(slug)}"/>`,
+    `<xhtml:link rel="alternate" hreflang="fr" href="${HOST}/fr${PATHS.fr.detail(slug)}"/>`,
+    `<xhtml:link rel="alternate" hreflang="x-default" href="${HOST}/fr${PATHS.fr.detail(slug)}"/>`,
   ].join("");
 }
 
@@ -43,8 +43,9 @@ export async function GET(request: Request) {
     try {
       const { data, error } = await client
         .from("project")
-        .select("id, created_at")
+        .select("id, slug, created_at")
         .eq("online", true)
+        .not("slug", "is", null)
         .order("created_at", { ascending: false })
         .range(0, 49999);
       return { rows: (data as any[]) || [], error };
@@ -91,10 +92,12 @@ export async function GET(request: Request) {
     `<url><loc>${HOST}/en${PATHS.en.subscription}</loc><lastmod>${today}</lastmod>${altStatic("subscription")}</url>`,
   ].join("\n");
 
-  const projectUrls = list.map((p:any)=>{
-    const lastmod = isoDate(p.updated_at || p.created_at);
-    return `<url><loc>${HOST}/en${PATHS.en.detail(p.id)}</loc><lastmod>${lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>${altDetail(p.id)}</url>`;
-  }).join("\n");
+  const projectUrls = list
+    .filter((p:any) => p.slug) // Seulement les projets avec slug
+    .map((p:any)=>{
+      const lastmod = isoDate(p.updated_at || p.created_at);
+      return `<url><loc>${HOST}/en${PATHS.en.detail(p.slug)}</loc><lastmod>${lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>${altDetail(p.slug)}</url>`;
+    }).join("\n");
 
   const xml =
 `<?xml version="1.0" encoding="UTF-8"?>

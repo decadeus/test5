@@ -20,6 +20,7 @@ interface Project {
   lat?: number;
   lng?: number;
   online?: boolean;
+  slug?: string;
   user_id?: string;
 }
 
@@ -44,7 +45,7 @@ export default function SimilarProjects({ currentProject, locale }: SimilarProje
       // Récupérer les projets depuis Supabase (même logique que List/page.jsx)
       const { data: projects, error } = await supabase
         .from('project')
-        .select('id, name, compagny, country, city, lat, lng, online, user_id')
+        .select('id, name, compagny, country, city, lat, lng, online, user_id, slug')
         .eq('online', true)
         .neq('id', currentProject.id)
         .limit(20);
@@ -311,7 +312,7 @@ export default function SimilarProjects({ currentProject, locale }: SimilarProje
               
               {/* Bouton voir le détail */}
               <Link
-                href={`/${locale}/Projet/Detail/${project.id}`}
+                href={`/${locale}/Projet/Detail/${project.slug || project.id}`}
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2"
               >
                 {t('viewDetail')}

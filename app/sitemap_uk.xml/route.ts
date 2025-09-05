@@ -5,7 +5,7 @@ const HOST = "https://www.hoomge.com";
 const LANG = "uk";  // ⚠️ "uk" = ukrainien. Si tu voulais *UK English*, utilise hreflang "en-GB" et, côté URL, garde /en.
 const INDEXABLE = [LANG, "fr", "en"] as const;
 
-type Row = { id: number; updated_at?: string | null; created_at?: string | null };
+type Row = { id: number; slug?: string | null; updated_at?: string | null; created_at?: string | null };
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -15,9 +15,9 @@ const SEG_FR = "Projet";
 const SEG_EN = "Project";
 
 const PATHS = {
-  [LANG]: { root: "", projects: "/Projet/List", detail: (id: number) => `/${SEG_UK}/Detail/${id}` },
-  fr:     { root: "", projects: "/Projet/List", detail: (id: number) => `/${SEG_FR}/Detail/${id}` },
-  en:     { root: "", projects: "/Projet/List", detail: (id: number) => `/${SEG_EN}/Detail/${id}` },
+  [LANG]: { root: "", projects: "/Projet/List", detail: (slug: string) => `/${SEG_UK}/Detail/${slug}` },
+  fr:     { root: "", projects: "/Projet/List", detail: (slug: string) => `/${SEG_FR}/Detail/${slug}` },
+  en:     { root: "", projects: "/Projet/List", detail: (slug: string) => `/${SEG_EN}/Detail/${slug}` },
 } as const;
 
 function isoDate(s?: string | null) {
@@ -30,10 +30,10 @@ function altLinksStatic(key: "root" | "projects") {
   const xdef = `<xhtml:link rel="alternate" hreflang="x-default" href="${HOST}/fr${PATHS.fr[key]}"/>`;
   return links + xdef;
 }
-function altLinksDetail(id: number) {
+function altLinksDetail(slug: string) {
   const links = (INDEXABLE as readonly ("uk"|"fr"|"en")[])
-    .map(loc => `<xhtml:link rel="alternate" hreflang="${loc}" href="${HOST}/${loc}${PATHS[loc].detail(id)}"/>`).join("");
-  const xdef = `<xhtml:link rel="alternate" hreflang="x-default" href="${HOST}/fr${PATHS.fr.detail(id)}"/>`;
+    .map(loc => `<xhtml:link rel="alternate" hreflang="${loc}" href="${HOST}/${loc}${PATHS[loc].detail(slug)}"/>`).join("");
+  const xdef = `<xhtml:link rel="alternate" hreflang="x-default" href="${HOST}/fr${PATHS.fr.detail(slug)}"/>`;
   return links + xdef;
 }
 
@@ -42,8 +42,9 @@ export async function GET(request: Request) {
     try {
       const { data, error } = await client
         .from("project")
-        .select("id, created_at")
+        .select("id, slug, created_at")
         .eq("online", true)
+        .not("slug", "is", null)
         .order("created_at", { ascending: false })
         .range(0, 49999);
       return { rows: (data as Row[]) || [], error };
@@ -67,11 +68,13 @@ export async function GET(request: Request) {
     `<url><loc>${HOST}/${LANG}${PATHS[LANG].projects}</loc><lastmod>${today}</lastmod>${altLinksStatic("projects")}</url>`,
   ].join("\n");
 
-  const projectUrls = list.map(p => {
-    const lastmod = isoDate(p.updated_at || p.created_at);
-    const loc = `${HOST}/${LANG}${PATHS[LANG].detail(p.id)}`;
-    return `<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod>${altLinksDetail(p.id)}</url>`;
-  }).join("\n");
+  const projectUrls = list
+    .filter(p => p.slug) // Seulement les projets avec slug
+    .map(p => {
+      const lastmod = isoDate(p.updated_at || p.created_at);
+      const loc = `${HOST}/${LANG}${PATHS[LANG].detail(p.slug!)}`;
+      return `<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>${altLinksDetail(p.slug!)}</url>`;
+    }).join("\n");
 
   const xml =
 `<?xml version="1.0" encoding="UTF-8"?>

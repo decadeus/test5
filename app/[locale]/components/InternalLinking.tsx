@@ -24,10 +24,10 @@ export default function InternalLinking({ currentPage, locale }: InternalLinking
     { url: `/${locale}/blog/8`, title: "Créer une micro-entreprise", priority: "medium" },
   ];
 
-  // Projets similaires pour le maillage interne
+  // Projets similaires pour le maillage interne (utiliser des slugs quand disponibles)
   const relatedProjects = [
-    { url: `/${locale}/Projet/Detail/193`, title: "Projet similaire - Découvrir", priority: "medium" },
-    { url: `/${locale}/Projet/Detail/192`, title: "Autre opportunité immobilière", priority: "medium" },
+    { url: `/${locale}/Projet/Detail/varsovie_arti`, title: "Projet similaire - Découvrir", priority: "medium" },
+    { url: `/${locale}/Projet/Detail/cracovie_nova`, title: "Autre opportunité immobilière", priority: "medium" },
   ];
 
   // Filtrer pour éviter le lien vers la page actuelle

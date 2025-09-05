@@ -1,5 +1,3 @@
-import './[locale]/globals.css';
-import Head from 'next/head';
 import type { ReactNode } from 'react';
 
 interface RootLayoutProps {
