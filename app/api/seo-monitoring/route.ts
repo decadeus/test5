@@ -84,6 +84,19 @@ export async function POST(request: NextRequest) {
 }
 
 async function checkSitemaps() {
+  // CRAWL BUDGET CRITIQUE: Désactiver complètement le monitoring automatique
+  // Le monitoring interne consomme le crawl budget de Google
+  // Utiliser uniquement GSC pour le monitoring en production
+  
+  console.log('[SEO-MONITORING] Monitoring automatique désactivé pour préserver le crawl budget Google');
+  
+  return {
+    total: 0,
+    details: { message: 'Monitoring désactivé - utiliser GSC' },
+    errors: []
+  };
+
+  /* DÉSACTIVÉ TEMPORAIREMENT POUR CRAWL BUDGET
   const sitemaps = [
     'https://www.hoomge.com/sitemap_fr.xml',
     'https://www.hoomge.com/sitemap_en.xml',
