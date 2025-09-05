@@ -530,8 +530,8 @@ export default function DetailClient({ project, locale }) {
             />
             <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
             <div className="flex flex-col justify-center items-center relative z-10 w-full px-4">
-              <h1 className="text-5xl font-bold mb-2 w-full text-center break-words leading-tight" style={{wordBreak: 'break-word', hyphens: 'auto'}}>{projectName}</h1>
-              <h2 className="text-xl text-black mb-2 w-full text-center">{projectCity}</h2>
+              <h1 className="text-5xl font-bold mb-2 w-full text-center break-words leading-tight" style={{wordBreak: 'break-word', hyphens: 'auto'}}>{projectCity}</h1>
+              <h2 className="text-xl text-black mb-2 w-full text-center">{projectName}</h2>
               <div className="w-full text-center text-gray-700 text-base italic mb-2">
                 by {companyName && companyName !== 'null' ? companyName : 'Non renseigné'}
               </div>

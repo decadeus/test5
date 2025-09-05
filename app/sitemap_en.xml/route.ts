@@ -29,6 +29,15 @@ function altDetail(id:number){
 // no-op guard removed; we'll return the exact string we build below
 
 export async function GET(request: Request) {
+  // Debug: Logger les requêtes pour diagnostiquer Googlebot
+  const userAgent = request.headers.get('user-agent') || 'unknown';
+  const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+  console.log(`[SITEMAP-EN] User-Agent: ${userAgent}, IP: ${ip}, Time: ${new Date().toISOString()}`);
+  
+  // Détecter Googlebot spécifiquement
+  if (userAgent.toLowerCase().includes('googlebot')) {
+    console.log(`[GOOGLEBOT-DETECTED] Crawling sitemap_en.xml at ${new Date().toISOString()}`);
+  }
   // Helper to fetch all projects with a client (anon or admin)
   async function fetchAll(client: ReturnType<typeof createClient>) {
     try {

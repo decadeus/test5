@@ -99,7 +99,12 @@ async function checkSitemaps() {
 
   for (const sitemapUrl of sitemaps) {
     try {
-      const response = await fetch(sitemapUrl);
+      // Ajouter User-Agent pour identifier nos requêtes de monitoring
+      const response = await fetch(sitemapUrl, {
+        headers: {
+          'User-Agent': 'HoomgeSEOMonitoring/1.0 (Internal monitoring, not a crawler)'
+        }
+      });
       const xml = await response.text();
       const urlCount = (xml.match(/<url>/g) || []).length;
       

@@ -41,6 +41,15 @@ function altLinksForDetail(id: number) {
 }
 
 export async function GET(request: Request) {
+  // Debug: Logger les requêtes pour diagnostiquer Googlebot
+  const userAgent = request.headers.get('user-agent') || 'unknown';
+  const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+  console.log(`[SITEMAP-FR] User-Agent: ${userAgent}, IP: ${ip}, Time: ${new Date().toISOString()}`);
+  
+  // Détecter Googlebot spécifiquement
+  if (userAgent.toLowerCase().includes('googlebot')) {
+    console.log(`[GOOGLEBOT-DETECTED] Crawling sitemap_fr.xml at ${new Date().toISOString()}`);
+  }
   async function fetchAll(client: ReturnType<typeof createClient>) {
     try {
       const { data, error } = await client
