@@ -58,6 +58,6 @@ export const config = {
      * - robots (robots.txt)
      * - Files with extensions (images, fonts, etc.)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|sitemap|robots|.*\\.).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap|robots).*)',
   ],
 };
